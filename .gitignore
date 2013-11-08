@@ -2,4 +2,4 @@ node_modules/
 dev/
 test/
 *.log
-.DS_Store/
+.DS_Store

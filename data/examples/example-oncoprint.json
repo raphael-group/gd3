@@ -1,0 +1,2954 @@
+{
+    "M": {
+        "BPTF": {
+            "TCGA-05-4395": [
+                "snv"
+            ], 
+            "TCGA-09-2044": [
+                "snv"
+            ], 
+            "TCGA-12-1597": [
+                "inactive_snv"
+            ], 
+            "TCGA-13-0792": [
+                "inactive_snv"
+            ], 
+            "TCGA-17-Z017": [
+                "snv"
+            ], 
+            "TCGA-17-Z057": [
+                "snv"
+            ], 
+            "TCGA-22-5480": [
+                "snv"
+            ], 
+            "TCGA-22-5482": [
+                "snv"
+            ], 
+            "TCGA-24-1469": [
+                "snv"
+            ], 
+            "TCGA-32-2632": [
+                "snv"
+            ], 
+            "TCGA-33-4586": [
+                "snv"
+            ], 
+            "TCGA-41-2575": [
+                "snv"
+            ], 
+            "TCGA-46-3767": [
+                "snv"
+            ], 
+            "TCGA-50-6592": [
+                "snv"
+            ], 
+            "TCGA-51-4080": [
+                "snv"
+            ], 
+            "TCGA-60-2711": [
+                "snv"
+            ], 
+            "TCGA-61-2008": [
+                "snv"
+            ], 
+            "TCGA-66-2791": [
+                "inactive_snv"
+            ], 
+            "TCGA-66-2795": [
+                "snv"
+            ], 
+            "TCGA-76-6193": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GE": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GN": [
+                "snv"
+            ], 
+            "TCGA-A6-2670": [
+                "snv"
+            ], 
+            "TCGA-A8-A082": [
+                "snv"
+            ], 
+            "TCGA-AA-3819": [
+                "snv"
+            ], 
+            "TCGA-AA-3848": [
+                "snv"
+            ], 
+            "TCGA-AB-2968": [
+                "snv"
+            ], 
+            "TCGA-AG-A032": [
+                "snv"
+            ], 
+            "TCGA-AX-A05S": [
+                "snv"
+            ], 
+            "TCGA-B0-4823": [
+                "inactive_snv"
+            ], 
+            "TCGA-B0-5701": [
+                "snv"
+            ], 
+            "TCGA-B5-A0JZ": [
+                "snv"
+            ], 
+            "TCGA-B8-4621": [
+                "snv"
+            ], 
+            "TCGA-BA-6868": [
+                "snv"
+            ], 
+            "TCGA-C4-A0EZ": [
+                "snv"
+            ], 
+            "TCGA-C8-A132": [
+                "snv"
+            ], 
+            "TCGA-CJ-4881": [
+                "inactive_snv"
+            ], 
+            "TCGA-CQ-6219": [
+                "snv"
+            ], 
+            "TCGA-CV-7104": [
+                "snv"
+            ], 
+            "TCGA-D1-A160": [
+                "snv"
+            ], 
+            "TCGA-D8-A27K": [
+                "snv"
+            ], 
+            "TCGA-DK-A1AF": [
+                "snv"
+            ], 
+            "TCGA-DK-A3IQ": [
+                "snv"
+            ], 
+            "TCGA-DQ-5624": [
+                "snv"
+            ], 
+            "TCGA-EW-A1PD": [
+                "snv"
+            ], 
+            "TCGA-FD-A3B7": [
+                "snv"
+            ], 
+            "TCGA-GC-A3RB": [
+                "snv"
+            ], 
+            "TCGA-GV-A3JW": [
+                "snv"
+            ]
+        }, 
+        "CHD6": {
+            "TCGA-06-0241": [
+                "snv"
+            ], 
+            "TCGA-13-0755": [
+                "snv"
+            ], 
+            "TCGA-14-1456": [
+                "snv"
+            ], 
+            "TCGA-17-Z014": [
+                "snv"
+            ], 
+            "TCGA-17-Z018": [
+                "inactive_snv"
+            ], 
+            "TCGA-18-4086": [
+                "snv"
+            ], 
+            "TCGA-22-4604": [
+                "snv"
+            ], 
+            "TCGA-22-5477": [
+                "amp"
+            ], 
+            "TCGA-22-5478": [
+                "amp"
+            ], 
+            "TCGA-24-1105": [
+                "snv"
+            ], 
+            "TCGA-24-1553": [
+                "snv"
+            ], 
+            "TCGA-25-1317": [
+                "snv"
+            ], 
+            "TCGA-34-5928": [
+                "snv"
+            ], 
+            "TCGA-39-5036": [
+                "snv"
+            ], 
+            "TCGA-44-4112": [
+                "snv"
+            ], 
+            "TCGA-44-6144": [
+                "snv"
+            ], 
+            "TCGA-44-6776": [
+                "snv"
+            ], 
+            "TCGA-46-6025": [
+                "snv"
+            ], 
+            "TCGA-49-4486": [
+                "snv"
+            ], 
+            "TCGA-49-4487": [
+                "snv"
+            ], 
+            "TCGA-55-5899": [
+                "snv"
+            ], 
+            "TCGA-61-1995": [
+                "snv"
+            ], 
+            "TCGA-66-2766": [
+                "amp"
+            ], 
+            "TCGA-66-2786": [
+                "inactive_snv"
+            ], 
+            "TCGA-73-4670": [
+                "inactive_snv"
+            ], 
+            "TCGA-75-5146": [
+                "amp"
+            ], 
+            "TCGA-76-4928": [
+                "snv"
+            ], 
+            "TCGA-80-5611": [
+                "snv"
+            ], 
+            "TCGA-A1-A0SO": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GJ": [
+                "inactive_snv"
+            ], 
+            "TCGA-A7-A0CD": [
+                "snv"
+            ], 
+            "TCGA-A7-A0CJ": [
+                "snv"
+            ], 
+            "TCGA-A8-A079": [
+                "amp"
+            ], 
+            "TCGA-AA-3696": [
+                "snv"
+            ], 
+            "TCGA-AA-3819": [
+                "amp"
+            ], 
+            "TCGA-AA-3846": [
+                "amp"
+            ], 
+            "TCGA-AA-3869": [
+                "amp"
+            ], 
+            "TCGA-AA-3955": [
+                "amp"
+            ], 
+            "TCGA-AA-3956": [
+                "snv"
+            ], 
+            "TCGA-AA-3982": [
+                "amp"
+            ], 
+            "TCGA-AF-3913": [
+                "amp"
+            ], 
+            "TCGA-AG-3612": [
+                "amp"
+            ], 
+            "TCGA-AG-3883": [
+                "amp"
+            ], 
+            "TCGA-AG-3896": [
+                "amp"
+            ], 
+            "TCGA-AG-3898": [
+                "amp"
+            ], 
+            "TCGA-AG-3999": [
+                "amp"
+            ], 
+            "TCGA-AG-4015": [
+                "amp"
+            ], 
+            "TCGA-AG-A015": [
+                "snv"
+            ], 
+            "TCGA-AG-A01W": [
+                "snv"
+            ], 
+            "TCGA-AG-A02G": [
+                "amp"
+            ], 
+            "TCGA-AK-3428": [
+                "snv"
+            ], 
+            "TCGA-AR-A24O": [
+                "inactive_snv"
+            ], 
+            "TCGA-B0-4815": [
+                "snv"
+            ], 
+            "TCGA-B5-A11I": [
+                "snv"
+            ], 
+            "TCGA-BG-A0MO": [
+                "snv"
+            ], 
+            "TCGA-BH-A0BR": [
+                "snv"
+            ], 
+            "TCGA-BH-A0H7": [
+                "inactive_snv", 
+                "amp"
+            ], 
+            "TCGA-BH-A0H9": [
+                "amp"
+            ], 
+            "TCGA-BH-A1EY": [
+                "snv"
+            ], 
+            "TCGA-BT-A20X": [
+                "snv"
+            ], 
+            "TCGA-BT-A2LA": [
+                "snv"
+            ], 
+            "TCGA-BT-A3PK": [
+                "snv"
+            ], 
+            "TCGA-C8-A12W": [
+                "amp"
+            ], 
+            "TCGA-C8-A1HN": [
+                "amp"
+            ], 
+            "TCGA-CJ-4899": [
+                "snv"
+            ], 
+            "TCGA-CN-6021": [
+                "snv"
+            ], 
+            "TCGA-CN-6023": [
+                "snv"
+            ], 
+            "TCGA-CN-6995": [
+                "snv"
+            ], 
+            "TCGA-CR-5248": [
+                "inactive_snv"
+            ], 
+            "TCGA-CV-7242": [
+                "snv"
+            ], 
+            "TCGA-CV-7252": [
+                "snv"
+            ], 
+            "TCGA-CZ-4853": [
+                "snv"
+            ], 
+            "TCGA-D1-A160": [
+                "snv"
+            ], 
+            "TCGA-D1-A16J": [
+                "snv"
+            ], 
+            "TCGA-D8-A1JP": [
+                "inactive_snv"
+            ], 
+            "TCGA-DI-A0WH": [
+                "snv"
+            ], 
+            "TCGA-DK-A1AG": [
+                "snv"
+            ], 
+            "TCGA-E2-A109": [
+                "inactive_snv"
+            ], 
+            "TCGA-E2-A14P": [
+                "amp"
+            ], 
+            "TCGA-EW-A1P8": [
+                "snv"
+            ], 
+            "TCGA-EY-A212": [
+                "amp"
+            ], 
+            "TCGA-GC-A3I6": [
+                "snv"
+            ], 
+            "TCGA-GI-A2C8": [
+                "snv"
+            ], 
+            "TCGA-GV-A3JW": [
+                "snv"
+            ]
+        }, 
+        "KEAP1": {
+            "TCGA-05-4384": [
+                "snv"
+            ], 
+            "TCGA-05-4389": [
+                "snv"
+            ], 
+            "TCGA-05-4395": [
+                "snv"
+            ], 
+            "TCGA-05-4418": [
+                "snv"
+            ], 
+            "TCGA-17-Z001": [
+                "snv"
+            ], 
+            "TCGA-17-Z008": [
+                "snv"
+            ], 
+            "TCGA-17-Z011": [
+                "snv"
+            ], 
+            "TCGA-17-Z018": [
+                "snv"
+            ], 
+            "TCGA-17-Z043": [
+                "snv"
+            ], 
+            "TCGA-18-3407": [
+                "snv"
+            ], 
+            "TCGA-18-5595": [
+                "snv"
+            ], 
+            "TCGA-21-1077": [
+                "snv"
+            ], 
+            "TCGA-22-4599": [
+                "snv"
+            ], 
+            "TCGA-24-1474": [
+                "snv"
+            ], 
+            "TCGA-33-4532": [
+                "inactive_snv"
+            ], 
+            "TCGA-33-4538": [
+                "snv"
+            ], 
+            "TCGA-35-3615": [
+                "inactive_snv"
+            ], 
+            "TCGA-35-5375": [
+                "inactive_snv"
+            ], 
+            "TCGA-37-4133": [
+                "snv"
+            ], 
+            "TCGA-39-5036": [
+                "snv"
+            ], 
+            "TCGA-43-2578": [
+                "snv"
+            ], 
+            "TCGA-43-6143": [
+                "snv"
+            ], 
+            "TCGA-44-2655": [
+                "snv"
+            ], 
+            "TCGA-44-6776": [
+                "snv"
+            ], 
+            "TCGA-44-6778": [
+                "snv"
+            ], 
+            "TCGA-44-6779": [
+                "snv"
+            ], 
+            "TCGA-46-6025": [
+                "inactive_snv"
+            ], 
+            "TCGA-49-4486": [
+                "snv"
+            ], 
+            "TCGA-49-4488": [
+                "snv"
+            ], 
+            "TCGA-49-4506": [
+                "snv"
+            ], 
+            "TCGA-49-4507": [
+                "snv"
+            ], 
+            "TCGA-49-4514": [
+                "inactive_snv"
+            ], 
+            "TCGA-49-6742": [
+                "snv"
+            ], 
+            "TCGA-50-5051": [
+                "snv"
+            ], 
+            "TCGA-50-5068": [
+                "snv"
+            ], 
+            "TCGA-50-5936": [
+                "inactive_snv"
+            ], 
+            "TCGA-50-5939": [
+                "snv"
+            ], 
+            "TCGA-51-4081": [
+                "snv"
+            ], 
+            "TCGA-55-5899": [
+                "snv"
+            ], 
+            "TCGA-60-2710": [
+                "snv"
+            ], 
+            "TCGA-60-2722": [
+                "snv"
+            ], 
+            "TCGA-60-2723": [
+                "snv"
+            ], 
+            "TCGA-66-2754": [
+                "snv"
+            ], 
+            "TCGA-66-2777": [
+                "snv"
+            ], 
+            "TCGA-67-3774": [
+                "snv"
+            ], 
+            "TCGA-73-4666": [
+                "snv"
+            ], 
+            "TCGA-73-4670": [
+                "snv"
+            ], 
+            "TCGA-73-4676": [
+                "snv"
+            ], 
+            "TCGA-73-4677": [
+                "inactive_snv"
+            ], 
+            "TCGA-75-6206": [
+                "snv"
+            ], 
+            "TCGA-75-6211": [
+                "snv"
+            ], 
+            "TCGA-A8-A09W": [
+                "inactive_snv"
+            ], 
+            "TCGA-B0-4815": [
+                "snv"
+            ], 
+            "TCGA-BA-7269": [
+                "snv"
+            ], 
+            "TCGA-BB-7870": [
+                "snv"
+            ], 
+            "TCGA-BP-5183": [
+                "snv"
+            ], 
+            "TCGA-BS-A0TA": [
+                "snv"
+            ], 
+            "TCGA-BS-A0TE": [
+                "inactive_snv"
+            ], 
+            "TCGA-CN-4727": [
+                "snv"
+            ], 
+            "TCGA-CN-5359": [
+                "snv"
+            ], 
+            "TCGA-CN-6010": [
+                "snv"
+            ], 
+            "TCGA-CR-6492": [
+                "snv"
+            ], 
+            "TCGA-CV-5434": [
+                "snv"
+            ], 
+            "TCGA-CV-5978": [
+                "snv"
+            ], 
+            "TCGA-CV-7238": [
+                "snv"
+            ], 
+            "TCGA-CV-7248": [
+                "snv"
+            ], 
+            "TCGA-DQ-7588": [
+                "snv"
+            ], 
+            "TCGA-DQ-7589": [
+                "snv"
+            ], 
+            "TCGA-G2-A2EJ": [
+                "snv"
+            ], 
+            "TCGA-G2-A3IE": [
+                "snv"
+            ]
+        }, 
+        "NFE2L2": {
+            "TCGA-05-4422": [
+                "snv"
+            ], 
+            "TCGA-17-Z023": [
+                "inactive_snv"
+            ], 
+            "TCGA-17-Z033": [
+                "snv"
+            ], 
+            "TCGA-18-3411": [
+                "snv"
+            ], 
+            "TCGA-18-3415": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-18-3417": [
+                "amp"
+            ], 
+            "TCGA-18-3421": [
+                "amp"
+            ], 
+            "TCGA-18-4721": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-18-5592": [
+                "snv"
+            ], 
+            "TCGA-21-1071": [
+                "snv"
+            ], 
+            "TCGA-22-0944": [
+                "amp"
+            ], 
+            "TCGA-22-1012": [
+                "amp"
+            ], 
+            "TCGA-22-4601": [
+                "amp"
+            ], 
+            "TCGA-22-5474": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-22-5477": [
+                "snv"
+            ], 
+            "TCGA-22-5482": [
+                "snv"
+            ], 
+            "TCGA-24-1466": [
+                "amp"
+            ], 
+            "TCGA-24-1553": [
+                "amp"
+            ], 
+            "TCGA-24-2262": [
+                "amp"
+            ], 
+            "TCGA-33-4538": [
+                "amp"
+            ], 
+            "TCGA-33-4582": [
+                "amp"
+            ], 
+            "TCGA-33-4586": [
+                "snv"
+            ], 
+            "TCGA-33-6737": [
+                "amp"
+            ], 
+            "TCGA-34-2596": [
+                "snv"
+            ], 
+            "TCGA-34-2608": [
+                "snv"
+            ], 
+            "TCGA-34-5236": [
+                "snv"
+            ], 
+            "TCGA-34-5240": [
+                "snv"
+            ], 
+            "TCGA-37-4135": [
+                "snv"
+            ], 
+            "TCGA-39-5021": [
+                "amp"
+            ], 
+            "TCGA-39-5022": [
+                "snv"
+            ], 
+            "TCGA-39-5036": [
+                "amp"
+            ], 
+            "TCGA-43-3394": [
+                "amp"
+            ], 
+            "TCGA-46-3765": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-46-3768": [
+                "snv"
+            ], 
+            "TCGA-46-6025": [
+                "amp"
+            ], 
+            "TCGA-50-5931": [
+                "amp"
+            ], 
+            "TCGA-51-4079": [
+                "inactive_snv"
+            ], 
+            "TCGA-51-4081": [
+                "snv"
+            ], 
+            "TCGA-56-5897": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-60-2709": [
+                "snv"
+            ], 
+            "TCGA-66-2727": [
+                "amp"
+            ], 
+            "TCGA-66-2758": [
+                "amp"
+            ], 
+            "TCGA-66-2759": [
+                "amp"
+            ], 
+            "TCGA-66-2766": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-66-2770": [
+                "snv"
+            ], 
+            "TCGA-66-2783": [
+                "snv"
+            ], 
+            "TCGA-66-2791": [
+                "amp"
+            ], 
+            "TCGA-66-2795": [
+                "snv"
+            ], 
+            "TCGA-A5-A0G9": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GH": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GW": [
+                "snv"
+            ], 
+            "TCGA-A7-A26E": [
+                "inactive_snv"
+            ], 
+            "TCGA-A8-A08J": [
+                "amp"
+            ], 
+            "TCGA-AP-A1DQ": [
+                "amp"
+            ], 
+            "TCGA-AX-A05W": [
+                "snv"
+            ], 
+            "TCGA-B0-4837": [
+                "snv"
+            ], 
+            "TCGA-B0-5097": [
+                "inactive_snv"
+            ], 
+            "TCGA-B2-4098": [
+                "snv"
+            ], 
+            "TCGA-B5-A0JT": [
+                "snv"
+            ], 
+            "TCGA-BA-7269": [
+                "snv"
+            ], 
+            "TCGA-BG-A0M4": [
+                "inactive_snv"
+            ], 
+            "TCGA-BK-A0C9": [
+                "snv"
+            ], 
+            "TCGA-BL-A13I": [
+                "snv"
+            ], 
+            "TCGA-BP-4768": [
+                "inactive_snv"
+            ], 
+            "TCGA-BP-5178": [
+                "snv"
+            ], 
+            "TCGA-BS-A0U7": [
+                "snv"
+            ], 
+            "TCGA-BT-A20U": [
+                "snv"
+            ], 
+            "TCGA-C4-A0F6": [
+                "snv"
+            ], 
+            "TCGA-CN-5359": [
+                "amp"
+            ], 
+            "TCGA-CN-6019": [
+                "snv"
+            ], 
+            "TCGA-CQ-5324": [
+                "snv"
+            ], 
+            "TCGA-CR-7380": [
+                "amp"
+            ], 
+            "TCGA-CR-7383": [
+                "snv"
+            ], 
+            "TCGA-CV-6933": [
+                "amp"
+            ], 
+            "TCGA-CV-6935": [
+                "snv"
+            ], 
+            "TCGA-CV-6940": [
+                "snv"
+            ], 
+            "TCGA-CV-6941": [
+                "amp"
+            ], 
+            "TCGA-CV-6942": [
+                "snv"
+            ], 
+            "TCGA-CV-6951": [
+                "snv"
+            ], 
+            "TCGA-CV-6955": [
+                "snv"
+            ], 
+            "TCGA-CV-7099": [
+                "snv"
+            ], 
+            "TCGA-CV-7177": [
+                "snv"
+            ], 
+            "TCGA-CV-7424": [
+                "snv"
+            ], 
+            "TCGA-CV-7429": [
+                "snv"
+            ], 
+            "TCGA-CV-7433": [
+                "snv"
+            ], 
+            "TCGA-CV-7437": [
+                "snv"
+            ], 
+            "TCGA-CZ-5456": [
+                "snv"
+            ], 
+            "TCGA-D1-A16E": [
+                "snv"
+            ], 
+            "TCGA-D1-A17U": [
+                "snv"
+            ], 
+            "TCGA-D8-A1X6": [
+                "snv"
+            ], 
+            "TCGA-DK-A1AE": [
+                "snv"
+            ], 
+            "TCGA-DK-A3IT": [
+                "snv"
+            ], 
+            "TCGA-E5-A2PC": [
+                "snv"
+            ], 
+            "TCGA-E9-A1N9": [
+                "amp"
+            ], 
+            "TCGA-FD-A3N6": [
+                "snv"
+            ], 
+            "TCGA-FI-A2D2": [
+                "amp"
+            ], 
+            "TCGA-G2-A3IB": [
+                "snv"
+            ], 
+            "TCGA-H7-7774": [
+                "snv"
+            ]
+        }, 
+        "PTMA": {}, 
+        "RBM45": {}, 
+        "SLK": {
+            "TCGA-06-2563": [
+                "snv"
+            ], 
+            "TCGA-13-0923": [
+                "inactive_snv"
+            ], 
+            "TCGA-17-Z042": [
+                "snv"
+            ], 
+            "TCGA-27-1835": [
+                "snv"
+            ], 
+            "TCGA-37-4135": [
+                "snv"
+            ], 
+            "TCGA-39-5037": [
+                "snv"
+            ], 
+            "TCGA-49-6745": [
+                "snv"
+            ], 
+            "TCGA-66-2727": [
+                "inactive_snv"
+            ], 
+            "TCGA-A2-A0SY": [
+                "snv"
+            ], 
+            "TCGA-AA-A01I": [
+                "snv"
+            ], 
+            "TCGA-B2-4099": [
+                "inactive_snv"
+            ], 
+            "TCGA-B2-5641": [
+                "snv"
+            ], 
+            "TCGA-B5-A0K8": [
+                "snv"
+            ], 
+            "TCGA-BG-A0LX": [
+                "snv"
+            ], 
+            "TCGA-BH-A0DK": [
+                "snv"
+            ], 
+            "TCGA-D1-A163": [
+                "snv"
+            ], 
+            "TCGA-DK-A3IS": [
+                "snv"
+            ]
+        }, 
+        "WAC": {
+            "TCGA-05-4389": [
+                "snv"
+            ], 
+            "TCGA-13-0890": [
+                "inactive_snv"
+            ], 
+            "TCGA-44-6146": [
+                "inactive_snv"
+            ], 
+            "TCGA-66-2778": [
+                "snv"
+            ], 
+            "TCGA-A8-A06X": [
+                "snv"
+            ], 
+            "TCGA-AB-3001": [
+                "inactive_snv"
+            ], 
+            "TCGA-AB-3009": [
+                "inactive_snv"
+            ], 
+            "TCGA-AG-A036": [
+                "snv"
+            ], 
+            "TCGA-AN-A0FD": [
+                "inactive_snv"
+            ], 
+            "TCGA-B0-4714": [
+                "snv"
+            ], 
+            "TCGA-BH-A0E0": [
+                "snv"
+            ], 
+            "TCGA-BP-4781": [
+                "snv"
+            ], 
+            "TCGA-BP-4992": [
+                "snv"
+            ], 
+            "TCGA-BP-5001": [
+                "inactive_snv"
+            ], 
+            "TCGA-BT-A20N": [
+                "snv"
+            ], 
+            "TCGA-CR-6491": [
+                "inactive_snv"
+            ], 
+            "TCGA-D1-A163": [
+                "snv"
+            ], 
+            "TCGA-FD-A3NA": [
+                "snv"
+            ], 
+            "TCGA-G2-A2EJ": [
+                "snv"
+            ]
+        }
+    }, 
+    "coverage_str": "9.86% (306/3105)", 
+    "edges": [
+        {
+            "networks": [
+                "Multinet", 
+                "iRefIndex"
+            ], 
+            "source": "RBM45", 
+            "target": "KEAP1", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "iRefIndex"
+            ], 
+            "source": "BPTF", 
+            "target": "KEAP1", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "Multinet", 
+                "iRefIndex", 
+                "HINT+HI2012"
+            ], 
+            "source": "NFE2L2", 
+            "target": "KEAP1", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "Multinet", 
+                "iRefIndex"
+            ], 
+            "source": "KEAP1", 
+            "target": "SLK", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "PTMA", 
+            "target": "KEAP1", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "NFE2L2", 
+            "target": "WAC", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "iRefIndex"
+            ], 
+            "source": "CHD6", 
+            "target": "NFE2L2", 
+            "weight": 1
+        }
+    ], 
+    "gene_set": "NFE2L2 (98), CHD6 (84), KEAP1 (70), BPTF (48), WAC (19), SLK (17), PTMA (0), RBM45 (0)", 
+    "nodes": [
+        {
+            "heat": 98, 
+            "name": "NFE2L2"
+        }, 
+        {
+            "heat": 84, 
+            "name": "CHD6"
+        }, 
+        {
+            "heat": 70, 
+            "name": "KEAP1"
+        }, 
+        {
+            "heat": 48, 
+            "name": "BPTF"
+        }, 
+        {
+            "heat": 19, 
+            "name": "WAC"
+        }, 
+        {
+            "heat": 17, 
+            "name": "SLK"
+        }, 
+        {
+            "heat": 0, 
+            "name": "PTMA"
+        }, 
+        {
+            "heat": 0, 
+            "name": "RBM45"
+        }
+    ], 
+    "sample2ty": {
+        "TCGA-05-4384": "LUAD", 
+        "TCGA-05-4389": "LUAD", 
+        "TCGA-05-4395": "LUAD", 
+        "TCGA-05-4418": "LUAD", 
+        "TCGA-05-4422": "LUAD", 
+        "TCGA-06-0241": "GBM", 
+        "TCGA-06-2563": "GBM", 
+        "TCGA-09-2044": "OV", 
+        "TCGA-12-1597": "GBM", 
+        "TCGA-13-0755": "OV", 
+        "TCGA-13-0792": "OV", 
+        "TCGA-13-0890": "OV", 
+        "TCGA-13-0923": "OV", 
+        "TCGA-14-1456": "GBM", 
+        "TCGA-17-Z001": "LUAD", 
+        "TCGA-17-Z008": "LUAD", 
+        "TCGA-17-Z011": "LUAD", 
+        "TCGA-17-Z014": "LUAD", 
+        "TCGA-17-Z017": "LUAD", 
+        "TCGA-17-Z018": "LUAD", 
+        "TCGA-17-Z023": "LUAD", 
+        "TCGA-17-Z033": "LUAD", 
+        "TCGA-17-Z042": "LUAD", 
+        "TCGA-17-Z043": "LUAD", 
+        "TCGA-17-Z057": "LUAD", 
+        "TCGA-18-3407": "LUSC", 
+        "TCGA-18-3411": "LUSC", 
+        "TCGA-18-3415": "LUSC", 
+        "TCGA-18-3417": "LUSC", 
+        "TCGA-18-3421": "LUSC", 
+        "TCGA-18-4086": "LUSC", 
+        "TCGA-18-4721": "LUSC", 
+        "TCGA-18-5592": "LUSC", 
+        "TCGA-18-5595": "LUSC", 
+        "TCGA-21-1071": "LUSC", 
+        "TCGA-21-1077": "LUSC", 
+        "TCGA-22-0944": "LUSC", 
+        "TCGA-22-1012": "LUSC", 
+        "TCGA-22-4599": "LUSC", 
+        "TCGA-22-4601": "LUSC", 
+        "TCGA-22-4604": "LUSC", 
+        "TCGA-22-5474": "LUSC", 
+        "TCGA-22-5477": "LUSC", 
+        "TCGA-22-5478": "LUSC", 
+        "TCGA-22-5480": "LUSC", 
+        "TCGA-22-5482": "LUSC", 
+        "TCGA-24-1105": "OV", 
+        "TCGA-24-1466": "OV", 
+        "TCGA-24-1469": "OV", 
+        "TCGA-24-1474": "OV", 
+        "TCGA-24-1553": "OV", 
+        "TCGA-24-2262": "OV", 
+        "TCGA-25-1317": "OV", 
+        "TCGA-27-1835": "GBM", 
+        "TCGA-32-2632": "GBM", 
+        "TCGA-33-4532": "LUSC", 
+        "TCGA-33-4538": "LUSC", 
+        "TCGA-33-4582": "LUSC", 
+        "TCGA-33-4586": "LUSC", 
+        "TCGA-33-6737": "LUSC", 
+        "TCGA-34-2596": "LUSC", 
+        "TCGA-34-2608": "LUSC", 
+        "TCGA-34-5236": "LUSC", 
+        "TCGA-34-5240": "LUSC", 
+        "TCGA-34-5928": "LUSC", 
+        "TCGA-35-3615": "LUAD", 
+        "TCGA-35-5375": "LUAD", 
+        "TCGA-37-4133": "LUSC", 
+        "TCGA-37-4135": "LUSC", 
+        "TCGA-39-5021": "LUSC", 
+        "TCGA-39-5022": "LUSC", 
+        "TCGA-39-5036": "LUSC", 
+        "TCGA-39-5037": "LUSC", 
+        "TCGA-41-2575": "GBM", 
+        "TCGA-43-2578": "LUSC", 
+        "TCGA-43-3394": "LUSC", 
+        "TCGA-43-6143": "LUSC", 
+        "TCGA-44-2655": "LUAD", 
+        "TCGA-44-4112": "LUAD", 
+        "TCGA-44-6144": "LUAD", 
+        "TCGA-44-6146": "LUAD", 
+        "TCGA-44-6776": "LUAD", 
+        "TCGA-44-6778": "LUAD", 
+        "TCGA-44-6779": "LUAD", 
+        "TCGA-46-3765": "LUSC", 
+        "TCGA-46-3767": "LUSC", 
+        "TCGA-46-3768": "LUSC", 
+        "TCGA-46-6025": "LUSC", 
+        "TCGA-49-4486": "LUAD", 
+        "TCGA-49-4487": "LUAD", 
+        "TCGA-49-4488": "LUAD", 
+        "TCGA-49-4506": "LUAD", 
+        "TCGA-49-4507": "LUAD", 
+        "TCGA-49-4514": "LUAD", 
+        "TCGA-49-6742": "LUAD", 
+        "TCGA-49-6745": "LUAD", 
+        "TCGA-50-5051": "LUAD", 
+        "TCGA-50-5068": "LUAD", 
+        "TCGA-50-5931": "LUAD", 
+        "TCGA-50-5936": "LUAD", 
+        "TCGA-50-5939": "LUAD", 
+        "TCGA-50-6592": "LUAD", 
+        "TCGA-51-4079": "LUSC", 
+        "TCGA-51-4080": "LUSC", 
+        "TCGA-51-4081": "LUSC", 
+        "TCGA-55-5899": "LUAD", 
+        "TCGA-56-5897": "LUSC", 
+        "TCGA-60-2709": "LUSC", 
+        "TCGA-60-2710": "LUSC", 
+        "TCGA-60-2711": "LUSC", 
+        "TCGA-60-2722": "LUSC", 
+        "TCGA-60-2723": "LUSC", 
+        "TCGA-61-1995": "OV", 
+        "TCGA-61-2008": "OV", 
+        "TCGA-66-2727": "LUSC", 
+        "TCGA-66-2754": "LUSC", 
+        "TCGA-66-2758": "LUSC", 
+        "TCGA-66-2759": "LUSC", 
+        "TCGA-66-2766": "LUSC", 
+        "TCGA-66-2770": "LUSC", 
+        "TCGA-66-2777": "LUSC", 
+        "TCGA-66-2778": "LUSC", 
+        "TCGA-66-2783": "LUSC", 
+        "TCGA-66-2786": "LUSC", 
+        "TCGA-66-2791": "LUSC", 
+        "TCGA-66-2795": "LUSC", 
+        "TCGA-67-3774": "LUAD", 
+        "TCGA-73-4666": "LUAD", 
+        "TCGA-73-4670": "LUAD", 
+        "TCGA-73-4676": "LUAD", 
+        "TCGA-73-4677": "LUAD", 
+        "TCGA-75-5146": "LUAD", 
+        "TCGA-75-6206": "LUAD", 
+        "TCGA-75-6211": "LUAD", 
+        "TCGA-76-4928": "GBM", 
+        "TCGA-76-6193": "GBM", 
+        "TCGA-80-5611": "LUAD", 
+        "TCGA-A1-A0SO": "BRCA", 
+        "TCGA-A2-A0SY": "BRCA", 
+        "TCGA-A5-A0G9": "UCEC", 
+        "TCGA-A5-A0GE": "UCEC", 
+        "TCGA-A5-A0GH": "UCEC", 
+        "TCGA-A5-A0GJ": "UCEC", 
+        "TCGA-A5-A0GN": "UCEC", 
+        "TCGA-A5-A0GW": "UCEC", 
+        "TCGA-A6-2670": "COADREAD", 
+        "TCGA-A7-A0CD": "BRCA", 
+        "TCGA-A7-A0CJ": "BRCA", 
+        "TCGA-A7-A26E": "BRCA", 
+        "TCGA-A8-A06X": "BRCA", 
+        "TCGA-A8-A079": "BRCA", 
+        "TCGA-A8-A082": "BRCA", 
+        "TCGA-A8-A08J": "BRCA", 
+        "TCGA-A8-A09W": "BRCA", 
+        "TCGA-AA-3696": "COADREAD", 
+        "TCGA-AA-3819": "COADREAD", 
+        "TCGA-AA-3846": "COADREAD", 
+        "TCGA-AA-3848": "COADREAD", 
+        "TCGA-AA-3869": "COADREAD", 
+        "TCGA-AA-3955": "COADREAD", 
+        "TCGA-AA-3956": "COADREAD", 
+        "TCGA-AA-3982": "COADREAD", 
+        "TCGA-AA-A01I": "COADREAD", 
+        "TCGA-AB-2968": "LAML", 
+        "TCGA-AB-3001": "LAML", 
+        "TCGA-AB-3009": "LAML", 
+        "TCGA-AF-3913": "COADREAD", 
+        "TCGA-AG-3612": "COADREAD", 
+        "TCGA-AG-3883": "COADREAD", 
+        "TCGA-AG-3896": "COADREAD", 
+        "TCGA-AG-3898": "COADREAD", 
+        "TCGA-AG-3999": "COADREAD", 
+        "TCGA-AG-4015": "COADREAD", 
+        "TCGA-AG-A015": "COADREAD", 
+        "TCGA-AG-A01W": "COADREAD", 
+        "TCGA-AG-A02G": "COADREAD", 
+        "TCGA-AG-A032": "COADREAD", 
+        "TCGA-AG-A036": "COADREAD", 
+        "TCGA-AK-3428": "KIRC", 
+        "TCGA-AN-A0FD": "BRCA", 
+        "TCGA-AP-A1DQ": "UCEC", 
+        "TCGA-AR-A24O": "BRCA", 
+        "TCGA-AX-A05S": "UCEC", 
+        "TCGA-AX-A05W": "UCEC", 
+        "TCGA-B0-4714": "KIRC", 
+        "TCGA-B0-4815": "KIRC", 
+        "TCGA-B0-4823": "KIRC", 
+        "TCGA-B0-4837": "KIRC", 
+        "TCGA-B0-5097": "KIRC", 
+        "TCGA-B0-5701": "KIRC", 
+        "TCGA-B2-4098": "KIRC", 
+        "TCGA-B2-4099": "KIRC", 
+        "TCGA-B2-5641": "KIRC", 
+        "TCGA-B5-A0JT": "UCEC", 
+        "TCGA-B5-A0JZ": "UCEC", 
+        "TCGA-B5-A0K8": "UCEC", 
+        "TCGA-B5-A11I": "UCEC", 
+        "TCGA-B8-4621": "KIRC", 
+        "TCGA-BA-6868": "HNSC", 
+        "TCGA-BA-7269": "HNSC", 
+        "TCGA-BB-7870": "HNSC", 
+        "TCGA-BG-A0LX": "UCEC", 
+        "TCGA-BG-A0M4": "UCEC", 
+        "TCGA-BG-A0MO": "UCEC", 
+        "TCGA-BH-A0BR": "BRCA", 
+        "TCGA-BH-A0DK": "BRCA", 
+        "TCGA-BH-A0E0": "BRCA", 
+        "TCGA-BH-A0H7": "BRCA", 
+        "TCGA-BH-A0H9": "BRCA", 
+        "TCGA-BH-A1EY": "BRCA", 
+        "TCGA-BK-A0C9": "UCEC", 
+        "TCGA-BL-A13I": "BLCA", 
+        "TCGA-BP-4768": "KIRC", 
+        "TCGA-BP-4781": "KIRC", 
+        "TCGA-BP-4992": "KIRC", 
+        "TCGA-BP-5001": "KIRC", 
+        "TCGA-BP-5178": "KIRC", 
+        "TCGA-BP-5183": "KIRC", 
+        "TCGA-BS-A0TA": "UCEC", 
+        "TCGA-BS-A0TE": "UCEC", 
+        "TCGA-BS-A0U7": "UCEC", 
+        "TCGA-BT-A20N": "BLCA", 
+        "TCGA-BT-A20U": "BLCA", 
+        "TCGA-BT-A20X": "BLCA", 
+        "TCGA-BT-A2LA": "BLCA", 
+        "TCGA-BT-A3PK": "BLCA", 
+        "TCGA-C4-A0EZ": "BLCA", 
+        "TCGA-C4-A0F6": "BLCA", 
+        "TCGA-C8-A12W": "BRCA", 
+        "TCGA-C8-A132": "BRCA", 
+        "TCGA-C8-A1HN": "BRCA", 
+        "TCGA-CJ-4881": "KIRC", 
+        "TCGA-CJ-4899": "KIRC", 
+        "TCGA-CN-4727": "HNSC", 
+        "TCGA-CN-5359": "HNSC", 
+        "TCGA-CN-6010": "HNSC", 
+        "TCGA-CN-6019": "HNSC", 
+        "TCGA-CN-6021": "HNSC", 
+        "TCGA-CN-6023": "HNSC", 
+        "TCGA-CN-6995": "HNSC", 
+        "TCGA-CQ-5324": "HNSC", 
+        "TCGA-CQ-6219": "HNSC", 
+        "TCGA-CR-5248": "HNSC", 
+        "TCGA-CR-6491": "HNSC", 
+        "TCGA-CR-6492": "HNSC", 
+        "TCGA-CR-7380": "HNSC", 
+        "TCGA-CR-7383": "HNSC", 
+        "TCGA-CV-5434": "HNSC", 
+        "TCGA-CV-5978": "HNSC", 
+        "TCGA-CV-6933": "HNSC", 
+        "TCGA-CV-6935": "HNSC", 
+        "TCGA-CV-6940": "HNSC", 
+        "TCGA-CV-6941": "HNSC", 
+        "TCGA-CV-6942": "HNSC", 
+        "TCGA-CV-6951": "HNSC", 
+        "TCGA-CV-6955": "HNSC", 
+        "TCGA-CV-7099": "HNSC", 
+        "TCGA-CV-7104": "HNSC", 
+        "TCGA-CV-7177": "HNSC", 
+        "TCGA-CV-7238": "HNSC", 
+        "TCGA-CV-7242": "HNSC", 
+        "TCGA-CV-7248": "HNSC", 
+        "TCGA-CV-7252": "HNSC", 
+        "TCGA-CV-7424": "HNSC", 
+        "TCGA-CV-7429": "HNSC", 
+        "TCGA-CV-7433": "HNSC", 
+        "TCGA-CV-7437": "HNSC", 
+        "TCGA-CZ-4853": "KIRC", 
+        "TCGA-CZ-5456": "KIRC", 
+        "TCGA-D1-A160": "UCEC", 
+        "TCGA-D1-A163": "UCEC", 
+        "TCGA-D1-A16E": "UCEC", 
+        "TCGA-D1-A16J": "UCEC", 
+        "TCGA-D1-A17U": "UCEC", 
+        "TCGA-D8-A1JP": "BRCA", 
+        "TCGA-D8-A1X6": "BRCA", 
+        "TCGA-D8-A27K": "BRCA", 
+        "TCGA-DI-A0WH": "UCEC", 
+        "TCGA-DK-A1AE": "BLCA", 
+        "TCGA-DK-A1AF": "BLCA", 
+        "TCGA-DK-A1AG": "BLCA", 
+        "TCGA-DK-A3IQ": "BLCA", 
+        "TCGA-DK-A3IS": "BLCA", 
+        "TCGA-DK-A3IT": "BLCA", 
+        "TCGA-DQ-5624": "HNSC", 
+        "TCGA-DQ-7588": "HNSC", 
+        "TCGA-DQ-7589": "HNSC", 
+        "TCGA-E2-A109": "BRCA", 
+        "TCGA-E2-A14P": "BRCA", 
+        "TCGA-E5-A2PC": "BLCA", 
+        "TCGA-E9-A1N9": "BRCA", 
+        "TCGA-EW-A1P8": "BRCA", 
+        "TCGA-EW-A1PD": "BRCA", 
+        "TCGA-EY-A212": "UCEC", 
+        "TCGA-FD-A3B7": "BLCA", 
+        "TCGA-FD-A3N6": "BLCA", 
+        "TCGA-FD-A3NA": "BLCA", 
+        "TCGA-FI-A2D2": "UCEC", 
+        "TCGA-G2-A2EJ": "BLCA", 
+        "TCGA-G2-A3IB": "BLCA", 
+        "TCGA-G2-A3IE": "BLCA", 
+        "TCGA-GC-A3I6": "BLCA", 
+        "TCGA-GC-A3RB": "BLCA", 
+        "TCGA-GI-A2C8": "BRCA", 
+        "TCGA-GV-A3JW": "BLCA", 
+        "TCGA-H7-7774": "HNSC"
+    }, 
+    "transcript_annotations": {
+        "BPTF": {}, 
+        "CHD6": {
+            "ENST00000373233": {
+                "domains": [
+                    {
+                        "end": 751, 
+                        "name": "SNF2_N", 
+                        "start": 464
+                    }
+                ], 
+                "length": 2715, 
+                "mutations": [
+                    {
+                        "aan": "L", 
+                        "aao": "S", 
+                        "cancer": "BLCA", 
+                        "locus": "2337", 
+                        "sample": "TCGA-BT-A20X", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "E", 
+                        "cancer": "BLCA", 
+                        "locus": "1918", 
+                        "sample": "TCGA-BT-A2LA", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "G", 
+                        "cancer": "BLCA", 
+                        "locus": "2620", 
+                        "sample": "TCGA-BT-A3PK", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "G", 
+                        "cancer": "BLCA", 
+                        "locus": "510", 
+                        "sample": "TCGA-BT-A3PK", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "E", 
+                        "cancer": "BLCA", 
+                        "locus": "1998", 
+                        "sample": "TCGA-DK-A1AG", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "Q", 
+                        "cancer": "BLCA", 
+                        "locus": "1647", 
+                        "sample": "TCGA-GC-A3I6", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "D", 
+                        "cancer": "BLCA", 
+                        "locus": "1910", 
+                        "sample": "TCGA-GV-A3JW", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "A", 
+                        "aao": "P", 
+                        "cancer": "BRCA", 
+                        "locus": "2671", 
+                        "sample": "TCGA-A1-A0SO", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "P", 
+                        "cancer": "BRCA", 
+                        "locus": "1604", 
+                        "sample": "TCGA-A7-A0CD", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "K", 
+                        "cancer": "BRCA", 
+                        "locus": "134", 
+                        "sample": "TCGA-A7-A0CJ", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "splice", 
+                        "aao": "splice", 
+                        "cancer": "BRCA", 
+                        "locus": 1336, 
+                        "sample": "TCGA-AR-A24O", 
+                        "ty": "Splice_Site"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "K", 
+                        "cancer": "BRCA", 
+                        "locus": "4", 
+                        "sample": "TCGA-BH-A0BR", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "R", 
+                        "cancer": "BRCA", 
+                        "locus": "350", 
+                        "sample": "TCGA-BH-A0H7", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "S", 
+                        "cancer": "BRCA", 
+                        "locus": "230", 
+                        "sample": "TCGA-BH-A1EY", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "Y", 
+                        "cancer": "BRCA", 
+                        "locus": "1237", 
+                        "sample": "TCGA-D8-A1JP", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "L", 
+                        "cancer": "BRCA", 
+                        "locus": "298", 
+                        "sample": "TCGA-E2-A109", 
+                        "ty": "Frame_Shift_Del"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "P", 
+                        "cancer": "BRCA", 
+                        "locus": "1924", 
+                        "sample": "TCGA-EW-A1P8", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D", 
+                        "aao": "E", 
+                        "cancer": "BRCA", 
+                        "locus": "487", 
+                        "sample": "TCGA-GI-A2C8", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "D", 
+                        "cancer": "COADREAD", 
+                        "locus": "661", 
+                        "sample": "TCGA-AA-3696", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "E", 
+                        "cancer": "COADREAD", 
+                        "locus": "1765", 
+                        "sample": "TCGA-AA-3956", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "R", 
+                        "cancer": "COADREAD", 
+                        "locus": "1434", 
+                        "sample": "TCGA-AG-A015", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D", 
+                        "aao": "G", 
+                        "cancer": "COADREAD", 
+                        "locus": "798", 
+                        "sample": "TCGA-AG-A01W", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "P", 
+                        "cancer": "GBM", 
+                        "locus": "2126", 
+                        "sample": "TCGA-06-0241", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "C", 
+                        "cancer": "GBM", 
+                        "locus": "1832", 
+                        "sample": "TCGA-14-1456", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "Q", 
+                        "cancer": "GBM", 
+                        "locus": "1353", 
+                        "sample": "TCGA-76-4928", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "P", 
+                        "cancer": "HNSC", 
+                        "locus": "2393", 
+                        "sample": "TCGA-CN-6023", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "S", 
+                        "cancer": "HNSC", 
+                        "locus": "2667", 
+                        "sample": "TCGA-CN-6995", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "R", 
+                        "cancer": "HNSC", 
+                        "locus": "2137", 
+                        "sample": "TCGA-CR-5248", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "K", 
+                        "cancer": "HNSC", 
+                        "locus": "480", 
+                        "sample": "TCGA-CV-7242", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "H", 
+                        "cancer": "HNSC", 
+                        "locus": "1863", 
+                        "sample": "TCGA-CV-7252", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "D", 
+                        "cancer": "KIRC", 
+                        "locus": "1074", 
+                        "sample": "TCGA-AK-3428", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "E", 
+                        "cancer": "KIRC", 
+                        "locus": "337", 
+                        "sample": "TCGA-B0-4815", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "G", 
+                        "cancer": "KIRC", 
+                        "locus": "2494", 
+                        "sample": "TCGA-CJ-4899", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "1613", 
+                        "sample": "TCGA-17-Z014", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "EP", 
+                        "cancer": "LUAD", 
+                        "locus": "1895", 
+                        "sample": "TCGA-17-Z018", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "D", 
+                        "cancer": "LUAD", 
+                        "locus": "366", 
+                        "sample": "TCGA-44-4112", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D", 
+                        "aao": "E", 
+                        "cancer": "LUAD", 
+                        "locus": "2052", 
+                        "sample": "TCGA-44-6144", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "W", 
+                        "cancer": "LUAD", 
+                        "locus": "1575", 
+                        "sample": "TCGA-44-6776", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "D", 
+                        "cancer": "LUAD", 
+                        "locus": "417", 
+                        "sample": "TCGA-49-4486", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "G", 
+                        "cancer": "LUAD", 
+                        "locus": "88", 
+                        "sample": "TCGA-49-4487", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "S", 
+                        "cancer": "LUAD", 
+                        "locus": "1073", 
+                        "sample": "TCGA-55-5899", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D*", 
+                        "aao": "EEL", 
+                        "cancer": "LUAD", 
+                        "locus": "635", 
+                        "sample": "TCGA-73-4670", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "Y", 
+                        "cancer": "LUAD", 
+                        "locus": "327", 
+                        "sample": "TCGA-80-5611", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "A", 
+                        "cancer": "LUSC", 
+                        "locus": "1932", 
+                        "sample": "TCGA-18-4086", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "I", 
+                        "aao": "N", 
+                        "cancer": "LUSC", 
+                        "locus": "1344", 
+                        "sample": "TCGA-22-4604", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "R", 
+                        "cancer": "LUSC", 
+                        "locus": "1135", 
+                        "sample": "TCGA-39-5036", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "R", 
+                        "cancer": "LUSC", 
+                        "locus": "2287", 
+                        "sample": "TCGA-46-6025", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "R", 
+                        "cancer": "LUSC", 
+                        "locus": "2137", 
+                        "sample": "TCGA-66-2786", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "M", 
+                        "aao": "V", 
+                        "cancer": "OV", 
+                        "locus": "1289", 
+                        "sample": "TCGA-13-0755", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "Y", 
+                        "cancer": "OV", 
+                        "locus": "1570", 
+                        "sample": "TCGA-24-1105", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "R", 
+                        "cancer": "OV", 
+                        "locus": "1091", 
+                        "sample": "TCGA-24-1553", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "K", 
+                        "cancer": "OV", 
+                        "locus": "949", 
+                        "sample": "TCGA-25-1317", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "R", 
+                        "cancer": "OV", 
+                        "locus": "440", 
+                        "sample": "TCGA-61-1995", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "R", 
+                        "cancer": "UCEC", 
+                        "locus": "2447", 
+                        "sample": "TCGA-A5-A0GJ", 
+                        "ty": "Frame_Shift_Del"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "R", 
+                        "cancer": "UCEC", 
+                        "locus": "1397", 
+                        "sample": "TCGA-B5-A11I", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "W", 
+                        "cancer": "UCEC", 
+                        "locus": "1388", 
+                        "sample": "TCGA-BG-A0MO", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "W", 
+                        "aao": "G", 
+                        "cancer": "UCEC", 
+                        "locus": "2494", 
+                        "sample": "TCGA-D1-A160", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D", 
+                        "aao": "E", 
+                        "cancer": "UCEC", 
+                        "locus": "1417", 
+                        "sample": "TCGA-D1-A160", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "K", 
+                        "aao": "E", 
+                        "cancer": "UCEC", 
+                        "locus": "1280", 
+                        "sample": "TCGA-D1-A16J", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "M", 
+                        "aao": "T", 
+                        "cancer": "UCEC", 
+                        "locus": "2504", 
+                        "sample": "TCGA-DI-A0WH", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "KEAP1": {
+            "ENST00000171111": {
+                "domains": [
+                    {
+                        "end": 176, 
+                        "name": "BTB", 
+                        "start": 67
+                    }, 
+                    {
+                        "end": 282, 
+                        "name": "BACK", 
+                        "start": 184
+                    }
+                ], 
+                "length": 624, 
+                "mutations": [
+                    {
+                        "aan": "Q", 
+                        "aao": "E", 
+                        "cancer": "BLCA", 
+                        "locus": "218", 
+                        "sample": "TCGA-G2-A2EJ", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "K", 
+                        "aao": "E", 
+                        "cancer": "BLCA", 
+                        "locus": "244", 
+                        "sample": "TCGA-G2-A3IE", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "V", 
+                        "cancer": "BRCA", 
+                        "locus": "452", 
+                        "sample": "TCGA-A8-A09W", 
+                        "ty": "Frame_Shift_Ins"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "L", 
+                        "cancer": "BRCA", 
+                        "locus": "452", 
+                        "sample": "TCGA-A8-A09W", 
+                        "ty": "Frame_Shift_Del"
+                    }, 
+                    {
+                        "aan": "A", 
+                        "aao": "T", 
+                        "cancer": "HNSC", 
+                        "locus": "598", 
+                        "sample": "TCGA-BA-7269", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "C", 
+                        "cancer": "HNSC", 
+                        "locus": "23", 
+                        "sample": "TCGA-BB-7870", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "S", 
+                        "cancer": "HNSC", 
+                        "locus": "45", 
+                        "sample": "TCGA-CN-4727", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "HNSC", 
+                        "locus": "272", 
+                        "sample": "TCGA-CN-5359", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "Q", 
+                        "cancer": "HNSC", 
+                        "locus": "178", 
+                        "sample": "TCGA-CN-6010", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "A", 
+                        "cancer": "HNSC", 
+                        "locus": "607", 
+                        "sample": "TCGA-CR-6492", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "HNSC", 
+                        "locus": "470", 
+                        "sample": "TCGA-CV-5434", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "I", 
+                        "cancer": "HNSC", 
+                        "locus": "145", 
+                        "sample": "TCGA-CV-5978", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "HNSC", 
+                        "locus": "169", 
+                        "sample": "TCGA-CV-7238", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "C", 
+                        "cancer": "HNSC", 
+                        "locus": "319", 
+                        "sample": "TCGA-CV-7248", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "R", 
+                        "cancer": "HNSC", 
+                        "locus": "470", 
+                        "sample": "TCGA-DQ-7588", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "M", 
+                        "aao": "V", 
+                        "cancer": "HNSC", 
+                        "locus": "369", 
+                        "sample": "TCGA-DQ-7589", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "W", 
+                        "cancer": "KIRC", 
+                        "locus": "544", 
+                        "sample": "TCGA-B0-4815", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "M", 
+                        "cancer": "KIRC", 
+                        "locus": "409", 
+                        "sample": "TCGA-BP-5183", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "G", 
+                        "cancer": "LUAD", 
+                        "locus": "524", 
+                        "sample": "TCGA-05-4384", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "F", 
+                        "cancer": "LUAD", 
+                        "locus": "246", 
+                        "sample": "TCGA-05-4389", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "D", 
+                        "cancer": "LUAD", 
+                        "locus": "479", 
+                        "sample": "TCGA-05-4395", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "460", 
+                        "sample": "TCGA-05-4418", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "415", 
+                        "sample": "TCGA-17-Z001", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "I", 
+                        "cancer": "LUAD", 
+                        "locus": "328", 
+                        "sample": "TCGA-17-Z008", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "S", 
+                        "cancer": "LUAD", 
+                        "locus": "144", 
+                        "sample": "TCGA-17-Z011", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "M", 
+                        "cancer": "LUAD", 
+                        "locus": "156", 
+                        "sample": "TCGA-17-Z018", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "260", 
+                        "sample": "TCGA-17-Z043", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "E", 
+                        "cancer": "LUAD", 
+                        "locus": "449", 
+                        "sample": "TCGA-35-3615", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "E", 
+                        "cancer": "LUAD", 
+                        "locus": "593", 
+                        "sample": "TCGA-35-5375", 
+                        "ty": "Frame_Shift_Del"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "S", 
+                        "cancer": "LUAD", 
+                        "locus": "144", 
+                        "sample": "TCGA-44-2655", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "A", 
+                        "aao": "V", 
+                        "cancer": "LUAD", 
+                        "locus": "155", 
+                        "sample": "TCGA-44-6776", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "M", 
+                        "cancer": "LUAD", 
+                        "locus": "110", 
+                        "sample": "TCGA-44-6778", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "M", 
+                        "aao": "T", 
+                        "cancer": "LUAD", 
+                        "locus": "142", 
+                        "sample": "TCGA-44-6779", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "G", 
+                        "cancer": "LUAD", 
+                        "locus": "333", 
+                        "sample": "TCGA-49-4486", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "Q", 
+                        "cancer": "LUAD", 
+                        "locus": "284", 
+                        "sample": "TCGA-49-4488", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "K", 
+                        "aao": "M", 
+                        "cancer": "LUAD", 
+                        "locus": "503", 
+                        "sample": "TCGA-49-4506", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "470", 
+                        "sample": "TCGA-49-4507", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "L", 
+                        "cancer": "LUAD", 
+                        "locus": "268", 
+                        "sample": "TCGA-49-6742", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "G", 
+                        "cancer": "LUAD", 
+                        "locus": "417", 
+                        "sample": "TCGA-50-5051", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "G", 
+                        "cancer": "LUAD", 
+                        "locus": "423", 
+                        "sample": "TCGA-50-5068", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "Q", 
+                        "cancer": "LUAD", 
+                        "locus": "46", 
+                        "sample": "TCGA-50-5936", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "261", 
+                        "sample": "TCGA-50-5939", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "W", 
+                        "aao": "G", 
+                        "cancer": "LUAD", 
+                        "locus": "509", 
+                        "sample": "TCGA-55-5899", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "483", 
+                        "sample": "TCGA-67-3774", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "W", 
+                        "aao": "G", 
+                        "cancer": "LUAD", 
+                        "locus": "603", 
+                        "sample": "TCGA-73-4666", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "V", 
+                        "cancer": "LUAD", 
+                        "locus": "123", 
+                        "sample": "TCGA-73-4670", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "415", 
+                        "sample": "TCGA-73-4676", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "K", 
+                        "cancer": "LUAD", 
+                        "locus": "287", 
+                        "sample": "TCGA-73-4677", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "V", 
+                        "cancer": "LUAD", 
+                        "locus": "214", 
+                        "sample": "TCGA-75-6206", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "R", 
+                        "cancer": "LUAD", 
+                        "locus": "204", 
+                        "sample": "TCGA-75-6211", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "V", 
+                        "cancer": "LUSC", 
+                        "locus": "155", 
+                        "sample": "TCGA-18-3407", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D", 
+                        "aao": "E", 
+                        "cancer": "LUSC", 
+                        "locus": "493", 
+                        "sample": "TCGA-18-5595", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "R", 
+                        "cancer": "LUSC", 
+                        "locus": "260", 
+                        "sample": "TCGA-18-5595", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "D", 
+                        "cancer": "LUSC", 
+                        "locus": "422", 
+                        "sample": "TCGA-21-1077", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "V", 
+                        "cancer": "LUSC", 
+                        "locus": "155", 
+                        "sample": "TCGA-22-4599", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "N", 
+                        "cancer": "LUSC", 
+                        "locus": "469", 
+                        "sample": "TCGA-33-4532", 
+                        "ty": "Frame_Shift_Ins"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "L", 
+                        "cancer": "LUSC", 
+                        "locus": "310", 
+                        "sample": "TCGA-33-4538", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "S", 
+                        "cancer": "LUSC", 
+                        "locus": "243", 
+                        "sample": "TCGA-37-4133", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "G", 
+                        "cancer": "LUSC", 
+                        "locus": "423", 
+                        "sample": "TCGA-39-5036", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "V", 
+                        "cancer": "LUSC", 
+                        "locus": "167", 
+                        "sample": "TCGA-43-2578", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "I", 
+                        "cancer": "LUSC", 
+                        "locus": "506", 
+                        "sample": "TCGA-43-6143", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "Q", 
+                        "cancer": "LUSC", 
+                        "locus": "75", 
+                        "sample": "TCGA-46-6025", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "V", 
+                        "cancer": "LUSC", 
+                        "locus": "418", 
+                        "sample": "TCGA-51-4081", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "LUSC", 
+                        "locus": "470", 
+                        "sample": "TCGA-60-2710", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "W", 
+                        "aao": "G", 
+                        "cancer": "LUSC", 
+                        "locus": "480", 
+                        "sample": "TCGA-60-2722", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "L", 
+                        "cancer": "LUSC", 
+                        "locus": "231", 
+                        "sample": "TCGA-60-2723", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "W", 
+                        "cancer": "LUSC", 
+                        "locus": "544", 
+                        "sample": "TCGA-66-2754", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "S", 
+                        "cancer": "LUSC", 
+                        "locus": "224", 
+                        "sample": "TCGA-66-2777", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "K", 
+                        "aao": "N", 
+                        "cancer": "OV", 
+                        "locus": "189", 
+                        "sample": "TCGA-24-1474", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "UCEC", 
+                        "locus": "169", 
+                        "sample": "TCGA-BS-A0TA", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "I", 
+                        "cancer": "UCEC", 
+                        "locus": "518", 
+                        "sample": "TCGA-BS-A0TE", 
+                        "ty": "Frame_Shift_Ins"
+                    }
+                ]
+            }
+        }, 
+        "NFE2L2": {
+            "ENST00000397062": {
+                "domains": [], 
+                "length": 605, 
+                "mutations": [
+                    {
+                        "aan": "Q", 
+                        "aao": "K", 
+                        "cancer": "BLCA", 
+                        "locus": "533", 
+                        "sample": "TCGA-C4-A0F6", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "Q", 
+                        "cancer": "BLCA", 
+                        "locus": "161", 
+                        "sample": "TCGA-DK-A3IT", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "D", 
+                        "cancer": "HNSC", 
+                        "locus": "262", 
+                        "sample": "TCGA-BA-7269", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "D", 
+                        "cancer": "HNSC", 
+                        "locus": "570", 
+                        "sample": "TCGA-CV-6942", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "E", 
+                        "cancer": "KIRC", 
+                        "locus": "427", 
+                        "sample": "TCGA-BP-4768", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "N", 
+                        "cancer": "UCEC", 
+                        "locus": "160", 
+                        "sample": "TCGA-A5-A0GH", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "PTMA": {}, 
+        "RBM45": {
+            "ENST00000286070": {
+                "domains": [], 
+                "length": 474, 
+                "mutations": [
+                    {
+                        "aan": "E", 
+                        "aao": "Q", 
+                        "cancer": "BRCA", 
+                        "locus": "368", 
+                        "sample": "TCGA-D8-A1JP", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "F", 
+                        "cancer": "KIRC", 
+                        "locus": "12", 
+                        "sample": "TCGA-CW-5580", 
+                        "ty": "Frame_Shift_Ins"
+                    }, 
+                    {
+                        "aan": "I", 
+                        "aao": "M", 
+                        "cancer": "LUAD", 
+                        "locus": "126", 
+                        "sample": "TCGA-49-6742", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "A", 
+                        "cancer": "LUAD", 
+                        "locus": "382", 
+                        "sample": "TCGA-49-6745", 
+                        "ty": "Frame_Shift_Del"
+                    }, 
+                    {
+                        "aan": "I", 
+                        "aao": "M", 
+                        "cancer": "LUSC", 
+                        "locus": "337", 
+                        "sample": "TCGA-56-5898", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "I", 
+                        "aao": "V", 
+                        "cancer": "UCEC", 
+                        "locus": "101", 
+                        "sample": "TCGA-D1-A17B", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "SLK": {
+            "ENST00000369755": {
+                "domains": [
+                    {
+                        "end": 1160, 
+                        "name": "PKK", 
+                        "start": 1029
+                    }
+                ], 
+                "length": 1235, 
+                "mutations": [
+                    {
+                        "aan": "V", 
+                        "aao": "L", 
+                        "cancer": "BLCA", 
+                        "locus": "709", 
+                        "sample": "TCGA-DK-A3IS", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "K", 
+                        "aao": "E", 
+                        "cancer": "BRCA", 
+                        "locus": "1058", 
+                        "sample": "TCGA-A2-A0SY", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "Q", 
+                        "cancer": "BRCA", 
+                        "locus": "1100", 
+                        "sample": "TCGA-A2-A0SY", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "N", 
+                        "cancer": "BRCA", 
+                        "locus": "454", 
+                        "sample": "TCGA-BH-A0DK", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "COADREAD", 
+                        "locus": "1143", 
+                        "sample": "TCGA-AA-A01I", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "H", 
+                        "cancer": "GBM", 
+                        "locus": "400", 
+                        "sample": "TCGA-06-2563", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "I", 
+                        "cancer": "GBM", 
+                        "locus": "151", 
+                        "sample": "TCGA-27-1835", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "V", 
+                        "cancer": "KIRC", 
+                        "locus": "134", 
+                        "sample": "TCGA-B2-4099", 
+                        "ty": "Frame_Shift_Del"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "K", 
+                        "cancer": "KIRC", 
+                        "locus": "63", 
+                        "sample": "TCGA-B2-5641", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "I", 
+                        "cancer": "LUAD", 
+                        "locus": "878", 
+                        "sample": "TCGA-17-Z042", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D", 
+                        "aao": "E", 
+                        "cancer": "LUAD", 
+                        "locus": "35", 
+                        "sample": "TCGA-49-6745", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "Y", 
+                        "cancer": "LUSC", 
+                        "locus": "212", 
+                        "sample": "TCGA-37-4135", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "I", 
+                        "aao": "K", 
+                        "cancer": "LUSC", 
+                        "locus": "615", 
+                        "sample": "TCGA-39-5037", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "splice", 
+                        "aao": "splice", 
+                        "cancer": "LUSC", 
+                        "locus": 1045, 
+                        "sample": "TCGA-66-2727", 
+                        "ty": "Splice_Site"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "E", 
+                        "cancer": "OV", 
+                        "locus": "912", 
+                        "sample": "TCGA-13-0923", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "I", 
+                        "cancer": "UCEC", 
+                        "locus": "930", 
+                        "sample": "TCGA-B5-A0K8", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "UCEC", 
+                        "locus": "891", 
+                        "sample": "TCGA-BG-A0LX", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "cancer": "UCEC", 
+                        "locus": "947", 
+                        "sample": "TCGA-D1-A163", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "WAC": {
+            "ENST00000354911": {
+                "domains": [], 
+                "length": 647, 
+                "mutations": [
+                    {
+                        "aan": "A", 
+                        "aao": "V", 
+                        "cancer": "BLCA", 
+                        "locus": "86", 
+                        "sample": "TCGA-BT-A20N", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "P", 
+                        "cancer": "BLCA", 
+                        "locus": "360", 
+                        "sample": "TCGA-FD-A3NA", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "R", 
+                        "cancer": "BLCA", 
+                        "locus": "622", 
+                        "sample": "TCGA-G2-A2EJ", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "A", 
+                        "aao": "V", 
+                        "cancer": "BRCA", 
+                        "locus": "381", 
+                        "sample": "TCGA-A8-A06X", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "S", 
+                        "cancer": "BRCA", 
+                        "locus": "76", 
+                        "sample": "TCGA-AN-A0FD", 
+                        "ty": "Frame_Shift_Del"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "N", 
+                        "cancer": "BRCA", 
+                        "locus": "529", 
+                        "sample": "TCGA-BH-A0E0", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "S", 
+                        "cancer": "COADREAD", 
+                        "locus": "442", 
+                        "sample": "TCGA-AG-A036", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "splice", 
+                        "aao": "splice", 
+                        "cancer": "HNSC", 
+                        "locus": 127, 
+                        "sample": "TCGA-CR-6491", 
+                        "ty": "Splice_Site"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "H", 
+                        "cancer": "KIRC", 
+                        "locus": "102", 
+                        "sample": "TCGA-B0-4714", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "L", 
+                        "cancer": "KIRC", 
+                        "locus": "363", 
+                        "sample": "TCGA-BP-4781", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "S", 
+                        "cancer": "KIRC", 
+                        "locus": "610", 
+                        "sample": "TCGA-BP-4992", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "K", 
+                        "cancer": "KIRC", 
+                        "locus": "159", 
+                        "sample": "TCGA-BP-5001", 
+                        "ty": "Frame_Shift_Del"
+                    }, 
+                    {
+                        "aan": "splice", 
+                        "aao": "splice", 
+                        "cancer": "LAML", 
+                        "locus": 582, 
+                        "sample": "TCGA-AB-3001", 
+                        "ty": "Splice_Site"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "E", 
+                        "cancer": "LAML", 
+                        "locus": "87", 
+                        "sample": "TCGA-AB-3009", 
+                        "ty": "Frame_Shift_Ins"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "H", 
+                        "cancer": "LUAD", 
+                        "locus": "530", 
+                        "sample": "TCGA-05-4389", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "Q", 
+                        "cancer": "LUAD", 
+                        "locus": "459", 
+                        "sample": "TCGA-44-6146", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "Q", 
+                        "cancer": "LUSC", 
+                        "locus": "459", 
+                        "sample": "TCGA-66-2778", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "splice", 
+                        "aao": "splice", 
+                        "cancer": "OV", 
+                        "locus": 479, 
+                        "sample": "TCGA-13-0890", 
+                        "ty": "Splice_Site"
+                    }, 
+                    {
+                        "aan": "M", 
+                        "aao": "R", 
+                        "cancer": "UCEC", 
+                        "locus": "185", 
+                        "sample": "TCGA-D1-A163", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }
+    }
+}
