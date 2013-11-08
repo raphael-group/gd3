@@ -1,13 +1,23 @@
+#!/usr/bin/env node
+
 // Load required modules
 var jsdom = require('jsdom'),
 fs = require('fs');
 
-// Parse args
-var data = JSON.parse(fs.readFileSync(process.argv[2]).toString())
+// Validate args
+var argv = require('optimist').argv;
+if (!( argv.outdir && argv.json )){
+    usage  = "Usage: node drawOncoprint.js --json=</path/to/json>"
+    usage += " --outdir=</path/to/output>"
+    console.log(usage);
+    process.exit(1);
+}
+
+// Load the data and parse into shorter variable handles
+var data = JSON.parse(fs.readFileSync(argv.json).toString())
 , M = data.M
 , sample2ty = data.sample2ty
-, coverage_str = data.coverage_str
-, outputDir = process.argv[3];
+, coverage_str = data.coverage_str;
 
 // Scripts required to make oncoprint
 var scripts = [ "js/lib/jquery.js",
@@ -41,13 +51,16 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     d3.selectAll("svg").attr("xmlns", "http://www.w3.org/2000/svg") 
 
     // Write the oncoprint to file
-    fs.writeFile(outputDir + "/oncoprint.svg", $("svg#oncoprint")[0].outerHTML, write_err);
+    var oncoprint = $("svg#oncoprint")[0].outerHTML;
+    fs.writeFile(argv.outdir + "/oncoprint.svg", oncoprint, write_err);
 
     // Write the mutation type legend to file
-    fs.writeFile(outputDir + "/mutLegend.svg", $("svg#mutation-legend")[0].outerHTML, write_err);
+    var mutationLegend = $("svg#mutation-legend")[0].outerHTML;
+    fs.writeFile(argv.outdir + "/mutLegend.svg", mutationLegend, write_err);
 
     // Write the sample type legend to file (if necessary)
-    if ($("svg#sample-type-legend")[0].outerHTML)
-        fs.writeFile(outputDir + "/sampleTyLegend.svg", $("svg#sample-type-legend")[0].outerHTML, write_err);
+    var sampleTyLegend = $("svg#sample-type-legend")[0].outerHTML;
+    if (sampleTyLegend)
+        fs.writeFile(argv.outdir + "/sampleTyLegend.svg", sampleTyLegend, write_err);
 
 }});

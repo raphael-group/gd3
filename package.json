@@ -3,6 +3,7 @@
 , "description" : "The genomics d3 library."
 , "dependencies" :
   {
-  	"jsdom" : ">=0.8.8"
+  	"jsdom" : ">=0.8.8",
+  	"optimist": ">= 0.6.0"
   }
 }
