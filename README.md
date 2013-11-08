@@ -14,12 +14,15 @@ A library of genomics visualizations.
 
 Oncoprinter(`js/oncoprinter.js`)
 
+Subnetworks(`js/subnetwork.js`)
+
+Lolliplots(`js/lolliplots.js`)
+
 ### Styles (`js/style/`)
 
 *Pre-defined style files.* 
 
 `js/default-style.js`: default styles
-
 
 ### Draw (`.`)
 *Node.js scripts for saving visualizations to SVG.*
@@ -27,3 +30,7 @@ Oncoprinter(`js/oncoprinter.js`)
 Oncoprinter(`drawOncoprint.js`)
 
     Usage: node drawOncoprint.js --json=</path/to/json> --outdir=</path/to/output>
+
+Lolliplot(`drawLolliplot.js`)
+
+    Usage: node drawLolliplot.js --json=</path/to/json> --outfile=</path/to/output/file>

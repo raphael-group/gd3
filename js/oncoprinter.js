@@ -599,7 +599,6 @@ function oncoprinter(el, M, sample2ty, coverage, width){
     renderOncoprint();
     sample_sorter_interface();
 
-    return el;
 }
 
 // Create a dictionary of samples to whether they are exclusively
