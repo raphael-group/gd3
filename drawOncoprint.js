@@ -23,7 +23,7 @@ var data = JSON.parse(fs.readFileSync(argv.json).toString())
 var scripts = [ "js/lib/jquery.js",
                 "js/lib/d3.v3.min.js",
                 "js/oncoprinter.js",
-                "js/default-style.js"
+                "js/style/default-style.js"
               ]
 , htmlStub = '<!DOCTYPE html><oncoprint></oncoprint>';
 
