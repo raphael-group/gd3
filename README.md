@@ -4,7 +4,7 @@ A library of genomics visualizations.
 
 ### Setup
 
-1. Requirements: `[npm](https://npmjs.org/)` and `[node](http://nodejs.org/)`.
+1. Requirements: [npm](https://npmjs.org/) and [node](http://nodejs.org/).
 2. **Clone**: `git clone https://<user>@bitbucket.org/raphaellab/gd3.git`.
 3. **Install dependencies**: `npm install`.
 
