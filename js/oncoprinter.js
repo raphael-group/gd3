@@ -609,11 +609,12 @@ function compute_mutation_exclusivity(gene2cases, genes, samples){
     for (var i = 0; i < samples.length; i++){
         // For a given sample, its mutated genes are all genes g
         // where the sample is in gene2cases[g]
-        var mutated_genes = genes.map(function(g){
+        var mutatedGenes = genes.map(function(g){
                 return gene2cases[g].indexOf( samples[i] );
-            }).filter(function(i){ return i != 1; });
-        sample2exclusivity[samples[i]] = mutated_genes.length;
+            }).filter(function(n){ return n != -1; });
+        sample2exclusivity[samples[i]] = mutatedGenes.length;
     }
+    console.log(sample2exclusivity);
     return sample2exclusivity;
 }
 
