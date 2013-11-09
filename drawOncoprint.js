@@ -37,7 +37,7 @@ var d3, $;
 var width = 900
 
 // Function to notify user if write fails
-function write_err(err){ if (err){ console.log('Could not output result.'); } }
+function write_err(err){ if (err){ console.log('Could not output result.' + err); } }
 
 jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(errors, window) {
     // Function for saving a figure
