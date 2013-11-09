@@ -3,7 +3,7 @@
 // Load required modules
 var jsdom = require('jsdom')
 , fs = require('fs')
-, wkhtmltopdf = require('wkhtmltopdf');
+//, wkhtmltopdf = require('wkhtmltopdf');
 
 // Validate args
 var argv = require('optimist').argv;
@@ -56,6 +56,6 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     // Write the oncoprint to file
     var lolliplot = $("svg")[0].outerHTML;
     fs.writeFile(argv.outpre + ".pdf", lolliplot, write_err);
-    wkhtmltopdf(lolliplot).pipe(fs.creatReadStream(argv.outpre + ".pdf"));
+    // wkhtmltopdf(lolliplot).pipe(fs.creatReadStream(argv.outpre + ".pdf"));
     
 }});
