@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
 // Load required modules
-var jsdom = require('jsdom'),
-fs = require('fs');
+var jsdom = require('jsdom')
+, fs = require('fs')
+, wkhtmltopdf = require('wkhtmltopdf');
 
 // Validate args
 var argv = require('optimist').argv;
 if (!( argv.outfile && argv.json )){
     usage  = "Usage: node drawLolliplot.js --json=</path/to/json>"
-    usage += " --outfile=</path/to/output/file>"
+    usage += " --outpre=</path/to/output/file (no ext)>"
     console.log(usage);
     process.exit(1);
 }
@@ -54,6 +55,7 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
 
     // Write the oncoprint to file
     var lolliplot = $("svg")[0].outerHTML;
-    fs.writeFile(argv.outfile, lolliplot, write_err);
-
+    fs.writeFile(argv.outpre + ".pdf", lolliplot, write_err);
+    wkhtmltopdf(lolliplot).pipe(fs.creatReadStream(argv.outpre + ".pdf"));
+    
 }});

@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 // Load required modules
-var jsdom = require('jsdom'),
-fs = require('fs');
+var jsdom = require('jsdom')
+, fs = require('fs')
+//, wkhtmltopdf = require('wkhtmltopdf');
 
 // Validate args
 var argv = require('optimist').argv;
@@ -39,6 +40,20 @@ var width = 900
 function write_err(err){ if (err){ console.log('Could not output result.'); } }
 
 jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(errors, window) {
+    // Function for saving a figure
+    function save_fig(selector, file_prefix){
+        // Grab the element from the document
+        var outerHTML = $(selector)[0].outerHTML;
+
+        // Output if the element exists
+        if (outerHTML){
+            // Write to file as an SVG
+            fs.writeFile(file_prefix + ".svg", outerHTML, write_err);
+        
+            // Write to file as a PDF
+            // wkhtmltopdf(outerHTML).pipe(fs.creatReadStream(argv.outpre + ".pdf"));    
+        }
+    }
     // Make libraries global loaded in window
     d3 = window.d3;
     $  = window.jQuery;
@@ -51,16 +66,12 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     d3.selectAll("svg").attr("xmlns", "http://www.w3.org/2000/svg") 
 
     // Write the oncoprint to file
-    var oncoprint = $("svg#oncoprint")[0].outerHTML;
-    fs.writeFile(argv.outdir + "/oncoprint.svg", oncoprint, write_err);
+    save_fig("svg#oncoprint", argv.outdir + "/oncoprint")
 
     // Write the mutation type legend to file
-    var mutationLegend = $("svg#mutation-legend")[0].outerHTML;
-    fs.writeFile(argv.outdir + "/mutLegend.svg", mutationLegend, write_err);
+    save_fig("svg#mutation-legend", argv.outdir + "/mutLegend")
 
     // Write the sample type legend to file (if necessary)
-    var sampleTyLegend = $("svg#sample-type-legend")[0].outerHTML;
-    if (sampleTyLegend)
-        fs.writeFile(argv.outdir + "/sampleTyLegend.svg", sampleTyLegend, write_err);
+    save_fig("svg#sample-type-legend", argv.outdir + "/sampleTyLegend");
 
 }});
