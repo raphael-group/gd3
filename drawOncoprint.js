@@ -43,15 +43,15 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     // Function for saving a figure
     function save_fig(selector, file_prefix){
         // Grab the element from the document
-        var outerHTML = $(selector)[0].outerHTML;
+        var elem = $(selector)[0];
 
         // Output if the element exists
-        if (outerHTML){
+        if (elem){
             // Write to file as an SVG
-            fs.writeFile(file_prefix + ".svg", outerHTML, write_err);
+            fs.writeFile(file_prefix + ".svg", elem.outerHTML, write_err);
         
             // Write to file as a PDF
-            // wkhtmltopdf(outerHTML).pipe(fs.creatReadStream(argv.outpre + ".pdf"));    
+            // wkhtmltopdf(elem.outerHTML).pipe(fs.creatReadStream(argv.outpre + ".pdf"));    
         }
     }
     // Make libraries global loaded in window
