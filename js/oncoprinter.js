@@ -6,7 +6,7 @@
 // - a div that includes the coverage of the oncoprint
 // - a div that includes a sorting interface to modify the oncoprint
 
-function oncoprinter(el, M, sample2ty, coverage, width){
+function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
     // Parse the mutation matrix into shorter variable handles
     var genes = Object.keys(M)
     , samples = Object.keys(sample2ty).slice()
@@ -22,9 +22,9 @@ function oncoprinter(el, M, sample2ty, coverage, width){
     tys.sort();
 
     // Default parameters for the images to be drawn
-    var multiCancer = tys.length > 1
-    , cancerLegendWidth = multiCancer ? 100 : 0
-    , cancerTyLegendHeight = multiCancer ? (tys.length + 1) * 15 : 0
+    var useCustomColoring = sample_coloring ? true : false
+    , cancerLegendWidth = useCustomColoring ? 100 : 0
+    , cancerTyLegendHeight = useCustomColoring ? (tys.length + 1) * 15 : 0
     , labelWidth = 100
     , labelHeight = 40
     , animationSpeed = 300
@@ -188,10 +188,10 @@ function oncoprinter(el, M, sample2ty, coverage, width){
         .append("rect")
         .attr("class", "tick")
         .attr("fill", function(d){
-            if (!multiCancer)
+            if (!useCustomColoring)
                 return d.cooccurring ? coocurringColor : exclusiveColor;
             else
-                return coloring["cancer"][d.cancer];
+                return sample_coloring[d.cancer];
         });
 
     // Add stripes to inactivating mutations
@@ -353,7 +353,7 @@ function oncoprinter(el, M, sample2ty, coverage, width){
     // If the data contains multiple cancer types, then mutations are colored by
     // cancer type, so the exclusive/co-occurring cells won't be shown.
     // The cancer type legend will float to the right of the oncoprint.
-    if (!multiCancer){   
+    if (!useCustomColoring){   
         // Exclusive ticks
         mutationLegend.append("rect")
             .attr("x", left)
@@ -414,7 +414,7 @@ function oncoprinter(el, M, sample2ty, coverage, width){
         cancerTys.append("rect")
             .attr("width",  legendBoxSize)
             .attr("height", legendBoxSize)
-            .style("fill", function(ty){ return coloring["cancer"][ty]; });
+            .style("fill", function(ty){ return sample_coloring[ty]; });
 
         cancerTys.append("text")
             .attr("dy", legendBoxSize - 3)

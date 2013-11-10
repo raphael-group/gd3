@@ -9,7 +9,8 @@ var jsdom = require('jsdom')
 var argv = require('optimist').argv;
 if (!( argv.outdir && argv.json )){
     usage  = "Usage: node drawOncoprint.js --json=</path/to/json>"
-    usage += " --outdir=</path/to/output>"
+    usage += " --outdir=</path/to/output> [--width=<width_in_pixels>]"
+    usage += " [--sample_coloring=</path/to/sample_coloring_json>]"
     console.log(usage);
     process.exit(1);
 }
@@ -34,7 +35,11 @@ var src = scripts.map(function(S){ return fs.readFileSync(S).toString(); })
 var d3, $;
 
 // Parameters for drawing the oncoprint
-var width = 900
+var width = argv.width ? argv.width : 900;
+var sample_coloring;
+if (argv.sample_coloring) {
+    sample_coloring = JSON.parse(fs.readFileSync(argv.sample_coloring).toString());
+} 
 
 // Function to notify user if write fails
 function write_err(err){ if (err){ console.log('Could not output result.' + err); } }
@@ -60,7 +65,7 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     
     // Create the oncoprint in the headless browser
     var el = d3.select("oncoprint");
-    window.oncoprinter(el, M, sample2ty, coverage_str, width);
+    window.oncoprinter(el, M, sample2ty, coverage_str, width, sample_coloring);
 
     // Make sure all SVGs are properly defined
     d3.selectAll("svg").attr("xmlns", "http://www.w3.org/2000/svg") 
