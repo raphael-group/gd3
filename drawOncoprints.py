@@ -93,7 +93,16 @@ def get_data_for_cc(cc, snvs, cnas, inactivating_snvs, sample2type):
             samples.add(mut.sample)
     data['M'] = M
 
-    reduced_s2t = dict((s, sample2type[s] if sample2type else DEFAULT_TYPE) for s in samples)
+    if sample2type:
+        reduced_s2t = dict()
+        for sample in samples:
+            if sample not in sample2type:
+                print "WARNING: sample %s is not in type file; assigning type %s" % (sample, DEFAULT_TYPE)
+                reduced_s2t[sample] = DEFAULT_TYPE
+            else:
+                reduced_s2t[sample] = sample2type[sample]
+    else:
+        reduced_s2t = dict((s, DEFAULT_TYPE) for s in samples)
     data['sample2ty'] = reduced_s2t
     
     return data
