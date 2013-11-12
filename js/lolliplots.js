@@ -1,5 +1,7 @@
 var mutSymbols = {"Nonsense_Mutation": 0, "Frame_Shift_Del": 1, "Frame_Shift_Ins": 1, "Missense_Mutation": 2,
-                 "Splice_Site": 3, "In_Frame_Del": 4, "In_Frame_Ins": 4}
+                  "Splice_Site": 3, "In_Frame_Del": 4, "In_Frame_Ins": 4}
+var inactivating = {"Nonsense_Mutation": true, "Frame_Shift_Del": true, "Frame_Shift_Ins": true, "Missense_Mutation": false,
+                    "Splice_Site": true, "In_Frame_Del": false, "In_Frame_Ins": false}
 
 function annotate_transcript(el, gene, mutations, proteinDomains, length, width){
     // Declarations
@@ -53,7 +55,7 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
     // The transcript
     var transcript = svg.append("rect")
         .attr("class", "transcript")
-        .attr("y", height - bar_y*2)
+        .attr("y", height/2)
         .attr("x", x(start))
         .attr("width", x(stop)-x(start))
         .attr("height", bar_y - margin)
@@ -78,9 +80,9 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
     // This draws the actual xaxis
     var xaxis = svg.append("g")
         .attr("class", "xaxis")
-        .attr("transform", "translate(0," + (height - bar_y) + ")")
+        .attr("transform", "translate(5," + (height/2 + bar_y +2) + ")")
         .style("font-size", "12px")
-        .style("fill", blockColorLight)
+        .style("fill", "#000")
         .call(xAxis);
 
     var gene_name = gene
@@ -113,6 +115,7 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
         .attr("class", "domains")
 
     var domains = domainGroups.append("rect")
+        .attr("id", function(d, i){ return "domain-" + i; })
         .attr("width", function(d, i){
             return x(d.end) - x(d.start);
         })
@@ -121,8 +124,8 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
         .style("fill", blockColorMedium);
 
     var domainLabels = domainGroups.append("text")
-            .attr("id", function(d, i){ return "domain-" + i; })
-            .attr("y", height - bar_y - 1.5 * margin)
+            .attr("id", function(d, i){ return "domain-label-" + i; })
+            .attr("y", height/2 + 2.5*margin)
             .attr("text-anchor", "middle")
             .style("fill-opacity", 0)
             .style("fill", textColorStrongest)
@@ -130,40 +133,48 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
 
     domainGroups.on("mouseover", function(d, i){
             d3.select(this).selectAll("rect").style("fill", highlightColor)
-            el.select("#domain-" + i).style("fill-opacity", 1)
+            el.select("#domain-label-" + i).style("fill-opacity", 1)
         })
         .on("mouseout", function(d, i){
             d3.select(this).selectAll("rect").style("fill", blockColorMedium)
-            el.select("#domain-" + i).style("fill-opacity", 0)
+            el.select("#domain-label-" + i).style("fill-opacity", 0)
         });
 
     // This renders all the symbols, domains, rectangles,
     // and axes (rather, it tells them to update themselves)
     function update_transcript(){
         // Find the current scope of the zoom
-        var cur_min = d3.min(x.domain())
-        , cur_max = d3.max(x.domain())
-        , cur_res = Math.round((cur_max - cur_min)/resolution);
+        var curMin = d3.min( x.domain() )
+        , curMax = d3.max( x.domain() )
+        , curRes = Math.round( (curMax - curMin) /resolution );
 
-        cur_res = (cur_res) ? cur_res : 1;
+        curRes = curRes ? curRes : 1;
 
         // This keeps track of how many mutations are
         // plotted at each spot, so that we can "stack" the
         // mutations on top of one another
-        var index_dict = {}
+        var topIndex = {}
+        , bottomIndex = {}
         , Px = {}
         , Py = {};
-        for (var i = Math.floor(cur_min/cur_res) - 5; i < Math.ceil(cur_max/cur_res) + 5; i++){
-            index_dict[i] = 0;
+        for (var i = Math.floor(curMin/curRes) - 5; i < Math.ceil(curMax/curRes) + 5; i++){
+            topIndex[i] = 0;
+            bottomIndex[i] = 0;
         }
 
         // We render all the glyphs in the selection "symbols"
         // We move them to their appropriate position and color them
         symbols.attr("transform", function(d, i){
-                var cur_index = Math.round(d.locus/cur_res)
-                , px = x(cur_index*cur_res)
-                , py = height - bar_y*2 - index_dict[cur_index] * radius*2 - 3*margin;
-                index_dict[cur_index] ++;
+                var indexDict = inactivating[d.ty] ? bottomIndex : topIndex
+                , curIndex = Math.round(d.locus/curRes)
+                , px = x(curIndex*curRes);
+
+                if (inactivating[d.ty])
+                  py = height/2 + (bar_y + indexDict[curIndex] * radius * 2 + 3 * margin + 10);
+                else
+                  py = height/2 - (indexDict[curIndex] * radius * 2 + 3 * margin + 5);
+              
+                indexDict[curIndex]++;
                 
                 // Store the x- and y-values for this symbol for later use constructing the tooltip
                 Px[i] = px;
@@ -193,7 +204,7 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
 
 
         // Everything outside the boundaries we ignore
-        symbols.filter(function(d, i){  return !(cur_min < d.locus && cur_max > d.locus);  })
+        symbols.filter(function(d, i){  return !(curMin < d.locus && curMax > d.locus);  })
             .style("stroke-opacity", 0)
             .style("fill-opacity", 0);
 
@@ -209,15 +220,15 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
 
         // // updating the domains
         domains.attr("transform", function(d, i){
-            return "translate(" + x(d.start) + "," + (height - bar_y*2 - margin) + ")"
+            return "translate(" + x(d.start) + "," + (height/2 - margin) + ")"
         });
 
         domains.attr("width", function(d, i){ return x(d.end) - x(d.start); });
         
         domainLabels.attr("x", function(d, i){
                 // place the label in the center of whatever portion of the domain is shown
-                var x1 = d3.max( [d.start, cur_min] )
-                ,   x2 = d3.min( [d.end, cur_max] );
+                var x1 = d3.max( [d.start, curMin] )
+                ,   x2 = d3.min( [d.end, curMax] );
                 return x(x1 + (x2-x1)/2);
             })
     }

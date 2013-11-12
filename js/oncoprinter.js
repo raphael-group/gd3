@@ -282,7 +282,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         // Move the ticks to the right places
         ticks.selectAll(".tick")
             .attr("width", tickWidth)
-            .attr("height", function(d){ return d.del ? geneHeight/2 : geneHeight })
+            .attr("height", function(d){ return d.del || d.amp ? geneHeight/2 : geneHeight })
             .attr("y", function(d, i){
                 var index = (gene2index[d.gene] ? gene2index[d.gene]: 0)
                 , delOffset = d.del ? geneHeight / 2 : 0;
