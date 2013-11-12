@@ -462,7 +462,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
     // Deletions (down ticks)
     mutationLegend.append("rect")
         .attr("x", left)
-		.attr("y", geneHeight/2
+		.attr("y", geneHeight/2)
         .attr("height", geneHeight/2)
         .attr("width", mutationRectWidth)
         .style("fill", blockColorMedium)
