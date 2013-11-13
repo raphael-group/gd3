@@ -223,7 +223,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
             .attr("class", "fusion")
             .attr("d", d3.svg.symbol().type('triangle-up').size(8))
             .style("stroke-opacity", 0)            
-            .style("fill", function(d){return coloring["cancer"][d.cancer]});
+            .style("fill", function(d){return sample_coloring[d.cancer]});
 
     // Add sample names and line separators between samples
     matrix.append("text")
