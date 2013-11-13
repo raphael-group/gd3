@@ -188,10 +188,18 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         .append("rect")
         .attr("class", "tick")
         .attr("fill", function(d){
-            if (!useCustomColoring)
-                return d.cooccurring ? coocurringColor : exclusiveColor;
-            else
-                return sample_coloring[d.cancer];
+            if (!useCustomColoring){
+                if (d.fus && !d.snv) // Hsin-Ta: Fusion
+                    return bgColor;
+                else
+                    return d.cooccurring ? coocurringColor : exclusiveColor;                
+            }
+            else{
+                if (d.fus && !d.snv) // Hsin-Ta: Fusion
+                    return bgColor;
+                else
+                    return sample_coloring[d.cancer];
+            }
         });
 
     // Add stripes to inactivating mutations
@@ -205,6 +213,17 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
             .attr("width", tickWidth)
             .attr("height", geneHeight/4)
             .style("stroke-width", 0)
+
+     // Hsin-Ta: Add trangle-up for fusion/rearragnemanet/splice site
+    ticks.selectAll(".fus")
+        .data(function(d){ return d.genes; })
+        .enter()            
+            .append("svg:path")
+            .filter(function(d){ return d.fus})
+            .attr("class", "fusion")
+            .attr("d", d3.svg.symbol().type('triangle-up').size(8))
+            .style("stroke-opacity", 0)            
+            .style("fill", function(d){return coloring["cancer"][d.cancer]});
 
     // Add sample names and line separators between samples
     matrix.append("text")
@@ -261,7 +280,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         var inactiveTicks = matrix.filter(function(d, i){
                 return x(sample2index[i]) < (labelWidth + boxMargin) || x(sample2index[i]) > width;
             });
-        inactiveTicks.style("fill-opacity", 0.25).style("stroke-opacity", 0);
+        inactiveTicks.style("fill-opacity", 0.25).style("stroke-opacity", 1);
 
         // Moving the small ticks of the inactivating to the right place
         matrix.selectAll(".inactivating")
@@ -270,6 +289,11 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
             .attr("y", function(d, i){
                 return ((gene2index[d.gene] ? gene2index[d.gene]: 0) + 0.375) * geneHeight;
             });
+
+        // Hsin-Ta: Fusion
+        matrix.selectAll(".fusion")
+            .filter(function(d){ return d.fus; })                   
+            .attr("transform", function(d){return "translate(" +tickWidth/2 + "," + (((gene2index[d.gene] ? gene2index[d.gene]: 0)) * geneHeight + geneHeight/2) + "), rotate(90), scale("+ tickWidth/6+")"});
 
         // Move 
         matrix.attr("transform", function(d, i){ return "translate(" + x(sample2index[i]) +  ")"; })
@@ -345,7 +369,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
     var mutationLegend = el.append("svg")
         .attr("id", "mutation-legend")
         .attr("height", mutationLegendHeight)
-        .attr("width", width/2)
+        .attr("width", width)
         .style("margin-left", labelWidth + boxMargin)
         .append("g")
             .style("font-size", legend_font_size);
@@ -489,6 +513,22 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         .text("Amplification");
 
     left += mutationRectWidth + 10 + 75;
+
+    // Hsin-Ta: Fusion legend
+    mutationLegend.append("path")
+        .attr("d", d3.svg.symbol().type('triangle-up').size(30))
+        .attr("transform", "translate(" + (left + mutationRectWidth) + "," + 3*geneHeight/8 + "), rotate(90)")
+        .style("stroke", bgColor)
+        .style("fill", blockColorMedium);
+
+    // Hsin-Ta: Fusion legend
+    mutationLegend.append("text")
+        .attr("x", left + mutationRectWidth + 10)
+        .attr("y", 3*geneHeight/4)
+        .style("fill", "#000")
+        .text("Fusion/Rearrangement/Splice Variant");
+                
+    left += mutationRectWidth + 10 + 220; 
     
     // Samples/box (the width/locations are set in renderOncoprint())
     mutationLegend.append("rect")
@@ -613,7 +653,6 @@ function compute_mutation_exclusivity(gene2cases, genes, samples){
             }).filter(function(n){ return n != -1; });
         sample2exclusivity[samples[i]] = mutatedGenes.length;
     }
-    console.log(sample2exclusivity);
     return sample2exclusivity;
 }
 
@@ -636,6 +675,7 @@ function create_oncoprint_data( M, gene2cases, genes, samples, sample2ty ){
             if (gene2cases[g].indexOf( s ) != -1){
                 mut.amp = M[g][s].indexOf("amp") != -1;
                 mut.del = M[g][s].indexOf("del") != -1;
+                mut.fus = M[g][s].indexOf("fus") != -1; // Hsin-Ta: Fusion type
                 mut.inactivating = M[g][s].indexOf("inactive_snv") != -1;
                 mut.snv = M[g][s].indexOf("snv") != -1 || mut.inactivating;
                 mutations.genes.push( mut );
