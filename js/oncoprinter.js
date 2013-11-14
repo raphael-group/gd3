@@ -6,7 +6,7 @@
 // - a div that includes the coverage of the oncoprint
 // - a div that includes a sorting interface to modify the oncoprint
 
-function oncoprinter(el, M, sample2ty, coverage, styling){
+function oncoprinter(el, M, sample2ty, coverage, styling, sampleTypes){
     // Parse the mutation matrix into shorter variable handles
     var genes = Object.keys(M)
     , samples = Object.keys(sample2ty).slice()
@@ -30,8 +30,8 @@ function oncoprinter(el, M, sample2ty, coverage, styling){
     , sampleStroke         = oncoStyle.sampleStroke
     , animationSpeed       = oncoStyle.animationSpeed;
 
-    // Determine how many cancer types are in the data
-    var tys = [];
+    // Determine how many cancer types are in the data (if not provided)
+    tys = sampleTypes || [];
     for (var i = 0; i < samples.length; i++){
         if (tys.indexOf(sample2ty[samples[i]]) == -1)
             tys.push(sample2ty[samples[i]]);

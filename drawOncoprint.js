@@ -20,6 +20,7 @@ var data = JSON.parse(fs.readFileSync(argv.json).toString())
 , M = data.M
 , sample2ty = data.sample2ty
 , coverage_str = data.coverage_str
+, sampleTypes = data.sampleTypes;
 
 // Scripts required to make oncoprint
 var scripts = [ "js/lib/jquery.js",
@@ -35,7 +36,7 @@ var d3, $;
 
 // Parameters for drawing the oncoprint
 var width = argv.width ? argv.width : 900
-, styleFile = argv.style ? argv.style : "js/styles/default-style.json"
+, styleFile = argv.style ? argv.style : "js/styles/pancancer-style.json"
 , styling = JSON.parse(fs.readFileSync(styleFile).toString());
 styling.oncoprint.width = width;
 
@@ -63,7 +64,7 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     
     // Create the oncoprint in the headless browser
     var el = d3.select("oncoprint");
-    window.oncoprinter(el, M, sample2ty, coverage_str, styling);
+    window.oncoprinter(el, M, sample2ty, coverage_str, styling, sampleTypes);
 
     // Make sure all SVGs are properly defined
     d3.selectAll("svg").attr("xmlns", "http://www.w3.org/2000/svg") 
