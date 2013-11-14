@@ -1,14 +1,20 @@
-function draw_subnetwork(el, nodes, edges, width){
-    // Default parameters for the images to be drawn
-	var margins = { top: 0, right: 0, bottom: 0, left: 0 }
+function draw_subnetwork(el, nodes, edges, styling){
+
+    // Parse the styling into shorter variable handles
+	var style = styling.global
+    , subnetStyle = styling.subnetwork
+    , cold = subnetStyle.cold
+    , hot = subnetStyle.hot
+    , width = subnetStyle.width
+    , margins = subnetStyle.margins
     , height = 100 + 15 * nodes.length
-    , heatLegendHeight = 30
+    , heatLegendHeight = subnetStyle.heatLegendHeight
     , heatLegendWidth  = width
-    , netLegendWidth = 100
-    , netLegendBox = 15
-    , edgeWidth = 1.5
+    , netLegendWidth = subnetStyle.netLegendWidth
+    , netLegendBox = subnetStyle.netLegendBox
+    , edgeWidth = subnetStyle.edgeWidth
     , width = width - margins.left - margins.right
-    , transitionTime = 500;
+    , transitionTime = subnetStyle.transitionTime;
 
 	// Set up the SVG
     var fig = el.append("svg")
@@ -65,7 +71,7 @@ function draw_subnetwork(el, nodes, edges, width){
     ,  activeNetworks = {};
     for (var i= 0 ; i < networks.length; i++) {
         var net = networks[i]
-        , netColor = coloring["network"][networks[i]];
+        , netColor = style.colorSchemes.network[networks[i]];
         activeNetworks[net] = true;
 
         var inNet = fig.selectAll("." + net)
@@ -162,7 +168,7 @@ function draw_subnetwork(el, nodes, edges, width){
         .attr("x1", 0)
         .attr("x2", netLegendBox)
         .style("stroke-width", edgeWidth)
-        .style("stroke", function(n){ return coloring["network"][n]; });
+        .style("stroke", function(n){ return style.colorSchemes.network[n]; });
 
     netLegend.append("text")
         .attr("x", 8 + netLegendBox)

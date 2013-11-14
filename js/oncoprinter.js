@@ -6,12 +6,29 @@
 // - a div that includes the coverage of the oncoprint
 // - a div that includes a sorting interface to modify the oncoprint
 
-function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
+function oncoprinter(el, M, sample2ty, coverage, styling){
     // Parse the mutation matrix into shorter variable handles
     var genes = Object.keys(M)
     , samples = Object.keys(sample2ty).slice()
     , m = samples.length
     , n = genes.length;
+
+    // Parse the styles into shorter variable handles
+    var style              = styling.global
+    , oncoStyle            = styling.oncoprint
+    , sampleType2color     = style.colorSchemes.sampleType
+    , width                = oncoStyle.width
+    , colorSampleTypes     = oncoStyle.colorSampleTypes
+    , coocurringColor      = oncoStyle.coocurringColor
+    , exclusiveColor       = oncoStyle.exclusiveColor
+    , labelWidth           = oncoStyle.labelWidth
+    , labelHeight          = oncoStyle.labelHeight
+    , boxMargin            = oncoStyle.boxMargin
+    , mutationLegendHeight = oncoStyle.mutationLegendHeight
+    , geneHeight           = oncoStyle.geneHeight
+    , minBoxWidth          = oncoStyle.minBoxWidth
+    , sampleStroke         = oncoStyle.sampleStroke
+    , animationSpeed       = oncoStyle.animationSpeed;
 
     // Determine how many cancer types are in the data
     var tys = [];
@@ -22,19 +39,11 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
     tys.sort();
 
     // Default parameters for the images to be drawn
-    var useCustomColoring = sample_coloring ? true : false
-    , cancerLegendWidth = useCustomColoring ? 100 : 0
-    , cancerTyLegendHeight = useCustomColoring ? (tys.length + 1) * 15 : 0
-    , labelWidth = 100
-    , labelHeight = 40
-    , animationSpeed = 300
-    , boxMargin = 5
-    , mutationLegendHeight = 30
+    var multiCancer = tys.length > 1 && colorSampleTypes
+    , cancerLegendWidth = multiCancer ? 100 : 0
+    , cancerTyLegendHeight = multiCancer ? (tys.length + 1) * 15 : 0
     , width = width - cancerLegendWidth
-    , geneHeight = 20
     , height = genes.length * geneHeight + boxMargin
-    , minBoxWidth = 20
-    , sampleStroke = 1
     , tickWidth
     , samplesPerCol;
     
@@ -166,7 +175,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
 
     // Append the rectangle that will serve as the background of the ticks
     fig.append("rect")
-        .style("fill", bgColor)
+        .style("fill", style.bgColor)
         .attr("width", width - labelWidth - boxMargin)
         .attr("height", height)
         .attr("transform", "translate(" + (labelWidth + boxMargin) + "," + labelHeight + ")");
@@ -188,17 +197,17 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         .append("rect")
         .attr("class", "tick")
         .attr("fill", function(d){
-            if (!useCustomColoring){
+            if (!multiCancer){
                 if (d.fus && !d.snv) // Hsin-Ta: Fusion
-                    return bgColor;
+                    return style.bgColor;
                 else
-                    return d.cooccurring ? coocurringColor : exclusiveColor;                
+                    return d.cooccurring ? coocurringColor : exclusiveColor;
             }
             else{
                 if (d.fus && !d.snv) // Hsin-Ta: Fusion
-                    return bgColor;
+                    return style.bgColor;
                 else
-                    return sample_coloring[d.cancer];
+                    return sampleType2color[d.cancer];
             }
         });
 
@@ -209,7 +218,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
             .append("rect")
             .filter(function(d){ return d.inactivating})
             .attr("class", "inactivating")
-            .style("fill", blockColorStrongest)
+            .style("fill", style.blockColorStrongest)
             .attr("width", tickWidth)
             .attr("height", geneHeight/4)
             .style("stroke-width", 0)
@@ -223,11 +232,16 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
             .attr("class", "fusion")
             .attr("d", d3.svg.symbol().type('triangle-up').size(8))
             .style("stroke-opacity", 0)            
-            .style("fill", function(d){return sample_coloring[d.cancer]});
+            .style("fill", function(d){
+                if (multiCancer)
+                    return sampleType2color[d.cancer];
+                else
+                    return d.cooccurring ? coocurringColor : exclusiveColor;
+            });
 
     // Add sample names and line separators between samples
     matrix.append("text")
-        .attr("fill", blockColorMedium)
+        .attr("fill", style.blockColorMedium)
         .attr("text-anchor", "start")
         .text(function(s){ return s.name; });
 
@@ -377,7 +391,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
     // If the data contains multiple cancer types, then mutations are colored by
     // cancer type, so the exclusive/co-occurring cells won't be shown.
     // The cancer type legend will float to the right of the oncoprint.
-    if (!useCustomColoring){   
+    if (!multiCancer){   
         // Exclusive ticks
         mutationLegend.append("rect")
             .attr("x", left)
@@ -438,7 +452,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         cancerTys.append("rect")
             .attr("width",  legendBoxSize)
             .attr("height", legendBoxSize)
-            .style("fill", function(ty){ return sample_coloring[ty]; });
+            .style("fill", function(ty){ return sampleType2color[ty]; });
 
         cancerTys.append("text")
             .attr("dy", legendBoxSize - 3)
@@ -451,7 +465,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         .attr("x", left)
         .attr("height", geneHeight)
         .attr("width", mutationRectWidth)
-        .style("fill", blockColorMedium)
+        .style("fill", style.blockColorMedium)
     
     mutationLegend.append("text")
         .attr("x", left + mutationRectWidth + 10)
@@ -466,7 +480,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         .attr("x", left)
         .attr("height", geneHeight)
         .attr("width", mutationRectWidth)
-        .style("fill", blockColorMedium)
+        .style("fill", style.blockColorMedium)
 
     mutationLegend.append("rect")
         .attr("x", left)
@@ -489,7 +503,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
 		.attr("y", geneHeight/2)
         .attr("height", geneHeight/2)
         .attr("width", mutationRectWidth)
-        .style("fill", blockColorMedium)
+        .style("fill", style.blockColorMedium)
 
     mutationLegend.append("text")
         .attr("x", left + mutationRectWidth + 5)
@@ -504,7 +518,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         .attr("x", left)
         .attr("height", geneHeight/2)
         .attr("width", mutationRectWidth)
-        .style("fill", blockColorMedium)
+        .style("fill", style.blockColorMedium)
 
     mutationLegend.append("text")
         .attr("x", left + mutationRectWidth + 10)
@@ -518,8 +532,8 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
     mutationLegend.append("path")
         .attr("d", d3.svg.symbol().type('triangle-up').size(30))
         .attr("transform", "translate(" + (left + mutationRectWidth) + "," + 3*geneHeight/8 + "), rotate(90)")
-        .style("stroke", bgColor)
-        .style("fill", blockColorMedium);
+        .style("stroke", style.bgColor)
+        .style("fill", style.blockColorMedium);
 
     // Hsin-Ta: Fusion legend
     mutationLegend.append("text")
@@ -535,7 +549,7 @@ function oncoprinter(el, M, sample2ty, coverage, width, sample_coloring){
         .attr("x", left)
         .attr("id", "sampleWidthRect")
         .attr("height", geneHeight)
-        .style("fill", blockColorMedium);
+        .style("fill", style.blockColorMedium);
 
     mutationLegend.append("text")
         .attr("id", "sampleWidthText")

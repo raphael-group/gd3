@@ -10,7 +10,7 @@ var argv = require('optimist').argv;
 if (!( argv.outdir && argv.json )){
     usage  = "Usage: node drawOncoprint.js --json=</path/to/json>"
     usage += " --outdir=</path/to/output> [--width=<width_in_pixels>]"
-    usage += " [--sample_coloring=</path/to/sample_coloring_json>]"
+    usage += " [--style=</path/to/json/file>]"
     console.log(usage);
     process.exit(1);
 }
@@ -19,13 +19,12 @@ if (!( argv.outdir && argv.json )){
 var data = JSON.parse(fs.readFileSync(argv.json).toString())
 , M = data.M
 , sample2ty = data.sample2ty
-, coverage_str = data.coverage_str;
+, coverage_str = data.coverage_str
 
 // Scripts required to make oncoprint
 var scripts = [ "js/lib/jquery.js",
                 "js/lib/d3.v3.min.js",
                 "js/oncoprinter.js",
-                "js/style/default-style.js"
               ]
 , htmlStub = '<!DOCTYPE html><oncoprint></oncoprint>';
 
@@ -35,11 +34,10 @@ var src = scripts.map(function(S){ return fs.readFileSync(S).toString(); })
 var d3, $;
 
 // Parameters for drawing the oncoprint
-var width = argv.width ? argv.width : 900;
-var sample_coloring;
-if (argv.sample_coloring) {
-    sample_coloring = JSON.parse(fs.readFileSync(argv.sample_coloring).toString());
-} 
+var width = argv.width ? argv.width : 900
+, styleFile = argv.style ? argv.style : "js/styles/default-style.json"
+, styling = JSON.parse(fs.readFileSync(styleFile).toString());
+styling.oncoprint.width = width;
 
 // Function to notify user if write fails
 function write_err(err){ if (err){ console.log('Could not output result.' + err); } }
@@ -65,7 +63,7 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     
     // Create the oncoprint in the headless browser
     var el = d3.select("oncoprint");
-    window.oncoprinter(el, M, sample2ty, coverage_str, width, sample_coloring);
+    window.oncoprinter(el, M, sample2ty, coverage_str, styling);
 
     // Make sure all SVGs are properly defined
     d3.selectAll("svg").attr("xmlns", "http://www.w3.org/2000/svg") 

@@ -3,14 +3,17 @@ var mutSymbols = {"Nonsense_Mutation": 0, "Frame_Shift_Del": 1, "Frame_Shift_Ins
 var inactivating = {"Nonsense_Mutation": true, "Frame_Shift_Del": true, "Frame_Shift_Ins": true, "Missense_Mutation": false,
                     "Splice_Site": true, "In_Frame_Del": false, "In_Frame_Ins": false}
 
-function annotate_transcript(el, gene, mutations, proteinDomains, length, width){
-    // Declarations
-    var margin  = 5
-    , width     = width
-    , height    = 200 - 2 * margin
-    , bar_y     = 20
-    , radius    = 5
-    , resolution = Math.floor(width / (radius*2));
+function annotate_transcript(el, gene, mutations, proteinDomains, length, styling){
+    // Parse styles into shorter variable handles
+    var style          = styling.global
+    , plotStyle        = styling.lolliplot
+    , sampleType2color = style.colorSchemes.sampleType
+    , margin           = plotStyle.margin
+    , width            = plotStyle.width
+    , height           = plotStyle.height - 2 * margin
+    , genomeHeight     = plotStyle.genomeHeight
+    , radius           = plotStyle.radius
+    , resolution       = Math.floor(width / (radius*2));
 
     // Defining a scale to be used for the zoom functionality
     var start = 0
@@ -50,7 +53,7 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
         .attr("width", width)
         .attr("height", height)
         .attr("class", "background")
-        .style("fill", bgColor);
+        .style("fill", style.bgColor);
 
     // The transcript
     var transcript = svg.append("rect")
@@ -58,15 +61,15 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
         .attr("y", height/2)
         .attr("x", x(start))
         .attr("width", x(stop)-x(start))
-        .attr("height", bar_y - margin)
-        .style("fill", blockColorLight);
+        .attr("height", genomeHeight - margin)
+        .style("fill", style.blockColorLight);
 
     // This is the text for the actual protein sequence
     // var sequence = svg.selectAll("text")
     //     .data(sample["sequence"]).enter()
     //     .append("text")
     //     .text(function(d){ return d })
-    //     .attr("y", height - bar_y*1.5)
+    //     .attr("y", height - genomeHeight*1.5)
     //     .style("fill-opacity", 0);
 
     // This is the text for the actual protein sequence
@@ -74,13 +77,13 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
     //     .data(sample["sequence"]).enter()
     //     .append("text")
     //     .text(function(d){ return d })
-    //     .attr("y", height - bar_y*1.5)
+    //     .attr("y", height - genomeHeight*1.5)
     //     .style("fill-opacity", 0);
 
     // This draws the actual xaxis
     var xaxis = svg.append("g")
         .attr("class", "xaxis")
-        .attr("transform", "translate(5," + (height/2 + bar_y +2) + ")")
+        .attr("transform", "translate(5," + (height/2 + genomeHeight +2) + ")")
         .style("font-size", "12px")
         .style("fill", "#000")
         .call(xAxis);
@@ -103,8 +106,8 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
                 })
                 .size(radius*radius)
         )
-        .style("stroke", function(d, i){ return coloring["cancer"][d.cancer]; })
-        .style("fill", function(d, i){ return coloring["cancer"][d.cancer]; })
+        .style("stroke", function(d, i){ return sampleType2color[d.cancer]; })
+        .style("fill", function(d, i){ return sampleType2color[d.cancer]; })
         .style("stroke-width", 2)
     
     // This draws all the appropriate domains
@@ -119,24 +122,24 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
         .attr("width", function(d, i){
             return x(d.end) - x(d.start);
         })
-        .attr("height", bar_y + margin)
+        .attr("height", genomeHeight + margin)
         .style("fill-opacity", .5)
-        .style("fill", blockColorMedium);
+        .style("fill", style.blockColorMedium);
 
     var domainLabels = domainGroups.append("text")
             .attr("id", function(d, i){ return "domain-label-" + i; })
             .attr("y", height/2 + 2.5*margin)
             .attr("text-anchor", "middle")
             .style("fill-opacity", 0)
-            .style("fill", textColorStrongest)
+            .style("fill", style.textColorStrongest)
             .text(function(d, i){  return d.name });
 
     domainGroups.on("mouseover", function(d, i){
-            d3.select(this).selectAll("rect").style("fill", highlightColor)
+            d3.select(this).selectAll("rect").style("fill", style.highlightColor)
             el.select("#domain-label-" + i).style("fill-opacity", 1)
         })
         .on("mouseout", function(d, i){
-            d3.select(this).selectAll("rect").style("fill", blockColorMedium)
+            d3.select(this).selectAll("rect").style("fill", style.blockColorMedium)
             el.select("#domain-label-" + i).style("fill-opacity", 0)
         });
 
@@ -170,7 +173,7 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
                 , px = x(curIndex*curRes);
 
                 if (inactivating[d.ty])
-                  py = height/2 + (bar_y + indexDict[curIndex] * radius * 2 + 3 * margin + 10);
+                  py = height/2 + (genomeHeight + indexDict[curIndex] * radius * 2 + 3 * margin + 10);
                 else
                   py = height/2 - (indexDict[curIndex] * radius * 2 + 3 * margin + 5);
               
@@ -182,8 +185,8 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
 
                 return "translate(" + px + ", " + py + ")";
             })
-            .style("fill", function(d){ return coloring["cancer"][d.cancer] })
-            .style("stroke", function(d){ return coloring["cancer"][d.cancer] })
+            .style("fill", function(d){ return style.colorSchemes.sampleType[d.cancer]; })
+            .style("stroke", function(d){ return style.colorSchemes.sampleType[d.cancer]; })
             .style("stroke-opacity", 1)
             .style("fill-opacity", 1)
 
@@ -239,12 +242,15 @@ function annotate_transcript(el, gene, mutations, proteinDomains, length, width)
 }
 
 // Draw a transcript legend using ONLY the mutation classes used for the given transcripts
-function lolliplot_legend(el, gene2transcripts, width){
+function lolliplot_legend( el, gene2transcripts, styling ){
     // Declaration 
-    var margin    = 5
-    , width       = width
-    , fontSize    = 10
-    , symbolHeight = 14;
+    // Parse styles into shorter variable handles
+    var style         = styling.global
+    , plotStyle       = styling.lolliplot
+    , sampleType2color = style.colorSchemes.sampleType
+    , margin          = plotStyle.margin
+    , width           = plotStyle.width
+    , symbolHeight    = plotStyle.legendSymbolHeight;
 
     // Extract cancer types and mutation classes
     var cancerTys = []
@@ -264,12 +270,12 @@ function lolliplot_legend(el, gene2transcripts, width){
     , numRows = Math.ceil(numTys/2);
 
     // Add the SVG
-    var height = numRows * symbolHeight - 2 * margin;
+    var height = numRows * symbolHeight;
     var svg = el.append("svg")
         .attr("class", "legend")
         .style("width", width)
         .style("height", height + 2*margin)
-        .attr("font-size", fontSize);
+        .attr("font-size", 10);
 
     var legend = svg.selectAll(".symbol-group")
         .data(mutationTys).enter()
@@ -284,14 +290,14 @@ function lolliplot_legend(el, gene2transcripts, width){
         .attr("class", "symbol")
         .attr("d", d3.svg.symbol()
             .type(function(d, i){ return d3.svg.symbolTypes[mutSymbols[d]]; })
-            .size(2*symbolHeight)
+            .size(2 * symbolHeight)
         )
         .style("stroke", function(d, i){
-            return multiCancer ?  blockColorMedium : coloring["cancer"][cancerTys[0]];
+            return multiCancer ?  style.blockColorMedium : sampleType2color[cancerTys[0]];
         })
         .style("stroke-width", 2)
         .style("fill", function(d, i){
-            return multiCancer ?  blockColorMedium : coloring["cancer"][cancerTys[0]];
+            return multiCancer ?  style.blockColorMedium : sampleType2color[cancerTys[0]];
         });
 
     legend.append("text")
