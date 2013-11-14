@@ -32,6 +32,10 @@ def parse_args(raw_args):
                         help='Path to a tab-separated file listing inactivating mutations where\
                               the first column of each line is a gene name and the second column\
                               is a sample ID. Lines starting with "#" will be ignored.')
+    parser.add_argument('-f', '--fusions_file',
+                        help='Path to a tab-separated file listing fusions where the first column\
+                              of each line is a sample ID and the next two columns are gene names.\
+                              Lines starting with "#" will be ignored.')
     parser.add_argument('-p', '--sample_file',
                         help='File listing samples. Any SNVs or CNAs in samples not listed in this\
                               file will be ignored. If not provided, the set of samples is assumed\
@@ -86,7 +90,7 @@ def write_style_file(input_style_file, color_file, output_style_file):
 
 DEFAULT_TYPE = 'DEFAULT'
 
-def get_data_for_cc(cc, snvs, cnas, inactivating_snvs, sample2type):
+def get_data_for_cc(cc, snvs, cnas, inactivating_snvs, fusions, sample2type):
     cc = set(cc)
     data = dict()
     samples = set()
@@ -95,14 +99,22 @@ def get_data_for_cc(cc, snvs, cnas, inactivating_snvs, sample2type):
     M = defaultdict(lambda: defaultdict(list))
     for mut in inactivating_snvs:
         if mut.gene in cc:
-        	M[mut.gene][mut.sample] = [mut.mut_type]
-        	samples.add(mut.sample)
+            M[mut.gene][mut.sample] = [mut.mut_type]
+            samples.add(mut.sample)
     
     for mut in snvs + cnas:
         if mut.gene in cc and (mut.mut_type != SNV or INACTIVE_SNV not in M[mut.gene][mut.sample]):
             M[mut.gene][mut.sample].append(mut.mut_type)
             samples.add(mut.sample)
     data['M'] = M
+
+    for fusion in fusions:
+        if fusion.genes[0] in cc:
+            M[fusion.genes[0]][fusion.sample].append(FUSION)
+            samples.add(fusion.sample)
+        if fusion.genes[1] in cc:
+            M[fusion.genes[1]][fusion.sample].append(FUSION)
+            samples.add(fusion.sample)
 
     if sample2type:
         reduced_s2t = dict()
@@ -138,6 +150,7 @@ def run(args):
     cnas = hnio.load_cnas(args.cna_file, genes, samples) if args.cna_file else []
     inactivating_snvs = hnio.load_inactivating_snvs(args.inactivating_snvs_file, genes, samples) \
                             if args.inactivating_snvs_file else []
+    fusions = hnio.load_fusions(args.fusions_file, genes, samples) if args.fusions_file else []
     sample2type = hnio.load_sample_types(args.type_file) if args.type_file else None
     subnetworks = get_subnetworks(args.subnetworks_file)
 
@@ -145,13 +158,15 @@ def run(args):
     
     for subnetwork in subnetworks:
         print "Generating oncoprint for subnetwork %s" % subnetwork.index
-        data = get_data_for_cc(subnetwork.genes, snvs, cnas, inactivating_snvs, sample2type)
+        data = get_data_for_cc(subnetwork.genes, snvs, cnas, inactivating_snvs, fusions, sample2type)
         json.dump(data, open('%s/data.json' % args.output_directory, 'w'), indent=4)
 
         os.system('node drawOncoprint.js --json=%s/data.json --outdir=%s --width=%s --style=%s' % 
             (args.output_directory, args.output_directory, args.width, '%s/styles.json' % args.output_directory))
         os.rename('%s/oncoprint.svg' % args.output_directory,
          		  '%s/oncoprint_%s.svg' % (args.output_directory, subnetwork.index))
+        os.rename('%s/sampleTyLegend.svg' % args.output_directory,
+                  '%s/sampleTyLegend%s.svg' % (args.output_directory, subnetwork.index))
 
     os.remove('%s/data.json' % args.output_directory)
     os.remove('%s/styles.json' % args.output_directory)
