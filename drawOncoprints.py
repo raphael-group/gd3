@@ -127,6 +127,7 @@ def get_data_for_cc(cc, snvs, cnas, inactivating_snvs, fusions, sample2type):
     else:
         reduced_s2t = dict((s, DEFAULT_TYPE) for s in samples)
     data['sample2ty'] = reduced_s2t
+    data['sampleTypes'] = list(set(sample2type.values())) if sample2type else [DEFAULT]
     
     return data
 
@@ -165,8 +166,6 @@ def run(args):
             (args.output_directory, args.output_directory, args.width, '%s/styles.json' % args.output_directory))
         os.rename('%s/oncoprint.svg' % args.output_directory,
          		  '%s/oncoprint_%s.svg' % (args.output_directory, subnetwork.index))
-        os.rename('%s/sampleTyLegend.svg' % args.output_directory,
-                  '%s/sampleTyLegend%s.svg' % (args.output_directory, subnetwork.index))
 
     os.remove('%s/data.json' % args.output_directory)
     os.remove('%s/styles.json' % args.output_directory)
