@@ -45,11 +45,17 @@ def parse_args(raw_args):
                               column of each line is a sample ID and the second column is a type.\
                               If not provided, all samples are assumed to be of the same default\
                               type.')
+    parser.add_argument('-y', '--style_file', default='js/styles/default-style.json',
+                        help='Path JSON file defining styles. If not provided, sensible defaults\
+                              will be used.')
     parser.add_argument('-l', '--color_file',
-    					help='Path to tab-separated file listing a sample type in the first column\
-    					      and the color that should be used for that sample type in the second\
-    					      column. If none provided, samples will be colored according to\
-    					      exclusivity and co-occurrence.')
+                        help='Path to tab-separated file listing a sample type in the first column\
+                              and the color that should be used for that sample type in the second\
+                              column. Note that this color map overwrites any that might be\
+                              included in the style file. If none provided and there is a single\
+                              sample type, samples will be colored according to exclusivity and\
+                              co-occurrence. Otherwise, samples will be colored by type with an\
+                              arbitrary color mapping.')
     parser.add_argument('-w', '--width', type=int, default=900,
                         help='Width in pixels for oncoprints.')
     parser.add_argument('-o', '--output_directory', required=True,
@@ -68,10 +74,15 @@ def valid_cna_filter_thresh(string):
             raise argparse.ArgumentTypeError("cna_filter_threshold must be > .5")
         return value
 
-def write_color_file(input_color_file, output_color_file):
-	arrs = [line.split() for line in open(input_color_file)]
-	colors = dict([(arr[0], arr[1]) for arr in arrs])
-	json.dump(colors, open(output_color_file, 'w'), indent=4)
+def write_style_file(input_style_file, color_file, output_style_file):
+    styles = json.load(open(input_style_file))
+
+    if color_file:
+        arrs = [line.split() for line in open(color_file)]
+        sampleColors = dict([(arr[0], arr[1]) for arr in arrs])
+        styles['global']['colorSchemes']['sampleType'] = sampleColors
+
+    json.dump(styles, open(output_style_file, 'w'), indent=4)
 
 DEFAULT_TYPE = 'DEFAULT'
 
@@ -130,26 +141,20 @@ def run(args):
     sample2type = hnio.load_sample_types(args.type_file) if args.type_file else None
     subnetworks = get_subnetworks(args.subnetworks_file)
 
+    write_style_file(args.style_file, args.color_file, '%s/styles.json' % args.output_directory)
+    
     for subnetwork in subnetworks:
         print "Generating oncoprint for subnetwork %s" % subnetwork.index
         data = get_data_for_cc(subnetwork.genes, snvs, cnas, inactivating_snvs, sample2type)
         json.dump(data, open('%s/data.json' % args.output_directory, 'w'), indent=4)
-        
-        if args.color_file:
-        	write_color_file(args.color_file, '%s/colors.json' % args.output_directory)
-        	color_arg_string = '--sample_coloring=%s' % ('%s/colors.json' % args.output_directory)
-        else:
-        	color_arg_string = ''
 
-        os.system('node drawOncoprint.js --json=%s/data.json --outdir=%s --width=%s %s' % 
-            (args.output_directory, args.output_directory, args.width, color_arg_string))
+        os.system('node drawOncoprint.js --json=%s/data.json --outdir=%s --width=%s --style=%s' % 
+            (args.output_directory, args.output_directory, args.width, '%s/styles.json' % args.output_directory))
         os.rename('%s/oncoprint.svg' % args.output_directory,
          		  '%s/oncoprint_%s.svg' % (args.output_directory, subnetwork.index))
-        if args.color_file:
-	        os.rename('%s/sampleTyLegend.svg' % args.output_directory,
-	         		  '%s/sampleTyLegend%s.svg' % (args.output_directory, subnetwork.index))
+
     os.remove('%s/data.json' % args.output_directory)
-    if args.color_file: os.remove('%s/colors.json' % args.output_directory)
+    os.remove('%s/styles.json' % args.output_directory)
 
 if __name__ == "__main__":
     run(parse_args(sys.argv[1:]))

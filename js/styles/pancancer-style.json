@@ -1,6 +1,22 @@
 { "global":{
     "colorSchemes": {
-        "__COMMENT__": "You can provide colors for each sample type in a dictionary named 'sampleType'",
+        "sampleType": {
+            "EBV": "#A6CEE3", 
+            "BLCA": "#A6CEE3",
+            "BRCA": "#1F78B4",
+            "COADREAD":"#B2DF8A",
+            "GBM":"#33A02C",
+            "SCNAL":"#33A02C", 
+            "HNSC":"#FB9A99",
+            "KIRC":"#E31A1C",
+            "LAML":"#FDBF6F",
+            "LUAD":"#FF7F00",
+            "LUSC":"#CAB2D6",
+            "SCNAH":"#6A3D9A",
+            "UCEC":"#B15928",
+            "OV":"#6A3D9A",
+            "GASTRIC": "purple" 
+        },
         "network": {
             "Multinet": "rgb(92, 128, 178)",
             "iRefIndex": "rgb(140, 91, 56)",
