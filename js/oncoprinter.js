@@ -16,7 +16,7 @@ function oncoprinter(el, M, sample2ty, coverage, styling){
     // Parse the styles into shorter variable handles
     var style              = styling.global
     , oncoStyle            = styling.oncoprint
-    , sampleType2color     = style.colorSchemes.sampleType
+    , sampleType2color     = style.colorSchemes.sampleType || {}
     , width                = oncoStyle.width
     , colorSampleTypes     = oncoStyle.colorSampleTypes
     , coocurringColor      = oncoStyle.coocurringColor
@@ -32,11 +32,20 @@ function oncoprinter(el, M, sample2ty, coverage, styling){
 
     // Determine how many cancer types are in the data
     var tys = [];
-    for (i = 0; i < samples.length; i++){
+    for (var i = 0; i < samples.length; i++){
         if (tys.indexOf(sample2ty[samples[i]]) == -1)
             tys.push(sample2ty[samples[i]]);
     }
     tys.sort();
+
+    // Create a sampleType -> color map if it wasn't provided
+    var tysWithColor = tys.filter(function(t){ return t in sampleType2color; }).length;
+    if (tysWithColor == 0){
+        var colors = d3.scale.category20()
+        , sampleType2color = {};
+        for (var i = 0; i < tys.length; i++)
+            sampleType2color[tys[i]] = colors(i);
+    }
 
     // Default parameters for the images to be drawn
     var multiCancer = tys.length > 1 && colorSampleTypes
@@ -500,7 +509,7 @@ function oncoprinter(el, M, sample2ty, coverage, styling){
     // Deletions (down ticks)
     mutationLegend.append("rect")
         .attr("x", left)
-		.attr("y", geneHeight/2)
+        .attr("y", geneHeight/2)
         .attr("height", geneHeight/2)
         .attr("width", mutationRectWidth)
         .style("fill", style.blockColorMedium)
