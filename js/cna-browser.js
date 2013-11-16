@@ -38,22 +38,7 @@ var ids = {
  browserLeftAreaGenes: 'browserLeftAreaGenes'
 }
 
-var colors = {
- black: '#000000',
- deepTufts: '#1B75BB',
- grayMedium: '#CCCCCC',
- nearBlack: '#555555',
- segBlack: '#777777',
- nearWhite: '#EEEEEE',
- offBlack: '#2D2D2D',
- red: '#FF0000',
- smokeyWhite: '#E7E5E6',
- white: '#FFFFFF',
- yellow: '#FFCC33',
- darkred: '#B82E00',
- darkblue: '#003DF5'
-}
-
+var style = null;
 var seg = {};
 var sample2ty = {};
 var region = {};
@@ -83,12 +68,18 @@ function set_s2ty(in_sample2ty){
   sample2ty = in_sample2ty;
 }
     
-function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region, width){
+function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region, in_style){
   // Convert existing gene data into a JSON object
-  seg = in_seg;
+  seg = in_seg; 
+  style = in_style
+  , cna_style = style.cnabrowser
+  , sampleType2color = style.global.colorSchemes.sampleType || {}
+  , global_color = style.global
+
   region = in_region;
   sample2ty = in_sample2ty;
-  
+  width = cna_style.width;
+
   geneJSON = gene.map(function(d) {
     return { 'x0':d[0], 'x1':d[1], 'label':d[2], 'selected':d[2]==selectedG ? 'true': 'false' };
   });
@@ -102,7 +93,7 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
   }
   
   var segHCount = 0;
-  
+
   for (var i = 0; i < seg.length; i++){
     segHCount+=7;
     for (var j = 0; j < seg[i]['seg'].length; j++){
@@ -125,7 +116,6 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
   chrm = region[2];
   
   for (var i=0; i<cliqJSON.length; i++){
-    console.log(i);
     maxpeakJSON.unshift({});
     segJSON.unshift({});
     wSegY.unshift({});
@@ -172,7 +162,7 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
   div_browserContainer.setAttribute('id', ids.browserContainer);
   div_browserHeaderContainer.setAttribute('id', ids.browserHeaderContainer);
   //div_browserInfoContainer.setAttribute('id', ids.browserInfoContainer);
-  div_browserLeftAreaContainer.setAttribute('id', ids.browserLeftAreaContainer);
+  //div_browserLeftAreaContainer.setAttribute('id', ids.browserLeftAreaContainer);
   div_browserRightAreaContainer.setAttribute('id', ids.browserRightAreaContainer);
   div_browserViewContainer.setAttribute('id', ids.browserViewContainer);
   div_geneBarContainer.setAttribute('id', ids.geneBarContainer);
@@ -181,7 +171,7 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
 
   div_browserContainer.appendChild(div_browserHeaderContainer);
   div_browserContainer.appendChild(div_browserInfoContainer);
-  div_browserContainer.appendChild(div_browserLeftAreaContainer);
+  //div_browserContainer.appendChild(div_browserLeftAreaContainer);
   div_browserContainer.appendChild(div_browserRightAreaContainer);
   div_browserHeaderContainer.appendChild(div_headerInfoContainer);
   div_browserHeaderContainer.appendChild(div_rangeInfoContainer);
@@ -212,12 +202,7 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
 ////////////////////////////////////////////////////////////////////////////
 // Copy Number View
 function BrowserHeader() {
-  //d3.select('#'+ids.headerInfoContainer).append('h1')
-  //  .text("BrunoBrowser");
-  //var divHeader = document.getElementById(ids.headerInfoContainer);
-  //divHeader.setAttribute("style","width:" + browserHeaderText + "px"); 
   d3.select('#'+ids.rangeInfoContainer);
-    //.text("Selection");
   var divRange = document.getElementById(ids.rangeInfoContainer);
   divRange.setAttribute("style","width:" + 4*browserHeaderText + "px");  
   d3.select('#'+ids.rangeInfoContainer).text("Chromosome: "+ chrm + ", Start-End: " +allmin + "-" + allmax);
@@ -278,39 +263,8 @@ function drawCliqData(dataSrc, minVal, maxVal, dataMax) {
     return scliq;
   }
 
-  //var maxSegYLoc = d3.max(segJSON, function(d) { return d.y; });  
   var shownCliq = getShownCliq(dataSrc, minVal, maxVal);
 
-  /*
-  browserViewSVG.selectAll('rect')
-    .data(dataSrc)
-    .enter().append('rect')
-      .attr('fill', function (d) {return d.color;}) 
-      .attr('x', function(d) {return normalize(d.x0, minVal, maxVal);})
-      .attr('y', function(d) {return d.y;})
-      .attr('width', function(d) {
-          var w = normalize(d.x1, minVal, maxVal) - normalize(d.x0, minVal, maxVal);
-          return w < 1 ? 1 : w;})
-      .attr('height', maxSegYLoc)
-      .attr('id', function (d) { return d.label; })
-    .append('title')
-      .text(function(d) { return d.label });
-  */
-  /*
-  browserViewSVG.selectAll('rect')
-    .data(dataMax)
-    .enter().append('rect')
-      .attr('fill', 'rgba(187,187,187, 0.5)')
-      .attr('x', function(d) {return normalize(d.x0, minVal, maxVal);})
-      .attr('y', function(d) {return d.y;})
-      .attr('width', function(d) {
-          var w = normalize(d.x1, minVal, maxVal) - normalize(d.x0, minVal, maxVal);
-          return w < 1 ? 1 : w;})
-      .attr('height', maxSegYLoc)
-      .attr('id', function (d) { return d.label; })
-    .append('title')
-      .text(function(d) { return d.gene }); 
-  */
   return shownCliq;
 }
 
@@ -325,9 +279,7 @@ function BrowserView(divContainer) {
     }
     return scliq;
   }
-  //var maxSegXLoc = d3.max(segJSON, function(d) { return d.x1; });
-  //var maxSegYLoc = d3.max(segJSON, function(d) { return d.y; });
-  //var minSegXLoc = d3.min(segJSON, function(d) { return d.x0; });
+  
   var maxSegXLoc = region[1];
   var minSegXLoc = region[0];
   shownCliq = getShownCliq(cliqJSON, minSegXLoc, maxSegXLoc); 
@@ -335,7 +287,7 @@ function BrowserView(divContainer) {
   var maxSegYLoc = test[2];
 
   browserViewSVG = createSvg('browserView', browserViewW, maxSegYLoc,//browserViewH, 
-                              colors.white, divContainer);
+                              global_color.white, divContainer);
 
   drawData(cliqJSON, segJSON, minSegXLoc, maxSegXLoc, maxpeakJSON, wSegY);  
 }
@@ -354,24 +306,7 @@ Array.prototype.hasObject = (
 	  });
 
 function regenerate(scliq, dcliq, dseg, min, max, dmax){
-  /*
-  var tmp_weighted_seg_unq = new Array();
-  var tmp_weighted_seg_up = new Array();
-  var tmp_weighted_seg_down = new Array();
-  seg_label = {};
-  Object.keys(scliq).forEach(function(k){
-    //console.log(k+"\n")
-    cliqUniCNA[k].forEach(function (element) {
-		tmp_weighted_seg_unq.push(element);
-    })      
-    cliqUpCNA[k].forEach(function (element) {
-	  tmp_weighted_seg_up.push(element);
-    })      
-    cliqDownCNA[k].forEach(function (element) {
-	  tmp_weighted_seg_down.push(element);
-    })      
-  });
-  */  
+   
   var newsegJSON = new Array()
   var newwSegY = new Array()
   var tmp_patOrder_inside = {};
@@ -391,7 +326,6 @@ function regenerate(scliq, dcliq, dseg, min, max, dmax){
   
   var segHCount = 0;
   var tmpwSegY = segHCount;
-  //segHCount += 23
 
   Object.keys(tmp_patOrder_inside).forEach(function(i) {
     segHCount+=7;
@@ -403,11 +337,6 @@ function regenerate(scliq, dcliq, dseg, min, max, dmax){
   })
     
   newwSegY.push({'x0': min, 'x1':max, 'y':tmpwSegY});  
-  
-  //for (var i=0;i<dcliq.length;i++){
-    //newsegJSON.unshift({});
-    //newwSegY.unshift({}); 
-  //}
   
   return [newsegJSON, newwSegY, segHCount+7];
 }
@@ -429,13 +358,9 @@ function drawData(dataCliq, dataSeg, minVal, maxVal, dataMax, dataSegY) {
   }
 
   shownCliq = getShownCliq(dataCliq, minVal, maxVal); 
-  //Object.keys(shownCliq).forEach(function(d){alert(d);});
-  test = regenerate(shownCliq, dataCliq, dataSeg, minVal, maxVal, dataMax);  
-  //shownSeg, shownSegY
+  test = regenerate(shownCliq, dataCliq, dataSeg, minVal, maxVal, dataMax);    
   drawSegData(test[0], minVal, maxVal, test[1]);
-  //console.log(seg[0]['seg'][0]['x0']);
-  //BrowserLeftArea(minVal, maxVal, 1);
-  //drawSegData(dataSeg, minVal, maxVal, dataSegY);
+  
 }
 
 function drawSegData(dataSrc, minVal, maxVal, dataSegY) {
@@ -454,7 +379,7 @@ function drawSegData(dataSrc, minVal, maxVal, dataSegY) {
     .data(dataSrc)
     .enter().append('rect')
       //.attr('fill', function (d) {return d.color;}) 
-      .attr('fill', function(d){return coloring["cancer"][sample2ty[d.pat]]})
+      .attr('fill', function(d){return sampleType2color[sample2ty[d.pat]]})
       //.attr('fill', blockColorLight)
       .attr('x', function(d, i) {Px[i] = setX(normalize(d.x1, minVal, maxVal)-normalize(d.x0, minVal, maxVal)); return normalize(d.x0, minVal, maxVal);})
       .attr('y', function(d, i) {Py[i] = d.y; return d.y;})
@@ -479,42 +404,7 @@ function drawSegData(dataSrc, minVal, maxVal, dataSegY) {
             displacement: [3, 12],
             mousemove: false
         };
-    });
-
-  /*
-  browserViewSVG.selectAll('rect')
-    .data(dataSegY)
-    .enter().append('rect')
-    .attr('fill', colors.yellow)
-    .attr('stroke', colors.yellow)
-    .attr('x', function(d) { return normalize(d.x0, minVal, maxVal);})
-    .attr('y', function(d) { return d.y+15;})
-    .attr('width', function(d) {
-          var w = normalize(d.x1, minVal, maxVal) - normalize(d.x0, minVal, maxVal);
-          return w < 1 ? 1 : w;})
-    .attr('height', 2)
-    .attr('id', 'sep');  
-  */
-
-  /*browserViewSVG.selectAll('point')
-    .data(dataSrc)
-    .enter().append("path")
-    .attr('class', 'point')
-    .attr("d", d3.svg.symbol().type("triangle-up").size(function(d){return normalize_ar(minVal, maxVal);}))
-    //.style('stroke', 'rgba(0,0,0,0.2)')
-    .style('fill', 'rgba(0,0,0,0.3)')
-    .attr("transform", function(d) { return "translate(" + (normalize(d.x0, minVal, maxVal)-2) + "," + (d.y+2) + ") rotate(-90)"; })
-    .attr('id', function(d){return 'l'+d.label;});     
-  browserViewSVG.selectAll('point')
-    .data(dataSrc)  
-    .enter().append("path")
-    .attr('class', 'point')
-    .attr("d", d3.svg.symbol().type("triangle-up").size(function(d){return normalize_ar(minVal, maxVal);}))
-    //.style('stroke', 'rgba(0,0,0,0.2)')
-    .style('fill', 'rgba(0,0,0,0.3)')
-    .attr("transform", function(d) { return "translate(" + (normalize(d.x1, minVal, maxVal)+2) + "," + (d.y+2) + ") rotate(90)"; })
-    .attr('id', function(d){return 'r'+d.label;});     
-  */
+    });  
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -541,22 +431,22 @@ function GeneBar(divContainer) {
         return norm(d);
     }
     
-    var geneBarSVG = createSvg(ids.geneBarSVG, width, height, colors.NearBlack, divContainer);
+    var geneBarSVG = createSvg(ids.geneBarSVG, width, height, global_color.white, divContainer);
     //geneBarSVG.setAttribute('id', ids.geneBarSVG);
     geneBarSVG.id = ids.geneBarSVG; 
     // Render details BG
     geneBarSVG.append('rect')
-        .attr('fill', colors.white)
+        .attr('fill', global_color.white)
         .attr('height', detailsH)
-		.attr('stroke', colors.nearWhite)
+		.attr('stroke', global_color.nearWhite)
         .attr('width', detailsW)
         .attr('x', detailsMargin.left)
 		.attr('y', detailsMargin.top);
     // Render overview BG
     geneBarSVG.append('rect')
-        .attr('fill', colors.white)
+        .attr('fill', global_color.white)
         .attr('height', overviewH)
-		.attr('stroke', colors.nearWhite)
+		.attr('stroke', global_color.nearWhite)
         .attr('width', overviewW)
         .attr('x', margin.left)
 		.attr('y', margin.top);
@@ -580,12 +470,12 @@ function GeneBar(divContainer) {
     var x = d3.scale.linear()
             .range([0, width]);
    
-    var geneStripeColor = colors.nearBlack; 
+    var geneStripeColor = global_color.blockColorStrongest; 
 
     geneBarOverview.selectAll('rect')
         .data(geneJSON)
         .enter().append('rect')
-        .attr('fill', function (d) {return d.selected === 'true' ? selectedColor : geneStripeColor;})
+        .attr('fill', function (d) {return d.selected === 'true' ? global_color.selectedColor : geneStripeColor;})
         //.attr('stroke', colors.smokeyWhite)
         .attr('x', function(d) {return normalize(d.x0, minGeneXLoc, maxGeneXLoc);})
         .attr('y', 0)
@@ -602,8 +492,8 @@ function GeneBar(divContainer) {
         .on('brushend', brushend))
         .selectAll('rect')
         .attr('height', overviewH)
-        .attr('fill', blockColorLight)
-        .attr('stroke', blockColorStrong)
+        .attr('fill', style.blockColorLight)
+        .attr('stroke', style.blockColorStrong)
         .style('fill-opacity', .5);
     
     
@@ -616,7 +506,7 @@ function GeneBar(divContainer) {
         var rec = geneBarDetails.selectAll('rect')
         .data(dataSrc)
         .enter().append('rect')
-        .attr('fill', function (d) {return d.selected === 'true' ? selectedColor : geneStripeColor;})
+        .attr('fill', function (d) {return d.selected === 'true' ? global_color.selectedColor : geneStripeColor;})
         .attr('x', function(d, i) {Px[i] = detailsMargin.left + normalize(d.x0, minVal, maxVal); return detailsMargin.left + normalize(d.x0, minVal, maxVal);})
         .attr('y', 0)
         .attr('width', function(d) {var w = normalize(d.x1, minVal, maxVal) - normalize(d.x0, minVal, maxVal);
@@ -640,7 +530,6 @@ function GeneBar(divContainer) {
                     mousemove: false
                 };
             });
-
     }
     
     function brushstart() {
@@ -705,53 +594,26 @@ function ColorLuminance(hex, lum, op) {
 }
 
 
-function BrowserLeftArea() {
-
-  function normalize(d, min, max) {
-    var norm = d3.scale.linear().domain([min, max]).range([0, browserViewW]);
-    return norm(d);
-  }
-  
-  var div_genes = document.createElement('div');
-  div_genes.setAttribute('id', ids.browserLeftAreaGenes);
-  var genesH = browserH - geneBarH;
-  div_genes.setAttribute('style', 'height:' + genesH + 'px');
-  document.getElementById(ids.browserLeftAreaContainer).appendChild(div_genes);
-  
-
-  
-  //d3.select('#'+ids.browserLeftAreaGenes).selectAll('div')
-  //    .data(geneJSON)
-  //    .enter().append('p')
-  //    .attr('id', function(d) { return 'div_' + d.label; })
-  //    .attr('class', 'geneListItem')
-  //    .on('click', clickEvent)
-  //    .text(function(d){return d.label;});
-  // TODO (connor): make collapsable menubar s.t. buckets = target regions,
-  //    contents = genes that intersect with that target region
-  
-}
-
 ////////////////////////////////////////////////////////////////////////////
 // Utility Functions
 
-function createSvg(c, width, height, bgColor) { // {string} className, width, height
+function createSvg(c, width, height, in_color) { // {string} className, width, height
 	return d3.select('body').append('svg')
             .attr('class', c)
       		.attr('height', height)
             .attr('width', width)
-    		.style('background', bgColor)
+    		.style('background', in_color)
     		.style('display', "block")
     		.style('height', height)
     		.style('width', width);
 }
 
-function createSvg(c, width, height, bgColor, targetId) { // {string} className, width, height
+function createSvg(c, width, height, in_color, targetId) { // {string} className, width, height
 	return d3.select(targetId).append('svg')
               .attr('class', c)
       		    .attr('height', height)
               .attr('width', width)
-    	      	.style('background', bgColor)
+    	      	.style('background', in_color)
     	      	.style('display', 'block')
     		      .style('height', height)
     	      	.style('width', width);

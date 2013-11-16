@@ -35,7 +35,9 @@
     "blockColorStrong": "#7F8C8D",
     "blockColorMedium": "#95A5A6",
     "blockColorLight": "#BDC3C7",
-    "blockColorLightest": "#ECF0F1"
+    "blockColorLightest": "#ECF0F1",
+    "nearWhite": "#EEEEEE",
+    "white": "#FFFFFF"
   },
   "subnetwork":{
     "hot": "rgb(255, 51, 51)",
@@ -67,5 +69,6 @@
     "genomeHeight": 20,
     "radius": 5,
     "legendSymbolHeight": 14
-  }
+  },
+  "cnabrowser":{}
 }
