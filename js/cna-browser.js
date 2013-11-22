@@ -1,12 +1,9 @@
 
 
-var browserW = 1200;
-var browserH = 200;
-var browserLeftW = 300;
+var browserW;
+var browserH;
 var browserHeaderText = 150;
-var browserRightAreaW = browserW - browserLeftW - 10; // -10 for scroll bar
-var browserLeftAreaW = browserLeftW;
-var browserLeftAreaH = browserH;
+var browserRightAreaW; // -10 for scroll bar
 var browserSVG;
 
 var geneBarW = browserRightAreaW;
@@ -21,10 +18,6 @@ var browserViewSVG;
 var ids = {
  browserContainer: 'browserContainer',
  browserHeaderContainer: 'browserHeaderContainer',
- //browserInfoContainer: 'browserInfoContainer',
- browserLeftAreaContainer: 'browserLeftAreaContainer',
- browserLeftAreaGenes: 'browserLeftAreaGenes',
- browserLeftAreaHeader: 'browserLeftAreaHeader',
  browserRightAreaContainer: 'browserRightAreaContainer',
  browserViewContainer: 'browserViewContainer',
  container : 'cnas-svg',
@@ -56,14 +49,18 @@ var cliqColor = {};
 var peakLabel = {};
 var chrm = "";
 var typeCNA = "";
-var wSegY = new Array();
+var samplelst = new Array();
 var tmpwSegY = 0;
+var init_intervalH = 50;
 
 var xDomainStart = 0;
 var xDomainEnd = browserViewW;
 var allmin = 0;
 var allmax = 0;
-
+var genomeHeight = 25;
+var intervalH = 7;
+var x, xAxis, zoom, svg;
+var genes, geneLabels, genome, geneGroups, intervals, ints;
 function set_s2ty(in_sample2ty){
   sample2ty = in_sample2ty;
 }
@@ -81,7 +78,7 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
   width = cna_style.width;
 
   geneJSON = gene.map(function(d) {
-    return { 'x0':d[0], 'x1':d[1], 'label':d[2], 'selected':d[2]==selectedG ? 'true': 'false' };
+    return { 'fixed':d[2]==selectedG ? true: false , 'x0':d[0], 'x1':d[1], 'label':d[2], 'selected':d[2]==selectedG ? true: false };
   });
 
   cliqJSON = cliq.map(function(d) {
@@ -92,14 +89,15 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
     cliqColor[cliq[i][3]] = cliq[i][2];    
   }
   
-  var segHCount = 0;
-
+  var segHCount = init_intervalH;
+  samplelst = new Array();
   for (var i = 0; i < seg.length; i++){
-    segHCount+=7;
+    segHCount+=intervalH;
+    samplelst.push(seg[i]['pat']);
     for (var j = 0; j < seg[i]['seg'].length; j++){
       segJSON.push({'x0':seg[i]['seg'][j]['x0'], 'x1':seg[i]['seg'][j]['x1'], 'label': seg[i]['seg'][j]['label'], 'y': segHCount, 'pat': seg[i]['pat']});                
-      seg_label[seg[i]['seg'][j]['label']] = {'x0':seg[i]['seg'][j]['x0'], 'x1':seg[i]['seg'][j]['x1'], 'y': segHCount};
-      wSegY.unshift({});
+      //seg_label[seg[i]['seg'][j]['label']] = {'x0':seg[i]['seg'][j]['x0'], 'x1':seg[i]['seg'][j]['x1'], 'y': segHCount};
+      //wSegY.unshift({});
     }
   }
 
@@ -109,38 +107,17 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
   allmin = region[0];
   allmax = region[1]
   
-  wSegY.push({'x0': allmin, 'x1':allmax, 'y':tmpwSegY});        
+  //wSegY.push({'x0': allmin, 'x1':allmax, 'y':tmpwSegY});        
 
 
   typeCNA = region[3];
   chrm = region[2];
   
-  for (var i=0; i<cliqJSON.length; i++){
-    maxpeakJSON.unshift({});
-    segJSON.unshift({});
-    wSegY.unshift({});
-  }
-
-  function getShownCliq(dsrc, min, max) { // return cliques that are shown in the range
-    var scliq = {}
-    for (var i=0; i < dsrc.length; i++){
-      if (!(dsrc[i].x0 > max || min > dsrc[i].x1)){        
-        scliq[dsrc[i].label] = '1';
-      }
-    }
-    return scliq;
-  }
   browserW = width;
-  //shownCliq = drawCliqData(cliqJSON, , maxpeakJSON); 
-  shownCliq = getShownCliq(cliqJSON, allmin, allmax); 
-  test = regenerate(shownCliq, cliqJSON, segJSON, allmin, allmax, maxpeakJSON);  
-  browserH = test[2] + geneBarH;
-  //browserH = 400;//regenerate(shownCliq, cliqJSON, segJSON, allmin, allmax, maxpeakJSON)[1];  
-
-  browserRightAreaW = browserW - browserLeftW - 10; // -10 for scroll bar
-  browserLeftAreaW = browserLeftW;
-  browserLeftAreaH = browserH;
-
+  browserH = tmpwSegY + 10 + geneBarH;
+  
+  browserRightAreaW = browserW - 310; // -10 for scroll bar
+  
   geneBarW = browserRightAreaW;
   browserViewW = browserRightAreaW;
   browserViewH = browserH - geneBarH;
@@ -161,8 +138,6 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
 
   div_browserContainer.setAttribute('id', ids.browserContainer);
   div_browserHeaderContainer.setAttribute('id', ids.browserHeaderContainer);
-  //div_browserInfoContainer.setAttribute('id', ids.browserInfoContainer);
-  //div_browserLeftAreaContainer.setAttribute('id', ids.browserLeftAreaContainer);
   div_browserRightAreaContainer.setAttribute('id', ids.browserRightAreaContainer);
   div_browserViewContainer.setAttribute('id', ids.browserViewContainer);
   div_geneBarContainer.setAttribute('id', ids.geneBarContainer);
@@ -171,8 +146,7 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
 
   div_browserContainer.appendChild(div_browserHeaderContainer);
   div_browserContainer.appendChild(div_browserInfoContainer);
-  //div_browserContainer.appendChild(div_browserLeftAreaContainer);
-  div_browserContainer.appendChild(div_browserRightAreaContainer);
+  div_browserContainer.appendChild(div_browserRightAreaContainer); // container for drawing intervals
   div_browserHeaderContainer.appendChild(div_headerInfoContainer);
   div_browserHeaderContainer.appendChild(div_rangeInfoContainer);
   div_browserHeaderContainer.appendChild(div_geneBarContainer);
@@ -180,6 +154,7 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
   
   var fullBrowserH = browserH+1,
       leftBrowserH = browserH - geneBarH;
+
   document.getElementById(ids.container).setAttribute("style", "height:"+fullBrowserH+"px");
   document.getElementById(ids.container).setAttribute("style", "width:"+browserW+"px");
   div_browserContainer.setAttribute("style", "width:" + browserW + "px");
@@ -187,15 +162,13 @@ function cna_browser(el, in_sample2ty, selectedG, gene, cliq, in_seg, in_region,
   div_browserContainer.setAttribute("style", "float:left");
   div_browserRightAreaContainer.setAttribute("style", "width:" + browserRightAreaW + "px");
   div_browserRightAreaContainer.setAttribute("style", "height:" + leftBrowserH + "px");
-  //div_browserLeftAreaContainer.setAttribute("style", "height:" + leftBrowserH + "px");
 
   document.getElementById(ids.container).appendChild(div_browserContainer);
   
 
   BrowserHeader();    
-  BrowserInfo(el, browserH);
-  //BrowserLeftArea();
-  BrowserView('#' + ids.browserRightAreaContainer);
+  BrowserInfo(el, samplelst);
+  BrowserView('#' + ids.browserRightAreaContainer); 
     
 }
 
@@ -205,13 +178,12 @@ function BrowserHeader() {
   d3.select('#'+ids.rangeInfoContainer);
   var divRange = document.getElementById(ids.rangeInfoContainer);
   divRange.setAttribute("style","width:" + 4*browserHeaderText + "px");  
-  d3.select('#'+ids.rangeInfoContainer).text("Chromosome: "+ chrm + ", Start-End: " +allmin + "-" + allmax);
-  GeneBar('#' + ids.browserHeaderContainer);
+  d3.select('#'+ids.rangeInfoContainer).text("Chromosome: "+ chrm + ", Start-End: " +allmin + "-" + allmax);  
 }
 
-function BrowserInfo(el) {
+function BrowserInfo(el, samplelst) {
   var mutationRectWidth = 10
-    , legend_font_size = 11
+    , legend_font_size = 12
     , left = browserW-100;
 
     // Add legend SVG
@@ -224,22 +196,24 @@ function BrowserInfo(el) {
         
     mutationLegend.append("text")
         .attr("x", 10)
-        .attr("y", 35)
-        .style("fill", "#555")
-        .style("font-size", legend_font_size)
-        .text("Zoom in/out");
-    mutationLegend.append("text")
-        .attr("x", 10)
-        .attr("y", 55)
+        .attr("y", 40)
         .style("fill", "#555")
         .style("font-size", legend_font_size)
         .text("Gene");
     mutationLegend.append("text")
         .attr("x", 10)
-        .attr("y", 105)
+        .attr("y", 65)
         .style("fill", "#555")
         .style("font-size", legend_font_size)
         .text("Copy number aberrations");
+
+    mutationLegend.selectAll()
+      .data(samplelst).enter().append('text')    
+      .attr("x", 10)
+      .attr("y", function(d,i){return 82.5+i*intervalH})
+      .style("fill", "#555")
+      .style("font-size", legend_font_size-3)
+      .text(function(d){return d});
 
     left += mutationRectWidth + 10 + 10 + 25;
 }
@@ -247,49 +221,18 @@ function BrowserInfo(el) {
 ////////////////////////////////////////////////////////////////////////////
 // Copy Number View
 
-function drawCliqData(dataSrc, minVal, maxVal, dataMax) {
-  // Normalize a gene location value for positioning in the gene mark bars
-  function normalize(d, min, max) {
-    var norm = d3.scale.linear().domain([min, max]).range([0, browserViewW]);
-    return norm(d);
-  }
-  function getShownCliq(dsrc, min, max) { // return cliques that are shown in the range
-    var scliq = {}
-    for (var i=0; i < dsrc.length; i++){
-      if (!(dsrc[i].x0 > max || min > dsrc[i].x1)){        
-        scliq[dsrc[i].label] = '1';
-      }
-    }
-    return scliq;
-  }
-
-  var shownCliq = getShownCliq(dataSrc, minVal, maxVal);
-
-  return shownCliq;
-}
-
-
 function BrowserView(divContainer) {
-  function getShownCliq(dsrc, min, max) { // return cliques that are shown in the range
-    var scliq = {}
-    for (var i=0; i < dsrc.length; i++){
-      if (!(dsrc[i].x0 > max || min > dsrc[i].x1)){        
-        scliq[dsrc[i].label] = '1';
-      }
-    }
-    return scliq;
-  }
-  
   var maxSegXLoc = region[1];
   var minSegXLoc = region[0];
-  shownCliq = getShownCliq(cliqJSON, minSegXLoc, maxSegXLoc); 
-  test = regenerate(shownCliq, cliqJSON, segJSON, minSegXLoc, maxSegXLoc, maxpeakJSON);  
-  var maxSegYLoc = test[2];
+  var maxSegYLoc = tmpwSegY + 10;
 
-  browserViewSVG = createSvg('browserView', browserViewW, maxSegYLoc,//browserViewH, 
+  browserViewSVG = createSvg('browserView', browserViewW, maxSegYLoc,
                               global_color.white, divContainer);
-
-  drawData(cliqJSON, segJSON, minSegXLoc, maxSegXLoc, maxpeakJSON, wSegY);  
+  
+  drawGene(minSegXLoc, maxSegXLoc);
+  drawSegData(segJSON, minSegXLoc, maxSegXLoc);
+  update_gene(d3.min( x.domain() ), d3.max( x.domain() ));
+  update_interval(d3.min( x.domain() ), d3.max( x.domain() ));
 }
 
 Array.prototype.hasObject = (
@@ -305,7 +248,7 @@ Array.prototype.hasObject = (
 		return (this.indexOf(o) !== -1);
 	  });
 
-function regenerate(scliq, dcliq, dseg, min, max, dmax){
+function regenerate(scliq, dcliq, dseg, min, max, dmax){ // using for get intervals inside the selecting/zomming region
    
   var newsegJSON = new Array()
   var newwSegY = new Array()
@@ -324,11 +267,11 @@ function regenerate(scliq, dcliq, dseg, min, max, dmax){
     }
   }
   
-  var segHCount = 0;
+  var segHCount = init_intervalH;
   var tmpwSegY = segHCount;
 
   Object.keys(tmp_patOrder_inside).forEach(function(i) {
-    segHCount+=7;
+    segHCount+=intervalH;
     for (var j = 0; j < seg[i]['seg'].length; j++){
       newsegJSON.push({'x0':seg[i]['seg'][j]['x0'], 'x1':seg[i]['seg'][j]['x1'], 'label': seg[i]['seg'][j]['label'], 'y': segHCount, 'pat': seg[i]['pat']});   
       seg_label[seg[i]['seg'][j]['label']] = {'x0':seg[i]['seg'][j]['x0'], 'x1':seg[i]['seg'][j]['x1'], 'y': segHCount};
@@ -338,32 +281,67 @@ function regenerate(scliq, dcliq, dseg, min, max, dmax){
     
   newwSegY.push({'x0': min, 'x1':max, 'y':tmpwSegY});  
   
-  return [newsegJSON, newwSegY, segHCount+7];
+  return [newsegJSON, newwSegY, segHCount+intervalH];
 }
 
-function drawData(dataCliq, dataSeg, minVal, maxVal, dataMax, dataSegY) {
-  allmin = minVal;
-  allmax = maxVal;
-  browserViewSVG.selectAll('rect').remove();
-  browserViewSVG.selectAll('path').remove();
+function drawGene(minVal, maxVal){
 
-  function getShownCliq(dsrc, min, max) { // return cliques that are shown in the range
-    var scliq = {}
-    for (var i=0; i < dsrc.length; i++){
-      if (!(dsrc[i].x0 > max || min > dsrc[i].x1)){        
-        scliq[dsrc[i].label] = '1';
-      }
-    }
-    return scliq;
-  }
+  var normalize = d3.scale.linear()
+        .domain([minVal, maxVal])
+        .range([0, browserViewW]);
 
-  shownCliq = getShownCliq(dataCliq, minVal, maxVal); 
-  test = regenerate(shownCliq, dataCliq, dataSeg, minVal, maxVal, dataMax);    
-  drawSegData(test[0], minVal, maxVal, test[1]);
+  genome = svg.append("rect")
+        .attr("class", "genome")
+        .attr("y", 10)
+        .attr("x", 0)
+        .attr("width", browserViewW)
+        .attr("height", genomeHeight - 10)
+        .style("fill", global_color.blockColorLight);
+
+  geneGroups = svg.selectAll(".genes")
+        .data(geneJSON).enter()
+        .append("g")
+        .attr("class", "genes")
   
-}
+  genes = geneGroups.append('rect')        
+        .attr("width", function(d){
+            return normalize(d.x1) - normalize(d.x0);
+        })
+        .attr('height', genomeHeight)
+        .style("fill-opacity", function(d) {return d.selected == true ? 1 : 0.2;})
+        .style('fill', function (d) {return d.selected == true ? global_color.selectedColor : global_color.blockColorMedium;})                          
+        .attr('id', function (d, i) { return "gene-" + i; });
 
-function drawSegData(dataSrc, minVal, maxVal, dataSegY) {
+
+   geneLabels = geneGroups.append("text")
+            .attr('id', function (d, i) { return "gene-label-" +i; })
+            .attr("y", 22.5)
+            .attr("text-anchor", "middle")
+            .style("fill-opacity", function (d) {return d.selected ==true ? 1:0})
+            .style("fill", global_color.textColorStrongest)
+            .text(function(d){  return d.label; });
+
+    geneGroups.on("mouseover", function(d, i){
+            if (d.fixed == false){
+              d3.select(this).selectAll("rect").style("fill", global_color.highlightColor)
+              svg.select("#gene-label-" + i).style("fill-opacity", 1)
+            }
+        })
+        .on("mouseout", function(d, i){
+            if (d.fixed == false){
+              d3.select(this).selectAll("rect").style("fill", function (d) {return d.selected == true ? global_color.selectedColor : global_color.blockColorMedium;})
+              svg.select("#gene-label-" + i).style("fill-opacity", 0)
+            }
+        })
+        .on("dblclick", function(d, i){
+          d.fixed = d.fixed ? false : true;  
+          if (d.fixed == true){ 
+            d3.select(this).selectAll("rect").style("fill", function (d) {return d.selected == true ? global_color.selectedColor : global_color.highlightColor;})       
+            svg.select("#gene-label-" + i).style("fill-opacity", 1)
+          }          
+        });
+}
+function drawSegData(dataSrc, minVal, maxVal) {
   // Normalize a gene location value for positioning in the gene mark bars
   function normalize(d, min, max) {
     var norm = d3.scale.linear().domain([min, max]).range([0, browserViewW]);
@@ -375,199 +353,21 @@ function drawSegData(dataSrc, minVal, maxVal, dataSegY) {
   }
   var Px = {}
   , Py = {};
-  var rec2 = browserViewSVG.selectAll('rect')
-    .data(dataSrc)
-    .enter().append('rect')
-      //.attr('fill', function (d) {return d.color;}) 
-      .attr('fill', function(d){return sampleType2color[sample2ty[d.pat]]})
-      //.attr('fill', blockColorLight)
-      .attr('x', function(d, i) {Px[i] = setX(normalize(d.x1, minVal, maxVal)-normalize(d.x0, minVal, maxVal)); return normalize(d.x0, minVal, maxVal);})
-      .attr('y', function(d, i) {Py[i] = d.y; return d.y;})
-      .attr('width', function(d) {
-          var w = normalize(d.x1, minVal, maxVal) - normalize(d.x0, minVal, maxVal);
-          return w < 1 ? 1 : w;})
-      .attr('height', 5)
-      .attr('id', function (d) { return d.label; })
-      //.append('title')
-      //.text(function(d) { return d.pat });
   
-  if (rec2.tooltip)
-    rec2.tooltip(function(d, i) {
-        var tip = d.pat +"<br/> subtype: "+sample2ty[d.pat]+ "<br/> start: " + d.x0 + "<br/> end:    " + d.x1;
-        return {
-            type: "tooltip",
-            text: tip,
-            detection: "shape",
-            placement: "mouse", 
-            gravity: "right",
-            position: [0, 0],
-            displacement: [3, 12],
-            mousemove: false
-        };
-    });  
+  intervals = svg.selectAll('.intervals')
+    .data(dataSrc)
+    .enter().append('g')
+      .attr("class", "intervals")
+  
+  ints = intervals.append('rect')    
+      .attr('fill', function(d){return sampleType2color[sample2ty[d.pat]]})
+      .attr('width', function(d) {
+          return normalize(d.x1, minVal, maxVal) - normalize(d.x0, minVal, maxVal);
+        })
+      .attr('height', 5)
+      .attr('id', function (d, i) { return "interval-"+i; });      
 }
 
-////////////////////////////////////////////////////////////////////////////
-// GeneBar
-
-function GeneBar(divContainer) {
-    var height = geneBarH,
-        margin = {top: 5, right: 5, bottom: 5, left: 0},
-        width  = geneBarW;
-    
-    var overviewH = 20,
-        overviewW = geneBarW - margin.left - margin.right;
-    
-    var detailsH = 40,
-        detailsW = geneBarW - margin.left - margin.right,
-        detailsMargin = {top: overviewH + margin.top*2, left: margin.left, right: margin.right};
-
-    var maxGeneXLoc = allmax; //d3.max(geneJSON, function (geneTuple) { return geneTuple.x1; });
-    var minGeneXLoc = allmin; //d3.min(geneJSON, function (geneTuple) { return geneTuple.x0; });
-    
-    // Normalize a gene location value for positioning in the gene mark bars
-    function normalize(d, min, max) {
-        var norm = d3.scale.linear().domain([min, max]).range([0, width - margin.left - margin.right]);
-        return norm(d);
-    }
-    
-    var geneBarSVG = createSvg(ids.geneBarSVG, width, height, global_color.white, divContainer);
-    //geneBarSVG.setAttribute('id', ids.geneBarSVG);
-    geneBarSVG.id = ids.geneBarSVG; 
-    // Render details BG
-    geneBarSVG.append('rect')
-        .attr('fill', global_color.white)
-        .attr('height', detailsH)
-		.attr('stroke', global_color.nearWhite)
-        .attr('width', detailsW)
-        .attr('x', detailsMargin.left)
-		.attr('y', detailsMargin.top);
-    // Render overview BG
-    geneBarSVG.append('rect')
-        .attr('fill', global_color.white)
-        .attr('height', overviewH)
-		.attr('stroke', global_color.nearWhite)
-        .attr('width', overviewW)
-        .attr('x', margin.left)
-		.attr('y', margin.top);
-    
-    var geneBarOverview = geneBarSVG.append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-            .attr('id', ids.geneBarOverview),
-        geneBarDetails = geneBarSVG.append('g')
-            .attr('transform', 'translate(' + detailsMargin.left + ',' + detailsMargin.top + ')');
-
-    var brush = d3.svg.brush()
-            .on('brushstart', brushstart)
-            .on('brush', brushmove)
-            .on('brushend', brushend),
-        area = d3.svg.area()
-            .interpolate('monotone')
-            .x0(function(d) { return 100; })
-            .x1(function(d) { return 300; })
-            .y0(height)
-            .y1(function(d) { return 100; });
-    var x = d3.scale.linear()
-            .range([0, width]);
-   
-    var geneStripeColor = global_color.blockColorStrongest; 
-
-    geneBarOverview.selectAll('rect')
-        .data(geneJSON)
-        .enter().append('rect')
-        .attr('fill', function (d) {return d.selected === 'true' ? global_color.selectedColor : geneStripeColor;})
-        //.attr('stroke', colors.smokeyWhite)
-        .attr('x', function(d) {return normalize(d.x0, minGeneXLoc, maxGeneXLoc);})
-        .attr('y', 0)
-        .attr('width', function(d) {var w = normalize(d.x1, minGeneXLoc, maxGeneXLoc) - normalize(d.x0, minGeneXLoc, maxGeneXLoc);
-                                    return w < 1 ? 1 : w;})
-        .attr('height', overviewH)
-        .attr('id', function (d) { return d.label; });
-    
-    geneBarOverview.append('g')
-        .attr('class', 'brush')
-        .call(d3.svg.brush().x(x)
-        .on('brushstart', brushstart)
-        .on('brush', brushmove)
-        .on('brushend', brushend))
-        .selectAll('rect')
-        .attr('height', overviewH)
-        .attr('fill', style.blockColorLight)
-        .attr('stroke', style.blockColorStrong)
-        .style('fill-opacity', .5);
-    
-    
-    drawDetailsBar(geneJSON, minGeneXLoc, maxGeneXLoc);
-    
-
-    function drawDetailsBar(dataSrc, minVal, maxVal) {
-        
-        var Px = {};
-        var rec = geneBarDetails.selectAll('rect')
-        .data(dataSrc)
-        .enter().append('rect')
-        .attr('fill', function (d) {return d.selected === 'true' ? global_color.selectedColor : geneStripeColor;})
-        .attr('x', function(d, i) {Px[i] = detailsMargin.left + normalize(d.x0, minVal, maxVal); return detailsMargin.left + normalize(d.x0, minVal, maxVal);})
-        .attr('y', 0)
-        .attr('width', function(d) {var w = normalize(d.x1, minVal, maxVal) - normalize(d.x0, minVal, maxVal);
-                                    return w < 1 ? 1 : w;})
-        .attr('height', detailsH)
-        //.append('title').text(function(d) { return d.label;  })
-        .attr('id', function (d) { return d.label; });
-     
-
-        if (rec.tooltip)
-            rec.tooltip(function(d, i) {
-                var tip = d.label;
-                return {
-                    type: "tooltip",
-                    text: tip,
-                    detection: "shape",
-                    placement: "mouse",
-                    gravity: "right",
-                    position: [0, 0],
-                    displacement: [3, 25],
-                    mousemove: false
-                };
-            });
-    }
-    
-    function brushstart() {
-      geneBarOverview.classed('selecting', true);
-    }
-    
-    function brushmove() {
-      var s = d3.event.target.extent();
-      geneBarOverview.classed('selected', function(d) { return s[0] <= d && d <= s[1]; });
-      geneBarDetails.selectAll('rect').remove();
-      if(s[0] == s[1]) { // If there is no selection (i.e., start or end brush)
-        drawDetailsBar(geneJSON, minGeneXLoc, maxGeneXLoc);
-        xDomainStart = minGeneXLoc;
-        xDomainEnd = maxGeneXLoc;
-        d3.select('#'+ids.rangeInfoContainer).text("Chromosome: "+ chrm + ", Start-End: " +xDomainStart + "-" + xDomainEnd);
-
-
-        drawData(cliqJSON, segJSON, xDomainStart, xDomainEnd, maxpeakJSON, wSegY);
-
-        //drawSegData(segJSON, xDomainStart, xDomainEnd);
-      } else {
-        var newData = geneJSON.filter(function(d) { return d.x0 <= minGeneXLoc+s[1]*(maxGeneXLoc-minGeneXLoc+1) && d.x1 >= minGeneXLoc+s[0]*(maxGeneXLoc-minGeneXLoc+1); });
-        var maxNewX = d3.max(newData, function (geneTuple) { return geneTuple.x1; });
-        var minNewX = d3.min(newData, function (geneTuple) { return geneTuple.x1; });
-        xDomainStart = minNewX;
-        xDomainEnd = maxNewX;
-        d3.select('#'+ids.rangeInfoContainer).text("Chromosome: "+ chrm + ", Start-End: " +xDomainStart + "-" + xDomainEnd);
-        //console.log(maxNewX);
-        drawDetailsBar(newData, minNewX, maxNewX);
-        drawData(cliqJSON, segJSON, minNewX, maxNewX, maxpeakJSON, wSegY);
-        //drawSegData(segJSON, minNewX, maxNewX);
-      }
-    }
-    
-    function brushend() {
-      geneBarOverview.classed('selecting', !d3.event.target.empty());
-    }
-}
 
 ////////////////////////////////////////////////////////////////////////////
 // Left Bar
@@ -597,24 +397,96 @@ function ColorLuminance(hex, lum, op) {
 ////////////////////////////////////////////////////////////////////////////
 // Utility Functions
 
-function createSvg(c, width, height, in_color) { // {string} className, width, height
-	return d3.select('body').append('svg')
-            .attr('class', c)
-      		.attr('height', height)
-            .attr('width', width)
-    		.style('background', in_color)
-    		.style('display', "block")
-    		.style('height', height)
-    		.style('width', width);
-}
-
 function createSvg(c, width, height, in_color, targetId) { // {string} className, width, height
-	return d3.select(targetId).append('svg')
+  
+  var start = allmin
+    , stop = allmax;
+
+    x = d3.scale.linear()
+        .domain([start, stop])
+        .range([0, browserViewW]);
+
+    xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(5)
+        .tickSize(0)
+        .tickPadding(1.25);
+
+    // Defining zoom behavior with D3's built-in zoom functionality
+    zoom = d3.behavior.zoom()
+        .x(x)
+        .scaleExtent([1, 100])
+        .on("zoom", function(){ update(svg); });
+	svg = d3.select(targetId).append('svg')
               .attr('class', c)
       		    .attr('height', height)
               .attr('width', width)
     	      	.style('background', in_color)
     	      	.style('display', 'block')
     		      .style('height', height)
-    	      	.style('width', width);
+    	      	.style('width', width)
+              .call(zoom).on("dblclick.zoom", null);
+
+    var background = svg.append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "background")
+        .style("fill", global_color.bgColor);
+    return svg ;
+}
+
+function update(){
+  d3.select('#'+ids.rangeInfoContainer).text("Chromosome: "+ chrm + ", Start-End: " + parseInt(d3.min( x.domain() )) + "-" +  parseInt(d3.max( x.domain()) ));
+  var curMin = d3.min( x.domain() )
+  , curMax = d3.max( x.domain() )
+  update_gene(curMin, curMax);
+  //drawData(cliqJSON, segJSON, d3.min( x.domain() ), d3.max( x.domain() ), maxpeakJSON, wSegY);
+  update_interval(d3.min( x.domain() ), d3.max( x.domain() ));
+}
+
+function update_interval(curMin, curMax){
+  
+  var normalize = d3.scale.linear()
+        .domain([curMin, curMax])
+        .range([0, browserViewW]);
+  
+
+  ints.attr("transform", function(d, i){
+            return "translate(" + normalize(d.x0) + "," + d.y + ")"
+        });
+
+  ints.attr("width", function(d, i){ return normalize(d.x1) - normalize(d.x0); });
+  if (ints.tooltip)
+    intervals.tooltip(function(d, i) {
+        var tip = d.pat +"<br/> subtype: "+sample2ty[d.pat]+ "<br/> start: " + d.x0 + "<br/> end:    " + d.x1;
+        return {
+            type: "tooltip",
+            text: tip,
+            detection: "shape",
+            placement: "mouse", 
+            gravity: "right",
+            position: [0, 0],
+            displacement: [3, 12],
+            mousemove: false
+        };
+    }); 
+}
+function update_gene(curMin, curMax){
+  var normalize = d3.scale.linear()
+        .domain([curMin, curMax])
+        .range([0, browserViewW]);
+  
+  genes.attr("transform", function(d, i){
+            return "translate(" + normalize(d.x0) + "," + 5 + ")"
+        });
+
+  genes.attr("width", function(d, i){ return normalize(d.x1) - normalize(d.x0); });
+        
+  geneLabels.attr("x", function(d, i){
+                // place the label in the center of whatever portion of the domain is shown
+                var x1 = d3.max( [d.x0, curMin] )
+                ,   x2 = d3.min( [d.x1, curMax] );
+                return x(x1 + (x2-x1)/2);
+    })
 }
