@@ -8,7 +8,7 @@ var jsdom = require('jsdom')
 // Validate args
 var argv = require('optimist').argv;
 if (!( argv.outdir && argv.json )){
-    usage  = "Usage: node drawOncoprint.js --json=</path/to/json>"
+    usage  = "Usage: node lib/old/drawOncoprint.js --json=</path/to/json>"
     usage += " --outdir=</path/to/output> [--width=<width_in_pixels>]"
     usage += " [--style=</path/to/json/file>]"
     console.log(usage);
