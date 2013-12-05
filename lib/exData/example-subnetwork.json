@@ -1,0 +1,190 @@
+{
+	    "edges": [
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB2", 
+            "target": "ERBB3", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "EGFR", 
+            "target": "PTPRB", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB3", 
+            "target": "NRG1", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "EGFR", 
+            "target": "JAK2", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB2", 
+            "target": "PTPRB", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "PTPRC", 
+            "target": "CDH2", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB3", 
+            "target": "EGFR", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB2", 
+            "target": "PTPRC", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB4", 
+            "target": "ERBB3", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "PTPRB", 
+            "target": "CDH2", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "MET", 
+            "target": "PTPRC", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB2", 
+            "target": "EGFR", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB2", 
+            "target": "ERBB4", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "EGFR", 
+            "target": "PTPRC", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB4", 
+            "target": "NRG1", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB2", 
+            "target": "CD44", 
+            "weight": 1
+        }, 
+        {
+            "networks": [
+                "HINT+HI2012"
+            ], 
+            "source": "ERBB3", 
+            "target": "JAK2", 
+            "weight": 1
+        }
+    ], 
+        "nodes": [
+        {
+            "heat": 66, 
+            "name": "MET"
+        }, 
+        {
+            "heat": 58, 
+            "name": "ERBB2"
+        }, 
+        {
+            "heat": 22, 
+            "name": "CD44"
+        }, 
+        {
+            "heat": 20, 
+            "name": "EGFR"
+        }, 
+        {
+            "heat": 19, 
+            "name": "ERBB4"
+        }, 
+        {
+            "heat": 16, 
+            "name": "OBSCN"
+        }, 
+        {
+            "heat": 14, 
+            "name": "NRG1"
+        }, 
+        {
+            "heat": 12, 
+            "name": "JAK2"
+        }, 
+        {
+            "heat": 10, 
+            "name": "CDH2"
+        }, 
+        {
+            "heat": 10, 
+            "name": "ERBB3"
+        }, 
+        {
+            "heat": 10, 
+            "name": "PTPRB"
+        }, 
+        {
+            "heat": 9, 
+            "name": "PTPRC"
+        }
+    ]
+}

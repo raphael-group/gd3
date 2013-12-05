@@ -18,7 +18,7 @@
         color: #D2D8BA;
         font-family: monospace;
       }
-      h1 {
+      h1, p {
         color: #fff;
         text-align: center;
       }
@@ -31,7 +31,7 @@
       }
       .oncoViz {
         float: left;
-        overflow-x: scroll;
+        overflow-x: hidden;
         width: 700px;
       }
       .oncoDesc {
@@ -44,7 +44,8 @@
     </style>
   </head>
   <body>
-    <h1>GD3 Testing Page</h1>
+    <h1>GD3.oncoprint()</h1>
+    <p>Hides 900 lines of code</p>
 
     <div class="oncoContainer">
       <div id="onco1" class="oncoViz"></div>
@@ -153,7 +154,6 @@
             .width(650)
         );
     });
-
     </script>
   </body>
 </html>

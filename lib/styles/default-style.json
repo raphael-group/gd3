@@ -30,7 +30,8 @@
     "netLegendWidth": 100,
     "netLegendBox": 15,
     "edgeWidth": 1.5,
-    "transitionTime": 500
+    "transitionTime": 500,
+    "svgWidth": 500
   },
   "oncoprint":{
     "exclusiveColor": "blue",
