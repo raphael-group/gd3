@@ -14,23 +14,102 @@
       body {
         background-color: #2d2f34;
       }
+      code {
+        color: #D2D8BA;
+        font-family: monospace;
+      }
       h1 {
         color: #fff;
         text-align: center;
+      }
+
+      .oncoContainer {
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        width: 1000px;
+      }
+      .oncoViz {
+        float: left;
+        overflow-x: scroll;
+        width: 700px;
+      }
+      .oncoDesc {
+        border-left: 1px solid #444;
+        float: right;
+        margin: 10px;
+        padding: 10px;
+        width: 259px;
       }
     </style>
   </head>
   <body>
     <h1>GD3 Testing Page</h1>
-    <div id="testChart"></div>
-    <div id="onco1"></div>
-    <hr />
-    <div id="onco2"></div>
-    <hr />
-    <div id="onco3"></div>
-    <hr />
-    <div id="onco4"></div>
-    <hr />
+
+    <div class="oncoContainer">
+      <div id="onco1" class="oncoViz"></div>
+      <div class="oncoDesc">
+        <code>
+          d3.select('#onco1')<br />
+          &nbsp;&nbsp;.datum(data)<br />
+          &nbsp;&nbsp;.call(oncoprint());
+        </code>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+
+    <div class="oncoContainer">
+      <div id="onco2" class="oncoViz"></div>
+      <div class="oncoDesc">
+        <code>
+          d3.select('#onco2')<br />
+          &nbsp;&nbsp;.datum(data)<br />
+          &nbsp;&nbsp;.call(oncoprint()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
+          &nbsp;&nbsp;);
+        </code>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+
+    <div class="oncoContainer">
+      <div id="onco3" class="oncoViz"></div>
+      <div class="oncoDesc">
+        <code>
+        d3.select('#onco3')<br />
+          &nbsp;&nbsp;.datum(data)<br />
+          &nbsp;&nbsp;.call(oncoprint({style: styling})<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addCoverage()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addSortingMenu()<br />
+          &nbsp;&nbsp;);
+        </code>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+
+    <div class="oncoContainer">
+      <div id="onco4" class="oncoViz"></div>
+      <div class="oncoDesc">
+        <code>
+          var styling = {<br />
+          &nbsp;&nbsp;bgColor: '#ccc',<br />
+          &nbsp;&nbsp;blockColorMedium: '#0053b1',<br />
+          &nbsp;&nbsp;coocurringColor: '#361500',<br />
+          &nbsp;&nbsp;exclusiveColor: '#6699CC'<br />
+          };<br />
+          <br />
+          d3.select('#onco4')<br />
+          &nbsp;&nbsp;.datum(data)<br />
+          &nbsp;&nbsp;.call(oncoprint()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addCoverage()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addSortingMenu()<br />
+          &nbsp;&nbsp;);
+        </code>
+      </div>
+      <div style="clear:both"></div>
+    </div>
 
     <script src="util/d3.v3.js"></script>
     <script src="testChart.js"></script>
@@ -71,7 +150,7 @@
             .addCoverage()
             .addLegend()
             .addSortingMenu()
-            .width(800)
+            .width(650)
         );
     });
 
