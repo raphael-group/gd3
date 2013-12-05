@@ -10,7 +10,14 @@
   <body>
     <p>GD3 Testing Page</p>
     <div id="testChart"></div>
-    <div id="oncoprint"></div>
+    <div id="onco1"></div>
+    <hr />
+    <div id="onco2"></div>
+    <hr />
+    <div id="onco3"></div>
+    <hr />
+    <div id="onco4"></div>
+    <hr />
 
     <script src="util/d3.v3.js"></script>
     <script src="testChart.js"></script>
@@ -18,9 +25,33 @@
     <script>
     d3.json('exData/example-oncoprint.json', function(data) {
       var styling = {
-        bgColor: '#eee'
+        bgColor: '#ccc',
+        blockColorMedium: '#0053b1',
+        coocurringColor: '#361500',
+        exclusiveColor: '#6699CC'
       };
-      d3.select('#oncoprint')
+
+      d3.select('#onco1')
+        .datum(data)
+        .call(oncoprint());
+
+      d3.select('#onco2')
+        .datum(data)
+        .call(
+          oncoprint()
+            .addLegend()
+        );
+
+      d3.select('#onco3')
+        .datum(data)
+        .call(
+          oncoprint()
+            .addCoverage()
+            .addLegend()
+            .addSortingMenu()
+        );
+
+      d3.select('#onco4')
         .datum(data)
         .call(
           oncoprint({style: styling})
@@ -31,12 +62,6 @@
         );
     });
 
-
-    d3.json('test.json', function(data) {
-        var chart = d3.select('#testChart')
-          .datum(data)
-            .call(testChart().style({backgroundColor:'#0f0'}));
-      });
-    </script
+    </script>
   </body>
 </html>
