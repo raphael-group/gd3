@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example Testing</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <p>GD3 Testing Page</p>
+    <div id="testChart"></div>
+    <div id="oncoprint"></div>
+
+    <script src="util/d3.v3.js"></script>
+    <script src="testChart.js"></script>
+    <script src="oncoprint.js"></script>
+    <script>
+    d3.json('exData/example-oncoprint.json', function(data) {
+      var styling = {
+        bgColor: '#eee'
+      };
+      d3.select('#oncoprint')
+        .datum(data)
+        .call(
+          oncoprint({style: styling})
+            .addCoverage()
+            .addLegend()
+            .addSortingMenu()
+            .width(800)
+        );
+    });
+
+
+    d3.json('test.json', function(data) {
+        var chart = d3.select('#testChart')
+          .datum(data)
+            .call(testChart().style({backgroundColor:'#0f0'}));
+      });
+    </script
+  </body>
+</html>

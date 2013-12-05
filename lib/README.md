@@ -1,0 +1,1 @@
+This is an effort to make easy-to-use GD3 code, per http://bost.ocks.org/mike/chart/.
