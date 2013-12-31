@@ -66,6 +66,7 @@
   "lolliplot":{
     "margin": 5,
     "height": 200,
+    "width": 500,
     "genomeHeight": 20,
     "radius": 5,
     "legendSymbolHeight": 14

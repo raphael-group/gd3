@@ -12,10 +12,12 @@
     <div id="testChart"></div>
     <div id="oncoprint"></div>
     <div id="subnetwork"></div>
+    <div id="lolliplot"></div>
 
     <script src="util/d3.v3.js"></script>
     <script src="old/oncoprinter.js"></script>
     <script src="old/subnetwork.js"></script>
+    <script src="old/lolliplots.js"></script>
     <script>
     // d3.json('exData/example-oncoprint.json', function(data) {
     //   var el = d3.select('#oncoprint'),
@@ -29,15 +31,38 @@
     //   });
     // });
 
-    d3.json('exData/example-subnetwork.json', function(data) {
-      var el = d3.select('#subnetwork'),
-          edges = data.edges,
-          nodes = data.nodes;
-      console.log(data);
+    // d3.json('exData/example-subnetwork.json', function(data) {
+    //   var el = d3.select('#subnetwork'),
+    //       edges = data.edges,
+    //       nodes = data.nodes;
+    //   console.log(data);
 
-      d3.json('styles/default-style.json', function(styleData) {
+    //   d3.json('styles/default-style.json', function(styleData) {
+    //     console.log(styleData);
+    //     draw_subnetwork(el, nodes, edges, styleData);
+    //   });
+    // });
+
+    d3.json('exData/example-lolliplot.json', function(data) {
+      var el = d3.select('#lolliplot');
+
+      d3.json('styles/pancancer-style.json', function(styleData) {
+        console.log(data);
         console.log(styleData);
-        draw_subnetwork(el, nodes, edges, styleData);
+        //annotate_transcript(el, gene, mutations, proteinDomains, length, styling);
+        for (gKey in Object.keys(data)) {
+          var gene = Object.keys(data)[gKey],
+              transcriptList = Object.keys(data[gene]);
+
+          for (tKey in Object.keys(transcriptList)) {
+            var transcript = transcriptList[tKey],
+                domains = data[gene][transcript].domains,
+                length = data[gene][transcript].length,
+                mutations = data[gene][transcript].mutations;
+
+            annotate_transcript(el, gene, mutations, domains, length, styleData);
+          }
+        }
       });
     });
     </script>

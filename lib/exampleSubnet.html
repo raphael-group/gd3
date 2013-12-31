@@ -36,7 +36,7 @@
       .subDesc {
         border-left: 1px solid #444;
         float: right;
-        height: 225px;
+        min-height: 225px;
         margin: 10px;
         padding: 10px;
         width: 300px;
@@ -51,7 +51,7 @@
       <div class="subViz" id="subnet1"></div>
       <div class="subDesc">
         <code>
-          d3.select('#subnet1')<br />
+          d3.select('#subnet')<br />
           &nbsp;&nbsp;.datum(data)<br />
           &nbsp;&nbsp;.call(subnetwork());
         </code>
@@ -63,7 +63,7 @@
       <div class="subViz" id="subnet2"></div>
       <div class="subDesc">
         <code>
-          d3.select('#subnet2')<br />
+          d3.select('#subnet')<br />
           &nbsp;&nbsp;.datum(data)<br />
           &nbsp;&nbsp;.call(subnetwork()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.addNetworkLegend()<br />
@@ -77,10 +77,18 @@
       <div class="subViz" id="subnet3"></div>
       <div class="subDesc">
         <code>
-          d3.select('#subnet3')<br />
+          var styling = {<br />
+          &nbsp;&nbsp;hot: '#fd4a26',<br />
+          &nbsp;&nbsp;cold: '#0040a3',<br />
+          &nbsp;&nbsp;height: 200,<br />
+          &nbsp;&nbsp;fontColor: '#aaa',<br />
+          &nbsp;&nbsp;nodeRadius: 5<br />
+          }<br />
+          <br />
+          d3.select('#subnet')<br />
           &nbsp;&nbsp;.datum(data)<br />
           &nbsp;&nbsp;.call(<br />
-          &nbsp;&nbsp;&nbsp;&nbsp;subnetwork({style: styling2})<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;subnetwork({style: styling})<br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.addNetworkLegend()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.addGradientLegend()<br />
           &nbsp;&nbsp;);
