@@ -1,5 +1,5 @@
 node_modules/
 dev/
-test/
 *.log
 .DS_Store
+bower_components/

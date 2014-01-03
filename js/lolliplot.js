@@ -1,7 +1,8 @@
 function lolliplots(params) {
   var params = params || {},
       style  = params.style || {},
-      colorSchemes = style.colorSchemes || {};
+      colorSchemes = style.colorSchemes || {},
+      domainDB = params.domainDB || 'pfam';
 
   var blockColorLight = style.blockColorLight || '#BDC3C7',
       blockColorMedium = style.blockColorMedium || '#95A5A6',
@@ -66,7 +67,7 @@ function lolliplots(params) {
       var geneName = data.gene,
           length = data.length,
           mutations = data.mutations,
-          proteinDomains = data.domains;
+          proteinDomains = data.domains[domainDB];
 
       var dataSet = mutations.slice();
 
