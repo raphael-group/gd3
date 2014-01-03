@@ -1,6 +1,6 @@
 {
 	"name" : "gd3",
-	"version" : "0.0.1",
+	"version" : "0.0.1-alpha",
 	"description" : "The genomics D3 library.",
 	"private": true,
 	"engines": {
@@ -16,6 +16,7 @@
 		"bower": "latest"
   	},
 	"repository": {
-		"type": "git"
+		"type": "git",
+		"url": "git://bitbucket.org/raphaellab/gd3.git"
 	}
 }
