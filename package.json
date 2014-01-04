@@ -1,9 +1,21 @@
-{ "name" : "gd3"
-, "version" : "1.0.0"
-, "description" : "The genomics d3 library."
-, "dependencies" :
-  {
-  	"jsdom" : ">=0.8.8",
-  	"optimist": ">= 0.6.0"
-  }
+{
+	"name" : "gd3",
+	"version" : "0.0.1",
+	"description" : "The genomics D3 library.",
+	"private": true,
+	"engines": {
+		"node": "0.10.x",
+		"npm": "1.2.x"
+	},
+	"scripts": {
+		"postinstall": "./node_modules/bower/bin/bower install"
+	},
+	"dependencies": {
+		"jsdom" : "latest",
+		"optimist": "latest",
+		"bower": "latest"
+  	},
+	"repository": {
+		"type": "git"
+	}
 }

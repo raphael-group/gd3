@@ -1,0 +1,15 @@
+{
+    "name" : "gd3",
+    "version" : "0.0.1",
+    "ignore":[
+    	"deprecated/",
+    	"connor/",
+    	"dev/",
+    	"examples/",
+    	"*.py"
+    ],
+    "dependencies": {
+    	"d3": "3",
+        "jquery": ">=1.7"
+    }
+}
