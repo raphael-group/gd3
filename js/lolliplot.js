@@ -179,7 +179,7 @@ function lolliplots(params) {
       var domainLabels = domainGroups.append('text')
           .attr('id', function(d, i) { return 'domain-label-' + i; })
           .attr('text-anchor', 'middle')
-          .attr('y', height/2 + 2.5*margin)
+          .attr('y', genomeHeight)//height/2 + 2.5*margin)
           .style('fill', textColorStrongest)
           .style('fill-opacity', 0)
           .text(function(d, i) { return d.name; });
@@ -285,7 +285,7 @@ function lolliplots(params) {
         transcript.attr('x', x(start)).attr('width', x(stop) - x(start));
 
         // Update the domains
-        domains.attr('transform', function(d, i) {
+        domainGroups.attr('transform', function(d, i) {
           console.log(x(d.start));
           return 'translate(' + x(d.start) + ',' + (height/2 - margin) + ')';
         });
@@ -293,12 +293,9 @@ function lolliplots(params) {
         domains.attr('width', function(d, i) { return x(d.end) - x(d.start); });
 
         domainLabels.attr('x', function(d, i) {
-          // Place the label in the center of the shown domain
-          var x1 = d3.max( [ d.start, curMin] ),
-              x2 = d3.min( [ d.end, curMax] );
-          return x(x1 + (x2-x1)/2);
-        });
-
+          var w = d3.select(this.parentNode).select('rect').attr('width');
+          return w/2;
+        })
       } // end updateTranscript
 
       updateTranscript();
