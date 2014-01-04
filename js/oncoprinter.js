@@ -3,7 +3,8 @@ function oncoprint(params) {
       style  = params.style || {},
       colorSchemes = style.colorSchemes || {};
 
-  var bgColor = style.bgColor || '#F6F6F6',
+  var animationSpeed = style.animationSpeed || 300,
+      bgColor = style.bgColor || '#F6F6F6',
       blockColorMedium = style.blockColorMedium || '#95A5A6',
       blockColorStrongest = style.blockColorStrongest || '#2C3E50',
       boxMargin = style.boxMargin || 5, // assumes uniform margins on all sides
@@ -731,7 +732,14 @@ function oncoprint(params) {
             .text('Sort oncoprint by: ')
             .on('click', function() {
               // TODO enable hiding/showing menu
-              d3.select('ul#sample-sort-list').style('display', 'block');
+              // d3.select('ul#sample-sort-list').style('display', 'block');
+              if($('ul#sample-sort-list').is(':visible')) {
+                $('ul#sample-sort-list').slideUp();
+                $('span#interface-status').attr('class', 'glyphicon glyphicon-chevron-up');
+              } else {
+                $('ul#sample-sort-list').slideDown();
+                $('span#interface-status').attr('class', 'glyphicon glyphicon-chevron-down');
+              }
             });
 
         interfaceLink.append('span')
@@ -798,17 +806,21 @@ function oncoprint(params) {
           //    sorting operators
           sortFns.append('span')
               .attr('class', 'glyphicon glyphicon-arrow-down')
+              .text('v')
               .on('click', function(d, i) { updateSampleOrder(d, -1); });
 
           sortFns.append('span')
               .attr('class', 'glyphicon glyphicon-arrow-up')
+              .text('^')
               .on('click', function(d, i) { updateSampleOrder(d, 1); });
 
           // Add a short description of what each sort parameter is
           sortFns.append('span').text(function(d){
-            return ' ' + sortFnName[d];
+            var key = Object.keys(sortFnName)[d];
+            return ' ' + sortFnName[key];
           });
         }
+        sampleSorterInterface();
       } // End renderSortingMenu()
 
       renderOncoprint();

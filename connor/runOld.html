@@ -54,7 +54,7 @@
           var gene = Object.keys(data)[gKey],
               transcriptList = Object.keys(data[gene]);
 
-          for (tKey in Object.keys(transcriptList)) {
+          for (tKey in transcriptList) {
             var transcript = transcriptList[tKey],
                 domains = data[gene][transcript].domains,
                 length = data[gene][transcript].length,
