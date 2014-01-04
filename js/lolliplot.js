@@ -2,7 +2,7 @@ function lolliplots(params) {
   var params = params || {},
       style  = params.style || {},
       colorSchemes = style.colorSchemes || {},
-      domainDB = params.domainDB || 'pfam';
+      domainDB = params.domainDB || 'PFAM';
 
   var blockColorLight = style.blockColorLight || '#BDC3C7',
       blockColorMedium = style.blockColorMedium || '#95A5A6',
@@ -159,8 +159,8 @@ function lolliplots(params) {
                 return d3.svg.symbolTypes[mutSymbols[d.ty]];
               })
               .size(radius*radius))
-            .style('fill', function(d, i) { return sampleTypeToColor[d.cancer]})
-            .style('stroke', function(d, i) { return sampleTypeToColor[d.cancer]; })
+            .style('fill', function(d, i) { return sampleTypeToColor[d.dataset]})
+            .style('stroke', function(d, i) { return sampleTypeToColor[d.dataset]; })
             .style('stroke-width', 2);
 
       // Draw domain data with labels with mouse over
@@ -196,7 +196,7 @@ function lolliplots(params) {
 
 
       function renderLegend() {
-        var multiCancer = sampleTypes.length > 1,
+        var multiDataset = sampleTypes.length > 1,
             mutationTypes = Object.keys(mutSymbols),
             numTypes = mutationTypes.length,
             numRows = Math.ceil(numTypes/2);
@@ -230,11 +230,11 @@ function lolliplots(params) {
               .size(2 * legendSymbolHeight)
           )
           .style('stroke', function(d, i) {
-            return multiCancer ? blockColorMedium : sampleTypeToColor[sampleTypes[0]];
+            return multiDataset ? blockColorMedium : sampleTypeToColor[sampleTypes[0]];
           })
           .style('stroke-width', 2)
           .style('fill', function(d, i) {
-            return multiCancer ? blockColorMedium : sampleTypeToColor[sampleTypes[0]];
+            return multiDataset ? blockColorMedium : sampleTypeToColor[sampleTypes[0]];
           });
 
         legend.append('text')
@@ -287,9 +287,9 @@ function lolliplots(params) {
 
               return 'translate(' + px + ', ' + py + ')';
             })// end symbols.attr('transform')
-            .style('fill', function(d) { return sampleTypeToColor[d.cancer]; })
+            .style('fill', function(d) { return sampleTypeToColor[d.dataset]; })
             .style('fill-opacity', 1)
-            .style('stroke', function(d) { return sampleTypeToColor[d.cancer]; })
+            .style('stroke', function(d) { return sampleTypeToColor[d.dataset]; })
             .style('stroke-opacity', 1);
 
         if (symbols.tooltip) {

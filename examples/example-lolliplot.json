@@ -2,7 +2,7 @@
         "CDH2": {
             "NM_001792": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 378, 
                             "name": "Cadherin_repeat", 
@@ -19,7 +19,7 @@
                             "start": 508
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 123, 
                             "name": "Cadherin_pro", 
@@ -36,14 +36,14 @@
                             "start": 753
                         }
                     ], 
-                    "smart": []
+                    "SMART": []
                 }, 
                 "length": 906, 
                 "mutations": [
                     {
                         "aan": "N", 
                         "aao": "Y", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "388", 
                         "sample": "TCGA-BR-8369", 
                         "ty": "Missense_Mutation"
@@ -51,7 +51,7 @@
                     {
                         "aan": "C", 
                         "aao": "W", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "272", 
                         "sample": "TCGA-CG-4477", 
                         "ty": "Missense_Mutation"
@@ -59,7 +59,7 @@
                     {
                         "aan": "T", 
                         "aao": "A", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "368", 
                         "sample": "TCGA-CG-5734", 
                         "ty": "Missense_Mutation"
@@ -67,7 +67,7 @@
                     {
                         "aan": "N", 
                         "aao": "D", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "407", 
                         "sample": "TCGA-D7-6524", 
                         "ty": "Missense_Mutation"
@@ -75,7 +75,7 @@
                     {
                         "aan": "V", 
                         "aao": "L", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "897", 
                         "sample": "TCGA-D7-6822", 
                         "ty": "Missense_Mutation"
@@ -83,7 +83,7 @@
                     {
                         "aan": "T", 
                         "aao": "K", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "59", 
                         "sample": "TCGA-D7-6822", 
                         "ty": "Missense_Mutation"
@@ -91,7 +91,7 @@
                     {
                         "aan": "G", 
                         "aao": "V", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "700", 
                         "sample": "TCGA-D7-A4Z0", 
                         "ty": "Missense_Mutation"
@@ -99,7 +99,7 @@
                     {
                         "aan": "D", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "51", 
                         "sample": "TCGA-HU-8604", 
                         "ty": "Missense_Mutation"
@@ -107,7 +107,7 @@
                     {
                         "aan": "E", 
                         "aao": "G", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "52", 
                         "sample": "TCGA-HU-A4G3", 
                         "ty": "Missense_Mutation"
@@ -118,7 +118,7 @@
         "EGFR": {
             "NM_005228": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 274, 
                             "name": "FU", 
@@ -140,7 +140,7 @@
                             "start": 704
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 168, 
                             "name": "Recep_L_domain", 
@@ -157,7 +157,7 @@
                             "start": 361
                         }
                     ], 
-                    "smart": [
+                    "SMART": [
                         {
                             "end": 540, 
                             "name": "FU", 
@@ -175,7 +175,7 @@
                     {
                         "aan": "M", 
                         "aao": "V", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "85", 
                         "sample": "TCGA-D7-6521", 
                         "ty": "Missense_Mutation"
@@ -186,7 +186,7 @@
         "ERBB2": {
             "NM_004448": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 280, 
                             "name": "FU", 
@@ -213,7 +213,7 @@
                             "start": 712
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 173, 
                             "name": "Recep_L_domain", 
@@ -235,14 +235,14 @@
                             "start": 720
                         }
                     ], 
-                    "smart": []
+                    "SMART": []
                 }, 
                 "length": 1255, 
                 "mutations": [
                     {
                         "aan": "F", 
                         "aao": "S", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "974", 
                         "sample": "TCGA-CG-4466", 
                         "ty": "Missense_Mutation"
@@ -250,7 +250,7 @@
                     {
                         "aan": "F", 
                         "aao": "S", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "310", 
                         "sample": "TCGA-CG-5730", 
                         "ty": "Missense_Mutation"
@@ -258,7 +258,7 @@
                     {
                         "aan": "Y", 
                         "aao": "D", 
-                        "cancer": "EBV", 
+                        "dataset": "EBV", 
                         "locus": "769", 
                         "sample": "TCGA-HU-A4H0", 
                         "ty": "Missense_Mutation"
@@ -266,7 +266,7 @@
                     {
                         "aan": "L", 
                         "aao": "P", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "39", 
                         "sample": "TCGA-IN-8663", 
                         "ty": "Missense_Mutation"
@@ -274,7 +274,7 @@
                     {
                         "aan": "V", 
                         "aao": "G", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "776", 
                         "sample": "TCGA-IN-8663", 
                         "ty": "Missense_Mutation"
@@ -285,7 +285,7 @@
         "ERBB3": {
             "NM_001982": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 266, 
                             "name": "FU", 
@@ -307,7 +307,7 @@
                             "start": 701
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 167, 
                             "name": "Recep_L_domain", 
@@ -329,7 +329,7 @@
                             "start": 709
                         }
                     ], 
-                    "smart": [
+                    "SMART": [
                         {
                             "end": 215, 
                             "name": "FU", 
@@ -342,7 +342,7 @@
                     {
                         "aan": "H", 
                         "aao": "Q", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "934", 
                         "sample": "TCGA-BR-4357", 
                         "ty": "Missense_Mutation"
@@ -350,7 +350,7 @@
                     {
                         "aan": "S", 
                         "aao": "R", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "667", 
                         "sample": "TCGA-BR-6454", 
                         "ty": "Missense_Mutation"
@@ -358,7 +358,7 @@
                     {
                         "aan": "N", 
                         "aao": "I", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "671", 
                         "sample": "TCGA-BR-6563", 
                         "ty": "Missense_Mutation"
@@ -366,7 +366,7 @@
                     {
                         "aan": "L", 
                         "aao": "V", 
-                        "cancer": "EBV", 
+                        "dataset": "EBV", 
                         "locus": "104", 
                         "sample": "TCGA-BR-6706", 
                         "ty": "Missense_Mutation"
@@ -374,7 +374,7 @@
                     {
                         "aan": "T", 
                         "aao": "K", 
-                        "cancer": "EBV", 
+                        "dataset": "EBV", 
                         "locus": "314", 
                         "sample": "TCGA-BR-8381", 
                         "ty": "Missense_Mutation"
@@ -382,7 +382,7 @@
                     {
                         "aan": "Y", 
                         "aao": "D", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "297", 
                         "sample": "TCGA-BR-A4QM", 
                         "ty": "Missense_Mutation"
@@ -390,7 +390,7 @@
                     {
                         "aan": "R", 
                         "aao": "H", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "228", 
                         "sample": "TCGA-CD-8527", 
                         "ty": "Missense_Mutation"
@@ -398,7 +398,7 @@
                     {
                         "aan": "M", 
                         "aao": "V", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "104", 
                         "sample": "TCGA-D7-A4YU", 
                         "ty": "Missense_Mutation"
@@ -406,7 +406,7 @@
                     {
                         "aan": "D", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1001", 
                         "sample": "TCGA-EQ-8122", 
                         "ty": "Missense_Mutation"
@@ -414,7 +414,7 @@
                     {
                         "aan": "V", 
                         "aao": "L", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1182", 
                         "sample": "TCGA-FP-7735", 
                         "ty": "Missense_Mutation"
@@ -425,7 +425,7 @@
         "ERBB4": {
             "NM_005235": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 274, 
                             "name": "FU", 
@@ -452,7 +452,7 @@
                             "start": 710
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 167, 
                             "name": "Recep_L_domain", 
@@ -474,14 +474,14 @@
                             "start": 718
                         }
                     ], 
-                    "smart": []
+                    "SMART": []
                 }, 
                 "length": 1308, 
                 "mutations": [
                     {
                         "aan": "E", 
                         "aao": "A", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "4", 
                         "sample": "TCGA-BR-6705", 
                         "ty": "Missense_Mutation"
@@ -489,7 +489,7 @@
                     {
                         "aan": "T", 
                         "aao": "K", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1223", 
                         "sample": "TCGA-BR-7197", 
                         "ty": "Missense_Mutation"
@@ -497,7 +497,7 @@
                     {
                         "aan": "C", 
                         "aao": "F", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1102", 
                         "sample": "TCGA-BR-7901", 
                         "ty": "Missense_Mutation"
@@ -505,7 +505,7 @@
                     {
                         "aan": "R", 
                         "aao": "L", 
-                        "cancer": "EBV", 
+                        "dataset": "EBV", 
                         "locus": "710", 
                         "sample": "TCGA-BR-7958", 
                         "ty": "Missense_Mutation"
@@ -513,7 +513,7 @@
                     {
                         "aan": "W", 
                         "aao": "R", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "488", 
                         "sample": "TCGA-BR-8295", 
                         "ty": "Missense_Mutation"
@@ -521,7 +521,7 @@
                     {
                         "aan": "L", 
                         "aao": "S", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "522", 
                         "sample": "TCGA-BR-8370", 
                         "ty": "Missense_Mutation"
@@ -529,7 +529,7 @@
                     {
                         "aan": "P", 
                         "aao": "L", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1163", 
                         "sample": "TCGA-BR-8485", 
                         "ty": "Missense_Mutation"
@@ -537,7 +537,7 @@
                     {
                         "aan": "C", 
                         "aao": "F", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "1102", 
                         "sample": "TCGA-BR-8590", 
                         "ty": "Missense_Mutation"
@@ -545,7 +545,7 @@
                     {
                         "aan": "T", 
                         "aao": "N", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "626", 
                         "sample": "TCGA-BR-8679", 
                         "ty": "Missense_Mutation"
@@ -553,7 +553,7 @@
                     {
                         "aan": "K", 
                         "aao": "N", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "358", 
                         "sample": "TCGA-BR-A4J8", 
                         "ty": "Missense_Mutation"
@@ -561,7 +561,7 @@
                     {
                         "aan": "F", 
                         "aao": "I", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1274", 
                         "sample": "TCGA-BR-A4PD", 
                         "ty": "Missense_Mutation"
@@ -569,7 +569,7 @@
                     {
                         "aan": "I", 
                         "aao": "V", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "840", 
                         "sample": "TCGA-CD-5813", 
                         "ty": "Missense_Mutation"
@@ -577,7 +577,7 @@
                     {
                         "aan": "S", 
                         "aao": "P", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1132", 
                         "sample": "TCGA-CD-8524", 
                         "ty": "Missense_Mutation"
@@ -585,7 +585,7 @@
                     {
                         "aan": "K", 
                         "aao": "Q", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1063", 
                         "sample": "TCGA-CD-A48A", 
                         "ty": "Missense_Mutation"
@@ -593,7 +593,7 @@
                     {
                         "aan": "P", 
                         "aao": "L", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "798", 
                         "sample": "TCGA-CG-4436", 
                         "ty": "Missense_Mutation"
@@ -601,7 +601,7 @@
                     {
                         "aan": "Q", 
                         "aao": "R", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "927", 
                         "sample": "TCGA-D7-6820", 
                         "ty": "Missense_Mutation"
@@ -609,7 +609,7 @@
                     {
                         "aan": "M", 
                         "aao": "K", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "1223", 
                         "sample": "TCGA-D7-A4Z0", 
                         "ty": "Missense_Mutation"
@@ -617,7 +617,7 @@
                     {
                         "aan": "G", 
                         "aao": "S", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "774", 
                         "sample": "TCGA-D7-A4Z0", 
                         "ty": "Missense_Mutation"
@@ -625,7 +625,7 @@
                     {
                         "aan": "A", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1220", 
                         "sample": "TCGA-IN-8462", 
                         "ty": "Missense_Mutation"
@@ -636,7 +636,7 @@
         "JAK2": {
             "NM_004972": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 414, 
                             "name": "FERM_C_JAK2", 
@@ -658,7 +658,7 @@
                             "start": 844
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 805, 
                             "name": "Pkinase_Tyr", 
@@ -670,7 +670,7 @@
                             "start": 849
                         }
                     ], 
-                    "smart": [
+                    "SMART": [
                         {
                             "end": 270, 
                             "name": "B41", 
@@ -683,7 +683,7 @@
                     {
                         "aan": "R", 
                         "aao": "L", 
-                        "cancer": "EBV", 
+                        "dataset": "EBV", 
                         "locus": "651", 
                         "sample": "TCGA-BR-6706", 
                         "ty": "Missense_Mutation"
@@ -691,7 +691,7 @@
                     {
                         "aan": "S", 
                         "aao": "G", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "858", 
                         "sample": "TCGA-D7-6815", 
                         "ty": "Missense_Mutation"
@@ -699,7 +699,7 @@
                     {
                         "aan": "T", 
                         "aao": "R", 
-                        "cancer": "EBV", 
+                        "dataset": "EBV", 
                         "locus": "683", 
                         "sample": "TCGA-HU-8608", 
                         "ty": "Missense_Mutation"
@@ -710,7 +710,7 @@
         "MET": {
             "NM_000245": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 516, 
                             "name": "Sema_MET", 
@@ -737,7 +737,7 @@
                             "start": 1082
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 562, 
                             "name": "PSI", 
@@ -749,7 +749,7 @@
                             "start": 1078
                         }
                     ], 
-                    "smart": [
+                    "SMART": [
                         {
                             "end": 487, 
                             "name": "Sema", 
@@ -767,7 +767,7 @@
                     {
                         "aan": "splice", 
                         "aao": "L", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1312", 
                         "sample": "TCGA-CG-4438", 
                         "ty": "Splice_Site"
@@ -778,28 +778,28 @@
         "NRG1": {
             "NM_013962": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 342, 
                             "name": "Ig_Pro_neuregulin-1", 
                             "start": 268
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 344, 
                             "name": "I-set", 
                             "start": 254
                         }
                     ], 
-                    "smart": []
+                    "SMART": []
                 }, 
                 "length": 422, 
                 "mutations": []
             }, 
             "NM_013964": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 127, 
                             "name": "Ig_Pro_neuregulin", 
@@ -811,7 +811,7 @@
                             "start": 190
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 129, 
                             "name": "I-set", 
@@ -823,14 +823,14 @@
                             "start": 235
                         }
                     ], 
-                    "smart": []
+                    "SMART": []
                 }, 
                 "length": 640, 
                 "mutations": [
                     {
                         "aan": "G", 
                         "aao": "D", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "585", 
                         "sample": "TCGA-BR-4357", 
                         "ty": "Missense_Mutation"
@@ -838,7 +838,7 @@
                     {
                         "aan": "G", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "223", 
                         "sample": "TCGA-BR-7901", 
                         "ty": "Missense_Mutation"
@@ -846,7 +846,7 @@
                     {
                         "aan": "S", 
                         "aao": "P", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "533", 
                         "sample": "TCGA-BR-8485", 
                         "ty": "Missense_Mutation"
@@ -854,7 +854,7 @@
                     {
                         "aan": "L", 
                         "aao": "P", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "431", 
                         "sample": "TCGA-CD-8531", 
                         "ty": "Missense_Mutation"
@@ -862,7 +862,7 @@
                     {
                         "aan": "*", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "622", 
                         "sample": "TCGA-CG-4440", 
                         "ty": "Nonsense_Mutation"
@@ -870,7 +870,7 @@
                     {
                         "aan": "C", 
                         "aao": "R", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "606", 
                         "sample": "TCGA-D7-6520", 
                         "ty": "Missense_Mutation"
@@ -881,7 +881,7 @@
         "OBSCN": {
             "NM_001098623": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 191, 
                             "name": "Ig", 
@@ -1028,7 +1028,7 @@
                             "start": 7678
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 99, 
                             "name": "I-set", 
@@ -1235,7 +1235,7 @@
                             "start": 7463
                         }
                     ], 
-                    "smart": [
+                    "SMART": [
                         {
                             "end": 99, 
                             "name": "IG", 
@@ -1378,7 +1378,7 @@
                     {
                         "aan": "I", 
                         "aao": "V", 
-                        "cancer": "EBV", 
+                        "dataset": "EBV", 
                         "locus": "5547", 
                         "sample": "TCGA-BR-6455", 
                         "ty": "Missense_Mutation"
@@ -1386,7 +1386,7 @@
                     {
                         "aan": "M", 
                         "aao": "V", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "20", 
                         "sample": "TCGA-BR-6563", 
                         "ty": "Missense_Mutation"
@@ -1394,7 +1394,7 @@
                     {
                         "aan": "C", 
                         "aao": "W", 
-                        "cancer": "EBV", 
+                        "dataset": "EBV", 
                         "locus": "830", 
                         "sample": "TCGA-BR-6707", 
                         "ty": "Missense_Mutation"
@@ -1402,7 +1402,7 @@
                     {
                         "aan": "W", 
                         "aao": "R", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "3183", 
                         "sample": "TCGA-BR-8286", 
                         "ty": "Missense_Mutation"
@@ -1410,7 +1410,7 @@
                     {
                         "aan": "T", 
                         "aao": "A", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1309", 
                         "sample": "TCGA-BR-8297", 
                         "ty": "Missense_Mutation"
@@ -1418,7 +1418,7 @@
                     {
                         "aan": "V", 
                         "aao": "A", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "1415", 
                         "sample": "TCGA-CD-8531", 
                         "ty": "Missense_Mutation"
@@ -1426,7 +1426,7 @@
                     {
                         "aan": "L", 
                         "aao": "P", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "814", 
                         "sample": "TCGA-CG-4300", 
                         "ty": "Missense_Mutation"
@@ -1434,7 +1434,7 @@
                     {
                         "aan": "N", 
                         "aao": "K", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "6032", 
                         "sample": "TCGA-CG-4443", 
                         "ty": "Missense_Mutation"
@@ -1442,7 +1442,7 @@
                     {
                         "aan": "H", 
                         "aao": "R", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "5061", 
                         "sample": "TCGA-HU-8249", 
                         "ty": "Missense_Mutation"
@@ -1450,7 +1450,7 @@
                     {
                         "aan": "H", 
                         "aao": "R", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "11", 
                         "sample": "TCGA-HU-8610", 
                         "ty": "Missense_Mutation"
@@ -1458,7 +1458,7 @@
                     {
                         "aan": "K", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1821", 
                         "sample": "TCGA-HU-A4GF", 
                         "ty": "Missense_Mutation"
@@ -1466,7 +1466,7 @@
                     {
                         "aan": "C", 
                         "aao": "G", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1121", 
                         "sample": "TCGA-HU-A4GP", 
                         "ty": "Missense_Mutation"
@@ -1474,7 +1474,7 @@
                     {
                         "aan": "fs", 
                         "aao": "W", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "5672", 
                         "sample": "TCGA-BR-A452", 
                         "ty": "Frame_Shift_Del"
@@ -1485,7 +1485,7 @@
         "PTPRB": {
             "NM_001109754": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 94, 
                             "name": "RICIN", 
@@ -1527,8 +1527,8 @@
                             "start": 1947
                         }
                     ], 
-                    "pfam": [], 
-                    "smart": [
+                    "PFAM": [], 
+                    "SMART": [
                         {
                             "end": 672, 
                             "name": "FN3", 
@@ -1561,7 +1561,7 @@
                     {
                         "aan": "D", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "236", 
                         "sample": "TCGA-D7-A4YU", 
                         "ty": "Missense_Mutation"
@@ -1570,7 +1570,7 @@
             }, 
             "NM_002837": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 192, 
                             "name": "FN3", 
@@ -1607,7 +1607,7 @@
                             "start": 1729
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 101, 
                             "name": "fn3", 
@@ -1649,7 +1649,7 @@
                             "start": 1176
                         }
                     ], 
-                    "smart": [
+                    "SMART": [
                         {
                             "end": 1960, 
                             "name": "PTPc", 
@@ -1662,7 +1662,7 @@
                     {
                         "aan": "Y", 
                         "aao": "C", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1959", 
                         "sample": "TCGA-BR-8291", 
                         "ty": "Missense_Mutation"
@@ -1670,7 +1670,7 @@
                     {
                         "aan": "V", 
                         "aao": "E", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "1160", 
                         "sample": "TCGA-BR-A453", 
                         "ty": "Missense_Mutation"
@@ -1678,7 +1678,7 @@
                     {
                         "aan": "Y", 
                         "aao": "D", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "922", 
                         "sample": "TCGA-CD-8530", 
                         "ty": "Missense_Mutation"
@@ -1686,7 +1686,7 @@
                     {
                         "aan": "F", 
                         "aao": "Y", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "1061", 
                         "sample": "TCGA-CD-8531", 
                         "ty": "Missense_Mutation"
@@ -1694,7 +1694,7 @@
                     {
                         "aan": "Q", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1974", 
                         "sample": "TCGA-CG-4466", 
                         "ty": "Missense_Mutation"
@@ -1702,7 +1702,7 @@
                     {
                         "aan": "N", 
                         "aao": "D", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1123", 
                         "sample": "TCGA-EQ-5647", 
                         "ty": "Missense_Mutation"
@@ -1710,7 +1710,7 @@
                     {
                         "aan": "splice", 
                         "aao": "D", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "109", 
                         "sample": "TCGA-HU-A4H2", 
                         "ty": "Splice_Site"
@@ -1721,7 +1721,7 @@
         "PTPRC": {
             "NM_002838": {
                 "domains": {
-                    "cd": [
+                    "CD": [
                         {
                             "end": 462, 
                             "name": "FN3", 
@@ -1743,7 +1743,7 @@
                             "start": 971
                         }
                     ], 
-                    "pfam": [
+                    "PFAM": [
                         {
                             "end": 34, 
                             "name": "PTP_N", 
@@ -1760,7 +1760,7 @@
                             "start": 236
                         }
                     ], 
-                    "smart": [
+                    "SMART": [
                         {
                             "end": 911, 
                             "name": "PTPc", 
@@ -1778,7 +1778,7 @@
                     {
                         "aan": "H", 
                         "aao": "Q", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "895", 
                         "sample": "TCGA-BR-6453", 
                         "ty": "Missense_Mutation"
@@ -1786,7 +1786,7 @@
                     {
                         "aan": "H", 
                         "aao": "Q", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "895", 
                         "sample": "TCGA-BR-8080", 
                         "ty": "Missense_Mutation"
@@ -1794,7 +1794,7 @@
                     {
                         "aan": "*", 
                         "aao": "K", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "275", 
                         "sample": "TCGA-BR-A453", 
                         "ty": "Nonsense_Mutation"
@@ -1802,7 +1802,7 @@
                     {
                         "aan": "P", 
                         "aao": "T", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "451", 
                         "sample": "TCGA-CD-A487", 
                         "ty": "Missense_Mutation"
@@ -1810,7 +1810,7 @@
                     {
                         "aan": "*", 
                         "aao": "E", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1039", 
                         "sample": "TCGA-CG-4449", 
                         "ty": "Nonsense_Mutation"
@@ -1818,7 +1818,7 @@
                     {
                         "aan": "R", 
                         "aao": "L", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "357", 
                         "sample": "TCGA-CG-4466", 
                         "ty": "Missense_Mutation"
@@ -1826,7 +1826,7 @@
                     {
                         "aan": "R", 
                         "aao": "W", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "739", 
                         "sample": "TCGA-CG-5718", 
                         "ty": "Missense_Mutation"
@@ -1834,7 +1834,7 @@
                     {
                         "aan": "S", 
                         "aao": "A", 
-                        "cancer": "SCNAL", 
+                        "dataset": "SCNAL", 
                         "locus": "1224", 
                         "sample": "TCGA-CG-5720", 
                         "ty": "Missense_Mutation"
@@ -1842,7 +1842,7 @@
                     {
                         "aan": "P", 
                         "aao": "Q", 
-                        "cancer": "SCNAH", 
+                        "dataset": "SCNAH", 
                         "locus": "1072", 
                         "sample": "TCGA-HU-A4H6", 
                         "ty": "Missense_Mutation"

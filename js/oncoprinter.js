@@ -67,11 +67,11 @@ function oncoprint(params) {
       sampleTypes.sort();
 
 
-      // Then determine whether this is a multi-cancer oncoprint
-      var multiCancer = (sampleTypes.length > 1) && colorSampleTypes,
-          cancerLegendWidth = multiCancer ? 100 : 0,
-          cancerTypeLegendHeight = multiCancer ? (sampleTypes.length+1)*15 : 0,
-          width = fullWidth - cancerLegendWidth,
+      // Then determine whether the data includes multiple datasets
+      var multiDataset = (sampleTypes.length > 1) && colorSampleTypes,
+          datasetLegendWidth = multiDataset ? 100 : 0,
+          datasetTypeLegendHeight = multiDataset ? (sampleTypes.length+1)*15 : 0,
+          width = fullWidth - datasetLegendWidth,
           height = genes.length * geneHeight + boxMargin,
           tickWidth,
           samplesPerCol;
@@ -157,20 +157,20 @@ function oncoprint(params) {
 
 
       // Parse the mutation data into a simple, sample-centric dictionary
-      // sample -> { name, genes, cancer, cooccurring }
+      // sample -> { name, genes, dataset, cooccurring }
       // where genes is a list of mutations
-      // gene   -> { amp, del, inactive_snv, snv, g, cancer, cooccurring }
+      // gene   -> { amp, del, inactive_snv, snv, g, dataset, cooccurring }
       function createOncoprintData( M, geneToSamples, genes, samples,
           sampleToTypes ){
         var sampleMutations = [];
         for (i = 0; i < samples.length; i++){
           var s = samples[i],
-              mutations = { name: s, genes: [], cancer: sampleToTypes[s] };
+              mutations = { name: s, genes: [], dataset: sampleToTypes[s] };
 
           // Record all mutated genes for the given sample
           for (j = 0; j < genes.length; j++){
             var g = genes[j],
-                mut = {gene: g, cancer: sampleToTypes[s] };
+                mut = {gene: g, dataset: sampleToTypes[s] };
 
             // Record all mutation types that the current gene has in the
             //    current sample
@@ -321,7 +321,7 @@ function oncoprint(params) {
           .append('rect')
             .attr('class', 'tick')
             .attr('fill', function(d) {
-              if (!multiCancer) {
+              if (!multiDataset) {
                 if (d.fus && d.snv) {
                   return bgColor;
                 } else {
@@ -331,7 +331,7 @@ function oncoprint(params) {
                 if (d.fus && !d.snv) {
                   return bgColor;
                 } else {
-                  return sampleTypeToColor[d.cancer];
+                  return sampleTypeToColor[d.dataset];
                 }
               }
             });
@@ -357,8 +357,8 @@ function oncoprint(params) {
             .attr('d', d3.svg.symbol().type('triangle-up').size(8))
             .style('stroke-opacity', 0)
             .style('fill', function(d) {
-              if (multiCancer) {
-                return sampleTypeToColor[d.cancer];
+              if (multiDataset) {
+                return sampleTypeToColor[d.dataset];
               } else {
                 return d.cooccurring ? coocurringColor : exclusiveColor;
               }
@@ -492,6 +492,7 @@ function oncoprint(params) {
 
         var sampleStr = samplesPerCol == 1 ? 'sample' : 'samples';
         d3.select('text#sampleWidthText')
+            .attr("transform", "translate(" + (tickWidth + 5) + ",0)")
             .text(samplesPerCol + ' ' + sampleStr);
 
         // Add sample lines
@@ -529,7 +530,7 @@ function oncoprint(params) {
       function renderCoverage() {
         var coverage_span = selection.append('span')
             .style('float', 'right')
-            .style('margin-right', cancerLegendWidth - legendMarginLeft + 'px');
+            .style('margin-right', datasetLegendWidth - legendMarginLeft + 'px');
 
         coverage_span.append('b').text('Coverage: ');
         coverage_span.append('span').text(coverage_str);
@@ -550,11 +551,11 @@ function oncoprint(params) {
             .append('g')
               .style('font-size', legendFontSize);
 
-        // If the data contains multiple cancer types, then mutations are
-        //    colored by cancer type, so the exclusive/co-occurring cells won't
-        //    be shown. The cancer type legend will float to the right of the
+        // If the data contains multiple datasets, then mutations are
+        //    colored by dataset, so the exclusive/co-occurring cells won't
+        //    be shown. The dataset legend will float to the right of the
         //    oncoprint.
-        if(!multiCancer) {
+        if(!multiDataset) {
           // Exclusive ticks
           mutationLegend.append('rect')
               .attr('x', left)
@@ -584,26 +585,26 @@ function oncoprint(params) {
               .text('Co-occurring');
 
           left += mutationRectWidth + 10 + 85;
-        } else { // we are rendering multiCancer
-          // Cancer type legend
+        } else { // we are rendering multiDataset
+          // Dataset legend
           var legendBoxSize = 15,
-              cancerLegend = selection.insert('svg', 'svg')
+              datasetLegend = selection.insert('svg', 'svg')
                   .attr('id', 'sample-type-legend')
-                  .attr('width', cancerLegendWidth - legendMarginLeft)
-                  .attr('height', cancerTypeLegendHeight)
+                  .attr('width', datasetLegendWidth - legendMarginLeft)
+                  .attr('height', datasetTypeLegendHeight)
                   .style('float', 'right')
                   .style('margin-top', labelHeight + boxMargin)
                   .style('margin-left', legendMarginLeft)
                   .style('margin-bottom', 10)
                   .style('font-size', 10);
 
-          cancerLegend.append('text')
+          datasetLegend.append('text')
               .attr('x', 2)
               .attr('y', 10)
               .style('font-weight', 'bold')
               .text('Sample Types');
 
-          var cancerTypes = cancerLegend.selectAll('.cancer-legend')
+          var datasetTypes = datasetLegend.selectAll('.dataset-legend')
               .data(sampleTypes)
               .enter()
               .append('g')
@@ -611,12 +612,12 @@ function oncoprint(params) {
                   return 'translate(2,' + ((i+1) * legendBoxSize) + ')';
                 });
 
-          cancerTypes.append('rect')
+          datasetTypes.append('rect')
               .attr('width', legendBoxSize)
               .attr('height', legendBoxSize)
               .style('fill', function(type) {return sampleTypeToColor[type];});
 
-          cancerTypes.append('text')
+          datasetTypes.append('text')
               .attr('dy', legendBoxSize - 3)
               .attr('dx', 20)
               .text(function(type) {return type;});

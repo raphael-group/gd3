@@ -5,7 +5,8 @@
             "Multinet": "rgb(92, 128, 178)",
             "iRefIndex": "rgb(140, 91, 56)",
             "HINT": "rgb(127, 92, 159)",
-            "HINT+HI2012": "rgb(127, 92, 159)"
+            "HINT+HI2012": "rgb(127, 92, 159)",
+            "HPRD": "orange"
         }
     },
     "bgColor": "#F6F6F6",
