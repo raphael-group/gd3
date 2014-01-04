@@ -735,16 +735,17 @@ function oncoprint(params) {
               // d3.select('ul#sample-sort-list').style('display', 'block');
               if($('ul#sample-sort-list').is(':visible')) {
                 $('ul#sample-sort-list').slideUp();
-                $('span#interface-status').attr('class', 'glyphicon glyphicon-chevron-up');
+                $('span#interface-status').html("&uarr;")
               } else {
                 $('ul#sample-sort-list').slideDown();
-                $('span#interface-status').attr('class', 'glyphicon glyphicon-chevron-down');
+                $('span#interface-status').html("&darr;")
               }
             });
 
         interfaceLink.append('span')
             .attr('id', 'interface-status')
-            .attr('class', 'glyphicon glyphicon-chevron-up');
+            .style("cursor", "pointer")
+            .html("&uarr;")
 
         var sortFnsContainer = sampleSort.append('ul')
             .attr('id', 'sample-sort-list')
@@ -805,13 +806,17 @@ function oncoprint(params) {
           // Down and up arrows to chagne the precedence of the different
           //    sorting operators
           sortFns.append('span')
-              .attr('class', 'glyphicon glyphicon-arrow-down')
-              .text('v')
+              .style("cursor", "pointer")
+              .html('&darr;')
+              .on("mouseover", function(){ d3.select(this).style("color", "red"); })
+              .on("mouseout", function(){ d3.select(this).style("color", "black"); })
               .on('click', function(d, i) { updateSampleOrder(d, -1); });
 
           sortFns.append('span')
-              .attr('class', 'glyphicon glyphicon-arrow-up')
-              .text('^')
+              .style("cursor", "pointer")
+              .html('&uarr;')
+              .on("mouseover", function(){ d3.select(this).style("color", "red"); })
+              .on("mouseout", function(){ d3.select(this).style("color", "black"); })
               .on('click', function(d, i) { updateSampleOrder(d, 1); });
 
           // Add a short description of what each sort parameter is
