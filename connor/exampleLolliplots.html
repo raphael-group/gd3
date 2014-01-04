@@ -81,6 +81,7 @@
           for(mKey in mKeys) {
             var m = mKeys[mKey],
                 cancer = mutations[m].cancer;
+            console.log(mutations[m].ty);
             sampleTypes[cancer] = 0;
           }
 
@@ -95,7 +96,7 @@
         d3.select('#lolli1')
           .append('div')
             .datum(vizData[v])
-            .call(lolliplots(params));
+            .call(lolliplots(params).addLegend());
       }
       // d3.select('#lolli1')
       //   .datum(vizData[1])

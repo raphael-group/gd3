@@ -15,6 +15,7 @@ function lolliplots(params) {
       margin = style.margin || 5,
       numTicks = style.numTicks || 5,
       radius = style.radius || 5,
+      legendSymbolHeight = style.legendSymbolHeight || 14,
       tickPadding = style.tickPadding || 1.25,
       width = style.width || 500;
 
@@ -33,7 +34,7 @@ function lolliplots(params) {
   };
 
   // TODO find a more elegant way to do this
-  var mutSymbols = colorSchemes.mutSymbols ||
+  var mutSymbols = params.mutSymbols ||
         {
           "Nonsense_Mutation": 0,
           "Frame_Shift_Del": 1,
@@ -195,15 +196,51 @@ function lolliplots(params) {
 
 
       function renderLegend() {
-        var cancerTypes = [],
-            mutationTypes = [];
+        var multiCancer = sampleTypes.length > 1,
+            mutationTypes = Object.keys(mutSymbols),
+            numTypes = mutationTypes.length,
+            numRows = Math.ceil(numTypes/2);
 
+        var legendHeight = numRows * legendSymbolHeight;
         // Select the svg element, if it exists.
-        var fig = d3.select(this)
+        var svg = selection.append('div')
             .selectAll('svg')
             .data([data])
             .enter()
-              .append('svg');
+              .append('svg')
+              .attr('class', 'legend')
+              .attr('font-size', 10)
+              .style('height', legendHeight + 2*margin)
+              .style('width', width);
+
+        var legend = svg.selectAll('.symbolGroup')
+            .data(mutationTypes)
+            .enter()
+            .append('g')
+            .attr('transform', function(d, i) {
+              var x = (i % numRows) * width / numRows + 2 * margin;
+              var y = Math.round(i/numTypes) * legendSymbolHeight + (Math.round(i/numTypes)+2) * margin;
+              return 'translate(' + x + ', ' + y + ')';
+            });
+
+        legend.append('path')
+          .attr('class', 'symbol')
+          .attr('d', d3.svg.symbol()
+              .type(function(d, i) {return d3.svg.symbolTypes[mutSymbols[d]];})
+              .size(2 * legendSymbolHeight)
+          )
+          .style('stroke', function(d, i) {
+            return multiCancer ? blockColorMedium : sampleTypeToColor[sampleTypes[0]];
+          })
+          .style('stroke-width', 2)
+          .style('fill', function(d, i) {
+            return multiCancer ? blockColorMedium : sampleTypeToColor[sampleTypes[0]];
+          });
+
+        legend.append('text')
+          .attr('dx', 7)
+          .attr('dy', 3)
+          .text(function(d) { return d.replace(/_/g, ' ')});
       }
 
 
@@ -286,7 +323,6 @@ function lolliplots(params) {
 
         // Update the domains
         domainGroups.attr('transform', function(d, i) {
-          console.log(x(d.start));
           return 'translate(' + x(d.start) + ',' + (height/2 - margin) + ')';
         });
 
@@ -306,7 +342,7 @@ function lolliplots(params) {
     });
   } // end chart()
 
-  function addLegend() {
+  chart.addLegend = function() {
     showLegend = true;
     return chart;
   }
