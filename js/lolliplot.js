@@ -46,25 +46,25 @@ function lolliplots(params) {
 
   // TODO find a more elegant way to do this
   //var sampleTypes = colorSchemes.sampleType || {};
-  var sampleTypes = colorSchemes.sampleType ||
-        {
-          "EBV": "#A6CEE3",
-          "BLCA": "#A6CEE3",
-          "BRCA": "#1F78B4",
-          "COADREAD":"#B2DF8A",
-          "GBM":"#33A02C",
-          "SCNAL":"#33A02C",
-          "HNSC":"#FB9A99",
-          "KIRC":"#E31A1C",
-          "LAML":"#FDBF6F",
-          "LUAD":"#FF7F00",
-          "LUSC":"#CAB2D6",
-          "SCNAH":"#6A3D9A",
-          "UCEC":"#B15928",
-          "OV":"#6A3D9A",
-          "GASTRIC": "purple"
-        };
-  var sampleTypeToColor;
+  var sampleTypes = params.sampleTypes ||
+        [
+          "EBV",
+          "BLCA",
+          "BRCA",
+          "COADREAD",
+          "GBM",
+          "SCNAL",
+          "HNSC",
+          "KIRC",
+          "LAML",
+          "LUAD",
+          "LUSC",
+          "SCNAH",
+          "UCEC",
+          "OV",
+          "GASTRIC"
+        ];
+  var sampleTypeToColor = {};
 
   function chart(selection) {
     selection.each(function(data) {
@@ -82,7 +82,6 @@ function lolliplots(params) {
           sampleTypeToColor[sampleTypes[i]] = colors(i);
         }
       }
-      console.log(data);
 
 
       // Select the svg element, if it exists.
@@ -143,7 +142,7 @@ function lolliplots(params) {
       // Append the axis to the canvas
       var figAxis = fig.append('g')
           .attr('class', 'xaxis')
-          .attr('transform', 'translate(5' + ( height/2 + genomeHeight+2) +')')
+          .attr('transform', 'translate(5,' + ( height/2 + genomeHeight+2) +')')
           .style('font-size', '12px')
           .style('fill', '#000')
           .call(xAxis);

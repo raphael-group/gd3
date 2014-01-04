@@ -57,32 +57,43 @@
     </div>
 
     <script src="util/d3.v3.js"></script>
-    <script src="lolliplots.js"></script>
+    <script src="../js/lolliplot.js"></script>
     <script>
     d3.json('exData/example-lolliplot.json', function(data) {
       var styling = {
       };
 
-      console.log(data);
+      var sampleTypes = {},
+          params = {},
+          vizData = [];
 
-      var vizData = {};
       for (gKey in Object.keys(data)) {
         var gene = Object.keys(data)[gKey],
             transcriptList = Object.keys(data[gene]);
 
-        for (tKey in Object.keys(transcriptList)) {
+        for (tKey in transcriptList) {
           var transcript = transcriptList[tKey],
               domains = data[gene][transcript].domains,
               length = data[gene][transcript].length,
               mutations = data[gene][transcript].mutations;
 
-          vizData = {gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations};
+          var mKeys = Object.keys(mutations);
+          for(mKey in mKeys) {
+            var m = mKeys[mKey],
+                cancer = mutations[m].cancer;
+            sampleTypes[cancer] = 0;
+          }
+
+          vizData.push({gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations});
         }
       }
+      sampleTypes = Object.keys(sampleTypes);
+      params.sampleTypes = sampleTypes;
+      console.log(params.sampleTypes);
 
       d3.select('#lolli1')
-        .datum(vizData)
-        .call(lolliplots());
+        .datum(vizData[1])
+        .call(lolliplots(params));
 
     });
     </script>
