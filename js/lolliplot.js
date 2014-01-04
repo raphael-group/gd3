@@ -187,9 +187,8 @@ function lolliplots(params) {
       domainGroups.on('mouseover', function(d, i) {
         d3.select(this).selectAll('rect').style('fill', highlightColor);
         fig.select('#domain-label-' + i).style('fill-opacity', 1);
-      });
-
-      domainGroups.on('mouseout', function(d, i) {
+      })
+      .on('mouseout', function(d, i) {
         d3.select(this).selectAll('rect').style('fill', blockColorMedium);
         fig.select('#domain-label-' + i).style('fill-opacity', 0);
       });
@@ -287,6 +286,7 @@ function lolliplots(params) {
 
         // Update the domains
         domains.attr('transform', function(d, i) {
+          console.log(x(d.start));
           return 'translate(' + x(d.start) + ',' + (height/2 - margin) + ')';
         });
 

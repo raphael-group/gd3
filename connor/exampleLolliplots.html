@@ -91,9 +91,15 @@
       params.sampleTypes = sampleTypes;
       console.log(params.sampleTypes);
 
-      d3.select('#lolli1')
-        .datum(vizData[1])
-        .call(lolliplots(params));
+      for(v in vizData) {
+        d3.select('#lolli1')
+          .append('div')
+            .datum(vizData[v])
+            .call(lolliplots(params));
+      }
+      // d3.select('#lolli1')
+      //   .datum(vizData[1])
+      //   .call(lolliplots(params));
 
     });
     </script>
