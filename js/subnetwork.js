@@ -154,7 +154,7 @@ function subnetwork(params) {
         });
 
         networks.forEach(function(net, i) {
-          var offset = edgeWidth * (i = numNets / 2);
+          var offset = edgeWidth * (i - numNets / 2);
           linkInNetwork[net]
               .attr('x1', function(d) { return d.source.x + offset; })
               .attr('y1', function(d) { return d.source.y + offset; })
