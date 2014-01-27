@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example CNA Browser</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+      * {
+        font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
+      }
+      body {
+        background-color: #2d2f34;
+      }
+      code {
+        color: #D2D8BA;
+        font-family: monospace;
+      }
+      h1, p {
+        color: #fff;
+        text-align: center;
+      }
+
+      .lolliContainer {
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        width: 1100px;
+      }
+      .lolliViz {
+        float: left;
+        overflow-x: hidden;
+        width: 700px;
+      }
+      .lolliDesc {
+        border-left: 1px solid #444;
+        float: right;
+        margin: 10px;
+        padding: 10px;
+        width: 359px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>GD3.lolliplot()</h1>
+    <p>Hides ___ lines of code</p>
+
+    <div class="lolliContainer">
+      <div id="lolli1" class="lolliViz"></div>
+      <div class="lolliDesc">
+        <code>
+        </code>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+
+    <script src="util/d3.v3.js"></script>
+    <script src="../js/lolliplot.js"></script>
+    <script>
+    d3.json('exData/example-cna-browser.json', function(data) {
+      console.log(data);
+    });
+    </script>
+  </body>
+</html>
