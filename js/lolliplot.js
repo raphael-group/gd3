@@ -69,10 +69,11 @@ function lolliplots(params) {
 
   function chart(selection) {
     selection.each(function(data) {
+      console.log(data)
       var geneName = data.gene,
           length = data.length,
           mutations = data.mutations,
-          proteinDomains = data.domains[domainDB];
+          proteinDomains = data.domains[domainDB] || [];
 
       var dataSet = mutations.slice();
 
