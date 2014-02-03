@@ -711,6 +711,7 @@ function oncoprint(params) {
         mutationLegend.append('rect')
             .attr('x', left)
             .attr('id', 'sampleWidthRect')
+            .attr('width', samplesPerCol * tickWidth - (2*sampleStroke))
             .attr('height', geneHeight)
             .style('fill', blockColorMedium);
 
@@ -718,7 +719,9 @@ function oncoprint(params) {
             .attr('id', 'sampleWidthText')
             .attr('x', left)
             .attr('y', 3 * geneHeight / 4)
-            .style('fill', '#000');
+            .attr("transform", "translate(" + (tickWidth + 5) + ",0)")
+            .style('fill', '#000')
+            .text(samplesPerCol == 1 ? '1 sample' : samplesPerCol + ' samples')
       }// end renderLegend()
 
 

@@ -65,11 +65,10 @@ function lolliplots(params) {
           "OV",
           "GASTRIC"
         ];
-  var sampleTypeToColor = {};
+  var sampleTypeToColor = colorSchemes.sampleType || {};
 
   function chart(selection) {
     selection.each(function(data) {
-      console.log(data)
       var geneName = data.gene,
           length = data.length,
           mutations = data.mutations,
