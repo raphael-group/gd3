@@ -64,25 +64,19 @@
     <script src="../js/cna-browser.js"></script>
     <script>
     // Choose the gnee to visualize
-    var gene = "CD44";
+    var gene = "TRIM16";
 
     // Load the styles
     d3.json("../styles/pancancer-style.json", function(style){    
-      // Load the sample2ty
-      d3.json("../examples/example-oncoprint.json", function(M){
-        var sample2ty = M.sample2ty;
-
-        // Draw the CNA browser
-        d3.json('exData/example-cna-browser.json', function(gene2data) {
-            var data = gene2data['cna_genes'][gene];
-            data.sample2ty = sample2ty;
-            d3.select('#cna1')
-              .datum(data)
-              .call(
-                cna_browser({style: {colorSchemes: style.global.colorSchemes }})
-              );
-        }); 
-      });
+      // Draw the CNA browser
+      d3.json('exData/example-cna-browser.json', function(data) {
+        console.log(data)
+          d3.select('#cna1')
+            .datum(data[gene])
+            .call(
+              cna_browser({style: {colorSchemes: style.global.colorSchemes }})
+            );
+      }); 
     });
     </script>
   </body>

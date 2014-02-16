@@ -39,25 +39,20 @@ function cna_browser(params){
 			// General setup
 			var sample2ty = data.sample2ty,
 				gene = data.gene,
-				geneinfo = data.geneinfo,
-				cliq = data.cliq,
-				seg = data.seg,
+				geneinfo = data.neighbors,
+				seg = data.segments,
 				region = data.region;
-			
-			var chrm = region[2],
+			console.log(data.segments)
+			var chrm = region.chr,
 				allmin = 0,
 				allmax = 0,
-				maxSegXLoc = region[1];
-				minSegXLoc = region[0];
+				minSegXLoc = region.minSegX,
+				maxSegXLoc = region.maxSegX;
 
 			// Initialize data structures
 			var geneJSON = geneinfo.map(function(d) {
-				var selected = d[2] == gene;
-				return { fixed: selected ? true: false , x0: d[0], x1: d[1], label: d[2], selected: selected };
-			});
-
-			var cliqJSON = cliq.map(function(d) {
-				return { x0: d[0], x1: d[1], color: d[2], label: d[3]};
+				var selected = d.name == gene;
+				return { fixed: selected ? true: false , start: d.start, end: d.end, label: d.name, selected: selected };
 			});
 
 			var segHCount = initIntervalH,
@@ -66,11 +61,11 @@ function cna_browser(params){
 
 			for (var i = 0; i < seg.length; i++){
 				var si = seg[i];
-				segHCount+=intervalH;
-				samplelst.push( si.pat );
-				for (var j = 0; j < si.seg.length; j++){
-					var sj = si.seg[j];
-					segJSON.push({ x0: sj.x0, x1: sj.x1, label: sj.label, y: segHCount, pat: si.pat });
+				segHCount += intervalH;
+				samplelst.push( si.sample );
+				for (var j = 0; j < si.segments.length; j++){
+					var sj = si.segments[j];
+					segJSON.push({ start: sj.start, end: sj.end, label: sj.sample, y: segHCount, sample: si.sample });
 				}
 			}
 
@@ -82,8 +77,8 @@ function cna_browser(params){
 					.append('svg');
 
 			// Set up scales
-			var start = region[0],
-				stop = region[1];
+			var start = region.minSegX,
+				stop = region.maxSegX;
 
 			var x = d3.scale.linear()
 				.domain([start, stop])
@@ -146,7 +141,7 @@ function cna_browser(params){
 
 				genes = geneGroups.append('rect')        
 					.attr("width", function(d){
-						return normalize(d.x1) - normalize(d.x0);
+						return normalize(d.end) - normalize(d.start);
 					})
 					.attr('height', genomeHeight)
 					.style("fill-opacity", function(d) {return d.selected ? 1 : 0.2;})
@@ -211,9 +206,9 @@ function cna_browser(params){
 					.attr("class", "intervals")
 
 				ints = intervals.append('rect')    
-					.attr('fill', function(d){ return sampleTypeToColor[sample2ty[d.pat]] })
+					.attr('fill', function(d){ return sampleTypeToColor[sample2ty[d.sample]] })
 					.attr('width', function(d) {
-						return normalize(d.x1, minSegXLoc, maxSegXLoc) - normalize(d.x0, minSegXLoc, maxSegXLoc);
+						return normalize(d.end, minSegXLoc, maxSegXLoc) - normalize(d.start, minSegXLoc, maxSegXLoc);
 					})
 					.attr('height', 5)
 					.attr('id', function (d, i) { return "interval-" + i; });
@@ -222,18 +217,18 @@ function cna_browser(params){
 			function updateGene(){
 				// Move the genes into place
 				genes.attr("transform", function(d, i){
-					return "translate(" + normalize(d.x0) + "," + rangeLegendOffset + ")"
+					return "translate(" + normalize(d.start) + "," + rangeLegendOffset + ")"
 				});
 
 				// Scale the gene's blocks' width
-				genes.attr("width", function(d, i){ return normalize(d.x1) - normalize(d.x0); });
+				genes.attr("width", function(d, i){ return normalize(d.end) - normalize(d.start); });
 
 				// Move the geneLabels
 				geneLabels.attr("transform", function(d, i){
 					// place the label in the center of whatever portion of the domain is shown
-					var x1 = d3.max( [d.x0, d3.max(normalize.domain())] ),
-						x2 = d3.min( [d.x1, d3.min(normalize.domain())] );
-					return "translate(" + normalize(d.x0 + (d.x1-d.x0)/2) + ",0)";
+					var x1 = d3.max( [d.start, d3.max(normalize.domain())] ),
+						x2 = d3.min( [d.end, d3.min(normalize.domain())] );
+					return "translate(" + normalize(d.start + (d.end-d.start)/2) + ",0)";
 				});
 			}
 
@@ -255,24 +250,23 @@ function cna_browser(params){
 			function updateInterval(){
 				// Move the intervals into place
 				ints.attr("transform", function(d, i){
-					return "translate(" + normalize(d.x0) + "," + (rangeLegendOffset-15 + d.y) + ")"
+					return "translate(" + normalize(d.start) + "," + (rangeLegendOffset-15 + d.y) + ")"
 				});
 
 				// Scale the intervals' widths
-				ints.attr("width", function(d, i){ return normalize(d.x1) - normalize(d.x0); });
+				ints.attr("width", function(d, i){ return normalize(d.end) - normalize(d.start); });
 				
 				// Add the tooltips
 				if (ints.tooltip)
 					intervals.tooltip(function(d, i) {
-						var tip = d.pat +"<br/> subtype: "+sample2ty[d.pat]+ "<br/> start: " + d.x0 + "<br/> end:    " + d.x1;
+						var tip = d.sample +"<br/> subtype: "+sample2ty[d.sample]+ "<br/> start: " + d.start + "<br/> end:    " + d.end;
 						return {
 							type: "tooltip",
 							text: tip,
 							detection: "shape",
 							placement: "mouse", 
 							gravity: "right",
-							position: [0, 0],
-							displacement: [3, 12],
+							displacement: [3, -rangeLegendOffset-5],
 							mousemove: false
 						};
 					}); 
