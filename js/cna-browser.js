@@ -259,7 +259,7 @@ function cna_browser(params){
 				// Add the tooltips
 				if (ints.tooltip)
 					intervals.tooltip(function(d, i) {
-						var tip = d.sample +"<br/> subtype: "+sample2ty[d.sample]+ "<br/> start: " + d.start + "<br/> end:    " + d.end;
+						var tip = d.sample +"<br/> type: "+sample2ty[d.sample]+ "<br/> start: " + d.start + "<br/> end:    " + d.end;
 						return {
 							type: "tooltip",
 							text: tip,
