@@ -434,11 +434,11 @@ function oncoprint(params) {
               return x(sampleToIndex[i]) < (labelWidth + boxMargin) ||
                   x(sampleToIndex[i]) > width;
             });
-        inactiveTicks.style('fill-opacity', '0.25')
+        inactiveTicks.style('fill-opacity', 0.25)
             .style('stroke-opacity', 1);
 
         // Move the small ticks of the inactivating group to the right place
-        matrix.selectAll('inactivating')
+        matrix.selectAll('.inactivating')
             .filter(function(d) { return d.inactivating; })
             .attr('width', tickWidth)
             .attr('y', function(d, i) {
