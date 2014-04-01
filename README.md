@@ -35,7 +35,7 @@ Transcript Plot(`js/transcript-plot.js`)
 
 *Python scripts for saving visualizations to SVG.*
 
-Python Oncoprinter (`drawMutationMatrix.py`)
+Python Mutation Matrix (`drawMutationMatrix.py`)
 
     Usage: see python drawMutationMatrix.py -h
 
