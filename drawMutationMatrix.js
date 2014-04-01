@@ -8,7 +8,7 @@ var jsdom = require('jsdom')
 // Validate args
 var argv = require('optimist').argv;
 if (!( argv.outdir && argv.json )){
-    usage  = "Usage: node drawOncoprint.js --json=</path/to/json>"
+    usage  = "Usage: node drawMutationMatrix.js --json=</path/to/json>"
     usage += " --outdir=</path/to/output> [--width=<width_in_pixels>]"
     usage += " [--style=</path/to/json/file>]"
     console.log(usage);
@@ -18,26 +18,26 @@ if (!( argv.outdir && argv.json )){
 // Load the data and parse into shorter variable handles
 var data = JSON.parse(fs.readFileSync(argv.json).toString());
 
-// Scripts required to make oncoprint
+// Scripts required to make mutation matrix
 var scripts = [ "bower_components/jquery/jquery.min.js",
                 "bower_components/d3/d3.min.js",
-                "js/oncoprinter.js",
+                "js/mutation-matrix.js",
               ]
-, htmlStub = '<!DOCTYPE html><oncoprint></oncoprint>';
+, htmlStub = '<!DOCTYPE html><mutation_matrix></mutation_matrix>';
 
 var src = scripts.map(function(S){ return fs.readFileSync(S).toString(); })
 
 // Globals to store the loaded JS libraries
 var d3, $;
 
-// Parameters for drawing the oncoprint
+// Parameters for drawing the mutation matrix
 var styleFile = argv.style || "styles/pancancer-style.json"
 , styling = JSON.parse(fs.readFileSync(styleFile).toString())
 , width = argv.width || styling.global.width || 900;
-styling.oncoprint.width = width;
+styling.mutation_matrix.width = width;
 
-// Merge the global and oncoprint styles into one
-var style = styling.oncoprint;
+// Merge the global and mutation matrix styles into one
+var style = styling.mutation_matrix;
 for (var attrname in styling.global)
     style[attrname] = styling.global[attrname];
 
@@ -64,11 +64,11 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     $  = window.jQuery;
     
 
-    // Create the oncoprint in the headless browser
-    var el = d3.select('oncoprint')
+    // Create the mutation matrix in the headless browser
+    var el = d3.select('mutation_matrix')
         .datum(data)
         .call(
-            window.oncoprint({style: style})
+            window.mutation_matrix({style: style})
             .addCoverage()
             .addLegend()
             .addSortingMenu()
@@ -77,8 +77,8 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
     // Make sure all SVGs are properly defined
     d3.selectAll("svg").attr("xmlns", "http://www.w3.org/2000/svg") 
 
-    // Write the oncoprint to file
-    save_fig("svg#oncoprint", argv.outdir + "/oncoprint")
+    // Write the mutation_matrix to file
+    save_fig("svg#mutation-matrix", argv.outdir + "/mutation_matrix")
 
     // Write the mutation type legend to file
     save_fig("svg#mutation-legend", argv.outdir + "/mutLegend")

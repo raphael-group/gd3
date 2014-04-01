@@ -23,18 +23,18 @@
         text-align: center;
       }
 
-      .lolliContainer {
+      .transcriptContainer {
         border-bottom: 1px solid #ccc;
         margin-bottom: 10px;
         padding-bottom: 10px;
         width: 1100px;
       }
-      .lolliViz {
+      .transcriptViz {
         float: left;
         overflow-x: hidden;
         width: 700px;
       }
-      .lolliDesc {
+      .transcriptDesc {
         border-left: 1px solid #444;
         float: right;
         margin: 10px;
@@ -44,22 +44,22 @@
     </style>
   </head>
   <body>
-    <h1>GD3.lolliplot()</h1>
+    <h1>GD3.transcript_plot()</h1>
     <p>Hides ___ lines of code</p>
 
-    <div class="lolliContainer">
-      <div id="lolli1" class="lolliViz"></div>
-      <div class="lolliDesc">
+    <div class="transcriptContainer">
+      <div id="transcript1" class="transcriptViz"></div>
+      <div class="transcriptDesc">
         <code>
         </code>
       </div>
       <div style="clear:both"></div>
     </div>
 
-    <script src="util/d3.v3.js"></script>
-    <script src="../js/lolliplot.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="../js/transcript-plot.js"></script>
     <script>
-    d3.json('exData/example-lolliplot.json', function(data) {
+    d3.json('../example-data/example-transcript-plot.json', function(data) {
       var styling = {
       };
 
@@ -93,14 +93,14 @@
       console.log(params.sampleTypes);
 
       for(v in vizData) {
-        d3.select('#lolli1')
+        d3.select('#transcript1')
           .append('div')
             .datum(vizData[v])
-            .call(lolliplots(params).addLegend());
+            .call(transcript_plot(params).addLegend());
       }
-      // d3.select('#lolli1')
+      // d3.select('#transcript1')
       //   .datum(vizData[1])
-      //   .call(lolliplots(params));
+      //   .call(transcript_plot(params));
 
     });
     </script>

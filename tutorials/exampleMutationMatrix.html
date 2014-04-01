@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GD3 Example Oncoprints</title>
+    <title>GD3 Example Mutation Matrix</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -23,18 +23,18 @@
         text-align: center;
       }
 
-      .oncoContainer {
+      .m2Container {
         border-bottom: 1px solid #ccc;
         margin-bottom: 10px;
         padding-bottom: 10px;
         width: 1100px;
       }
-      .oncoViz {
+      .m2Viz {
         float: left;
         overflow-x: hidden;
         width: 700px;
       }
-      .oncoDesc {
+      .m2Desc {
         border-left: 1px solid #444;
         float: right;
         margin: 10px;
@@ -44,28 +44,28 @@
     </style>
   </head>
   <body>
-    <h1>GD3.oncoprint()</h1>
+    <h1>GD3.mutation_matrix()</h1>
     <p>Hides 900 lines of code</p>
 
-    <div class="oncoContainer">
-      <div id="onco1" class="oncoViz"></div>
-      <div class="oncoDesc">
+    <div class="m2Container">
+      <div id="m21" class="m2Viz"></div>
+      <div class="m2Desc">
         <code>
-          d3.select('#onco1')<br />
+          d3.select('#m21')<br />
           &nbsp;&nbsp;.datum(data)<br />
-          &nbsp;&nbsp;.call(oncoprint());
+          &nbsp;&nbsp;.call(mutation_matrix());
         </code>
       </div>
       <div style="clear:both"></div>
     </div>
 
-    <div class="oncoContainer">
-      <div id="onco2" class="oncoViz"></div>
-      <div class="oncoDesc">
+    <div class="m2Container">
+      <div id="m22" class="m2Viz"></div>
+      <div class="m2Desc">
         <code>
-          d3.select('#onco2')<br />
+          d3.select('#m22')<br />
           &nbsp;&nbsp;.datum(data)<br />
-          &nbsp;&nbsp;.call(oncoprint()<br />
+          &nbsp;&nbsp;.call(mutation_matrix()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
           &nbsp;&nbsp;);
         </code>
@@ -73,13 +73,13 @@
       <div style="clear:both"></div>
     </div>
 
-    <div class="oncoContainer">
-      <div id="onco3" class="oncoViz"></div>
-      <div class="oncoDesc">
+    <div class="m2Container">
+      <div id="m23" class="m2Viz"></div>
+      <div class="m2Desc">
         <code>
-        d3.select('#onco3')<br />
+        d3.select('#m23')<br />
           &nbsp;&nbsp;.datum(data)<br />
-          &nbsp;&nbsp;.call(oncoprint()<br />
+          &nbsp;&nbsp;.call(mutation_matrix()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addCoverage()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addSortingMenu()<br />
@@ -89,9 +89,9 @@
       <div style="clear:both"></div>
     </div>
 
-    <div class="oncoContainer">
-      <div id="onco4" class="oncoViz"></div>
-      <div class="oncoDesc">
+    <div class="m2Container">
+      <div id="m24" class="m2Viz"></div>
+      <div class="m2Desc">
         <code>
           var styling = {<br />
           &nbsp;&nbsp;bgColor: '#ccc',<br />
@@ -100,9 +100,9 @@
           &nbsp;&nbsp;exclusiveColor: '#6699CC'<br />
           };<br />
           <br />
-          d3.select('#onco4')<br />
+          d3.select('#m24')<br />
           &nbsp;&nbsp;.datum(data)<br />
-          &nbsp;&nbsp;.call(oncoprint({style: styling})<br />
+          &nbsp;&nbsp;.call(mutation_matrix({style: styling})<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addCoverage()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addSortingMenu()<br />
@@ -112,11 +112,11 @@
       <div style="clear:both"></div>
     </div>
 
-    <script src="util/d3.v3.js"></script>
-    <script src="util/jquery.js"></script>
-    <script src="../js/oncoprinter.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../js/mutation-matrix.js"></script>
     <script>
-    d3.json('exData/example-oncoprint.json', function(data) {
+    d3.json('../example-data/example-mutation-matrix.json', function(data) {
       var styling = {
         bgColor: '#ccc',
         blockColorMedium: '#0053b1',
@@ -124,30 +124,30 @@
         exclusiveColor: '#6699CC'
       };
 
-      d3.select('#onco1')
+      d3.select('#m21')
         .datum(data)
-        .call(oncoprint());
+        .call(mutation_matrix());
 
-      d3.select('#onco2')
+      d3.select('#m22')
         .datum(data)
         .call(
-          oncoprint()
+          mutation_matrix()
             .addLegend()
         );
 
-      d3.select('#onco3')
+      d3.select('#m23')
         .datum(data)
         .call(
-          oncoprint()
+          mutation_matrix()
             .addCoverage()
             .addLegend()
             .addSortingMenu()
         );
 
-      d3.select('#onco4')
+      d3.select('#m24')
         .datum(data)
         .call(
-          oncoprint({style: styling})
+          mutation_matrix({style: styling})
             .addCoverage()
             .addLegend()
             .addSortingMenu()

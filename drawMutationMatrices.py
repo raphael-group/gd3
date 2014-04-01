@@ -12,10 +12,10 @@ from collections import defaultdict, namedtuple
 from constants import *
 
 def parse_args(raw_args):
-    description = 'Draws oncoprints for the given subnetworks and mutation data.'
+    description = 'Draws mutation matrices for the given subnetworks and mutation data.'
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('-s', '--subnetworks_file', required=True,
-                        help='Path to tab-separated file listing components for which oncoprints\
+                        help='Path to tab-separated file listing components for which mutation matrices\
                               should be generated, one component per line.')
     parser.add_argument('-v', '--snv_file',
                         help='Path to a tab-separated file containing SNVs where the first column\
@@ -61,9 +61,9 @@ def parse_args(raw_args):
                               co-occurrence. Otherwise, samples will be colored by type with an\
                               arbitrary color mapping.')
     parser.add_argument('-w', '--width', type=int, default=900,
-                        help='Width in pixels for oncoprints.')
+                        help='Width in pixels for mutation matrices.')
     parser.add_argument('-o', '--output_directory', required=True,
-                        help='Output directory in which oncoprints should be generated.')
+                        help='Output directory in which mutation matrices should be generated.')
     args = parser.parse_args(raw_args)
 
     #validate arguments
@@ -158,14 +158,14 @@ def run(args):
     write_style_file(args.style_file, args.color_file, '%s/styles.json' % args.output_directory)
     
     for subnetwork in subnetworks:
-        print "Generating oncoprint for subnetwork %s" % subnetwork.index
+        print "Generating mutation matrix for subnetwork %s" % subnetwork.index
         data = get_data_for_cc(subnetwork.genes, snvs, cnas, inactivating_snvs, fusions, sample2type)
         json.dump(data, open('%s/data.json' % args.output_directory, 'w'), indent=4)
 
-        os.system('node drawOncoprint.js --json=%s/data.json --outdir=%s --width=%s --style=%s' % 
+        os.system('node drawMutationMatrix.js --json=%s/data.json --outdir=%s --width=%s --style=%s' % 
             (args.output_directory, args.output_directory, args.width, '%s/styles.json' % args.output_directory))
-        os.rename('%s/oncoprint.svg' % args.output_directory,
-         		  '%s/oncoprint_%s.svg' % (args.output_directory, subnetwork.index))
+        os.rename('%s/mutation_matrix.svg' % args.output_directory,
+         		  '%s/mutation_matrix_%s.svg' % (args.output_directory, subnetwork.index))
 
     os.remove('%s/data.json' % args.output_directory)
     os.remove('%s/styles.json' % args.output_directory)

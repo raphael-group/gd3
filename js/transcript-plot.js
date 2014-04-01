@@ -1,4 +1,4 @@
-function lolliplots(params) {
+function transcript_plot(params) {
   var params = params || {},
       style  = params.style || {},
       colorSchemes = style.colorSchemes || {},

@@ -33,7 +33,7 @@
     "edgeWidth": 1.5,
     "transitionTime": 500
   },
-  "oncoprint":{
+  "mutation_matrix":{
     "exclusiveColor": "blue",
     "coocurringColor": "orange",
     "labelWidth": 100,
@@ -46,7 +46,7 @@
     "sampleStroke": 1,
     "colorSampleTypes": true
   },
-  "lolliplot":{
+  "transcript_plot":{
     "margin": 5,
     "height": 200,
     "genomeHeight": 20,

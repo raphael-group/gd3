@@ -1,4 +1,4 @@
-function oncoprint(params) {
+function mutation_matrix(params) {
   var params = params || {},
       style  = params.style || {},
       colorSchemes = style.colorSchemes || {};
@@ -160,7 +160,7 @@ function oncoprint(params) {
       // sample -> { name, genes, dataset, cooccurring }
       // where genes is a list of mutations
       // gene   -> { amp, del, inactive_snv, snv, g, dataset, cooccurring }
-      function createOncoprintData( M, geneToSamples, genes, samples,
+      function createMutationMatrixData( M, geneToSamples, genes, samples,
           sampleToTypes ){
         var sampleMutations = [];
         for (i = 0; i < samples.length; i++){
@@ -192,7 +192,7 @@ function oncoprint(params) {
         }
 
         return sampleMutations;
-      } // end createOncoprintData()
+      } // end createMutationMatrixData()
 
 
       // Sort sample *indices*
@@ -247,7 +247,7 @@ function oncoprint(params) {
 
 
       // Parse the mutation data and sort the samples using a default sort order
-      var sampleMutations = createOncoprintData(M, geneToSamples, genes,
+      var sampleMutations = createMutationMatrixData(M, geneToSamples, genes,
               samples, sampleToTypes),
           sampleSortOrder = [GENE_FREQ, SAMPLE_TYPE, EXCLUSIVITY, MUTATION_TYPE,
               SAMPLE_NAME],
@@ -285,7 +285,7 @@ function oncoprint(params) {
           .scaleExtent([1, Math.round( minBoxWidth * m / width)])
           .on('zoom', function() { renderOncoprint(); });
 
-      svg.attr('id', 'oncoprint')
+      svg.attr('id', 'mutation-matrix')
           .attr('width', width)
           .attr('height', height + labelHeight)
           .attr('xmlns', 'http://www.w3.org/2000/svg')
@@ -304,7 +304,7 @@ function oncoprint(params) {
               labelHeight + ')');
 
       // Add groups that include sample labels and each sample's mutations
-      var g = fig.append('svg:g').attr('id', 'oncoprint');
+      var g = fig.append('svg:g').attr('id', 'mutation-matrix');
       var matrix = g.selectAll('.sample')
           .data(sampleMutations)
           .enter()
@@ -406,7 +406,7 @@ function oncoprint(params) {
 
       //////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////
-      // Render function for oncoprint
+      // Render function for mutation matrix
       // Main function for moving sample names and ticks into place depending on
       //    zoom level
       function renderOncoprint() {
@@ -554,7 +554,7 @@ function oncoprint(params) {
         // If the data contains multiple datasets, then mutations are
         //    colored by dataset, so the exclusive/co-occurring cells won't
         //    be shown. The dataset legend will float to the right of the
-        //    oncoprint.
+        //    mutation matrix.
         if(!multiDataset) {
           // Exclusive ticks
           mutationLegend.append('rect')
@@ -733,7 +733,7 @@ function oncoprint(params) {
 
         var interfaceLink = sampleSort.append('a')
             .style('font-weight', 'bold')
-            .text('Sort oncoprint by: ')
+            .text('Sort mutation matrix by: ')
             .on('click', function() {
               // TODO enable hiding/showing menu
               // d3.select('ul#sample-sort-list').style('display', 'block');
@@ -780,7 +780,7 @@ function oncoprint(params) {
         }
 
         // Shift items in the sample sort order list based on whether the user
-        //    presses up/down. Then calls reorder to update the oncoprint
+        //    presses up/down. Then calls reorder to update the mutation matrix
         function updateSampleOrder(n, move) {
           var newSampleSortOrder = sampleSortOrder,
               i = sampleSortOrder.indexOf(n),
@@ -800,7 +800,7 @@ function oncoprint(params) {
           // Remove the old sample sorting interface
           sortFnsContainer.selectAll('*').remove();
 
-          // Append a list of the way the oncoprint is sorted
+          // Append a list of the way the mutation matrix is sorted
           var sortFns = sortFnsContainer.selectAll('.sort-fn')
               .data(sampleSortOrder).enter()
               .append('li')

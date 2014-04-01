@@ -17,11 +17,11 @@ To use the Python scripts, you must also:
 
 *Visualization scripts*
 
-Oncoprinter(`js/oncoprinter.js`)
+Mutation Matrix(`js/mutation-matrix.js`)
 
 Subnetworks(`js/subnetwork.js`)
 
-Lolliplots(`js/lolliplots.js`)
+Transcript Plot(`js/transcript-plot.js`)
 
 ### Styles (`js/style/`)
 
@@ -35,16 +35,16 @@ Lolliplots(`js/lolliplots.js`)
 
 *Python scripts for saving visualizations to SVG.*
 
-Python Oncoprinter (`drawOncoprints.py`)
+Python Oncoprinter (`drawMutationMatrix.py`)
 
-    Usage: see python drawOncoprints.py -h
+    Usage: see python drawMutationMatrix.py -h
 
 *Node.js scripts for saving visualizations to SVG.*
 
-Oncoprinter(`drawOncoprint.js`)
+Mutation Matrix(`drawMutationMatrix.js`)
 
-    Usage: node drawOncoprint.js --json=</path/to/json> --outdir=</path/to/output>
+    Usage: node drawMutationMatrix.js --json=</path/to/json> --outdir=</path/to/output>
 
-Lolliplot(`drawLolliplot.js`)
+Transcript Plot(`drawTranscriptPlot.js`)
 
-    Usage: node drawLolliplot.js --json=</path/to/json> --outfile=</path/to/output/file>
+    Usage: node drawTranscriptPlot.js --json=</path/to/json> --outfile=</path/to/output/file>

@@ -60,7 +60,7 @@
       </div>
       <div style="clear:both"></div>
     </div>
-    <script src="util/d3.v3.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="../js/cna-browser.js"></script>
     <script>
     // Choose the gnee to visualize
@@ -69,7 +69,7 @@
     // Load the styles
     d3.json("../styles/pancancer-style.json", function(style){    
       // Draw the CNA browser
-      d3.json('exData/example-cna-browser.json', function(data) {
+      d3.json('../example-data/example-cna-browser.json', function(data) {
         console.log(data)
           d3.select('#cna1')
             .datum(data[gene])
