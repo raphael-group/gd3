@@ -825,7 +825,6 @@ function mutation_matrix(params) {
           // Add a short description of what each sort parameter is
           sortFns.append('span').text(function(d){
             var name = sortFnName[d];
-            console.log(d, name);
             return ' ' + sortFnName[d];
           });
         }
