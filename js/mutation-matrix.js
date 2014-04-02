@@ -129,14 +129,13 @@ function mutation_matrix(params) {
           MUTATION_TYPE = 2,
           EXCLUSIVITY = 3,
           GENE_FREQ = 4,
-          sortFnName = {
-            // Short descriptions of the different sorting functions
-            EXCLUSIVITY : 'Exclusivity',
-            GENE_FREQ : 'Gene frequency',
-            MUTATION_TYPE : 'Mutation type',
-            SAMPLE_NAME : 'Sample name',
-            SAMPLE_TYPE : 'Sample type'
-          };
+          // Short descriptions of the different sorting functions
+          sortFnName = { };
+          sortFnName[EXCLUSIVITY] = 'Exclusivity';
+          sortFnName[GENE_FREQ] = 'Gene frequency';
+          sortFnName[MUTATION_TYPE] = 'Mutation type';
+          sortFnName[SAMPLE_NAME] = 'Sample name';
+          sortFnName[SAMPLE_TYPE] = 'Sample type';
 
 
       // Create a dictionary of samples to whether they are exclusively
@@ -825,8 +824,9 @@ function mutation_matrix(params) {
 
           // Add a short description of what each sort parameter is
           sortFns.append('span').text(function(d){
-            var key = Object.keys(sortFnName)[d];
-            return ' ' + sortFnName[key];
+            var name = sortFnName[d];
+            console.log(d, name);
+            return ' ' + sortFnName[d];
           });
         }
         sampleSorterInterface();
