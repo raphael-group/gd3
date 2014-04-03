@@ -77,10 +77,14 @@ function mutation_matrix(params) {
           samplesPerCol;
 
       // Assign colors for each type if no type coloration information exists
-      if(Object.keys(sampleTypeToColor).length == 0) {
+      var sampleTypesWithColors = sampleTypes.reduce(function(total, d){
+        return sampleTypeToColor[d] ? total + 1 : total;
+      }, 0);
+      if (sampleTypesWithColors != sampleTypes.length) {
         var colors = d3.scale.category20();
         for (var i = 0; i < sampleTypes.length; i++) {
-          sampleTypeToColor[sampleTypes[i]] = colors(i);
+          if (!sampleTypeToColor[sampleTypes[i]])
+            sampleTypeToColor[sampleTypes[i]] = colors(i);
         }
       }
 

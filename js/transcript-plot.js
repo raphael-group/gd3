@@ -10,7 +10,9 @@ function transcript_plot(params) {
       textColorStrongest = style.textColorStrongest || '#2C3E50';
 
   var bgColor = style.bgColor || '#ffffff',
+      buttonColor = style.buttonColor || '#666666'
       genomeHeight = style.genomeHeight || 20,
+      axisHeight = style.axisHeight || 20,
       height = style.height || 200,
       margin = style.margin || 5,
       numTicks = style.numTicks || 5,
@@ -33,7 +35,7 @@ function transcript_plot(params) {
     "In_Frame_Ins": false
   };
 
-  // TODO find a more elegant way to do this
+
   var mutSymbols = params.mutSymbols ||
         {
           "Nonsense_Mutation": 0,
@@ -45,26 +47,6 @@ function transcript_plot(params) {
           "In_Frame_Ins": 4
   };
 
-  // TODO find a more elegant way to do this
-  //var sampleTypes = colorSchemes.sampleType || {};
-  var sampleTypes = params.sampleTypes ||
-        [
-          "EBV",
-          "BLCA",
-          "BRCA",
-          "COADREAD",
-          "GBM",
-          "SCNAL",
-          "HNSC",
-          "KIRC",
-          "LAML",
-          "LUAD",
-          "LUSC",
-          "SCNAH",
-          "UCEC",
-          "OV",
-          "GASTRIC"
-        ];
   var sampleTypeToColor = colorSchemes.sampleType || {};
 
   function chart(selection) {
@@ -76,6 +58,15 @@ function transcript_plot(params) {
 
       var dataSet = mutations.slice();
 
+      // Collect all unique types for all samples
+      var sampleTypes = [];
+      mutations.forEach(function(m){
+        if(sampleTypes.indexOf(m.dataset) == -1) {
+          sampleTypes.push(m.dataset);
+        }
+      });
+      sampleTypes.sort();
+
       // Assign colors for each type if no type coloration information exists
       if(Object.keys(sampleTypeToColor).length == 0) {
         var colors = d3.scale.category20();
@@ -86,50 +77,134 @@ function transcript_plot(params) {
 
 
       // Select the svg element, if it exists.
-      var fig = d3.select(this)
+      var plotHeight = (height - genomeHeight - axisHeight - 4*margin)/2;
+      var svg = d3.select(this)
           .selectAll('svg')
           .data([data])
           .enter()
-            .append('svg');
+            .append('svg')
+            .style("cursor", "move");
 
-      fig.attr('class', 'lollibox')
+      svg.attr('class', 'transcript-box')
           .attr('id', geneName + '-transcript')
           .attr('width', width)
           .attr('height', height + 2*margin);
 
-      // Zoom scale
-      var start = 0,
-          stop = length;
+      var fig = svg.append("g");
 
-      var x = d3.scale.linear()
-          .domain([start, stop])
-          .range([margin, width - margin]);
-
-      var sequenceScale = d3.scale.linear()
-          .domain([start, stop])
-          .range([0, length]);
-
-      // Define zoom behavior
-      var zoom = d3.behavior.zoom()
-        .x(x)
-        .scaleExtent([1, 100])
-        .on('zoom', function() { updateTranscript()});
-      fig.call(zoom);
-
-      // Add figure background
+      // Add figure backgrounds
       var background = fig.append('rect')
           .attr('class', 'background')
           .attr('width', width)
           .attr('height', height)
           .style('fill', bgColor);
 
+      var topStart = plotHeight;
+      var backgroundTop = fig.append('rect')
+          .attr('class', 'background')
+          .attr('id', 'background-top')
+          .attr('width', width - 2 * margin)
+          .attr('height', plotHeight)
+          .attr("x", margin)
+          .attr("y", margin)
+          .style('fill', bgColor);
+
+      var bottomStart = plotHeight + genomeHeight + axisHeight + 3.5 * margin;
+      var backgroundBottom = fig.append('rect')
+          .attr('class', 'background')
+          .attr('id', 'background-bottom')
+          .attr('width', width - 2 * margin)
+          .attr('height', plotHeight)
+          .attr("x", margin)
+          .attr("y", plotHeight + genomeHeight + axisHeight + 3 * margin)
+          .style('fill', bgColor);
+
+      /////////////////////////////////////////////////////////////////////////
+      // Define the zoom behavior
+      var start = 0,
+        stop = length;
+
+      // X-axis scale and zoom
+      var x = d3.scale.linear()
+          .domain([start, stop])
+          .range([margin, width - margin]);
+
+      var zoom = d3.behavior.zoom()
+        .x(x)
+        .scaleExtent([1, 100])
+        .on('zoom', updateTranscript);
+
+      fig.call(zoom);
+
+      // Parameters 
+      var symbolHeight = radius * 2,
+        maxBinVal = 3000;
+
+      // Missense and in-frame scale and zoom
+      var topY = d3.scale.linear()
+        .domain([0, maxBinVal])
+        .range([plotHeight, -1 * symbolHeight * maxBinVal + topStart]);
+
+      var zoomTop = d3.behavior.zoom()
+        .y(topY)
+        .scaleExtent([1, 1])
+        .on('zoom', function(){ updateTranscript(zoomTop, zoomBottom); });
+
+      // Inactivating scale and zoom
+      var bottomY = d3.scale.linear()
+        .domain([0, maxBinVal])
+        .range([bottomStart, bottomStart + maxBinVal * symbolHeight])
+
+      var zoomBottom = d3.behavior.zoom()
+        .y(bottomY)
+        .scaleExtent([1, 1])
+        .on('zoom', function(){ updateTranscript(zoomBottom, zoomTop); });
+
+      /////////////////////////////////////////////////////////////////////////
+      // Add buttons to control the y-axes of the two plots
+      
+      // Change the y-axis of the Z zoom by dy
+      function panVertically(Z, dy){
+        var newY = Z.translate()[1] + dy;
+        Z.translate([0, newY]);
+        updateTranscript();
+      }
+
+      // Hard-code some variables, including the locations of the buttons
+      var increment = 5, // number of pixels to increment with each click
+        buttonRadius = 8, // button size
+        UPTRI = 5, // index to access d3's built-in up triangle
+        DOWNTRI = 4; // index to access d3's built-in down triangle
+
+      var buttonData = [  {y: margin, z: zoomTop, increment: -increment, symbol: UPTRI},
+                          {y: 3*margin, z: zoomTop, increment: increment, symbol: DOWNTRI},
+                          {y: (height - 3*margin), z: zoomBottom, increment: -increment, symbol: UPTRI},
+                          {y: (height - margin), z: zoomBottom, increment: increment, symbol: DOWNTRI}
+                       ];
+
+      // Add the buttons
+      svg.selectAll(".button")
+        .data(buttonData).enter()
+        .append("path")
+        .attr('d', d3.svg.symbol()
+          .type(function(d, i) { return d3.svg.symbolTypes[d.symbol]; })
+          .size(radius*radius)
+        )
+        .attr("transform", function(d) {
+          return "translate(" + margin + "," + (d.y) + ")";
+        })
+        .style("cursor", "pointer")
+        .style("fill", buttonColor)
+        .on("click", function(d){ panVertically(d.z, d.increment, d.start) });
+
       // Transcript configuration
+      var genomeY = 2 * margin + plotHeight;
       var transcript = fig.append('rect')
           .attr('class', 'transcript')
           .attr('height', genomeHeight - margin)
           .attr('width', x(stop) - x(start))
           .attr('x', x(start))
-          .attr('y', height/2)
+          .attr('y', genomeY + margin/2)
           .style('fill', blockColorLight);
 
       // xAxis generator
@@ -143,14 +218,14 @@ function transcript_plot(params) {
       // Append the axis to the canvas
       var figAxis = fig.append('g')
           .attr('class', 'xaxis')
-          .attr('transform', 'translate(5,' + ( height/2 + genomeHeight+2) +')')
+          .attr('transform', 'translate(5,' + ( genomeY + genomeHeight + margin) +')')
           .style('font-size', '12px')
           .style('fill', '#000')
           .call(xAxis);
 
       // Add mutation symbols to the figure
-      var symbols = fig.selectAll('.symbols')
-          .data(dataSet)
+      var topSymbols = fig.selectAll('.top-symbols')
+          .data(dataSet.filter(function(m){ return !inactivating[m.ty]; }))
           .enter()
           .append('path')
             .attr('class', 'symbols')
@@ -161,7 +236,23 @@ function transcript_plot(params) {
               .size(radius*radius))
             .style('fill', function(d, i) { return sampleTypeToColor[d.dataset]})
             .style('stroke', function(d, i) { return sampleTypeToColor[d.dataset]; })
-            .style('stroke-width', 2);
+            .style('stroke-width', 2)
+            .style("cursor", "default");
+
+      var bottomSymbols = fig.selectAll('.bottom-symbols')
+          .data(dataSet.filter(function(m){ return inactivating[m.ty]; }))
+          .enter()
+          .append('path')
+            .attr('class', 'symbols')
+            .attr('d', d3.svg.symbol()
+              .type(function(d, i) {
+                return d3.svg.symbolTypes[mutSymbols[d.ty]];
+              })
+              .size(radius*radius))
+            .style('fill', function(d, i) { return sampleTypeToColor[d.dataset]})
+            .style('stroke', function(d, i) { return sampleTypeToColor[d.dataset]; })
+            .style('stroke-width', 2)
+            .style("cursor", "default");
 
       // Draw domain data with labels with mouse over
       var domainGroups = fig.selectAll('.domains')
@@ -245,75 +336,76 @@ function transcript_plot(params) {
 
 
       function updateTranscript() {
-        // Current scope of zoom
-        var curMin = d3.min(x.domain()),
-            curMax = d3.max(x.domain()),
-            curRes = Math.round( (curMax - curMin)/resolution );
+        // Keep both zooms synchronized
+        var t = zoom.translate(),
+            scale = zoom.scale(),
+            tx = t[0],
+            ty = t[1];
+
+        tx = Math.min(tx, 0);
+
+        zoom.translate([tx, ty]);
+
+        // Stack mutations if there exist more than one per location
+        var minX = d3.min(x.domain()),
+            maxX = d3.max(x.domain()),
+            curRes = Math.round( (maxX - minX)/resolution );
 
         curRes = curRes ? curRes : 1;
 
-        // Stack mutations if there exist more than one per location
-        var bottomIndex = {},
-            topIndex = {},
-            pX = {},
-            pY = {};
+        function stackSymbols(symbols, y, minY, maxY){
+          // Record the number of symbols at each index
+          var binToCount = {};
+          symbols.each(function(d){
+            // Assign the current mutation to a bin
+            var bin = Math.round(d.locus/curRes);
 
-        var endIter = Math.ceil(curMax/curRes) + 5;
-            startIter = Math.floor(curMin/curRes) - 5;
-        for (var i = startIter; i < endIter; i++) {
-          bottomIndex[i] = 0;
-          topIndex[i] = 0;
+            // Increase the count of the number of mutations in that bin
+            if (bin in binToCount){
+              yIndex = binToCount[bin];
+              binToCount[bin] += 1;
+            }
+            else{
+              yIndex = 0;
+              binToCount[bin] = 1;
+            }
+            d.x = x(bin * curRes);
+            d.y = y(yIndex);
+
+          });
+
+          // render mutation glpyhs and move/color them
+          symbols.attr('transform', function(d, i) { return 'translate(' + d.x + ', ' + d.y + ')'; })
+              .style('fill-opacity', 1)
+              .style('stroke-opacity', 1);
+
+          if (symbols.tooltip) {
+            symbols.tooltip(function(d, i) {
+                var tip = d.sample + '<br />' + d.ty.replace(/_/g, ' ') + '<br />'
+                        + d.locus + ': ' + d.aao + '>' + d.aan;
+
+                return {
+                  detection: 'shape',
+                  displacement: [3, -25],
+                  gravity: 'right',
+                  mousemove: false,
+                  placement: 'fixed',
+                  position: [d.x, d.y],
+                  text: tip,
+                  type: 'tooltip'
+                };
+            });
+          } // end if symbols.tooltip
+
+          // Ignore everything that is outside of the boundary
+          symbols.filter(function(d, i) { return !((minY < d.y && maxY > d.y) && (minX < d.locus && maxX > d.locus)); })
+              .style('fill-opacity', 0)
+              .style('stroke-opacity', 0);
         }
 
-        // render mutation glpyhs and move/color them
-        symbols.attr('transform', function(d, i) {
-              var indexDict = inactivating[d.ty] ? bottomIndex : topIndex,
-                  curIndex = Math.round(d.locus/curRes),
-                  px = x(curIndex*curRes),
-                  py;
-
-              if ( inactivating[d.ty]) {
-                py = height/2 + (genomeHeight + indexDict[curIndex] * radius * 2
-                    + 3 * margin + 10);
-              } else {
-                py = height/2 - (indexDict[curIndex] * radius * 2 + 3 * margin + 5);
-              }
-
-              indexDict[curIndex]++;
-
-              // Store the x and y values
-              pX[i] = px;
-              pY[i] = py;
-
-              return 'translate(' + px + ', ' + py + ')';
-            })// end symbols.attr('transform')
-            .style('fill', function(d) { return sampleTypeToColor[d.dataset]; })
-            .style('fill-opacity', 1)
-            .style('stroke', function(d) { return sampleTypeToColor[d.dataset]; })
-            .style('stroke-opacity', 1);
-
-        if (symbols.tooltip) {
-          symbols.tooltip(function(d, i) {
-              var tip = d.sample + '<br />' + d.ty.replace(/_/g, ' ') + '<br />'
-                      + d.locus + ': ' + d.aao + '>' + d.aan;
-
-              return {
-                detection: 'shape',
-                displacement: [3, -25],
-                gravity: 'right',
-                mousemove: false,
-                placement: 'fixed',
-                position: [pX[i], pY[i]],
-                text: tip,
-                type: 'tooltip'
-              };
-          });
-        } // end if symbols.tooltip
-
-        // Ignore everything that is outside of the boundary
-        symbols.filter(function(d, i) { return !(curMin < d.locus && curMax > d.locus); })
-            .style('fill-opacity', 0)
-            .style('stroke-opacity', 0);
+        // 
+        stackSymbols( topSymbols, topY, 0, plotHeight + margin);
+        stackSymbols( bottomSymbols, bottomY, bottomStart - margin, height - 2*margin);
 
         // update the axis
         figAxis.call(xAxis);
@@ -323,7 +415,7 @@ function transcript_plot(params) {
 
         // Update the domains
         domainGroups.attr('transform', function(d, i) {
-          return 'translate(' + x(d.start) + ',' + (height/2 - margin) + ')';
+          return 'translate(' + x(d.start) + ',' + (genomeY - margin/2) + ')';
         });
 
         domains.attr('width', function(d, i) { return x(d.end) - x(d.start); });
@@ -334,7 +426,7 @@ function transcript_plot(params) {
         })
       } // end updateTranscript
 
-      updateTranscript();
+      updateTranscript(zoomTop, zoomBottom);
 
       if(showLegend) {
         renderLegend();
