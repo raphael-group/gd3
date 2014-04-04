@@ -40,7 +40,7 @@ function mutation_matrix(params) {
   var sampleTypeToColor = colorSchemes.sampleType || {};
 
   // Define the set of mutation types we are considering, and by default show them all
-  var mutationTypes = params.mutationTypes || ["snv", "inactive_snv", "del", "amp"],
+  var mutationTypes = params.mutationTypes || ["snv", "inactive_snv", "del", "amp", "fus"],
     mutationTypeToInclude = {};
 
   mutationTypes.forEach(function(d){ mutationTypeToInclude[d] = true; })
@@ -676,7 +676,7 @@ function mutation_matrix(params) {
         var fusionLegend = mutationLegend.append("g")
           .attr("transform", "translate(" + left + ",0)")
           // .style("cursor", "pointer")
-          // .on("click", function(){ toggleMutationType(this, "fusion"); });
+          // .on("click", function(){ toggleMutationType(this, "fus); });
 
         left += mutationRectWidth + 10 + 220;
 
