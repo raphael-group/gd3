@@ -28,7 +28,7 @@
     "cold": "rgb(102, 178, 255)",
     "margins": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
     "heatLegendHeight": 110,
-    "netLegendWidth": 30,
+    "netLegendWidth": 100,
     "netLegendBox": 15,
     "edgeWidth": 1.5,
     "transitionTime": 500

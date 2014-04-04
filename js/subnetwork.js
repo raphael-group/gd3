@@ -173,11 +173,13 @@ function subnetwork(params) {
       //////////////////////////////////////////////////////////////////////////
       // DRAW LEGENDS
       function renderNetworkLegend() {
+        var networkLeft = showNetworkLegend ? (width - Math.max(heatLegendWidth+15, netLegendWidth)) : (width - netLegendWidth);
+
         var netLegend = fig.selectAll(".net-group")
             .data(networks).enter()
             .append("g")
                 .attr("transform", function(d, i){
-                    return "translate(" + (width-netLegendWidth) + "," + ((i+1)*netLegendBox) + ")";
+                    return "translate(" + networkLeft + "," + ((i+1)*netLegendBox) + ")";
                 })
                 .style("font-size", 12)
                 .on("click", function(n){
@@ -205,11 +207,12 @@ function subnetwork(params) {
 
 
       function renderGradientLegend() {
-        var gradientTop = showNetworkLegend ? networks.length * 10 + 30 : 10;
+        var gradientTop = showNetworkLegend ? networks.length * 18 + 15 : 10,
+          gradientLeft = showNetworkLegend ? (width - Math.max(heatLegendWidth+15, netLegendWidth)) : (width - heatLegendWidth - 15);
         
         var heatLegend = fig.append('g')
             .attr('id', 'subnetwork-legend')
-            .attr('transform', 'translate(' + (width-heatLegendWidth-15) + ',' + gradientTop + ')');
+            .attr('transform', 'translate(' + gradientLeft + ',' + gradientTop + ')');
 
         fig.append('svg:defs')
             .append('svg:linearGradient')
