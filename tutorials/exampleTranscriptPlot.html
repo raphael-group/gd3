@@ -276,7 +276,7 @@
       transcriptContainer.append('i').text(transcript);
       transcriptContainer.append("div")
         .datum(data[gene][transcript])
-        .call(transcript_plot(params).addLegend());
+        .call(transcript_plot(params).addLegend().addVerticalPanning());
       transcriptContainer.append("hr")
 
     });

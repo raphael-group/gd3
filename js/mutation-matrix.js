@@ -39,6 +39,12 @@ function mutation_matrix(params) {
 
   var sampleTypeToColor = colorSchemes.sampleType || {};
 
+  // Define the set of mutation types we are considering, and by default show them all
+  var mutationTypes = params.mutationTypes || ["snv", "inactive_snv", "del", "amp"],
+    mutationTypeToInclude = {};
+
+  mutationTypes.forEach(function(d){ mutationTypeToInclude[d] = true; })
+
   // These variables determine what extras to show in the chart
   var showCoverage = false,
       showLegend = false,
@@ -183,6 +189,7 @@ function mutation_matrix(params) {
               mut.fus = M[g][s].indexOf("fus") != -1;
               mut.inactivating = M[g][s].indexOf("inactive_snv") != -1;
               mut.snv = M[g][s].indexOf("snv") != -1 || mut.inactivating;
+              mut.tys = M[g][s];
               mutations.genes.push(mut);
             }
           }
@@ -626,89 +633,120 @@ function mutation_matrix(params) {
               .text(function(type) {return type;});
         }
 
-        // SNVs (full ticks)
-        mutationLegend.append('rect')
-            .attr('x', left)
-            .attr('height', geneHeight)
-            .attr('width', mutationRectWidth)
-            .style('fill', style.blockColorMedium);
+        // Add groups to hold each legend item
+        function toggleMutationType(el, ty){
+            var active = mutationTypeToInclude[ty],
+              opacity = active ? 0.5 : 1;
+            d3.select(el).selectAll("*")
+              .style("fill-opacity", opacity)
+              .style("stroke-opacity", opacity);
+            
+            mutationTypeToInclude[ty] = !active;
+            renderOncoprint();
+        }
 
-        mutationLegend.append('text')
-            .attr('x', left + mutationRectWidth + 10)
-            .attr('y', 3 * geneHeight / 4)
-            .style('fill', '#000')
-            .text('SNV');
+        var snvLegend = mutationLegend.append("g")
+          .attr("transform", "translate(" + left + ",0)")
+          // .style("cursor", "pointer")
+          // .on("click", function(){ toggleMutationType(this, "snv"); });
 
         left += mutationRectWidth + 10 + 10 + 25;
 
-        // Inactivating SNVs (stripped full ticks)
-        mutationLegend.append('rect')
-            .attr('x', left)
+        var inactiveSNVLegend = mutationLegend.append("g")
+          .attr("transform", "translate(" + left + ",0)")
+          // .style("cursor", "pointer")
+          // .on("click", function(){ toggleMutationType(this, "inactive_snv"); });
+
+        left += mutationRectWidth + 10 + 75;
+
+        var delLegend = mutationLegend.append("g")
+          .attr("transform", "translate(" + left + ",0)")
+          // .style("cursor", "pointer")
+          // .on("click", function(){ toggleMutationType(this, "del"); });
+
+        left += mutationRectWidth + 10 + 55;
+
+        var ampLegend = mutationLegend.append("g")
+          .attr("transform", "translate(" + left + ",0)")
+          // .style("cursor", "pointer")
+          // .on("click", function(){ toggleMutationType(this, "amp"); });
+
+        left += mutationRectWidth + 10 + 75;
+
+        var fusionLegend = mutationLegend.append("g")
+          .attr("transform", "translate(" + left + ",0)")
+          // .style("cursor", "pointer")
+          // .on("click", function(){ toggleMutationType(this, "fusion"); });
+
+        left += mutationRectWidth + 10 + 220;
+
+        // SNVs (full ticks)
+        snvLegend.append('rect')
             .attr('height', geneHeight)
             .attr('width', mutationRectWidth)
             .style('fill', blockColorMedium);
 
-        mutationLegend.append('rect')
-            .attr('x', left)
+        snvLegend.append('text')
+            .attr('dx', mutationRectWidth + 10)
+            .attr('dy', 3 * geneHeight / 4)
+            .style('fill', '#000')
+            .text('SNV');
+
+        // Inactivating SNVs (stripped full ticks)
+        inactiveSNVLegend.append('rect')
+            .attr('height', geneHeight)
+            .attr('width', mutationRectWidth)
+            .style('fill', blockColorMedium);
+
+        inactiveSNVLegend.append('rect')
             .attr('y', 3 * geneHeight / 8)
             .attr('height', geneHeight / 4)
             .attr('width', mutationRectWidth)
             .style('fill', '#000');
 
-        mutationLegend.append('text')
-            .attr('x', left + mutationRectWidth + 10)
-            .attr('y', 3 * geneHeight / 4)
+        inactiveSNVLegend.append('text')
+            .attr('dx', mutationRectWidth + 10)
+            .attr('dy', 3 * geneHeight / 4)
             .style('fill', '#000')
             .text('Inactivating');
 
-        left += mutationRectWidth + 10 + 75;
-
         // Deletions (down ticks)
-        mutationLegend.append('rect')
-            .attr('x', left)
+        delLegend.append('rect')
             .attr('y', geneHeight / 2)
             .attr('height', geneHeight / 2)
             .attr('width', mutationRectWidth)
             .style('fill', blockColorMedium);
 
-        mutationLegend.append('text')
-            .attr('x', left + mutationRectWidth + 5)
-            .attr('y', 3 * geneHeight / 4)
+        delLegend.append('text')
+            .attr('dx', mutationRectWidth + 5)
+            .attr('dy', 3 * geneHeight / 4)
             .style('fill', '#000')
             .text('Deletion');
 
-        left += mutationRectWidth + 10 + 55;
-
         // Amplifications (up ticks)
-        mutationLegend.append('rect')
-            .attr('x', left)
+        ampLegend.append('rect')
             .attr('height', geneHeight / 2)
             .attr('width', mutationRectWidth)
             .style('fill', blockColorMedium);
 
-        mutationLegend.append('text')
-            .attr('x', left + mutationRectWidth + 10)
-            .attr('y', 3*geneHeight / 4)
+        ampLegend.append('text')
+            .attr('dx', mutationRectWidth + 10)
+            .attr('dy', 3*geneHeight / 4)
             .style('fill', '#000')
             .text('Amplification');
 
-        left += mutationRectWidth + 10 + 75;
-
         // Fusion legend
-        mutationLegend.append('path')
+        fusionLegend.append('path')
             .attr('d', d3.svg.symbol().type('triangle-up').size(30))
-            .attr('transform', 'translate(' + (left + mutationRectWidth) + ','
-                + 3*geneHeight/8 + '), rotate(90)')
+            .attr('transform', 'translate(0,' + 3*geneHeight/8 + ')rotate(90)')
             .style('stroke', bgColor)
             .style('fill', blockColorMedium);
 
-        mutationLegend.append('text')
-            .attr('x', left + mutationRectWidth + 10)
-            .attr('y', 3 * geneHeight / 4)
+        fusionLegend.append('text')
+            .attr('dx', mutationRectWidth + 10)
+            .attr('dy', 3 * geneHeight / 4)
             .style('fill', '#000')
             .text('Fusion/Rearrangement/Splice Variant');
-
-        left += mutationRectWidth + 10 + 220;
 
         // Samples/box (the width/locations are set in renderOncoprint())
         mutationLegend.append('rect')

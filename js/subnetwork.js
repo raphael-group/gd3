@@ -8,13 +8,14 @@ function subnetwork(params) {
       fontColor = style.fontColor || '#333',
       fontFamily = style.fontFamily || '"Helvetica","Arial"',
       fontSize = style.fontSize || 10,
-      heatLegendHeight = style.heatLegendHeight || 30,
-      heatLegendWidth = style.heatLegendWidth || 100,
+      heatLegendHeight = style.heatLegendHeight || 110,
+      heatLegendWidth = style.heatLegendWidth || 50,
+      heatLegendText = style.heatLegendText || "No. Mutated Samples",
       height = style.height || 350,
       hot = style.hot || 'rgb(255, 51, 51)',
       margins = style.margins || {bottom: 0, left: 0, right: 0, top: 0},
       netLegendBox = style.netLegendBox || 15,
-      netLegendWidth = style.netLegendWidth || 200,
+      netLegendWidth = style.netLegendWidth || 100,
       nodeRadius = style.nodeRadius || 10,
       transitionTime = style.transitionTime || 500,
       width = style.width || 350;
@@ -58,11 +59,17 @@ function subnetwork(params) {
               .range([cold, hot])
               .nice();
 
+      // Calculate the size of the subnetwork view port
+      var forceWidth = width;
+      if (showNetworkLegend && showGradientLegend) forceWidth -= Math.max(netLegendWidth, heatLegendWidth);
+      else if (showNetworkLegend) forceWidth -= netLegendWidth;
+      else if (showGradientLegend) forceWidth -= heatLegendWidth;
+
       // Set up the force directed graph
       var force = d3.layout.force()
           .charge(-400)
           .linkDistance(40)
-          .size([width, height]);
+          .size([forceWidth, height]);
 
       // This drag function fixes nodes in place once they are dragged
       var drag = force.drag().on('dragstart', function(d) {
@@ -71,7 +78,7 @@ function subnetwork(params) {
       });
 
       // Set up scales
-      var x = d3.scale.linear().range([0, width]),
+      var x = d3.scale.linear().range([0, forceWidth]),
           y = d3.scale.linear().range([0, height]);
 
       var links = loadLinks(edges, nodes);
@@ -148,7 +155,7 @@ function subnetwork(params) {
       // Make sure nodes don't go outside the borders of the SVG
       force.on('tick', function() {
         circle.attr('transform', function(d) {
-          d.x = Math.max(nodeRadius, Math.min(width - nodeRadius, d.x));
+          d.x = Math.max(nodeRadius, Math.min(forceWidth - nodeRadius, d.x));
           d.y = Math.max(nodeRadius, Math.min(height - nodeRadius, d.y));
           return 'translate(' + d.x + ',' + d.y + ')';
         });
@@ -198,19 +205,17 @@ function subnetwork(params) {
 
 
       function renderGradientLegend() {
-        var heatLegend = selection.append('div')
+        var gradientTop = showNetworkLegend ? networks.length * 10 + 30 : 10;
+        
+        var heatLegend = fig.append('g')
             .attr('id', 'subnetwork-legend')
-            .style('width', heatLegendWidth + 'px');
+            .attr('transform', 'translate(' + (width-heatLegendWidth-15) + ',' + gradientTop + ')');
 
-        var gradient = heatLegend.append('svg')
-            .attr('width', heatLegendWidth)
-            .attr('height', heatLegendHeight);
-
-        gradient.append('svg:defs')
+        fig.append('svg:defs')
             .append('svg:linearGradient')
               .attr('x1', '0%')
-              .attr('y1', '0%')
-              .attr('x2', '100%')
+              .attr('y1', '100%')
+              .attr('x2', '0%')
               .attr('y2', '0%')
               .attr('id', 'heat_gradient')
               .call(function (gradient) {
@@ -222,21 +227,30 @@ function subnetwork(params) {
                   .attr('style', 'stop-color:' + hot + ';stop-opacity:1');
               });
 
-        gradient.append('rect')
+        heatLegend.append('rect')
+            .attr("y", 5)
             .attr('width', heatLegendWidth)
             .attr('height', heatLegendHeight)
             .style('fill', 'url(#heat_gradient)');
 
-        var labels = heatLegend.append('div')
-            .style('clear', 'both');
+        heatLegend.append("text")
+          .attr("dx", heatLegendWidth / 2)
+          .attr("text-anchor", "middle")
+          .text(d3.max(heatRange));
 
-        heatLegend.append('span')
-          .style('float', 'left')
+        heatLegend.append("text")
+          .attr("dx", heatLegendWidth / 2)
+          .attr("dy", heatLegendHeight + 20)
+          .attr("text-anchor", "middle")
           .text(d3.min(heatRange));
 
-        heatLegend.append('span')
-          .style('float', 'right')
-          .text(d3.max(heatRange));
+        heatLegend.append("text")
+          .attr("dx", (heatLegendHeight+10)/2)
+          .attr("dy", -heatLegendWidth - 5)
+          .attr("text-anchor", "middle")
+          .attr("transform", "rotate(90)")
+          .text(heatLegendText);
+
       } // end renderGradientLegend()
 
 

@@ -23,7 +23,8 @@ function transcript_plot(params) {
 
   var resolution = Math.floor(width / (radius*2));
 
-  var showLegend = false;
+  var showLegend = false,
+    allowVerticalPanning = false;
 
   var inactivating = params.inactivating || {
     "Nonsense_Mutation": true,
@@ -47,6 +48,8 @@ function transcript_plot(params) {
           "In_Frame_Ins": 4
   };
 
+  var mutSymbolsToInclude = {};
+  Object.keys(mutSymbols).forEach(function(d){ mutSymbolsToInclude[d] = true; })
   var sampleTypeToColor = colorSchemes.sampleType || {};
 
   function chart(selection) {
@@ -148,7 +151,7 @@ function transcript_plot(params) {
       var zoomTop = d3.behavior.zoom()
         .y(topY)
         .scaleExtent([1, 1])
-        .on('zoom', function(){ updateTranscript(zoomTop, zoomBottom); });
+        .on('zoom', function(){ updateTranscript(); });
 
       // Inactivating scale and zoom
       var bottomY = d3.scale.linear()
@@ -158,44 +161,7 @@ function transcript_plot(params) {
       var zoomBottom = d3.behavior.zoom()
         .y(bottomY)
         .scaleExtent([1, 1])
-        .on('zoom', function(){ updateTranscript(zoomBottom, zoomTop); });
-
-      /////////////////////////////////////////////////////////////////////////
-      // Add buttons to control the y-axes of the two plots
-      
-      // Change the y-axis of the Z zoom by dy
-      function panVertically(Z, dy){
-        var newY = Z.translate()[1] + dy;
-        Z.translate([0, newY]);
-        updateTranscript();
-      }
-
-      // Hard-code some variables, including the locations of the buttons
-      var increment = 5, // number of pixels to increment with each click
-        buttonRadius = 8, // button size
-        UPTRI = 5, // index to access d3's built-in up triangle
-        DOWNTRI = 4; // index to access d3's built-in down triangle
-
-      var buttonData = [  {y: margin, z: zoomTop, increment: -increment, symbol: UPTRI},
-                          {y: 3*margin, z: zoomTop, increment: increment, symbol: DOWNTRI},
-                          {y: (height - 3*margin), z: zoomBottom, increment: -increment, symbol: UPTRI},
-                          {y: (height - margin), z: zoomBottom, increment: increment, symbol: DOWNTRI}
-                       ];
-
-      // Add the buttons
-      svg.selectAll(".button")
-        .data(buttonData).enter()
-        .append("path")
-        .attr('d', d3.svg.symbol()
-          .type(function(d, i) { return d3.svg.symbolTypes[d.symbol]; })
-          .size(radius*radius)
-        )
-        .attr("transform", function(d) {
-          return "translate(" + margin + "," + (d.y) + ")";
-        })
-        .style("cursor", "pointer")
-        .style("fill", buttonColor)
-        .on("click", function(d){ panVertically(d.z, d.increment, d.start) });
+        .on('zoom', function(){ updateTranscript(); });
 
       // Transcript configuration
       var genomeY = 2 * margin + plotHeight;
@@ -287,8 +253,7 @@ function transcript_plot(params) {
 
 
       function renderLegend() {
-        var multiDataset = sampleTypes.length > 1,
-            mutationTypes = Object.keys(mutSymbols),
+        var mutationTypes = Object.keys(mutSymbols),
             numTypes = mutationTypes.length,
             numRows = Math.ceil(numTypes/2);
 
@@ -312,6 +277,20 @@ function transcript_plot(params) {
               var x = (i % numRows) * width / numRows + 2 * margin;
               var y = Math.round(i/numTypes) * legendSymbolHeight + (Math.round(i/numTypes)+2) * margin;
               return 'translate(' + x + ', ' + y + ')';
+            })
+            .on("click", function(d){
+              // Determine if the current symbol is selected
+              var active = mutSymbolsToInclude[d],
+                opacity = active ? 0.5 : 1;
+
+              // Hide/show the symbol in the legend depending on whether it's active
+              d3.select(this).selectAll("*")
+                .style("fill-opacity", opacity)
+                .style("stroke-opacity", opacity);
+
+              // Update the transcript
+              mutSymbolsToInclude[d] = !active;
+              updateTranscript();
             });
 
         legend.append('path')
@@ -320,13 +299,9 @@ function transcript_plot(params) {
               .type(function(d, i) {return d3.svg.symbolTypes[mutSymbols[d]];})
               .size(2 * legendSymbolHeight)
           )
-          .style('stroke', function(d, i) {
-            return multiDataset ? blockColorMedium : sampleTypeToColor[sampleTypes[0]];
-          })
+          .style('stroke', blockColorMedium)
           .style('stroke-width', 2)
-          .style('fill', function(d, i) {
-            return multiDataset ? blockColorMedium : sampleTypeToColor[sampleTypes[0]];
-          });
+          .style('fill', blockColorMedium)
 
         legend.append('text')
           .attr('dx', 7)
@@ -334,9 +309,48 @@ function transcript_plot(params) {
           .text(function(d) { return d.replace(/_/g, ' ')});
       }
 
+      function renderVerticalPanningControls(){
+        /////////////////////////////////////////////////////////////////////////
+        // Add buttons to control the y-axes of the two plots
+        
+        // Change the y-axis of the Z zoom by dy
+        function panVertically(Z, dy){
+          var newY = Z.translate()[1] + dy;
+          Z.translate([0, newY]);
+          updateTranscript();
+        }
+
+        // Hard-code some variables, including the locations of the buttons
+        var increment = 5, // number of pixels to increment with each click
+          buttonRadius = 8, // button size
+          UPTRI = 5, // index to access d3's built-in up triangle
+          DOWNTRI = 4; // index to access d3's built-in down triangle
+
+        var buttonData = [  {y: margin, z: zoomTop, increment: -increment, symbol: UPTRI},
+                            {y: 3*margin, z: zoomTop, increment: increment, symbol: DOWNTRI},
+                            {y: (height - 3*margin), z: zoomBottom, increment: -increment, symbol: UPTRI},
+                            {y: (height - margin), z: zoomBottom, increment: increment, symbol: DOWNTRI}
+                         ];
+
+        // Add the buttons
+        svg.selectAll(".button")
+          .data(buttonData).enter()
+          .append("path")
+          .attr('d', d3.svg.symbol()
+            .type(function(d, i) { return d3.svg.symbolTypes[d.symbol]; })
+            .size(radius*radius)
+          )
+          .attr("transform", function(d) {
+            return "translate(" + margin + "," + (d.y) + ")";
+          })
+          .style("cursor", "pointer")
+          .style("fill", buttonColor)
+          .on("click", function(d){ panVertically(d.z, d.increment, d.start) });
+      }
+
 
       function updateTranscript() {
-        // Keep both zooms synchronized
+        // Restrict the x-axis domain from going below 0
         var t = zoom.translate(),
             scale = zoom.scale(),
             tx = t[0],
@@ -356,7 +370,8 @@ function transcript_plot(params) {
         function stackSymbols(symbols, y, minY, maxY){
           // Record the number of symbols at each index
           var binToCount = {};
-          symbols.each(function(d){
+          symbols.filter(function(d){ return mutSymbolsToInclude[d.ty]; })
+          .each(function(d){
             // Assign the current mutation to a bin
             var bin = Math.round(d.locus/curRes);
 
@@ -381,8 +396,9 @@ function transcript_plot(params) {
 
           if (symbols.tooltip) {
             symbols.tooltip(function(d, i) {
-                var tip = d.sample + '<br />' + d.ty.replace(/_/g, ' ') + '<br />'
-                        + d.locus + ': ' + d.aao + '>' + d.aan;
+                var tip = d.sample + '<br />Dataset: ' + d.dataset + "<br/>"
+                          + d.ty.replace(/_/g, ' ') + '<br />'
+                          + d.locus + ': ' + d.aao + '>' + d.aan;
 
                 return {
                   detection: 'shape',
@@ -398,9 +414,11 @@ function transcript_plot(params) {
           } // end if symbols.tooltip
 
           // Ignore everything that is outside of the boundary
-          symbols.filter(function(d, i) { return !((minY < d.y && maxY > d.y) && (minX < d.locus && maxX > d.locus)); })
-              .style('fill-opacity', 0)
-              .style('stroke-opacity', 0);
+          symbols.filter(function(d, i) {
+              return !mutSymbolsToInclude[d.ty] || !((minY < d.y && maxY > d.y) && (minX < d.locus && maxX > d.locus));
+            })
+            .style('fill-opacity', 0)
+            .style('stroke-opacity', 0);
         }
 
         // 
@@ -426,10 +444,13 @@ function transcript_plot(params) {
         })
       } // end updateTranscript
 
-      updateTranscript(zoomTop, zoomBottom);
+      updateTranscript();
 
       if(showLegend) {
         renderLegend();
+      }
+      if (allowVerticalPanning){
+        renderVerticalPanningControls()
       }
     });
   } // end chart()
@@ -437,6 +458,12 @@ function transcript_plot(params) {
   chart.addLegend = function() {
     showLegend = true;
     return chart;
+  }
+
+  chart.addVerticalPanning = function() {
+      allowVerticalPanning = true;
+      return chart;
+
   }
 
   return chart;
