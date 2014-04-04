@@ -397,7 +397,7 @@ function transcript_plot(params) {
 
           if (symbols.tooltip) {
             symbols.tooltip(function(d, i) {
-                var tip = d.sample + '<br />Dataset: ' + d.dataset + "<br/>"
+                var tip = d.sample + '<br />Type: ' + d.dataset + "<br/>"
                           + d.ty.replace(/_/g, ' ') + '<br />'
                           + d.locus + ': ' + d.aao + '>' + d.aan;
 
