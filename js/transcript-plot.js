@@ -278,6 +278,7 @@ function transcript_plot(params) {
               var y = Math.round(i/numTypes) * legendSymbolHeight + (Math.round(i/numTypes)+2) * margin;
               return 'translate(' + x + ', ' + y + ')';
             })
+            .style("cursor", "pointer")
             .on("click", function(d){
               // Determine if the current symbol is selected
               var active = mutSymbolsToInclude[d],
