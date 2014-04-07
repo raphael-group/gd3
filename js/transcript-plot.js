@@ -141,12 +141,15 @@ function transcript_plot(params) {
 
       // Parameters 
       var symbolHeight = radius * 2,
-        maxBinVal = 3000;
+        maxBinVal = mutations.length;
 
       // Missense and in-frame scale and zoom
       var topY = d3.scale.linear()
         .domain([0, maxBinVal])
         .range([plotHeight, -1 * symbolHeight * maxBinVal + topStart]);
+
+      var topSliderScale = d3.scale.linear()
+            .range([0, symbolHeight * maxBinVal])
 
       var zoomTop = d3.behavior.zoom()
         .y(topY)
@@ -157,6 +160,9 @@ function transcript_plot(params) {
       var bottomY = d3.scale.linear()
         .domain([0, maxBinVal])
         .range([bottomStart, bottomStart + maxBinVal * symbolHeight])
+
+      var bottomSliderScale = d3.scale.linear()
+            .range([0, symbolHeight * maxBinVal])
 
       var zoomBottom = d3.behavior.zoom()
         .y(bottomY)
@@ -310,9 +316,9 @@ function transcript_plot(params) {
           .text(function(d) { return d.replace(/_/g, ' ')});
       }
 
+      /////////////////////////////////////////////////////////////////////////
       function renderVerticalPanningControls(){
-        /////////////////////////////////////////////////////////////////////////
-        // Add buttons to control the y-axes of the two plots
+        // Add buttons and sliders to control the y-axes of the two plots
         
         // Change the y-axis of the Z zoom by dy
         function panVertically(Z, dy){
@@ -321,15 +327,31 @@ function transcript_plot(params) {
           updateTranscript();
         }
 
-        // Hard-code some variables, including the locations of the buttons
+        // Hard-code some variables, including the locations of the sliders/buttons
         var increment = 5, // number of pixels to increment with each click
           buttonRadius = 8, // button size
           UPTRI = 5, // index to access d3's built-in up triangle
-          DOWNTRI = 4; // index to access d3's built-in down triangle
+          DOWNTRI = 4, // index to access d3's built-in down triangle
+          sliderHeight = plotHeight - 2*buttonRadius - 2*margin;
+          sliderRadius = 4,
+          sliderWidth = 3,
+          sliderMargin = margin + buttonRadius;//plotHeight - sliderHeight + margin/2;
+
+        var sliderData = [
+              { x: margin, y1: sliderMargin + sliderHeight, y2: sliderMargin,
+                direction: "up", z: zoomTop, scale: topSliderScale},
+              { x: margin, y1: height - sliderMargin - sliderHeight, y2: height-sliderMargin,
+                direction: "down", z: zoomBottom, scale: bottomSliderScale }
+            ];
+
+        sliderData.forEach(function(d){
+          d.y = d.y1;
+          d.scale.domain([d.y1, d.y2]);
+        });
 
         var buttonData = [  {y: margin, z: zoomTop, increment: -increment, symbol: UPTRI},
-                            {y: 3*margin, z: zoomTop, increment: increment, symbol: DOWNTRI},
-                            {y: (height - 3*margin), z: zoomBottom, increment: -increment, symbol: UPTRI},
+                            {y: sliderMargin + 2*margin + sliderHeight, z: zoomTop, increment: increment, symbol: DOWNTRI},
+                            {y: (height - sliderHeight - sliderMargin - 2*margin), z: zoomBottom, increment: -increment, symbol: UPTRI},
                             {y: (height - margin), z: zoomBottom, increment: increment, symbol: DOWNTRI}
                          ];
 
@@ -346,10 +368,63 @@ function transcript_plot(params) {
           })
           .style("cursor", "pointer")
           .style("fill", buttonColor)
-          .on("click", function(d){ panVertically(d.z, d.increment, d.start) });
+          .on("click", function(d){ panVertically(d.z, d.increment) });
+
+
+        // Define the drag behavior for the sliders
+        var drag = d3.behavior.drag()
+                    .origin(Object)
+                    .on("drag", dragMove)
+                    .on('dragend', dragEnd);
+
+        // Add the lines and circles for the sliders
+        var g = svg.selectAll('.slider')
+                  .data(sliderData).enter()
+                  .append('g');
+
+        g.append('line')
+          .attr("x1", function(d){ return d.x; })
+          .attr("x2", function(d){ return d.x; })
+          .attr("y1", function(d){ return d.y1; })
+          .attr("y2", function(d){ return d.y2; })
+          .style("stroke", "#C0C0C0")
+          .style("stroke-width", 2);
+
+        g.append("circle")
+            .attr("r", sliderRadius)
+            .attr("cx", function(d){ return d.x; })
+            .attr("cy", function(d) { return d.y1; })
+            .attr("fill", "#C0C0C0")
+            .style("cursor", "pointer")
+            .call(drag);
+
+        // Define the dragging behavior for the sliders
+        function dragMove(d) {
+          // Calculate how far to move the slider
+          if (d.direction == "up"){
+            var y = Math.max(d.y2, Math.min(d.y1, d3.event.y));  
+          }
+          else{
+            var y = Math.max(d.y1, Math.min(d.y2, d3.event.y));  
+          }
+
+          // Update the y-coordinate, and fade the slider while it's moving
+          d3.select(this)
+            .attr("opacity", 0.6)
+            .attr("cy", d.y = y);
+
+          // Translate the whole plot
+          d.z.translate([d.z.translate()[0], d.direction == "up" ? d.scale(d.y) : -d.scale(d.y)]);
+          updateTranscript();
+        }
+
+        function dragEnd() {
+            d3.select(this).attr('opacity', 1)
+        }
+         
       }
 
-
+      /////////////////////////////////////////////////////////////////////////
       function updateTranscript() {
         // Restrict the x-axis domain from going below 0
         var t = zoom.translate(),
@@ -389,6 +464,11 @@ function transcript_plot(params) {
             d.y = y(yIndex);
 
           });
+
+          // Find the max stack/bin size, and update the slider scales
+          maxBinVal = d3.max(Object.keys(binToCount), function(b){ return binToCount[b]; })
+          topSliderScale.range([0, symbolHeight * maxBinVal]);
+          bottomSliderScale.range([0, symbolHeight * maxBinVal]);
 
           // render mutation glpyhs and move/color them
           symbols.attr('transform', function(d, i) { return 'translate(' + d.x + ', ' + d.y + ')'; })
