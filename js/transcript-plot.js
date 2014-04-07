@@ -319,13 +319,6 @@ function transcript_plot(params) {
       /////////////////////////////////////////////////////////////////////////
       function renderVerticalPanningControls(){
         // Add buttons and sliders to control the y-axes of the two plots
-        
-        // Change the y-axis of the Z zoom by dy
-        function panVertically(Z, dy){
-          var newY = Z.translate()[1] + dy;
-          Z.translate([0, newY]);
-          updateTranscript();
-        }
 
         // Hard-code some variables, including the locations of the sliders/buttons
         var increment = 5, // number of pixels to increment with each click
@@ -339,9 +332,9 @@ function transcript_plot(params) {
 
         var sliderData = [
               { x: margin, y1: sliderMargin + sliderHeight, y2: sliderMargin,
-                direction: "up", z: zoomTop, scale: topSliderScale},
+                direction: "up", z: zoomTop, scale: topSliderScale, name: "topSlider"},
               { x: margin, y1: height - sliderMargin - sliderHeight, y2: height-sliderMargin,
-                direction: "down", z: zoomBottom, scale: bottomSliderScale }
+                direction: "down", z: zoomBottom, scale: bottomSliderScale, name: "bottomSlider" }
             ];
 
         sliderData.forEach(function(d){
@@ -349,10 +342,10 @@ function transcript_plot(params) {
           d.scale.domain([d.y1, d.y2]);
         });
 
-        var buttonData = [  {y: margin, z: zoomTop, increment: -increment, symbol: UPTRI},
-                            {y: sliderMargin + 2*margin + sliderHeight, z: zoomTop, increment: increment, symbol: DOWNTRI},
-                            {y: (height - sliderHeight - sliderMargin - 2*margin), z: zoomBottom, increment: -increment, symbol: UPTRI},
-                            {y: (height - margin), z: zoomBottom, increment: increment, symbol: DOWNTRI}
+        var buttonData = [  {y: margin, increment: -increment, symbol: UPTRI, slider: sliderData[0]},
+                            {y: sliderMargin + 2*margin + sliderHeight, increment: increment, symbol: DOWNTRI, slider: sliderData[0]},
+                            {y: (height - sliderHeight - sliderMargin - 2*margin), increment: -increment, symbol: UPTRI, slider: sliderData[1]},
+                            {y: (height - margin), increment: increment, symbol: DOWNTRI, scale: bottomSliderScale, slider: sliderData[1]}
                          ];
 
         // Add the buttons
@@ -368,7 +361,10 @@ function transcript_plot(params) {
           })
           .style("cursor", "pointer")
           .style("fill", buttonColor)
-          .on("click", function(d){ panVertically(d.z, d.increment) });
+          .on("click", function(d){
+            var y = moveTo(d.slider, d.slider.y + d.increment);
+            panVertically(d3.select("circle#" + d.slider.name), d.slider, y);
+          });
 
 
         // Define the drag behavior for the sliders
@@ -391,6 +387,7 @@ function transcript_plot(params) {
           .style("stroke-width", 2);
 
         g.append("circle")
+            .attr("id", function(d){ return d.name; })
             .attr("r", sliderRadius)
             .attr("cx", function(d){ return d.x; })
             .attr("cy", function(d) { return d.y1; })
@@ -398,24 +395,32 @@ function transcript_plot(params) {
             .style("cursor", "pointer")
             .call(drag);
 
-        // Define the dragging behavior for the sliders
-        function dragMove(d) {
-          // Calculate how far to move the slider
-          if (d.direction == "up"){
-            var y = Math.max(d.y2, Math.min(d.y1, d3.event.y));  
-          }
-          else{
-            var y = Math.max(d.y1, Math.min(d.y2, d3.event.y));  
-          }
-
-          // Update the y-coordinate, and fade the slider while it's moving
-          d3.select(this)
-            .attr("opacity", 0.6)
-            .attr("cy", d.y = y);
-
+        //
+        function panVertically(el, d, y){
           // Translate the whole plot
+          el.attr("cy", d.y = y);
           d.z.translate([d.z.translate()[0], d.direction == "up" ? d.scale(d.y) : -d.scale(d.y)]);
           updateTranscript();
+
+        }
+
+        function moveTo(d, y){
+          // Calculate how far to move the slider
+          if (d.direction == "up"){
+            return Math.max(d.y2, Math.min(d.y1, y));  
+          }
+          else{
+            return Math.max(d.y1, Math.min(d.y2, y));  
+          }
+        }
+
+        // Define the dragging behavior for the sliders
+        function dragMove(d) {
+          // Fade the slider while it's moving
+          d3.select(this).attr("opacity", 0.6);
+
+          // Then pan appropriately
+          panVertically(d3.select(this), d, moveTo(d, d3.event.y));
         }
 
         function dragEnd() {
