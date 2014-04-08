@@ -126,7 +126,13 @@ def get_data_for_cc(cc, snvs, cnas, inactivating_snvs, fusions, sample2type):
                 reduced_s2t[sample] = sample2type[sample]
     else:
         reduced_s2t = dict((s, DEFAULT_TYPE) for s in samples)
-    data['sample2ty'] = reduced_s2t
+
+    # Count the number of samples of each type
+    typeToNumSamples = dict( (ty, 0) for ty in set(sample2type.values()) )
+    for s, ty in sample2type.iteritems(): typeToNumSamples[ty] += 1
+
+    data['sampleToTypes'] = reduced_s2t
+    data['typeToNumSamples'] = typeToNumSamples
     data['sampleTypes'] = list(set(sample2type.values())) if sample2type else [DEFAULT]
     
     return data

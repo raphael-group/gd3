@@ -1,5 +1,18 @@
 {
-    "sample2ty": {
+    "typeToNumSamples": {
+        "BLCA": 87,
+        "BRCA": 763,
+        "COADREAD": 193,
+        "GBM": 290,
+        "HNSC": 293,
+        "KIRC": 417,
+        "LAML": 195,
+        "LUAD": 186,
+        "LUSC": 160,
+        "OV": 316,
+        "UCEC": 210
+    },
+    "sampleToTypes": {
         "TCGA-D1-A16J": "BRCA", 
         "TCGA-AG-A036": "BRCA", 
         "TCGA-22-4604": "BRCA", 
@@ -1337,6 +1350,5 @@
                 "snv"
             ]
         }
-    }, 
-    "coverage_str": "9.86% (306/3105)"
+    }
 }

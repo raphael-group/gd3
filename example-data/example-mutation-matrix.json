@@ -1030,8 +1030,20 @@
             ]
         }
     }, 
-    "coverage_str": "9.86% (306/3105)", 
-    "sample2ty": {
+    "typeToNumSamples": {
+        "BLCA": 87,
+        "BRCA": 763,
+        "COADREAD": 193,
+        "GBM": 290,
+        "HNSC": 293,
+        "KIRC": 417,
+        "LAML": 195,
+        "LUAD": 186,
+        "LUSC": 160,
+        "OV": 316,
+        "UCEC": 210
+    },
+    "sampleToTypes": {
         "TCGA-05-4384": "LUAD", 
         "TCGA-05-4389": "LUAD", 
         "TCGA-05-4395": "LUAD", 

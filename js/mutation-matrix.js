@@ -54,15 +54,16 @@ function mutation_matrix(params) {
     selection.each(function(data) {
       //////////////////////////////////////////////////////////////////////////
       // General setup
-      var coverage_str = data.coverage_str || '',
-          M = data.M || {},
-          sampleToTypes = data.sample2ty || {}, // TODO: rename sampleToTypes
-          sampleTypes = data.sampleTypes || [];
+      var M = data.M || {},
+          sampleToTypes = data.sampleToTypes || {},
+          sampleTypes = data.sampleTypes || [],
+          typeToNumSamples = data.typeToNumSamples || {},
+          sampleTypeToInclude = {};
 
       var genes = Object.keys(M),
           samples = Object.keys(sampleToTypes).slice(),
-          m = samples.length,
-          n = genes.length;
+          numMutatedSamples = samples.length,
+          numGenes = genes.length;
 
       // Collect all unique types for all samples
       for(var i = 0; i < samples.length; i++) {
@@ -71,7 +72,7 @@ function mutation_matrix(params) {
         }
       }
       sampleTypes.sort();
-
+      sampleTypes.forEach(function(t){ sampleTypeToInclude[t] = true; });
 
       // Then determine whether the data includes multiple datasets
       var multiDataset = (sampleTypes.length > 1) && colorSampleTypes,
@@ -81,6 +82,9 @@ function mutation_matrix(params) {
           height = genes.length * geneHeight + boxMargin,
           tickWidth,
           samplesPerCol;
+
+      // Count the total number of samples across all datasets
+      var numSamples = sampleTypes.reduce(function(total, t){ return total + typeToNumSamples[t]; }, 0);
 
       // Assign colors for each type if no type coloration information exists
       var sampleTypesWithColors = sampleTypes.reduce(function(total, d){
@@ -100,35 +104,16 @@ function mutation_matrix(params) {
         geneToSamples[genes[i]] = Object.keys(M[genes[i]]);
       }
 
+      // Sort genes by their coverage, and make a map of each gene to its row index
+      var geneToIndex = {};
+      var sortedGenes = genes.sort(function(g1, g2){
+        return geneToSamples[g1].length < geneToSamples[g2].length;
+      });
+      d3.range(0, genes.length).forEach(function(i){ geneToIndex[sortedGenes[i]] = i; })
 
       //////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////
       // Parse and sort mutation data
-
-      // Sort genes by mutation frequency and make a map of genes to their order
-      var geneToIndex = {};
-      genes.sort(function(g1, g2) {
-        return d3.descending(geneToSamples[g1].length,
-            geneToSamples[g2].length);
-      });
-
-      for (i = 0; i < genes.length; i++) {
-        geneToIndex[genes[i]] = i;
-      }
-
-
-      // Find the index of the gene with the highest mutation frequency in each
-      //    sample
-      var sampleToGeneIndex = {};
-      for(i = 0; i< samples.length; i++) {
-        var s = samples[i],
-            geneIndices = genes.map(function(g) {
-              return geneToSamples[g].indexOf(s) != -1 ? geneToIndex[g] : -1;
-            });
-        sampleToGeneIndex[s] = d3.min(geneIndices.filter(function(i) {
-          return i != -1;
-        }));
-      }
 
       // Sorting order for mutation types
       var mutTypeOrder = { inactive_snv: 0, snv: 1, amp: 2, del: 3 };
@@ -148,65 +133,84 @@ function mutation_matrix(params) {
           sortFnName[SAMPLE_TYPE] = 'Sample type';
 
 
-      // Create a dictionary of samples to whether they are exclusively
-      // mutated in the given subnetwork
-      function computeMutationExclusivity(geneToSamples, genes, samples) {
-        var sampleToexclusivity = {};
-        for (var i = 0; i < samples.length; i++){
-          // For a given sample, its mutated genes are all genes g
-          // where the sample is in geneToSamples[g]
-          var mutatedGenes = genes.map(function(g) {
-                  return geneToSamples[g].indexOf( samples[i] );
-                }).filter(function(n){ return n != -1; });
-
-          sampleToexclusivity[samples[i]] = mutatedGenes.length;
-        }
-        return sampleToexclusivity;
-      } // end computeMutationExclusivity
-
-
       // Parse the mutation data into a simple, sample-centric dictionary
       // sample -> { name, genes, dataset, cooccurring }
       // where genes is a list of mutations
       // gene   -> { amp, del, inactive_snv, snv, g, dataset, cooccurring }
-      function createMutationMatrixData( M, geneToSamples, genes, samples,
-          sampleToTypes ){
-        var sampleMutations = [];
+      function createMutationMatrixData( M, geneToSamples, genes, samples, sampleToTypes ){
+        // Define the data structures we'll populate while iterating through the mutation matrix
+        var sampleMutations = [],
+            sampleToExclusivity = {},
+            geneToFreq = {},
+            mutatedSamples = {};
+        
+        genes.forEach(function(g){ geneToFreq[g] = 0; });
+        samples.forEach(function(s){ mutatedSamples[s] = false; })
+
+        // Iterate through the mutation matrix to summarize the mutation data
         for (i = 0; i < samples.length; i++){
           var s = samples[i],
-              mutations = { name: s, genes: [], dataset: sampleToTypes[s] };
+              muts = { name: s, genes: [], dataset: sampleToTypes[s] };
+
+          // Add an empty mutation if the sample type is not included
+          if (!sampleTypeToInclude[sampleToTypes[s]]){
+            muts.cooccurring = false;
+            sampleMutations.push( muts );
+            continue;
+          }
 
           // Record all mutated genes for the given sample
           for (j = 0; j < genes.length; j++){
-            var g = genes[j],
-                mut = {gene: g, dataset: sampleToTypes[s] };
+            var g = genes[j];
 
             // Record all mutation types that the current gene has in the
-            //    current sample
+            // current sample
             if (geneToSamples[g].indexOf( s ) != -1){
-              mut.amp = M[g][s].indexOf("amp") != -1;
-              mut.del = M[g][s].indexOf("del") != -1;
-              mut.fus = M[g][s].indexOf("fus") != -1;
-              mut.inactivating = M[g][s].indexOf("inactive_snv") != -1;
-              mut.snv = M[g][s].indexOf("snv") != -1 || mut.inactivating;
-              mut.tys = M[g][s];
-              mutations.genes.push(mut);
+              mutated = false;
+              M[g][s].filter(function(t){ return mutationTypeToInclude[t]; })
+                .forEach(function(t){
+                    muts.genes.push( {gene: g, dataset: sampleToTypes[s], ty: t, sample: s } )
+                    mutated = true;
+                  });
+              if (mutated){
+                geneToFreq[g] += 1;
+                mutatedSamples[s] = true;
+              }
             }
           }
           // Determine if the mutations in the given sample are co-occurring
-          mutations.cooccurring = mutations.genes.length > 1;
-          mutations.genes.forEach(function(d) {
-            d.cooccurring = mutations.cooccurring;
+          muts.cooccurring = sampleToExclusivity[s] = muts.genes.length > 1;
+          muts.genes.forEach(function(d) {
+            d.cooccurring = muts.cooccurring;
           });
-          sampleMutations.push(mutations);
+          sampleMutations.push(muts);
         }
 
-        return sampleMutations;
+        // Determine the coverage of the gene set
+        var coverage = samples.reduce(function(total, s){ return total + (mutatedSamples[s] ? 1 : 0);}, 0);
+
+        // Sort genes by their frequency, and then map each sample to the minimum 
+        // index of the genes they're mutated in
+        var sampleToGeneIndex = {};
+
+        for (var i = 0; i < sampleMutations.length; i++){
+          var s = sampleMutations[i];
+          if (s.genes.length > 0){
+            sampleToGeneIndex[s.name] = d3.min(s.genes.map(function(g){ return geneToIndex[g.gene]; }))
+          }
+          else{
+            sampleToGeneIndex[s.name] = Number.POSITIVE_INFINITY;
+          }
+        }
+
+        return {  sampleMutations: sampleMutations, coverage: coverage, geneToFreq: geneToFreq,
+                  sampleToExclusivity: sampleToExclusivity, sampleToGeneIndex: sampleToGeneIndex,
+                };
       } // end createMutationMatrixData()
 
 
       // Sort sample *indices*
-      function sortSamples(sortOrder) {
+      function sortSamples(sortOrder, sortedGenes, sampleToGeneIndex, sampleToExclusivity) {
         // Comparison operators for pairs of samples
         function geneFrequencySort(s1, s2) {
           // Sort by the first gene in which the sample is mutated
@@ -220,9 +224,15 @@ function mutation_matrix(params) {
 
         function mutationTypeSort(s1, s2) {
           // Sort by the type of mutation
-          var mut_type1 = M[genes[sampleToGeneIndex[s1]]][s1][0],
-              mut_type2 = M[genes[sampleToGeneIndex[s2]]][s2][0];
-          return d3.ascending(mutTypeOrder[mut_type1], mutTypeOrder[mut_type2]);
+          var ind1 = sampleToGeneIndex[s1],
+              ind2 = sampleToGeneIndex[s2];
+          if (ind1 < sortedGenes.length) mut_type1 = M[sortedGenes[ind1]][s1][0];
+          if (ind2 < sortedGenes.length) mut_type2 = M[sortedGenes[ind2]][s2][0];
+
+          if (mut_type1 != -1 && mut_type2 != -1)
+            return d3.ascending(mutTypeOrder[mut_type1], mutTypeOrder[mut_type2]);
+          else
+            return 0;
         }
 
         function sampleNameSort(s1, s2) {
@@ -255,23 +265,29 @@ function mutation_matrix(params) {
         });
       } // End sortSamples(sortOrder);
 
+      function updateMutationData(){
+        // Load the mutation data, taking into account the restrictions on mutation- and sample-types
+        mutationData = createMutationMatrixData(M, geneToSamples, genes, samples, sampleToTypes);
+        sampleMutations = mutationData.sampleMutations;
+        sampleToGeneIndex = mutationData.sampleToGeneIndex;
+        sampleToExclusivity = mutationData.sampleToExclusivity;
+        geneToFreq = mutationData.geneToFreq;
+        coverage = mutationData.coverage;
 
-      // Parse the mutation data and sort the samples using a default sort order
-      var sampleMutations = createMutationMatrixData(M, geneToSamples, genes,
-              samples, sampleToTypes),
-          sampleSortOrder = [GENE_FREQ, SAMPLE_TYPE, EXCLUSIVITY, MUTATION_TYPE,
-              SAMPLE_NAME],
-          sampleToExclusivity = computeMutationExclusivity(geneToSamples, genes,
-              samples),
-          sortedSampleIndices = sortSamples(sampleSortOrder);
-
-      // Create a mapping of samples to the location index of the visualization
-      //    on which they should be drawn
-      var sampleToIndex = {};
-      for ( var i = 0; i < samples.length; i++ ) {
-        sampleToIndex[sortedSampleIndices[i]] = i;
+        // Sort the samples, then create a mapping of samples to the location index of
+        // the visualization on which they should be drawn
+        sortedSampleIndices = sortSamples(sampleSortOrder, sortedGenes, sampleToGeneIndex, sampleToExclusivity);
+        sampleToIndex = {};
+        for ( var i = 0; i < samples.length; i++ ) {
+          sampleToIndex[samples[sortedSampleIndices[i]]] = i;
+        }
       }
 
+      // Parse the mutation data and sort the samples using a default sort order
+      var sampleSortOrder = [GENE_FREQ, SAMPLE_TYPE, EXCLUSIVITY, MUTATION_TYPE, SAMPLE_NAME];
+      var sampleMutations, sampleToGeneIndex, sampleToExclusivity,
+          sortedSampleIndices, sampleToIndex, geneToFreq, coverage;
+      updateMutationData();
 
       //////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////
@@ -286,14 +302,14 @@ function mutation_matrix(params) {
 
       // Scales for the height/width of rows/columns
       var x = d3.scale.linear()
-          .domain([0, m])
+          .domain([0, numMutatedSamples])
           .range([labelWidth + boxMargin, width - boxMargin]);
 
       // Zoom behavior
       var zoom = d3.behavior.zoom()
           .x(x)
-          .scaleExtent([1, Math.round( minBoxWidth * m / width)])
-          .on('zoom', function() { renderOncoprint(); });
+          .scaleExtent([1, Math.round( minBoxWidth * numMutatedSamples / width)])
+          .on('zoom', function() { renderMutationMatrix(); });
 
       svg.attr('id', 'mutation-matrix')
           .attr('width', width)
@@ -322,58 +338,6 @@ function mutation_matrix(params) {
             .attr('class', 'sample')
             .attr('id', function(s) { return s.name; });
 
-      var ticks = matrix.append('g')
-          .attr('transform', 'translate(0,' + labelHeight + ')');
-
-      ticks.selectAll('.tick')
-          .data(function(d){ return d.genes})
-          .enter()
-          .append('rect')
-            .attr('class', 'tick')
-            .attr('fill', function(d) {
-              if (!multiDataset) {
-                if (d.fus && d.snv) {
-                  return bgColor;
-                } else {
-                  return d.cooccurring ? coocurringColor : exclusiveColor;
-                }
-              } else {
-                if (d.fus && !d.snv) {
-                  return bgColor;
-                } else {
-                  return sampleTypeToColor[d.dataset];
-                }
-              }
-            });
-
-      // Add stripes to inactivating mutations
-      ticks.selectAll('.inactivating')
-          .data(function(d) { return d.genes; })
-          .enter()
-          .append('rect')
-            .filter(function(d) { return d.inactivating; })
-            .attr('class', 'inactivating')
-            .attr('width', tickWidth)
-            .attr('height', geneHeight/4)
-            .style('fill', blockColorStrongest);
-
-      // Add triangle for fusion/rearrangement/splice site
-      ticks.selectAll('.fus')
-          .data(function(d) { return d.genes; })
-          .enter()
-          .append('svg:path')
-            .filter(function(d) { return d.fus })
-            .attr('class', 'fusion')
-            .attr('d', d3.svg.symbol().type('triangle-up').size(8))
-            .style('stroke-opacity', 0)
-            .style('fill', function(d) {
-              if (multiDataset) {
-                return sampleTypeToColor[d.dataset];
-              } else {
-                return d.cooccurring ? coocurringColor : exclusiveColor;
-              }
-            });
-
       // Add sample names and line separators between samples
       matrix.append('text')
           .attr('fill', blockColorMedium)
@@ -381,7 +345,7 @@ function mutation_matrix(params) {
           .text(function(s) { return s.name; });
 
       // Add the row (gene) labels
-      var geneLabels = fig.selectAll('.geneLabels')
+      var geneLabelGroups = fig.selectAll('.geneLabels')
           .data(genes)
           .enter()
           .append('svg:g')
@@ -390,16 +354,14 @@ function mutation_matrix(params) {
               return 'translate(0,'+(labelHeight+geneToIndex[d]*geneHeight)+')';
             });
 
-      geneLabels.append('text')
+      var geneLabels = geneLabelGroups.append('text')
           .attr('class', 'gene-name')
           .attr('font-size', 14)
           .attr('text-anchor', 'end')
           .attr('transform', function(d, i) {
               return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
           })
-          .text(function(g) {
-            return g+ ' (' + geneToSamples[g].length + ')';
-          });
+          .text(function(g) { return g+ ' (' + geneToFreq[g] + ')'; });
 
       // Add horizontal lines to separate rows (genes)
       fig.selectAll('.horizontal-line')
@@ -414,21 +376,96 @@ function mutation_matrix(params) {
             })
             .style('stroke', '#fff');
 
+      // Helper functions for determining the type of mutation
+      function isDel(t){ return t == "del" ;}
+      function isAmp(t){ return t == "amp" ;}
+      function isSnv(t){ return t == "snv" ;}
+      function isInactivating(t){ return t == "inactive_snv" ;}
+      function isFus(t){ return t == "fus" ;}
+
+      // Add columns holding each sample and its mutations
+      var cols = matrix.append('g').attr('transform', 'translate(0,' + labelHeight + ')');
+
+      // Add the mutations in groups
+      var mutations = cols.selectAll('.tick')
+          .data(function(d){ return d.genes})
+          .enter()
+          .append("g");
+
+      var ticks = mutations.append('rect')
+            .attr('class', function(d){ return "tick " + d.ty; })
+            .attr('fill', function(d) {
+              if (!multiDataset) {
+                if (isFus(d.ty) && isSnv(d.ty)) {
+                  return bgColor;
+                } else {
+                  return d.cooccurring ? coocurringColor : exclusiveColor;
+                }
+              } else {
+                if (isFus(d.ty) && isSnv(d.ty)) {
+                  return bgColor;
+                } else {
+                  return sampleTypeToColor[d.dataset];
+                }
+              }
+            });
+
+      // Add stripes to inactivating mutations
+      var inactivating = mutations.append('rect')
+            .filter(function(d) { return isInactivating(d.ty); })
+            .attr('class', 'inactivating')
+            .attr('width', tickWidth)
+            .attr('height', geneHeight/4)
+            .style('fill', blockColorStrongest);
+
+      // Add triangle for fusion/rearrangement/splice site
+      var fus = mutations.append('svg:path')
+            .filter(function(d) { return isFus(d.ty); })
+            .attr('class', 'fusion')
+            .attr('d', d3.svg.symbol().type('triangle-up').size(8))
+            .style('stroke-opacity', 0)
+            .style('fill', function(d) {
+              if (multiDataset) {
+                return sampleTypeToColor[d.dataset];
+              } else {
+                return d.cooccurring ? coocurringColor : exclusiveColor;
+              }
+            });
+
       //////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////
       // Render function for mutation matrix
       // Main function for moving sample names and ticks into place depending on
       //    zoom level
-      function renderOncoprint() {
+      function renderMutationMatrix() {
+        // Functions for determining which mutations and samples to fade in/out
+        function inViewPort(name){
+          return x(sampleToIndex[name]) >= (labelWidth + boxMargin) && x(sampleToIndex[name]) <= width;
+        }
+
+        function isActive(d){
+          return inViewPort(d.sample) && mutationTypeToInclude[d.ty] && sampleTypeToInclude[sampleToTypes[d.sample]];
+        }
+
         // Identify ticks/samples that are visible form the viewport
-        var activeTicks = matrix.filter(function(d,i){
-              return x(sampleToIndex[i]) >= (labelWidth + boxMargin) &&
-                  x(sampleToIndex[i]) <= width;
-            });
-        activeTicks.style('fill-opacity', 1);
+        var activeCols = cols.filter(function(d){ return inViewPort(d.name); })
+          .style('fill-opacity', 1)
+          .style('stroke-opacity', 1);
+
+        // Fade columns out of the viewport but still active
+        cols.filter(function(d){ return !inViewPort(d.name); })
+          .style('fill-opacity', 0.25)
+          .style('stroke-opacity', 1);
+
+        // Completely fade out ticks that are out of the viewport or inactive
+        mutations.style('opacity', function(d){
+          if (isActive(d)) return 1;
+          else if (mutationTypeToInclude[d.ty] && sampleTypeToInclude[sampleToTypes[d.sample]]) return 0.25
+          else return 0;
+        });
 
         // Recalculate tick width based on the number of samples in the viewport
-        var numVisible = activeTicks[0].length,
+        var numVisible = activeCols[0].length,
             printWidth = width - labelWidth - boxMargin;
 
         samplesPerCol = 1;
@@ -439,27 +476,15 @@ function mutation_matrix(params) {
 
         tickWidth = printWidth / numVisible;
 
-        // Fade inactive ticks (those out of the viewport)
-        var inactiveTicks = matrix.filter(function(d, i) {
-              return x(sampleToIndex[i]) < (labelWidth + boxMargin) ||
-                  x(sampleToIndex[i]) > width;
-            });
-        inactiveTicks.style('fill-opacity', 0.25)
-            .style('stroke-opacity', 1);
-
         // Move the small ticks of the inactivating group to the right place
-        matrix.selectAll('.inactivating')
-            .filter(function(d) { return d.inactivating; })
-            .attr('width', tickWidth)
+        inactivating.attr('width', tickWidth)
             .attr('y', function(d, i) {
               var partialHeight = geneToIndex[d.gene] ? geneToIndex[d.gene] : 0;
               return  (partialHeight + 0.375) * geneHeight;
             });
 
         // Move the small ticks of the fusion group to the right place
-        matrix.selectAll('.fusion')
-            .filter(function(d) { return d.fus; })
-            .attr('transform', function(d) {
+        fus.attr('transform', function(d) {
               var translateX = tickWidth/2,
                   translateY = ((geneToIndex[d.gene] ? geneToIndex[d.gene]: 0)) *
                       geneHeight + geneHeight/2,
@@ -473,26 +498,23 @@ function mutation_matrix(params) {
             });
 
         // Move the matrix
-        matrix.attr('transform', function(d, i) {
-          return 'translate(' + x(sampleToIndex[i]) + ')';
-        });
+        matrix.attr('transform', function(d) { return 'translate(' + x(sampleToIndex[d.name]) + ')'; });
 
         // Update the text size of the sample names depending on the zoom level
-        //    represented by `tickWidth`
+        // represented by `tickWidth`
         matrix.selectAll('text')
             .style('font-size', (tickWidth < 8) ? tickWidth : 8)
             .attr('transform', 'translate(' + (tickWidth/2) + ',' + labelHeight
                 + '), rotate(-90)');
 
         // Move the ticks to the right places
-        ticks.selectAll('.tick')
-            .attr('width', tickWidth)
+        ticks.attr('width', tickWidth)
             .attr('height', function(d) {
-              return d.del || d.amp ? geneHeight/2 : geneHeight
+              return isDel(d.ty) || isAmp(d.ty) ? geneHeight/2 : geneHeight
             })
             .attr('y', function(d, i) {
               var index = geneToIndex[d.gene] ? geneToIndex[d.gene] : 0,
-                  delOffset = d.del ? geneHeight / 2 : 0;
+                  delOffset = isDel(d.ty) ? geneHeight / 2 : 0;
               return index * geneHeight + delOffset;
             });
 
@@ -534,16 +556,20 @@ function mutation_matrix(params) {
             .style('stroke', '#fff')
             .style('stroke-width', sampleStroke);
 
-      } // end renderOncoprint();
+      } // end renderMutationMatrix();
 
-      var legendMarginLeft = 10;
+      var legendMarginLeft = 10, coverageContainer;
+      function generateCoverageStr(){
+        return ((coverage*100. / numSamples).toFixed(2)) + "% (" + coverage + "/" + numSamples + ")"
+      }
+
       function renderCoverage() {
         var coverage_span = selection.append('span')
             .style('float', 'right')
             .style('margin-right', datasetLegendWidth - legendMarginLeft + 'px');
 
         coverage_span.append('b').text('Coverage: ');
-        coverage_span.append('span').text(coverage_str);
+        coverageContainer = coverage_span.append('span').text(generateCoverageStr());
       }
 
 
@@ -560,6 +586,39 @@ function mutation_matrix(params) {
             .style('margin-left', labelWidth + boxMargin)
             .append('g')
               .style('font-size', legendFontSize);
+
+        // Functions for making the legends interactive
+        function updateMutationMatrix(){
+            updateMutationData();
+            geneLabels.text(function(g) { return g+ ' (' + geneToFreq[g] + ')'; });
+            coverageContainer.text(generateCoverageStr());
+            renderMutationMatrix();
+        }
+
+        function toggleMutationType(el, ty){
+            var active = mutationTypeToInclude[ty],
+              opacity = active ? 0.5 : 1;
+
+            d3.select(el).selectAll("*")
+              .style("fill-opacity", opacity)
+              .style("stroke-opacity", opacity);
+            
+            mutationTypeToInclude[ty] = !active;
+            updateMutationMatrix();
+        }
+
+        function toggleSampleType(el, ty){
+            var active = sampleTypeToInclude[ty],
+              opacity = active ? 0.5 : 1;
+
+            d3.select(el).selectAll("*")
+              .style("fill-opacity", opacity)
+              .style("stroke-opacity", opacity);
+            
+            sampleTypeToInclude[ty] = !active;
+            updateMutationMatrix();
+        }
+
 
         // If the data contains multiple datasets, then mutations are
         //    colored by dataset, so the exclusive/co-occurring cells won't
@@ -618,9 +677,9 @@ function mutation_matrix(params) {
               .data(sampleTypes)
               .enter()
               .append('g')
-                .attr('transform', function(d, i) {
-                  return 'translate(2,' + ((i+1) * legendBoxSize) + ')';
-                });
+                .attr('transform', function(d, i) { return 'translate(2,' + ((i+1) * legendBoxSize) + ')'; })
+                .style("cursor", "pointer")
+                .on("click", function(ty){ toggleSampleType(this, ty); });
 
           datasetTypes.append('rect')
               .attr('width', legendBoxSize)
@@ -634,49 +693,38 @@ function mutation_matrix(params) {
         }
 
         // Add groups to hold each legend item
-        function toggleMutationType(el, ty){
-            var active = mutationTypeToInclude[ty],
-              opacity = active ? 0.5 : 1;
-            d3.select(el).selectAll("*")
-              .style("fill-opacity", opacity)
-              .style("stroke-opacity", opacity);
-            
-            mutationTypeToInclude[ty] = !active;
-            renderOncoprint();
-        }
-
         var snvLegend = mutationLegend.append("g")
           .attr("transform", "translate(" + left + ",0)")
-          // .style("cursor", "pointer")
-          // .on("click", function(){ toggleMutationType(this, "snv"); });
+          .style("cursor", "pointer")
+          .on("click", function(){ toggleMutationType(this, "snv"); });
 
         left += mutationRectWidth + 10 + 10 + 25;
 
         var inactiveSNVLegend = mutationLegend.append("g")
           .attr("transform", "translate(" + left + ",0)")
-          // .style("cursor", "pointer")
-          // .on("click", function(){ toggleMutationType(this, "inactive_snv"); });
+          .style("cursor", "pointer")
+          .on("click", function(){ toggleMutationType(this, "inactive_snv"); });
 
         left += mutationRectWidth + 10 + 75;
 
         var delLegend = mutationLegend.append("g")
           .attr("transform", "translate(" + left + ",0)")
-          // .style("cursor", "pointer")
-          // .on("click", function(){ toggleMutationType(this, "del"); });
+          .style("cursor", "pointer")
+          .on("click", function(){ toggleMutationType(this, "del"); });
 
         left += mutationRectWidth + 10 + 55;
 
         var ampLegend = mutationLegend.append("g")
           .attr("transform", "translate(" + left + ",0)")
-          // .style("cursor", "pointer")
-          // .on("click", function(){ toggleMutationType(this, "amp"); });
+          .style("cursor", "pointer")
+          .on("click", function(){ toggleMutationType(this, "amp"); });
 
         left += mutationRectWidth + 10 + 75;
 
         var fusionLegend = mutationLegend.append("g")
           .attr("transform", "translate(" + left + ",0)")
-          // .style("cursor", "pointer")
-          // .on("click", function(){ toggleMutationType(this, "fus); });
+          .style("cursor", "pointer")
+          .on("click", function(){ toggleMutationType(this, "fus"); });
 
         left += mutationRectWidth + 10 + 220;
 
@@ -748,7 +796,7 @@ function mutation_matrix(params) {
             .style('fill', '#000')
             .text('Fusion/Rearrangement/Splice Variant');
 
-        // Samples/box (the width/locations are set in renderOncoprint())
+        // Samples/box (the width/locations are set in renderMutationMatrix())
         mutationLegend.append('rect')
             .attr('x', left)
             .attr('id', 'sampleWidthRect')
@@ -803,7 +851,7 @@ function mutation_matrix(params) {
           // Resort the samples and update the index
           var sortedSampleIndices = sortSamples(sampleSortOrder);
           for (var i = 0; i < samples.length; i++) {
-            sampleToIndex[sortedSampleIndices[i]] = i;
+            sampleToIndex[samples[sortedSampleIndices[i]]] = i;
           }
 
           // Perform the transition: move elements in the order of where they
@@ -873,7 +921,7 @@ function mutation_matrix(params) {
         sampleSorterInterface();
       } // End renderSortingMenu()
 
-      renderOncoprint();
+      renderMutationMatrix();
 
       if (showCoverage) {
         renderCoverage();
