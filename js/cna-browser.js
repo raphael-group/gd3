@@ -37,7 +37,7 @@ function cna_browser(params){
 		selection.each(function(data) {
 			//////////////////////////////////////////////////////////////////////////
 			// General setup
-			var sample2ty = data.sample2ty,
+			var sampleToTypes = data.sampleToTypes,
 				gene = data.gene,
 				geneinfo = data.neighbors,
 				seg = data.segments,
@@ -206,7 +206,7 @@ function cna_browser(params){
 					.attr("class", "intervals")
 
 				ints = intervals.append('rect')    
-					.attr('fill', function(d){ return sampleTypeToColor[sample2ty[d.sample]] })
+					.attr('fill', function(d){ return sampleTypeToColor[sampleToTypes[d.sample]] })
 					.attr('width', function(d) {
 						return normalize(d.end, minSegXLoc, maxSegXLoc) - normalize(d.start, minSegXLoc, maxSegXLoc);
 					})
@@ -259,7 +259,7 @@ function cna_browser(params){
 				// Add the tooltips
 				if (ints.tooltip)
 					intervals.tooltip(function(d, i) {
-						var tip = d.sample +"<br/>Type: "+sample2ty[d.sample]+ "<br/>Start: " + d.start + "<br/>End:    " + d.end;
+						var tip = d.sample +"<br/>Type: "+sampleToTypes[d.sample]+ "<br/>Start: " + d.start + "<br/>End:    " + d.end;
 						return {
 							type: "tooltip",
 							text: tip,
