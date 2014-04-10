@@ -43,11 +43,16 @@ function mutation_matrix(params) {
   var mutationTypes = params.mutationTypes || ["snv", "inactive_snv", "del", "amp", "fus"],
     mutationTypeToInclude = {};
 
-  mutationTypes.forEach(function(d){ mutationTypeToInclude[d] = true; })
+  mutationTypes.forEach(function(d){ mutationTypeToInclude[d] = true; });
+
+  // Define globals to be used when filtering the mutation matrix by sample type
+  var sampleTypeToInclude = {},
+      updateMutationMatrix;
 
   // These variables determine what extras to show in the chart
   var showCoverage = false,
-      showLegend = false,
+      showSampleLegend = false,
+      showMutationLegend = false,
       showSortingMenu = false;
 
   function chart(selection) {
@@ -57,8 +62,7 @@ function mutation_matrix(params) {
       var M = data.M || {},
           sampleToTypes = data.sampleToTypes || {},
           sampleTypes = data.sampleTypes || [],
-          typeToNumSamples = data.typeToNumSamples || {},
-          sampleTypeToInclude = {};
+          typeToNumSamples = data.typeToNumSamples || {};
 
       var genes = Object.keys(M),
           samples = Object.keys(sampleToTypes).slice(),
@@ -78,7 +82,7 @@ function mutation_matrix(params) {
       var multiDataset = (sampleTypes.length > 1) && colorSampleTypes,
           datasetLegendWidth = multiDataset ? 100 : 0,
           datasetTypeLegendHeight = multiDataset ? (sampleTypes.length+1)*15 : 0,
-          width = fullWidth - datasetLegendWidth,
+          width = fullWidth - (showSampleLegend ? datasetLegendWidth : 0),
           height = genes.length * geneHeight + boxMargin,
           tickWidth,
           samplesPerCol;
@@ -572,89 +576,31 @@ function mutation_matrix(params) {
         coverageContainer = coverage_span.append('span').text(generateCoverageStr());
       }
 
+      // Functions for making the legends interactive
+      updateMutationMatrix = function (){
+          updateMutationData();
+          geneLabels.text(function(g) { return g+ ' (' + geneToFreq[g] + ')'; });
+          coverageContainer.text(generateCoverageStr());
+          renderMutationMatrix();
+      }
+      
+      // Function for toggling sampleTypes
+      function toggleSampleType(el, ty){
+        var active = sampleTypeToInclude[ty],
+        opacity = active ? 0.5 : 1;
 
-      function renderLegend() {
-        var mutationRectWidth = 10,
-            legendFontSize = 11,
-            left = mutationRectWidth/2;
+        d3.select(el).selectAll("*")
+        .style("fill-opacity", opacity)
+        .style("stroke-opacity", opacity);
 
-        // Add legend SVG
-        var mutationLegend = selection.append('svg')
-            .attr('id', 'mutation-legend')
-            .attr('height', mutationLegendHeight)
-            .attr('width', width)
-            .style('margin-left', labelWidth + boxMargin)
-            .append('g')
-              .style('font-size', legendFontSize);
+        sampleTypeToInclude[ty] = !active;
+        updateMutationMatrix();
+      }
 
-        // Functions for making the legends interactive
-        function updateMutationMatrix(){
-            updateMutationData();
-            geneLabels.text(function(g) { return g+ ' (' + geneToFreq[g] + ')'; });
-            coverageContainer.text(generateCoverageStr());
-            renderMutationMatrix();
-        }
+      function renderSampleLegend() {
+          // There is no sample legend if the mutation matirx isn't multiDataset
+          if (!multiDataset) return;
 
-        function toggleMutationType(el, ty){
-            var active = mutationTypeToInclude[ty],
-              opacity = active ? 0.5 : 1;
-
-            d3.select(el).selectAll("*")
-              .style("fill-opacity", opacity)
-              .style("stroke-opacity", opacity);
-            
-            mutationTypeToInclude[ty] = !active;
-            updateMutationMatrix();
-        }
-
-        function toggleSampleType(el, ty){
-            var active = sampleTypeToInclude[ty],
-              opacity = active ? 0.5 : 1;
-
-            d3.select(el).selectAll("*")
-              .style("fill-opacity", opacity)
-              .style("stroke-opacity", opacity);
-            
-            sampleTypeToInclude[ty] = !active;
-            updateMutationMatrix();
-        }
-
-
-        // If the data contains multiple datasets, then mutations are
-        //    colored by dataset, so the exclusive/co-occurring cells won't
-        //    be shown. The dataset legend will float to the right of the
-        //    mutation matrix.
-        if(!multiDataset) {
-          // Exclusive ticks
-          mutationLegend.append('rect')
-              .attr('x', left)
-              .attr('height', geneHeight)
-              .attr('width', mutationRectWidth)
-              .style('fill', exclusiveColor);
-
-          mutationLegend.append('text')
-              .attr('x', mutationRectWidth + 10)
-              .attr('y', 3*geneHeight/4)
-              .style('fill', '#000')
-              .text('Exclusive');
-
-          left += mutationRectWidth + 10 + 65;
-
-          // Co-occurring ticks
-          mutationLegend.append('rect')
-              .attr('x', left)
-              .attr('height', geneHeight)
-              .attr('width', mutationRectWidth)
-              .style('fill', coocurringColor);
-
-          mutationLegend.append('text')
-              .attr('x', left + mutationRectWidth + 10)
-              .attr('y', 3*geneHeight/4)
-              .style('fill', '#000')
-              .text('Co-occurring');
-
-          left += mutationRectWidth + 10 + 85;
-        } else { // we are rendering multiDataset
           // Dataset legend
           var legendBoxSize = 15,
               datasetLegend = selection.insert('svg', 'svg')
@@ -690,6 +636,70 @@ function mutation_matrix(params) {
               .attr('dy', legendBoxSize - 3)
               .attr('dx', 20)
               .text(function(type) {return type;});
+    
+      }// end renderSampleLegend()
+
+    function renderMutationLegend(){
+        var mutationRectWidth = 10,
+            legendFontSize = 11,
+            left = mutationRectWidth/2;
+
+        // Add legend SVG
+        var mutationLegend = selection.append('svg')
+            .attr('id', 'mutation-legend')
+            .attr('height', mutationLegendHeight)
+            .attr('width', width)
+            .style('margin-left', labelWidth + boxMargin)
+            .append('g')
+              .style('font-size', legendFontSize);
+
+
+        function toggleMutationType(el, ty){
+            var active = mutationTypeToInclude[ty],
+              opacity = active ? 0.5 : 1;
+
+            d3.select(el).selectAll("*")
+              .style("fill-opacity", opacity)
+              .style("stroke-opacity", opacity);
+            
+            mutationTypeToInclude[ty] = !active;
+            updateMutationMatrix();
+        }
+
+        // If the data contains multiple datasets, then mutations are
+        //    colored by dataset, so the exclusive/co-occurring cells won't
+        //    be shown. The dataset legend will float to the right of the
+        //    mutation matrix.
+        if(!multiDataset) {
+          // Exclusive ticks
+          mutationLegend.append('rect')
+              .attr('x', left)
+              .attr('height', geneHeight)
+              .attr('width', mutationRectWidth)
+              .style('fill', exclusiveColor);
+
+          mutationLegend.append('text')
+              .attr('x', mutationRectWidth + 10)
+              .attr('y', 3*geneHeight/4)
+              .style('fill', '#000')
+              .text('Exclusive');
+
+          left += mutationRectWidth + 10 + 65;
+
+          // Co-occurring ticks
+          mutationLegend.append('rect')
+              .attr('x', left)
+              .attr('height', geneHeight)
+              .attr('width', mutationRectWidth)
+              .style('fill', coocurringColor);
+
+          mutationLegend.append('text')
+              .attr('x', left + mutationRectWidth + 10)
+              .attr('y', 3*geneHeight/4)
+              .style('fill', '#000')
+              .text('Co-occurring');
+
+          left += mutationRectWidth + 10 + 85;
         }
 
         // Add groups to hold each legend item
@@ -811,7 +821,7 @@ function mutation_matrix(params) {
             .attr("transform", "translate(" + (tickWidth + 5) + ",0)")
             .style('fill', '#000')
             .text(samplesPerCol == 1 ? '1 sample' : samplesPerCol + ' samples')
-      }// end renderLegend()
+      }// end renderMutationLegend()
 
 
       function renderSortingMenu() {
@@ -926,36 +936,31 @@ function mutation_matrix(params) {
       if (showCoverage) {
         renderCoverage();
       }
-      if (showLegend) {
-        renderLegend();
+      if (showSampleLegend) {
+        renderSampleLegend();
+      }
+      if (showMutationLegend) {
+        renderMutationLegend();
       }
       if (showSortingMenu) {
         renderSortingMenu();
       }
-      //________________________________________________________________________
-      //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-      // Select the svg element, if it exists.
-      // var svg = d3.select(this).selectAll('svg').data([data]);
-
-      // // Otherwise, create the skeletal chart.
-      // var gEnter = svg.enter().append('svg').append('g');
-
-      // svg.style('background-color', '#ccc');
-
-      // var g = svg.select('g')
-      //     .attr('transform', 'translate('+margin.left+','+margin.top+')');
     });
   }
-
 
   chart.addCoverage = function() {
     showCoverage = true;
     return chart;
   }
 
-  chart.addLegend = function () {
-    showLegend = true;
+  chart.addSampleLegend = function () {
+    showSampleLegend = true;
+    return chart;
+  }
+
+  chart.addMutationLegend = function () {
+    showMutationLegend = true;
     return chart;
   }
 
@@ -963,7 +968,6 @@ function mutation_matrix(params) {
     showSortingMenu = true;
     return chart;
   }
-
 
   chart.width = function(_) {
     if (!arguments.length) return width;
@@ -976,6 +980,13 @@ function mutation_matrix(params) {
     fullHeight = _;
     return chart;
   };
+
+  chart.filterDatasets = function(datasetToInclude) {
+    Object.keys(datasetToInclude).forEach(function(d){
+      sampleTypeToInclude[d] = datasetToInclude[d];
+    });
+    updateMutationMatrix();
+  }
 
   return chart;
 }

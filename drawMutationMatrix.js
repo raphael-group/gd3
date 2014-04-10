@@ -70,7 +70,8 @@ jsdom.env({features:{QuerySelector:true}, html:htmlStub, src:src, done:function(
         .call(
             window.mutation_matrix({style: style})
             .addCoverage()
-            .addLegend()
+            .addMutationLegend()
+            .addSampleLegend()
             .addSortingMenu()
         );
 

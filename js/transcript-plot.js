@@ -52,6 +52,10 @@ function transcript_plot(params) {
   Object.keys(mutSymbols).forEach(function(d){ mutSymbolsToInclude[d] = true; })
   var sampleTypeToColor = colorSchemes.sampleType || {};
 
+  // Define globals to be used when filtering the transcript plot by sample type
+  var sampleTypeToInclude = {},
+      updateTranscript;
+
   function chart(selection) {
     selection.each(function(data) {
       var geneName = data.gene,
@@ -69,6 +73,7 @@ function transcript_plot(params) {
         }
       });
       sampleTypes.sort();
+      sampleTypes.forEach(function(d){ sampleTypeToInclude[d] = true; });
 
       // Assign colors for each type if no type coloration information exists
       if(Object.keys(sampleTypeToColor).length == 0) {
@@ -430,7 +435,7 @@ function transcript_plot(params) {
       }
 
       /////////////////////////////////////////////////////////////////////////
-      function updateTranscript() {
+      updateTranscript = function() {
         // Restrict the x-axis domain from going below 0
         var t = zoom.translate(),
             scale = zoom.scale(),
@@ -451,7 +456,9 @@ function transcript_plot(params) {
         function stackSymbols(symbols, y, minY, maxY){
           // Record the number of symbols at each index
           var binToCount = {};
-          symbols.filter(function(d){ return mutSymbolsToInclude[d.ty]; })
+          symbols.filter(function(d){
+            return mutSymbolsToInclude[d.ty] && sampleTypeToInclude[d.dataset];
+          })
           .each(function(d){
             // Assign the current mutation to a bin
             var bin = Math.round(d.locus/curRes);
@@ -501,7 +508,10 @@ function transcript_plot(params) {
 
           // Ignore everything that is outside of the boundary
           symbols.filter(function(d, i) {
-              return !mutSymbolsToInclude[d.ty] || !((minY < d.y && maxY > d.y) && (minX < d.locus && maxX > d.locus));
+              var inViewPort = ((minY < d.y && maxY > d.y) && (minX < d.locus && maxX > d.locus)),
+                  mutTypeIncluded = mutSymbolsToInclude[d.ty],
+                  sampleTypeIncluded = sampleTypeToInclude[d.dataset];
+              return !(inViewPort && mutTypeIncluded && sampleTypeIncluded);
             })
             .style('fill-opacity', 0)
             .style('stroke-opacity', 0);
@@ -552,5 +562,12 @@ function transcript_plot(params) {
 
   }
 
+  chart.filterDatasets = function(datasetToInclude) {
+    Object.keys(datasetToInclude).forEach(function(d){
+      sampleTypeToInclude[d] = datasetToInclude[d];
+    });
+    updateTranscript();
+  }
+  
   return chart;
 }

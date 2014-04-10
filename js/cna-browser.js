@@ -33,6 +33,9 @@ function cna_browser(params){
 
 	var sampleTypeToColor = colorSchemes.sampleType || {};
 
+	var sampleTypeToInclude = {},
+		updateCNABrowser;
+
 	function chart(selection) {
 		selection.each(function(data) {
 			//////////////////////////////////////////////////////////////////////////
@@ -42,7 +45,7 @@ function cna_browser(params){
 				geneinfo = data.neighbors,
 				seg = data.segments,
 				region = data.region;
-			console.log(data.segments)
+
 			var chrm = region.chr,
 				allmin = 0,
 				allmax = 0,
@@ -57,7 +60,8 @@ function cna_browser(params){
 
 			var segHCount = initIntervalH,
 				samplelst = new Array(),
-				segJSON   = new Array();
+				segJSON   = new Array(),
+				sampleTypes = new Array();
 
 			for (var i = 0; i < seg.length; i++){
 				var si = seg[i];
@@ -66,8 +70,15 @@ function cna_browser(params){
 				for (var j = 0; j < si.segments.length; j++){
 					var sj = si.segments[j];
 					segJSON.push({ start: sj.start, end: sj.end, label: sj.sample, y: segHCount, sample: si.sample });
+					if (sampleTypes.indexOf(sampleToTypes[si.sample])){
+						sampleTypes.push( sampleToTypes[si.sample] );
+					}
 				}
 			}
+
+			// Initialize the CNA browser to include all sample types
+			sampleTypes.sort();
+			sampleTypes.forEach(function(d){ sampleTypeToInclude[d] = true; });
 
 			// Select the svg element, if it exists.
 			var svg = d3.select(this)
@@ -99,7 +110,7 @@ function cna_browser(params){
 			var zoom = d3.behavior.zoom()
 				.x(x)
 				.scaleExtent([1, 100])
-				.on("zoom", update);
+				.on("zoom", updateCNABrowser);
 
 			svg.attr('id', 'cna-browser')
 				.attr('height', height + margins.top + margins.bottom)
@@ -232,7 +243,7 @@ function cna_browser(params){
 				});
 			}
 
-			function update(){
+			updateCNABrowser = function (){
 				// Find the start/stop points after the zoom
 				var curMin = d3.min( x.domain() ),
 					curMax = d3.max( x.domain() );
@@ -251,15 +262,19 @@ function cna_browser(params){
 				// Move the intervals into place
 				ints.attr("transform", function(d, i){
 					return "translate(" + normalize(d.start) + "," + (rangeLegendOffset-15 + d.y) + ")"
-				});
+				})
+				.attr("width", function(d, i){ return normalize(d.end) - normalize(d.start); })
 
-				// Scale the intervals' widths
-				ints.attr("width", function(d, i){ return normalize(d.end) - normalize(d.start); });
-				
+				// Fade in/out intervals that are from datasets not currently active
+				var activeIntervals = intervals.filter(function(d){ return sampleTypeToInclude[sampleToTypes[d.sample]]; })
+					.style("opacity", 1);
+				intervals.filter(function(d){ return !sampleTypeToInclude[sampleToTypes[d.sample]]; })
+					.style("opacity", 0);
+
 				// Add the tooltips
 				if (ints.tooltip)
-					intervals.tooltip(function(d, i) {
-						var tip = d.sample +"<br/>Type: "+sampleToTypes[d.sample]+ "<br/>Start: " + d.start + "<br/>End:    " + d.end;
+					activeIntervals.tooltip(function(d, i) {
+						var tip = d.sample +"<br/>Type: "+ sampleToTypes[d.sample]+ "<br/>Start: " + d.start + "<br/>End:    " + d.end;
 						return {
 							type: "tooltip",
 							text: tip,
@@ -274,7 +289,7 @@ function cna_browser(params){
 
 			// Draw the initial version of the figure
 			drawSVG();
-			update();
+			updateCNABrowser();
 
 		});
 	}
@@ -291,6 +306,13 @@ function cna_browser(params){
 		fullHeight = _;
 		return chart;
 	};
+
+	chart.filterDatasets = function(datasetToInclude) {
+		Object.keys(datasetToInclude).forEach(function(d){
+			sampleTypeToInclude[d] = datasetToInclude[d];
+		});
+		updateCNABrowser();
+	}
 	
 	return chart;
 }
