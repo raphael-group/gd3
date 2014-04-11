@@ -7,7 +7,7 @@ function subnetwork(params) {
       edgeWidth = style.edgeWidth || 1.5,
       fontColor = style.fontColor || '#333',
       fontFamily = style.fontFamily || '"Helvetica","Arial"',
-      fontSize = style.fontSize || 10,
+      fontSize = style.fontSize || 12,
       heatLegendHeight = style.heatLegendHeight || 110,
       heatLegendWidth = style.heatLegendWidth || 50,
       heatLegendText = style.heatLegendText || "No. Mutated Samples",
@@ -147,8 +147,9 @@ function subnetwork(params) {
 
       circle.append('text')
           .attr('x', nodeRadius)
-          .attr('y', '.31em')
+          .attr('y', '10px')
           .style('fill', fontColor)
+          .style('fill-opacity', '1')
           .style('font-size', fontSize)
           .text(function(d) { return d.name; });
 
