@@ -570,7 +570,7 @@ function mutation_matrix(params) {
       function renderCoverage() {
         var coverage_span = selection.append('span')
             .style('float', 'right')
-            .style('margin-right', datasetLegendWidth - legendMarginLeft + 'px');
+            .style('margin-right', (showSampleLegend ? datasetLegendWidth - legendMarginLeft : 0) + 'px');
 
         coverage_span.append('b').text('Coverage: ');
         coverageContainer = coverage_span.append('span').text(generateCoverageStr());
