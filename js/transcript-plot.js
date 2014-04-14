@@ -24,7 +24,8 @@ function transcript_plot(params) {
   var resolution = Math.floor(width / (radius*2));
 
   var showLegend = false,
-    allowVerticalPanning = false;
+    allowVerticalPanning = false,
+    drawTooltips = false;
 
   var inactivating = params.inactivating || {
     "Nonsense_Mutation": true,
@@ -140,7 +141,7 @@ function transcript_plot(params) {
       var zoom = d3.behavior.zoom()
         .x(x)
         .scaleExtent([1, 100])
-        .on('zoom', updateTranscript);
+        .on('zoom', function(){ updateTranscript(); }); // MUST be wrapped in another function
 
       fig.call(zoom);
 
@@ -159,7 +160,7 @@ function transcript_plot(params) {
       var zoomTop = d3.behavior.zoom()
         .y(topY)
         .scaleExtent([1, 1])
-        .on('zoom', function(){ updateTranscript(); });
+        .on('zoom', function(){ updateTranscript(); } ); // MUST be wrapped in another function
 
       // Inactivating scale and zoom
       var bottomY = d3.scale.linear()
@@ -172,7 +173,7 @@ function transcript_plot(params) {
       var zoomBottom = d3.behavior.zoom()
         .y(bottomY)
         .scaleExtent([1, 1])
-        .on('zoom', function(){ updateTranscript(); });
+        .on('zoom', function(){ updateTranscript(); } ); // MUST be wrapped in another function
 
       // Transcript configuration
       var genomeY = 2 * margin + plotHeight;
@@ -230,6 +231,27 @@ function transcript_plot(params) {
             .style('stroke', function(d, i) { return sampleTypeToColor[d.dataset]; })
             .style('stroke-width', 2)
             .style("cursor", "default");
+
+      // Add annotations to the mutations (if necessary)
+      if (drawTooltips){
+        var tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(function(d, i){
+            return d.sample + '<br />Type: ' + d.dataset + "<br/>"
+                      + d.ty.replace(/_/g, ' ') + '<br />'
+                      + d.locus + ': ' + d.aao + '>' + d.aan;
+          });
+
+        svg.call(tip);
+
+        bottomSymbols.on("mouseover", tip.show)
+                     .on("mouseout", tip.hide);
+
+        topSymbols.on("mouseover", tip.show)
+                  .on("mouseout", tip.hide);
+      }
+
 
       // Draw domain data with labels with mouse over
       var domainGroups = fig.selectAll('.domains')
@@ -487,25 +509,6 @@ function transcript_plot(params) {
               .style('fill-opacity', 1)
               .style('stroke-opacity', 1);
 
-          if (symbols.tooltip) {
-            symbols.tooltip(function(d, i) {
-                var tip = d.sample + '<br />Type: ' + d.dataset + "<br/>"
-                          + d.ty.replace(/_/g, ' ') + '<br />'
-                          + d.locus + ': ' + d.aao + '>' + d.aan;
-
-                return {
-                  detection: 'shape',
-                  displacement: [3, -25],
-                  gravity: 'right',
-                  mousemove: false,
-                  placement: 'fixed',
-                  position: [d.x, d.y],
-                  text: tip,
-                  type: 'tooltip'
-                };
-            });
-          } // end if symbols.tooltip
-
           // Ignore everything that is outside of the boundary
           symbols.filter(function(d, i) {
               var inViewPort = ((minY < d.y && maxY > d.y) && (minX < d.locus && maxX > d.locus)),
@@ -537,7 +540,8 @@ function transcript_plot(params) {
         domainLabels.attr('x', function(d, i) {
           var w = d3.select(this.parentNode).select('rect').attr('width');
           return w/2;
-        })
+        });
+
       } // end updateTranscript
 
       updateTranscript();
@@ -553,6 +557,11 @@ function transcript_plot(params) {
 
   chart.addLegend = function() {
     showLegend = true;
+    return chart;
+  }
+
+ chart.addTooltips = function() {
+    drawTooltips = true;
     return chart;
   }
 

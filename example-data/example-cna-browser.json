@@ -6138,7 +6138,7 @@
             }
         ],
         "gene": "TRIM16",
-        "sample2ty": {
+        "sampleToTypes": {
             "TCGA-BT-A3PJ": "BLCA",
             "TCGA-DK-A1AD": "BLCA",
             "TCGA-BL-A0C8": "BLCA",

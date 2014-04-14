@@ -41,6 +41,14 @@
         padding: 10px;
         width: 359px;
       }
+      /* Styling for d3-tip */
+      .d3-tip {line-height: 1;padding: 7px;background: rgba(0, 0, 0, 0.8);color: #fff;border-radius: 5px;font-size:80%;max-width:300px;}
+
+      /* Creates a small triangle extender for the tooltip */
+      .d3-tip:after {box-sizing: border-box;display: inline;font-size: 10px;width: 100%;line-height: 1;color: rgba(0, 0, 0, 0.8);content: "\25BC";position: absolute;text-align: center;}
+
+      /* Style northward tooltips differently */
+      .d3-tip.n:after {margin: -3px 0 0 0;top: 100%;left: 0;}
     </style>
   </head>
   <body>
@@ -66,7 +74,8 @@
           d3.select('#m22')<br />
           &nbsp;&nbsp;.datum(data)<br />
           &nbsp;&nbsp;.call(mutation_matrix()<br />
-          &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addMutationLegend()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addSampleLegend()<br />
           &nbsp;&nbsp;);
         </code>
       </div>
@@ -80,7 +89,8 @@
         d3.select('#m23')<br />
           &nbsp;&nbsp;.datum(data)<br />
           &nbsp;&nbsp;.call(mutation_matrix()<br />
-          &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addSampleLegend()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addMutationLegend()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addCoverage()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addSortingMenu()<br />
           &nbsp;&nbsp;);
@@ -103,17 +113,20 @@
           d3.select('#m24')<br />
           &nbsp;&nbsp;.datum(data)<br />
           &nbsp;&nbsp;.call(mutation_matrix({style: styling})<br />
-          &nbsp;&nbsp;&nbsp;&nbsp;.addLegend()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addSampleLegend()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addMutationLegend()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addCoverage()<br />
           &nbsp;&nbsp;&nbsp;&nbsp;.addSortingMenu()<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;.addTooltips()<br />
           &nbsp;&nbsp;);
         </code>
       </div>
       <div style="clear:both"></div>
     </div>
 
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/jquery/jquery.min.js"></script>
+    <script src="../bower_components/d3-tip/index.js"></script>
     <script src="../js/mutation-matrix.js"></script>
     <script>
     d3.json('../example-data/example-mutation-matrix.json', function(data) {
@@ -132,7 +145,8 @@
         .datum(data)
         .call(
           mutation_matrix()
-            .addLegend()
+            .addSampleLegend()
+            .addMutationLegend()
         );
 
       d3.select('#m23')
@@ -140,7 +154,8 @@
         .call(
           mutation_matrix()
             .addCoverage()
-            .addLegend()
+            .addSampleLegend()
+            .addMutationLegend()
             .addSortingMenu()
         );
 
@@ -149,8 +164,10 @@
         .call(
           mutation_matrix({style: styling})
             .addCoverage()
-            .addLegend()
+            .addSampleLegend()
+            .addMutationLegend()
             .addSortingMenu()
+            .addTooltips(function(d, i){ return "Sample: " + d.sample + "<br/>Dataset: " + d.dataset + "<br/>Type: " + d.ty; })
             .width(650)
         );
     });

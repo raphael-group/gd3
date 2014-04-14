@@ -10,6 +10,7 @@
     ],
     "dependencies": {
     	"d3": "3",
-        "jquery": ">=1.7"
+        "jquery": ">=1.7",
+        "d3-tip": "latest"
     }
 }

@@ -47,13 +47,17 @@ function mutation_matrix(params) {
 
   // Define globals to be used when filtering the mutation matrix by sample type
   var sampleTypeToInclude = {},
-      updateMutationMatrix;
+      updateMutationMatrix,
+      ticks,
+      annotate,
+      tip;
 
   // These variables determine what extras to show in the chart
   var showCoverage = false,
       showSampleLegend = false,
       showMutationLegend = false,
-      showSortingMenu = false;
+      showSortingMenu = false,
+      drawTooltips = false;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -144,9 +148,10 @@ function mutation_matrix(params) {
       function createMutationMatrixData( M, geneToSamples, genes, samples, sampleToTypes ){
         // Define the data structures we'll populate while iterating through the mutation matrix
         var sampleMutations = [],
-            sampleToExclusivity = {},
-            geneToFreq = {},
             mutatedSamples = {};
+
+        sampleToExclusivity = {};
+        geneToFreq = {};
         
         genes.forEach(function(g){ geneToFreq[g] = 0; });
         samples.forEach(function(s){ mutatedSamples[s] = false; })
@@ -195,7 +200,7 @@ function mutation_matrix(params) {
 
         // Sort genes by their frequency, and then map each sample to the minimum 
         // index of the genes they're mutated in
-        var sampleToGeneIndex = {};
+        sampleToGeneIndex = {};
 
         for (var i = 0; i < sampleMutations.length; i++){
           var s = sampleMutations[i];
@@ -258,13 +263,15 @@ function mutation_matrix(params) {
         sortFns[SAMPLE_TYPE]   = sampleTypeSort;
 
         return d3.range(0, samples.length).sort(function(i, j){
-            var s1 = samples[i]
-            , s2 = samples[j]
-            , result;
+            var s1 = samples[i],
+                s2 = samples[j],
+                result;
+
             for (k = 0; k < sortOrder.length; k++){
                 result =  sortFns[sortOrder[k]](s1, s2);
                 if (result != 0) return result;
             }
+
             return result;
         });
       } // End sortSamples(sortOrder);
@@ -280,7 +287,7 @@ function mutation_matrix(params) {
 
         // Sort the samples, then create a mapping of samples to the location index of
         // the visualization on which they should be drawn
-        sortedSampleIndices = sortSamples(sampleSortOrder, sortedGenes, sampleToGeneIndex, sampleToExclusivity);
+        var sortedSampleIndices = sortSamples(sampleSortOrder, sortedGenes, sampleToGeneIndex, sampleToExclusivity);
         sampleToIndex = {};
         for ( var i = 0; i < samples.length; i++ ) {
           sampleToIndex[samples[sortedSampleIndices[i]]] = i;
@@ -290,7 +297,7 @@ function mutation_matrix(params) {
       // Parse the mutation data and sort the samples using a default sort order
       var sampleSortOrder = [GENE_FREQ, SAMPLE_TYPE, EXCLUSIVITY, MUTATION_TYPE, SAMPLE_NAME];
       var sampleMutations, sampleToGeneIndex, sampleToExclusivity,
-          sortedSampleIndices, sampleToIndex, geneToFreq, coverage;
+          sampleToIndex, geneToFreq, coverage;
       updateMutationData();
 
       //////////////////////////////////////////////////////////////////////////
@@ -391,12 +398,12 @@ function mutation_matrix(params) {
       var cols = matrix.append('g').attr('transform', 'translate(0,' + labelHeight + ')');
 
       // Add the mutations in groups
-      var mutations = cols.selectAll('.tick')
+      var mutations = cols.selectAll('.muts')
           .data(function(d){ return d.genes})
           .enter()
           .append("g");
 
-      var ticks = mutations.append('rect')
+      ticks = mutations.append('rect')
             .attr('class', function(d){ return "tick " + d.ty; })
             .attr('fill', function(d) {
               if (!multiDataset) {
@@ -413,6 +420,18 @@ function mutation_matrix(params) {
                 }
               }
             });
+
+      // Add annotations to the mutations (if necessary)
+      if (drawTooltips){
+        tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(annotate);
+
+        svg.call(tip);
+        mutations.on("mouseover", tip.show)
+                 .on("mouseout", tip.hide);
+      }
 
       // Add stripes to inactivating mutations
       var inactivating = mutations.append('rect')
@@ -519,7 +538,7 @@ function mutation_matrix(params) {
             .attr('y', function(d, i) {
               var index = geneToIndex[d.gene] ? geneToIndex[d.gene] : 0,
                   delOffset = isDel(d.ty) ? geneHeight / 2 : 0;
-              return index * geneHeight + delOffset;
+              return d.y = index * geneHeight + delOffset;
             });
 
         // Update the sample width legend
@@ -859,20 +878,16 @@ function mutation_matrix(params) {
         //    and then moves them to their new locations
         function reorder(sampleSortOrder) {
           // Resort the samples and update the index
-          var sortedSampleIndices = sortSamples(sampleSortOrder);
+          var sortedSampleIndices = sortSamples(sampleSortOrder, sortedGenes, sampleToGeneIndex, sampleToExclusivity);
           for (var i = 0; i < samples.length; i++) {
             sampleToIndex[samples[sortedSampleIndices[i]]] = i;
           }
 
           // Perform the transition: move elements in the order of where they
           //    will end up on the x-axis
-          var t = svg.transition().duration(animationSpeed);
-
-          t.selectAll('.sample')
-              .delay(function(d, i) { return x(sampleToIndex[i]); })
-              .attr('transform', function(d, i) {
-                return 'translate(' + x(sampleToIndex[i]) + ',0)';
-              });
+          matrix.transition().duration(animationSpeed)
+              .delay(function(d){ return x(sampleToIndex[d.name]); })
+              .attr('transform', function(d) { return 'translate(' + x(sampleToIndex[d.name]) + ',0)'; });
 
           // Update the sample sorting interface (defined below)
           sampleSorterInterface();
@@ -986,6 +1001,15 @@ function mutation_matrix(params) {
       sampleTypeToInclude[d] = datasetToInclude[d];
     });
     updateMutationMatrix();
+  }
+
+  chart.addTooltips = function(annotater){
+    drawTooltips = true;
+    annotate = annotater;
+    if (ticks && tip){
+      tip.html(annotater);
+    }
+    return chart;
   }
 
   return chart;

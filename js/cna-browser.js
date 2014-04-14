@@ -29,7 +29,8 @@ function cna_browser(params){
 		rangeLegendFontSize = style.rangeLegendFontSize || 11,
 		legendFontSize = 10;
 
-	var showLegend = false;
+	var showLegend = false,
+		drawTooltips = false;
 
 	var sampleTypeToColor = colorSchemes.sampleType || {};
 
@@ -110,7 +111,7 @@ function cna_browser(params){
 			var zoom = d3.behavior.zoom()
 				.x(x)
 				.scaleExtent([1, 100])
-				.on("zoom", updateCNABrowser);
+				.on("zoom", function(){ updateCNABrowser(); }); // MUST be wrapped in a function call
 
 			svg.attr('id', 'cna-browser')
 				.attr('height', height + margins.top + margins.bottom)
@@ -223,6 +224,21 @@ function cna_browser(params){
 					})
 					.attr('height', 5)
 					.attr('id', function (d, i) { return "interval-" + i; });
+
+				// Add tooltips to the intervals
+				if (drawTooltips){
+					var tip = d3.tip()
+						.attr('class', 'd3-tip')
+						.offset([-10, 0])
+						.html(function(d, i){
+							return d.sample +"<br/>Type: "+ sampleToTypes[d.sample]+ "<br/>Start: " + d.start + "<br/>End:    " + d.end;
+						});
+
+					svg.call(tip);
+					intervals.on("mouseover", tip.show)
+						  	 .on("mouseout", tip.hide);
+				}
+
 			}
 
 			function updateGene(){
@@ -271,20 +287,6 @@ function cna_browser(params){
 				intervals.filter(function(d){ return !sampleTypeToInclude[sampleToTypes[d.sample]]; })
 					.style("opacity", 0);
 
-				// Add the tooltips
-				if (ints.tooltip)
-					activeIntervals.tooltip(function(d, i) {
-						var tip = d.sample +"<br/>Type: "+ sampleToTypes[d.sample]+ "<br/>Start: " + d.start + "<br/>End:    " + d.end;
-						return {
-							type: "tooltip",
-							text: tip,
-							detection: "shape",
-							placement: "mouse", 
-							gravity: "right",
-							displacement: [3, -rangeLegendOffset-5],
-							mousemove: false
-						};
-					}); 
 			}
 
 			// Draw the initial version of the figure
@@ -306,6 +308,11 @@ function cna_browser(params){
 		fullHeight = _;
 		return chart;
 	};
+
+	chart.addTooltips = function() {
+		drawTooltips = true;
+		return chart;
+	}
 
 	chart.filterDatasets = function(datasetToInclude) {
 		Object.keys(datasetToInclude).forEach(function(d){
