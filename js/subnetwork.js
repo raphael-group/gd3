@@ -21,7 +21,8 @@ function subnetwork(params) {
       width = style.width || 350;
 
   var showNetworkLegend = false,
-      showGradientLegend = false;
+      showGradientLegend = false,
+      showTooltips;
 
   if (colorSchemes.network == undefined) {
     colorSchemes.network = {
@@ -124,6 +125,27 @@ function subnetwork(params) {
 
             linkInNetwork[net] = inNet;
       }
+
+      // Add tooltips (if necessary)
+      if (showTooltips){
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 10])
+            .html(function(d, i){
+              var tip = "Source: " + d.source.name + "<br/>Target: " + d.target.name + "<br/>"
+              if (d.networks.length == 1) tip += "Network: " + d.networks[0];
+              else tip += "Networks: " + d.networks.sort().join(", ");
+              return tip;
+          });
+        
+        fig.call(tip);
+        networks.forEach(function(n){
+          linkInNetwork[n].on("mouseover", tip.show)
+                          .on("mouseout", tip.hide);
+        })
+      }
+
+
 
       // Draw the nodes
       // Keep the circles and text in the same group for better dragging
@@ -307,6 +329,10 @@ function subnetwork(params) {
     return chart;
   }
 
+ chart.addTooltips = function () {
+    showTooltips = true;
+    return chart;
+  }
 
 
   return chart;
