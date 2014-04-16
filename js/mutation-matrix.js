@@ -115,7 +115,7 @@ function mutation_matrix(params) {
       // Sort genes by their coverage, and make a map of each gene to its row index
       var geneToIndex = {};
       var sortedGenes = genes.sort(function(g1, g2){
-        return geneToSamples[g1].length < geneToSamples[g2].length;
+        return geneToSamples[g1].length < geneToSamples[g2].length ? 1 : -1;
       });
       d3.range(0, genes.length).forEach(function(i){ geneToIndex[sortedGenes[i]] = i; })
 
@@ -124,7 +124,7 @@ function mutation_matrix(params) {
       // Parse and sort mutation data
 
       // Sorting order for mutation types
-      var mutTypeOrder = { inactive_snv: 0, snv: 1, amp: 2, del: 3 };
+      var mutTypeOrder = { fus: 0, inactive_snv: 1, amp: 2, del: 3, snv: 4 };
 
       // Constants that correspond to the different sorting functions
       var SAMPLE_TYPE = 0,
@@ -174,12 +174,16 @@ function mutation_matrix(params) {
 
             // Record all mutation types that the current gene has in the
             // current sample
+            var genesMutInSample = [];
             if (geneToSamples[g].indexOf( s ) != -1){
               mutated = false;
               M[g][s].filter(function(t){ return mutationTypeToInclude[t]; })
+                .sort(function(ty1, ty2){ return mutTypeOrder[ty1] < mutTypeOrder[ty2] ? 1 : -1; })
                 .forEach(function(t){
-                    muts.genes.push( {gene: g, dataset: sampleToTypes[s], ty: t, sample: s } )
+                    muts.genes.push( {gene: g, dataset: sampleToTypes[s], ty: t, sample: s } );
                     mutated = true;
+                    if (genesMutInSample.indexOf(g) == -1)
+                      genesMutInSample.push( g );
                   });
               if (mutated){
                 geneToFreq[g] += 1;
@@ -188,7 +192,7 @@ function mutation_matrix(params) {
             }
           }
           // Determine if the mutations in the given sample are co-occurring
-          muts.cooccurring = sampleToExclusivity[s] = muts.genes.length > 1;
+          muts.cooccurring = sampleToExclusivity[s] = genesMutInSample.length > 1;
           muts.genes.forEach(function(d) {
             d.cooccurring = muts.cooccurring;
           });

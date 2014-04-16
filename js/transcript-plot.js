@@ -475,7 +475,7 @@ function transcript_plot(params) {
 
         curRes = curRes ? curRes : 1;
 
-        function stackSymbols(symbols, y, minY, maxY){
+        function stackSymbols(symbols, scale, y, minY, maxY){
           // Record the number of symbols at each index
           var binToCount = {};
           symbols.filter(function(d){
@@ -501,8 +501,7 @@ function transcript_plot(params) {
 
           // Find the max stack/bin size, and update the slider scales
           maxBinVal = d3.max(Object.keys(binToCount), function(b){ return binToCount[b]; })
-          topSliderScale.range([0, symbolHeight * maxBinVal]);
-          bottomSliderScale.range([0, symbolHeight * maxBinVal]);
+          scale.range([0, symbolHeight * maxBinVal]);
 
           // render mutation glpyhs and move/color them
           symbols.attr('transform', function(d, i) { return 'translate(' + d.x + ', ' + d.y + ')'; })
@@ -521,8 +520,8 @@ function transcript_plot(params) {
         }
 
         // 
-        stackSymbols( topSymbols, topY, 0, plotHeight + margin);
-        stackSymbols( bottomSymbols, bottomY, bottomStart - margin, height - 2*margin);
+        stackSymbols( topSymbols, topSliderScale, topY, 0, plotHeight + margin);
+        stackSymbols( bottomSymbols, bottomSliderScale, bottomY, bottomStart - margin, height - 2*margin);
 
         // update the axis
         figAxis.call(xAxis);
