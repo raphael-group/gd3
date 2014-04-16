@@ -103,7 +103,8 @@ function subnetwork(params) {
 
       // Draw the edges
       var link = fig.selectAll('.link')
-          .data(links);
+          .data(links).enter()
+          .append("g");
 
       var linkInNetwork = {},
           activeNetworks = {};
@@ -113,11 +114,7 @@ function subnetwork(params) {
             netColor = colorSchemes.network[networks[i]];
             activeNetworks[net] = true;
 
-            var inNet = fig.selectAll('.' + net)
-                .data(links.filter(function (link) {
-                  return link.networks && link.networks.indexOf(net) != -1;
-                }))
-                .enter()
+            var inNet = link.filter(function(d){ return d.networks && d.networks.indexOf(net) != -1; })
                 .append('line')
                   .classed(net, true)
                   .style('stroke-width', edgeWidth)
@@ -126,26 +123,62 @@ function subnetwork(params) {
             linkInNetwork[net] = inNet;
       }
 
-      // Add tooltips (if necessary)
+      /////////////////////////////////////////////////////////////////////////
+      // Add tooltips to show source, target, network, and references (if required)
       if (showTooltips){
+        // Initialize the tooltip
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 10])
             .html(function(d, i){
-              var tip = "Source: " + d.source.name + "<br/>Target: " + d.target.name + "<br/>"
-              if (d.networks.length == 1) tip += "Network: " + d.networks[0];
-              else tip += "Networks: " + d.networks.sort().join(", ");
-              return tip;
+              // Add the basic information about the edge
+              var tip = "<div id='subnet-tooltip'>\n"
+              tip += "Source: " + d.source.name + "<br/>Target: " + d.target.name + "<br/><br/>";
+              
+              // Display each tooltip's references as a table of networks to unordered
+              // lists of references
+              function pmidLink(pmid){ return "<li><a href='http://www.ncbi.nlm.nih.gov/pubmed/" + pmid + "' target='_new'>" + pmid + "</a></li>"}
+
+              tip += "<table class='table table-condensed'>\n<tr><th>Network</th><th>PMIDs</th></tr>\n"
+
+              d.networks.filter(function(n){ return activeNetworks[n]; }).forEach(function(n){
+                  var pmids = d.references[n].map(pmidLink).join("\n");
+                  tip += "<tr><td>" + n + "</td><td><ul style='padding-left:10px'>" + pmids + "</td></ul></tr>\n";
+              });
+
+            return tip + "</table>\n</div>\n";
+
           });
         
         fig.call(tip);
-        networks.forEach(function(n){
-          linkInNetwork[n].on("mouseover", tip.show)
-                          .on("mouseout", tip.hide);
-        })
+
+        // Define the behavior of "closing" (X-ing out) a tooltip
+        var closeout = function(d){
+          tip.hide(d);
+          d3.select(this).on("mouseout", function(){ tip.hide(d); });
+        }
+
+        // Define the behavior for showing a tooltip
+        var activate = function(d){
+          // Show the current tip, and add an X out button
+          tip.show(d);
+          d3.select("div#subnet-tooltip").insert("span", ":first-child")
+            .style("cursor", "pointer")
+            .style("float", "right")
+            .attr("class", "x")
+            .on("click", closeout)
+            .text("X");
+        }
+
+        // Add tooltips to all the edges
+        link.on("mouseover", activate )
+            .on("mouseout", tip.hide)
+            .on("click", function(d, i){
+              activate(d);
+              d3.select(this).on("mouseout", activate );
+            });
+
       }
-
-
 
       // Draw the nodes
       // Keep the circles and text in the same group for better dragging
@@ -208,12 +241,36 @@ function subnetwork(params) {
                 .on("click", function(n){
                     var active = activeNetworks[n];
                     activeNetworks[n] = !active;
-                    linkInNetwork[n].transition().duration(transitionTime)
-                        .style("stroke-opacity", active ? 0 : 1);
 
+                    // Fade the edges that are not active, then remove their display completely
+                    if (!active) linkInNetwork[n].style("display", "inline");
+                    
+                    linkInNetwork[n].transition().duration(transitionTime)
+                        .style("stroke-opacity", active ? 0 : 1)
+
+                    if (active)
+                      setTimeout(function(){ linkInNetwork[n].style("display", "none") }, transitionTime);
+
+                    // Fade in/out the network legend
                     d3.select(this).transition().duration(transitionTime)
                         .style("stroke-opacity", active ? 0.5 : 1)
                         .style("fill-opacity", active ? 0.5 : 1);
+
+                    if (showTooltips){
+                      // Add tooltips to the edges with at least one visible network
+                      link.filter(function(d){ return d.networks.reduce(function(sum, n){ return sum + (activeNetworks[n] ? 1 : 0); }, 0) > 0; })
+                        .on("mouseover", activate )
+                        .on("mouseout", tip.hide)
+                        .on("click", function(d, i){
+                          activate(d);
+                          d3.select(this).on("mouseout", activate );
+                        });
+
+                      // Remove tooltips from edges with no visible networks
+                      link.filter(function(d){ return d.networks.reduce(function(sum, n){ return sum + (activeNetworks[n] ? 1 : 0); }, 0) == 0; })
+                        .on("mouseover", function(){ return; })
+                        .on("mouseout", function(){ return; });
+                    }
                 });
 
         netLegend.append("line")
@@ -303,10 +360,11 @@ function subnetwork(params) {
                   tgt = edges[k].target;
               if ( (u == src && v == tgt) || (u == tgt && v == src) ) {
                 links.push({
-                  'source': nodes[i],
-                  'target': nodes[j],
-                  'weight': edges[k].weight,
-                  'networks': edges[k].networks
+                  source: nodes[i],
+                  target: nodes[j],
+                  weight: edges[k].weight,
+                  networks: edges[k].networks,
+                  references: edges[k].references
                 })
               }
             }

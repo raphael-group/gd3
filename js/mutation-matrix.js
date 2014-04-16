@@ -421,18 +421,6 @@ function mutation_matrix(params) {
               }
             });
 
-      // Add annotations to the mutations (if necessary)
-      if (drawTooltips){
-        tip = d3.tip()
-          .attr('class', 'd3-tip')
-          .offset([-10, 0])
-          .html(annotate);
-
-        svg.call(tip);
-        mutations.on("mouseover", tip.show)
-                 .on("mouseout", tip.hide);
-      }
-
       // Add stripes to inactivating mutations
       var inactivating = mutations.append('rect')
             .filter(function(d) { return isInactivating(d.ty); })
@@ -454,6 +442,64 @@ function mutation_matrix(params) {
                 return d.cooccurring ? coocurringColor : exclusiveColor;
               }
             });
+
+      /////////////////////////////////////////////////////////////////////////
+      // Add annotations to the mutations (if required)
+      if (drawTooltips){
+        // Initialize the tooltip
+        tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(annotate);
+
+        svg.call(tip);
+
+        // Mutation matrix tool tips are stored in a div classed m2-tooltip
+        // On mouse over the tooltip:
+        //  * the tooltip is shown
+        //  * the div.less-info is hidden
+        //  * the div.more-info is shown
+
+        var tooltipEl = "div.m2-tooltip";
+
+        // Toggle the more- and less-info divs appropriately
+        var toggleInfo = function (more, less){
+          d3.select(tooltipEl + " div.more-info").style("display", more ? "inline" : "none" );
+          d3.select(tooltipEl + " div.less-info").style("display", less ? "inline" : "none") ;
+        }
+
+        // Define the bevhaior for closing out (X-ing out) the tooltip
+        var closeout = function(d){
+          tip.hide(d);
+          d3.select(this).on("mouseout", function(){ tip.hide(d); });
+          toggleInfo(false, true);
+        }
+
+        // Define the behavior for showing the tooltip
+        var activate = function(d){
+          tip.show(d);
+          d3.select(tooltipEl).insert("span", ":first-child")
+            .style("cursor", "pointer")
+            .style("float", "right")
+            .attr("class", "x")
+            .on("click", closeout)
+            .text("X");
+        }
+
+        // Activate and toggle the .more- and .less-info divs
+        var activateAndToggle = function(d){
+          activate(d);
+          toggleInfo(true, false);
+        }
+
+        // Bind the tooltip behavior
+        mutations.on("mouseover", activate)
+                 .on("mouseout", tip.hide)
+                 .on("click", function(d){
+                    activateAndToggle(d);
+                    d3.select(this).on("mouseout", activateAndToggle);
+                 });
+      }
 
       //////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////
