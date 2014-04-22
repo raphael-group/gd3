@@ -30,22 +30,24 @@ function cna_browser(params){
 		legendFontSize = 10;
 
 	var showLegend = false,
-		drawTooltips = false;
+		showTooltips = false,
+		addOnClick = false;
 
 	var sampleTypeToColor = colorSchemes.sampleType || {};
 
 	var sampleTypeToInclude = {},
-		updateCNABrowser;
+		updateCNABrowser,
+		onclickFunction;
 
 	function chart(selection) {
 		selection.each(function(data) {
 			//////////////////////////////////////////////////////////////////////////
 			// General setup
-			var sampleToTypes = data.sampleToTypes,
-				gene = data.gene,
-				geneinfo = data.neighbors,
-				seg = data.segments,
-				region = data.region;
+			var sampleToTypes = data.sampleToTypes || {},
+				gene = data.gene || "",
+				geneinfo = data.neighbors || [],
+				seg = data.segments || [],
+				region = data.region || {};
 
 			var chrm = region.chr,
 				allmin = 0,
@@ -70,7 +72,15 @@ function cna_browser(params){
 				samplelst.push( si.sample );
 				for (var j = 0; j < si.segments.length; j++){
 					var sj = si.segments[j];
-					segJSON.push({ start: sj.start, end: sj.end, label: sj.sample, y: segHCount, sample: si.sample });
+					segJSON.push({
+						gene: gene,
+						start: sj.start,
+						end: sj.end,
+						label: sj.sample,
+						y: segHCount,
+						sample: si.sample,
+						dataset: sampleToTypes[si.sample]
+					});
 					if (sampleTypes.indexOf(sampleToTypes[si.sample])){
 						sampleTypes.push( sampleToTypes[si.sample] );
 					}
@@ -226,7 +236,7 @@ function cna_browser(params){
 					.attr('id', function (d, i) { return "interval-" + i; });
 
 				// Add tooltips to the intervals
-				if (drawTooltips){
+				if (showTooltips){
 					var tip = d3.tip()
 						.attr('class', 'd3-tip')
 						.offset([-10, 0])
@@ -237,6 +247,12 @@ function cna_browser(params){
 					svg.call(tip);
 					intervals.on("mouseover", tip.show)
 						  	 .on("mouseout", tip.hide);
+					if (addOnClick){
+						intervals.on("click", onclickFunction);
+					}
+				}
+				else if( addOnClick ){
+					intervals.on("click", onclickFunction);
 				}
 
 			}
@@ -310,7 +326,7 @@ function cna_browser(params){
 	};
 
 	chart.addTooltips = function() {
-		drawTooltips = true;
+		showTooltips = true;
 		return chart;
 	}
 
@@ -319,6 +335,12 @@ function cna_browser(params){
 			sampleTypeToInclude[d] = datasetToInclude[d];
 		});
 		updateCNABrowser();
+	}
+
+	chart.addOnClick = function (fn) {
+		addOnClick = true;
+		onclickFunction = fn;
+		return chart; 
 	}
 	
 	return chart;

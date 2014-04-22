@@ -22,7 +22,9 @@ function subnetwork(params) {
 
   var showNetworkLegend = false,
       showGradientLegend = false,
-      showTooltips;
+      showTooltips = false,
+      addOnClick = false,
+      onclickFunction;
 
   if (colorSchemes.network == undefined) {
     colorSchemes.network = {
@@ -176,8 +178,17 @@ function subnetwork(params) {
             .on("click", function(d, i){
               activate(d);
               d3.select(this).on("mouseout", activate );
+              
+              // call the user-defined function (if applicable)
+              if (addOnClick){
+                onclickFunction( d, i );
+              }
+
             });
 
+      }
+      else if (addOnClick){
+        link.on("click", onclickFunction);
       }
 
       // Draw the nodes
@@ -264,12 +275,21 @@ function subnetwork(params) {
                         .on("click", function(d, i){
                           activate(d);
                           d3.select(this).on("mouseout", activate );
+            
+                          // call the user-defined function (if applicable)
+                          if (addOnClick){
+                            onclickFunction( d, i );
+                          }
                         });
 
                       // Remove tooltips from edges with no visible networks
                       link.filter(function(d){ return d.networks.reduce(function(sum, n){ return sum + (activeNetworks[n] ? 1 : 0); }, 0) == 0; })
                         .on("mouseover", function(){ return; })
                         .on("mouseout", function(){ return; });
+                    }
+                    else if (addOnClick){
+                      link.filter(function(d){ return d.networks.reduce(function(sum, n){ return sum + (activeNetworks[n] ? 1 : 0); }, 0) == 0; })
+                        .on("click", onclickFunction);
                     }
                 });
 
@@ -390,6 +410,12 @@ function subnetwork(params) {
  chart.addTooltips = function () {
     showTooltips = true;
     return chart;
+  }
+
+chart.addOnClick = function (fn) {
+    addOnClick = true;
+    onclickFunction = fn;
+    return chart; 
   }
 
 

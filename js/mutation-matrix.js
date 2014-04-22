@@ -50,15 +50,17 @@ function mutation_matrix(params) {
       updateMutationMatrix,
       ticks,
       annotate,
-      tip;
+      tip,
+      onclickFunction;
 
   // These variables determine what extras to show in the chart
   var showCoverage = false,
       showSampleLegend = false,
       showMutationLegend = false,
       showSortingMenu = false,
-      drawTooltips = false,
-      showDuplicates = false;
+      showTooltips = false,
+      showDuplicates = false,
+      addOnClick = false;;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -289,8 +291,8 @@ function mutation_matrix(params) {
 
         function mutationTypeSort(s1, s2) {
           // Sort by the type of mutation
-          var ind1 = sampleToGeneIndex[sid(s1)],
-              ind2 = sampleToGeneIndex[sid(s2)];
+          var ind1 = sampleToGeneIndex[s1.snid],
+              ind2 = sampleToGeneIndex[s2.snid];
 
           if (ind1 < sortedGenes.length)
             mut_type1 = geneToSampleMutationType[sortedGenes[ind1]][s1.snid];
@@ -512,7 +514,7 @@ function mutation_matrix(params) {
 
       /////////////////////////////////////////////////////////////////////////
       // Add annotations to the mutations (if required)
-      if (drawTooltips){
+      if (showTooltips){
         // Initialize the tooltip
         tip = d3.tip()
           .attr('class', 'd3-tip')
@@ -565,10 +567,12 @@ function mutation_matrix(params) {
                  .on("click", function(d){
                     activateAndToggle(d);
                     d3.select(this).on("mouseout", activateAndToggle);
+
+                    // Add the user defined clickability
+                    if (addOnClick){ onclickFunction(d, i); }
                  });
       }
-
-      function sid(sample){ return showDuplicates ? sample._id : sample.name; }
+      else if ( addOnClick ){ mutations.on("click", onclickFunction); }
 
       //////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////
@@ -644,7 +648,7 @@ function mutation_matrix(params) {
             });
 
         // Move the matrix
-        matrix.attr('transform', function(d) { return 'translate(' + x(sampleToIndex[sid(d)]) + ')'; });
+        matrix.attr('transform', function(d) { return 'translate(' + x(sampleToIndex[d.snid]) + ')'; });
 
         // Update the text size of the sample names depending on the zoom level
         // represented by `tickWidth`
@@ -1132,13 +1136,20 @@ function mutation_matrix(params) {
   }
 
   chart.addTooltips = function(annotater){
-    drawTooltips = true;
+    showTooltips = true;
     annotate = annotater;
     if (ticks && tip){
       tip.html(annotater);
     }
     return chart;
   }
+
+chart.addOnClick = function (fn) {
+    addOnClick = true;
+    onclickFunction = fn;
+    return chart; 
+  }
+
 
   return chart;
 }
