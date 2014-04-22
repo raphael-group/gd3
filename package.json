@@ -13,7 +13,8 @@
 	"dependencies": {
 		"jsdom" : "latest",
 		"optimist": "latest",
-		"bower": "latest"
+		"bower": "latest",
+		"uglify-js": "latest"
   	},
 	"repository": {
 		"type": "git",
