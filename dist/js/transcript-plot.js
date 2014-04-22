@@ -25,7 +25,9 @@ function transcript_plot(params) {
 
   var showLegend = false,
     allowVerticalPanning = false,
-    drawTooltips = false;
+    drawTooltips = false,
+    addOnClick = false,
+    annotate;
 
   var inactivating = params.inactivating || {
     "Nonsense_Mutation": true,
@@ -64,7 +66,7 @@ function transcript_plot(params) {
           mutations = data.mutations,
           proteinDomains = data.domains[domainDB] || [];
 
-      var dataSet = mutations.slice();
+      var dataSet = mutations.slice().map(function(d){ d.gene = geneName; return d; });
 
       // Collect all unique types for all samples
       var sampleTypes = [];
@@ -237,11 +239,7 @@ function transcript_plot(params) {
         var tip = d3.tip()
           .attr('class', 'd3-tip')
           .offset([-10, 0])
-          .html(function(d, i){
-            return d.sample + '<br />Type: ' + d.dataset + "<br/>"
-                      + d.ty.replace(/_/g, ' ') + '<br />'
-                      + d.locus + ': ' + d.aao + '>' + d.aan;
-          });
+          .html(annotate);
 
         svg.call(tip);
 
@@ -250,6 +248,16 @@ function transcript_plot(params) {
 
         topSymbols.on("mouseover", tip.show)
                   .on("mouseout", tip.hide);
+      
+        if (addOnClick){
+          bottomSymbols.on("click", function(d, i){ onclickFunction(d, i); });
+          topSymbols.on("click", function(d, i){ onclickFunction(d, i); });
+        }
+
+      }
+      else if (addOnClick){
+        topSymbols.on("click", onclickFunction);
+        bottomSymbols.on("click", onclickFunction);
       }
 
 
@@ -559,15 +567,21 @@ function transcript_plot(params) {
     return chart;
   }
 
- chart.addTooltips = function() {
+ chart.addTooltips = function(fn) {
     drawTooltips = true;
+    annotate = fn;
+    return chart;
+  }
+
+ chart.addOnClick = function(onclickFn) {
+    addOnClick = true;
+    onclickFunction = onclickFn;
     return chart;
   }
 
   chart.addVerticalPanning = function() {
       allowVerticalPanning = true;
       return chart;
-
   }
 
   chart.filterDatasets = function(datasetToInclude) {
