@@ -26,8 +26,8 @@ function transcript_plot(params) {
   var showLegend = false,
     allowVerticalPanning = false,
     drawTooltips = false,
-    addOnClick = false,
-    annotate;
+    addOnClickMutations = false,
+    addOnClickDomains = false;
 
   var inactivating = params.inactivating || {
     "Nonsense_Mutation": true,
@@ -57,7 +57,10 @@ function transcript_plot(params) {
 
   // Define globals to be used when filtering the transcript plot by sample type
   var sampleTypeToInclude = {},
-      updateTranscript;
+      updateTranscript,
+      annotate,
+      onclickMutationFunction,
+      onclickDomainFunction;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -249,22 +252,24 @@ function transcript_plot(params) {
         topSymbols.on("mouseover", tip.show)
                   .on("mouseout", tip.hide);
       
-        if (addOnClick){
-          bottomSymbols.on("click", function(d, i){ onclickFunction(d, i); });
-          topSymbols.on("click", function(d, i){ onclickFunction(d, i); });
+        if (addOnClickMutations){
+          bottomSymbols.on("click", function(d, i){ onclickMutationFunction(d, i); });
+          topSymbols.on("click", function(d, i){ onclickMutationFunction(d, i); });
         }
 
       }
-      else if (addOnClick){
-        topSymbols.on("click", onclickFunction);
-        bottomSymbols.on("click", onclickFunction);
+      else if (addOnClickMutations){
+        topSymbols.on("click", onclickMutationFunction);
+        bottomSymbols.on("click", onclickMutationFunction);
       }
 
+      // Add the geneName as data for the protein domain in case we need it
+      // in the mouseover/mouseout or onclick functions
+      var proteinDomains = proteinDomains.map(function(d){ d.gene = geneName; return d; });
 
       // Draw domain data with labels with mouse over
       var domainGroups = fig.selectAll('.domains')
-          .data(proteinDomains.slice())
-          .enter()
+          .data(proteinDomains).enter()
           .append('g')
             .attr('class', 'domains');
 
@@ -292,6 +297,7 @@ function transcript_plot(params) {
         fig.select('#domain-label-' + i).style('fill-opacity', 0);
       });
 
+      if (addOnClickDomains) domainGroups.on("click", onclickDomainFunction);
 
       function renderLegend() {
         var mutationTypes = Object.keys(mutSymbols),
@@ -573,9 +579,15 @@ function transcript_plot(params) {
     return chart;
   }
 
- chart.addOnClick = function(onclickFn) {
-    addOnClick = true;
-    onclickFunction = onclickFn;
+ chart.addOnClickMutations = function(onclickFn) {
+    addOnClickMutations = true;
+    onclickMutationFunction = onclickFn;
+    return chart;
+  }
+
+ chart.addOnClickDomains = function(onclickFn) {
+    addOnClickDomains = true;
+    onclickDomainFunction = onclickFn;
     return chart;
   }
 
