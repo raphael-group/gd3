@@ -24,7 +24,8 @@ function subnetwork(params) {
       showGradientLegend = false,
       showTooltips = false,
       addOnClick = false,
-      onclickFunction;
+      onclickFunction,
+      tooltipFunction;
 
   if (colorSchemes.network == undefined) {
     colorSchemes.network = {
@@ -132,25 +133,7 @@ function subnetwork(params) {
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 10])
-            .html(function(d, i){
-              // Add the basic information about the edge
-              var tip = "<div id='subnet-tooltip'>\n"
-              tip += "Source: " + d.source.name + "<br/>Target: " + d.target.name + "<br/><br/>";
-              
-              // Display each tooltip's references as a table of networks to unordered
-              // lists of references
-              function pmidLink(pmid){ return "<li><a href='http://www.ncbi.nlm.nih.gov/pubmed/" + pmid + "' target='_new'>" + pmid + "</a></li>"}
-
-              tip += "<table class='table table-condensed'>\n<tr><th>Network</th><th>PMIDs</th></tr>\n"
-
-              d.networks.filter(function(n){ return activeNetworks[n]; }).forEach(function(n){
-                  var pmids = d.references[n].map(pmidLink).join("\n");
-                  tip += "<tr><td>" + n + "</td><td><ul style='padding-left:10px'>" + pmids + "</td></ul></tr>\n";
-              });
-
-            return tip + "</table>\n</div>\n";
-
-          });
+            .html(function(d){ return tooltipFunction(d, activeNetworks); });
         
         fig.call(tip);
 
@@ -407,8 +390,33 @@ function subnetwork(params) {
     return chart;
   }
 
- chart.addTooltips = function () {
+ chart.addTooltips = function (_) {
     showTooltips = true;
+    if (!arguments.length){
+      tooltipFunction = function(d, activeNetworks){
+        // Add the basic information about the edge
+        var tip = "<div id='subnet-tooltip'>\n"
+        tip += "Source: " + d.source.name + "<br/>Target: " + d.target.name + "<br/><br/>";
+
+        // Display each tooltip's references as a table of networks to unordered
+        // lists of references
+        function pmidLink(pmid){ return "<li><a href='http://www.ncbi.nlm.nih.gov/pubmed/" + pmid + "' target='_new'>" + pmid + "</a></li>"}
+
+        tip += "<table class='table table-condensed'>\n<tr><th>Network</th><th>PMIDs</th></tr>\n"
+
+        d.networks.filter(function(n){ return activeNetworks[n]; }).forEach(function(n){
+          var pmids = d.references[n].map(pmidLink).join("\n");
+          tip += "<tr><td>" + n + "</td><td><ul style='padding-left:10px'>" + pmids + "</td></ul></tr>\n";
+        });
+
+        return tip + "</table>\n</div>\n";
+
+      }
+    }
+    else{
+      tooltipFunction = _;
+    }
+
     return chart;
   }
 

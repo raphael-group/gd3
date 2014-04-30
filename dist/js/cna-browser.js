@@ -72,7 +72,6 @@ function cna_browser(params){
 				samplelst.push( si.sample );
 				for (var j = 0; j < si.segments.length; j++){
 					var sj = si.segments[j];
-					console.log( sj )
 					segJSON.push({
 						gene: gene,
 						start: sj.start,
