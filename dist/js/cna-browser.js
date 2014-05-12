@@ -55,38 +55,49 @@ function cna_browser(params){
 				minSegXLoc = region.minSegX,
 				maxSegXLoc = region.maxSegX;
 
+			// Determine the height
+			var height = (intervalH * data.segments.length) + initIntervalH + rangeLegendOffset - 10;
+
 			// Initialize data structures
 			var geneJSON = geneinfo.map(function(d) {
 				var selected = d.name == gene;
 				return { fixed: selected ? true: false , start: d.start, end: d.end, label: d.name, selected: selected };
 			});
 
-			var segHCount = initIntervalH,
-				samplelst = new Array(),
+			var samplelst = new Array(),
 				segJSON   = new Array(),
 				sampleTypes = new Array();
 
-			for (var i = 0; i < seg.length; i++){
-				var si = seg[i];
-				segHCount += intervalH;
-				samplelst.push( si.sample );
-				for (var j = 0; j < si.segments.length; j++){
-					var sj = si.segments[j];
+			// Flatten the segments data
+			seg.forEach(function(d){
+				samplelst.push( d.sample );
+				d.segments.forEach(function(s){
 					segJSON.push({
 						gene: gene,
-						start: sj.start,
-						end: sj.end,
-						label: sj.sample,
-						y: segHCount,
-						sample: si.sample,
-						dataset: sampleToTypes[sj.sample],
-						ty: sj.ty
-					});
-				}
-				if (sampleTypes.indexOf(sampleToTypes[si.sample])){
-					sampleTypes.push( sampleToTypes[si.sample] );
-				}
-			}
+						start: s.start,
+						end: s.end,
+						label: s.sample,
+						sample: d.sample,
+						dataset: sampleToTypes[d.sample],
+						ty: s.ty
+					})
+					if (sampleTypes.indexOf(sampleToTypes[d.sample])){
+						sampleTypes.push( sampleToTypes[s.sample] );
+					}
+				});
+			});
+
+			// Sort the segments by cancer type and then by length
+			segJSON.sort(function(a, b){
+				if (a.dataset != b.dataset) return d3.ascending(a.dataset, b.dataset);
+				else return d3.ascending(a.end-a.start, b.end-b.start);
+			})
+
+			// Compute the height of each segment
+			var segHCount = initIntervalH;
+			d3.range(0, segJSON.length).forEach(function(i){
+				segJSON[i].y = segHCount += intervalH;
+			});
 
 			// Initialize the CNA browser to include all sample types
 			sampleTypes.sort();
@@ -246,8 +257,14 @@ function cna_browser(params){
 						});
 
 					svg.call(tip);
-					intervals.on("mouseover", tip.show)
-						  	 .on("mouseout", tip.hide);
+
+					intervals.on("mouseover", function(d){
+						tip.show(d);
+						$("div.d3-tip").css("left", (d3.event.pageX - 50) + "px")
+							.css("top", (d3.event.pageY - 65) + "px");
+					})
+					.on("mouseout", tip.hide);
+
 					if (addOnClick){
 						intervals.on("click", onclickFunction);
 					}
