@@ -174,14 +174,11 @@ function cna_browser(params){
 					.attr("class", "genes")
 
 				genes = geneGroups.append('rect')        
-					.attr("width", function(d){
-						return normalize(d.end) - normalize(d.start);
-					})
+					.attr("width", function(d){ return normalize(d.end) - normalize(d.start); })
 					.attr('height', genomeHeight)
 					.style("fill-opacity", function(d) {return d.selected ? 1 : 0.2;})
 					.style('fill', function (d) {return d.selected ? selectedColor : blockColorMedium;})                          
 					.attr('id', function (d, i) { return "gene-" + i; });
-
 
 				geneLabels = geneGroups.append("text")
 					.attr("id", function (d, i) { return "gene-label-" + i; })
@@ -247,6 +244,16 @@ function cna_browser(params){
 					.attr('height', 5)
 					.attr('id', function (d, i) { return "interval-" + i; });
 
+				// Add a vertical bar that spans the target gene
+				verticalBars = svg.selectAll('.vert-bar')
+					.data(geneJSON.filter(function(d){ return d.selected; })).enter()
+					.append("rect")
+					.attr("y", initIntervalH)
+					.attr("width", function(d){ return normalize(d.end) - normalize(d.start); })
+					.attr("height", height - initIntervalH)
+					.style("fill", selectedColor)
+					.style("fill-opacity", 0.5);
+
 				// Add tooltips to the intervals
 				if (showTooltips){
 					var tip = d3.tip()
@@ -273,6 +280,7 @@ function cna_browser(params){
 					intervals.on("click", onclickFunction);
 				}
 
+
 			}
 
 			function updateGene(){
@@ -291,9 +299,22 @@ function cna_browser(params){
 						x2 = d3.min( [d.end, d3.min(normalize.domain())] );
 					return "translate(" + normalize(d.start + (d.end-d.start)/2) + ",0)";
 				});
+
+				// Move the vertical bar around the target genes
+				verticalBars.attr("x", function(d){ return normalize(d.start); })
+					.attr("width", function(d){ return normalize(d.end) - normalize(d.start); });
 			}
 
 			updateCNABrowser = function (){
+				var t = zoom.translate(),
+					tx = t[0],
+					ty = t[1],
+					scale = zoom.scale();
+
+				tx = Math.min(tx, 0);
+
+				zoom.translate([tx, ty]);
+
 				// Find the start/stop points after the zoom
 				var curMin = d3.min( x.domain() ),
 					curMax = d3.max( x.domain() );
