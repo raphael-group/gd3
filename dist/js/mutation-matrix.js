@@ -9,7 +9,7 @@ function mutation_matrix(params) {
       blockColorStrongest = style.blockColorStrongest || '#2C3E50',
       boxMargin = style.boxMargin || 5, // assumes uniform margins on all sides
       colorSampleTypes = style.colorSampleTypes || true,
-      coocurringColor = style.coocurringColor || '#92f941',
+      coocurringColor = style.coocurringColor || '#8cc63e',
       exclusiveColor = style.exclusiveColor || '#3484c5',
       fullWidth = style.width || 500,
       fullHeight = style.height || 300,
