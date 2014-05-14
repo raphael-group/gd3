@@ -229,10 +229,12 @@ function mutation_matrix(params) {
             var mutTys = [];
             if (geneToSamples[g].indexOf( s._id ) != -1){
               mutated = false;
-              M[g][s._id].filter(function(t){ return mutationTypeToInclude[t]; })
-                .sort(function(ty1, ty2){ return mutTypeOrder[ty1] < mutTypeOrder[ty2] ? 1 : -1; })
-                .forEach(function(t){
-                    muts.genes.push( {gene: g, dataset: sampleToTypes[s._id], ty: t, sample: s } );
+              // Find all the mutation types in this gene in this sample
+              var allMutTys = M[g][s._id].filter(function(t){ return mutationTypeToInclude[t]; })
+                .sort(function(ty1, ty2){ return mutTypeOrder[ty1] < mutTypeOrder[ty2] ? 1 : -1; });
+
+                allMutTys.forEach(function(t){
+                    muts.genes.push( {gene: g, dataset: sampleToTypes[s._id], ty: t, sample: s, mutTys: allMutTys } );
                     mutated = true;
                     mutTys.push( t );
                     if (genesMutInSample.indexOf(g) == -1)
