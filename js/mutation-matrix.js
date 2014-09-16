@@ -297,9 +297,9 @@ function mutation_matrix(params) {
               ind2 = sampleToGeneIndex[s2.snid];
 
           if (ind1 < sortedGenes.length)
-            mut_type1 = geneToSampleMutationType[sortedGenes[ind1]][s1.snid];
+            var mut_type1 = geneToSampleMutationType[sortedGenes[ind1]][s1.snid];
           if (ind2 < sortedGenes.length)
-            mut_type2 = geneToSampleMutationType[sortedGenes[ind2]][s2.snid];
+            var mut_type2 = geneToSampleMutationType[sortedGenes[ind2]][s2.snid];
 
           return mut_type1 > mut_type2 ? 1 : mut_type1 == mut_type2 ? 0 : -1;
         }
