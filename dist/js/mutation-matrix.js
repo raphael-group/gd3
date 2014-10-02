@@ -9,8 +9,8 @@ function mutation_matrix(params) {
       blockColorStrongest = style.blockColorStrongest || '#2C3E50',
       boxMargin = style.boxMargin || 5, // assumes uniform margins on all sides
       colorSampleTypes = style.colorSampleTypes || true,
-      coocurringColor = style.coocurringColor || '#8cc63e',
-      exclusiveColor = style.exclusiveColor || '#3484c5',
+      coocurringColor = style.coocurringColor || 'orange',
+      exclusiveColor = style.exclusiveColor || 'blue',
       fullWidth = style.width || 500,
       fullHeight = style.height || 300,
       geneHeight = style.geneHeight || 20,
@@ -60,7 +60,11 @@ function mutation_matrix(params) {
       showSortingMenu = false,
       showTooltips = false,
       showDuplicates = false,
-      addOnClick = false;;
+      addOnClick = false;
+
+  // Sample annotation information
+  var annotationData,
+      showSampleAnnotations = false;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -71,6 +75,8 @@ function mutation_matrix(params) {
           sampleTypes = data.sampleTypes || [],
           typeToSamples = data.typeToSamples || {},
           samples = data.samples;
+
+      console.log(data);
 
       var genes = Object.keys(M),
           numGenes = genes.length;
@@ -94,7 +100,7 @@ function mutation_matrix(params) {
       });
 
       var uniqueSamples = [];
-      Object.keys(SNIDs).forEach(function(snid){ uniqueSamples.push( SNIDs[snid] ); });      
+      Object.keys(SNIDs).forEach(function(snid){ uniqueSamples.push( SNIDs[snid] ); });
       var numMutatedSamples = uniqueSamples.length;
 
       // Collect all unique types for all samples
@@ -138,6 +144,13 @@ function mutation_matrix(params) {
           if (!sampleTypeToColor[sampleTypes[i]])
             sampleTypeToColor[sampleTypes[i]] = colors(i);
         }
+      }
+
+      // Adjust height if sampleAnnotations
+      if (showSampleAnnotations) {
+        var firstAnnotation = Object.keys(annotationData.sampleToAnnotations)[0];
+            numAnnTypes = annotationData.sampleToAnnotations[firstAnnotation].length;
+        height = height + numAnnTypes*geneHeight;
       }
 
       // Map each gene to the samples they're mutated in
@@ -297,9 +310,9 @@ function mutation_matrix(params) {
               ind2 = sampleToGeneIndex[s2.snid];
 
           if (ind1 < sortedGenes.length)
-            mut_type1 = geneToSampleMutationType[sortedGenes[ind1]][s1.snid];
+            var mut_type1 = geneToSampleMutationType[sortedGenes[ind1]][s1.snid];
           if (ind2 < sortedGenes.length)
-            mut_type2 = geneToSampleMutationType[sortedGenes[ind2]][s2.snid];
+            var mut_type2 = geneToSampleMutationType[sortedGenes[ind2]][s2.snid];
 
           return mut_type1 > mut_type2 ? 1 : mut_type1 == mut_type2 ? 0 : -1;
         }
@@ -505,6 +518,69 @@ function mutation_matrix(params) {
               }
             });
 
+        // Initialize sample annotations data if desired
+        var sampleAnnotations,
+            annotationColorScales = [];
+        if(showSampleAnnotations) {
+          var yAdjust = geneHeight*genes.length + labelHeight,
+              sampleAs = annotationData.sampleToAnnotations,
+              aColors = annotationData.annotationToColor || {};
+          sampleAnnotations = matrix.append('g')
+              .attr('transform', 'translate(0,'+yAdjust+')');
+
+          // Calculate the bounds of the color scale
+          var dataBounds = [];
+          for(var i = 0; i < sampleAs[Object.keys(sampleAs)[0]].length; i++) dataBounds.push(null);
+          for (var k in Object.keys(sampleAs)) {
+            var key = Object.keys(sampleAs)[k],
+                data = sampleAs[key];
+            data.forEach(function(d,i) {
+              if (typeof(d) !== 'number') return;
+              if (dataBounds[i] == null) {
+                dataBounds[i] = {}
+                dataBounds[i].min = d;
+                dataBounds[i].max = d;
+              } else {
+                dataBounds[i].min = d < dataBounds[i].min ? d : dataBounds[i].min;
+                dataBounds[i].max = d > dataBounds[i].max ? d : dataBounds[i].max;
+              }
+            });
+          }
+
+          // Create the color scales
+          dataBounds.forEach(function(d,i) {
+            if(d ==  null) {
+              annotationColorScales.push(null);
+            } else {
+              scale = d3.scale.linear()
+                .domain([d.min,d.max])
+                .range(['#fcc5c0','#49006a'])
+                .interpolate(d3.interpolateLab);
+              annotationColorScales.push(scale);
+            }
+          });
+
+          // Append each annotation to the matrix
+          sampleAnnotations.each(function(d) {
+              var name = d.name,
+                  thisEl = d3.select(this);
+
+              if(sampleAs[name]) {
+                thisEl.selectAll('rect')
+                    .data(sampleAs[name])
+                    .enter()
+                    .append('rect')
+                        .attr('height', geneHeight)
+                        .attr('x', 0)
+                        .attr('y', function(d,i){ return geneHeight*i; })
+                        .style('fill', function(d,i) {
+                            return typeof(d) === 'number' ? annotationColorScales[i](d): aColors[d];
+                        });
+              }
+            });
+        }// end draw Sample annotations
+
+
       var other = mutations.append('line')
         .filter(function(d){ return isOther(d.ty); })
         .attr('class', 'other')
@@ -678,6 +754,18 @@ function mutation_matrix(params) {
         d3.select('text#sampleWidthText')
             .attr("transform", "translate(" + (tickWidth + 5) + ",0)")
             .text(samplesPerCol + ' ' + sampleStr);
+
+
+        if (showSampleAnnotations) {
+          var sampleAs = annotationData.sampleToAnnotations,
+              aColors = annotationData.annotationToColor || {};
+          sampleAnnotations.each(function(d) {
+            var name = d.name,
+                thisEl = d3.select(this);
+            thisEl.selectAll('rect')
+                .attr('width', tickWidth);
+          });
+        }
 
         // Add sample lines
         // First remove the old sample lines
@@ -1110,6 +1198,12 @@ function mutation_matrix(params) {
 
   chart.addSortingMenu = function () {
     showSortingMenu = true;
+    return chart;
+  }
+
+  chart.addSampleAnnotations = function(data) {
+    annotationData = data;
+    showSampleAnnotations = true;
     return chart;
   }
 

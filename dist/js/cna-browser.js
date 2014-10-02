@@ -173,9 +173,8 @@ function cna_browser(params){
 					.append("g")
 					.attr("class", "genes")
 
-				genes = geneGroups.append('rect')
+				genes = geneGroups.append('rect')        
 					.attr("width", function(d){ return normalize(d.end) - normalize(d.start); })
-
 					.attr('height', genomeHeight)
 					.style("fill-opacity", function(d) {return d.selected ? 1 : 0.2;})
 					.style('fill', function (d) {return d.selected ? selectedColor : blockColorMedium;})                          
@@ -227,9 +226,9 @@ function cna_browser(params){
 							d3.select(this)
 								.select("text")
 								.style("fill-opacity", 1)
-						}
+						}          
 					});
-
+				
 				////////////////////////////////////////////////////////////////////////
 				// Draw the segments
 				intervals = svg.selectAll('.intervals')
@@ -237,7 +236,7 @@ function cna_browser(params){
 					.enter().append('g')
 					.attr("class", "intervals")
 
-				ints = intervals.append('rect')
+				ints = intervals.append('rect')    
 					.attr('fill', function(d){ return sampleTypeToColor[sampleToTypes[d.sample]] })
 					.attr('width', function(d) {
 						return normalize(d.end, minSegXLoc, maxSegXLoc) - normalize(d.start, minSegXLoc, maxSegXLoc);
@@ -283,24 +282,6 @@ function cna_browser(params){
 
 
 			}
-
-
-			updateCNABrowser = function (){
-				// Find the start/stop points after the zoom
-				var curMin = d3.min( x.domain() ),
-						curMax = d3.max( x.domain() );
-
-				normalize.domain([curMin, curMax]);
-				console.log(curMin,curMax);
-
-				// Update the info about the range shown on the zoom
-				rangeLegend.text("chr"+ chrm + ": " + d3.round(curMin) + "-" +  d3.round(curMax) );
-
-				// Move the genes and intervals as appropriate
-				updateGene(curMin, curMax);
-				updateInterval(curMin, curMax);
-			}
-
 
 			function updateGene(){
 				// Move the genes into place
@@ -398,7 +379,7 @@ function cna_browser(params){
 	chart.addOnClick = function (fn) {
 		addOnClick = true;
 		onclickFunction = fn;
-		return chart;
+		return chart; 
 	}
 	
 	return chart;
