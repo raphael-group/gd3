@@ -88,8 +88,8 @@ function heatmap (params) {
             d3.select('#vizHeatmapXLabel'+d.x).style('fill','#f00').style('font-weight','bold');
             d3.select('#vizHeatmapYLabel'+d.y).style('fill','#f00').style('font-weight','bold');
             d3.select(this).style('stroke', 'black').style('stroke-width', 2);
-            var dX = d.x,
-                dY = d.y;
+            var dX = xs.indexOf(d.x),
+                dY = ys.indexOf(d.y);
 
             var refLineScalar = d.value/max;
             legendRefLine.attr('y1',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
@@ -247,7 +247,7 @@ function heatmap (params) {
               scrubHeight = 2*(unitScalar*scrubError),
               scrubY = legendYLoc-unitScalar*scrubError;
           scrubHeight = scrubHeight + scrubY > legend.attr('height') ? scrubHeight - Math.abs(scrubHeight+scrubY - legend.attr('height')) : scrubHeight;
-
+          console.log(scrubY, scrubHeight, max);
           mouseScrubRegion.attr('x', legend.attr('x')+cellWidth)
               .attr('y', scrubY)
               .attr('width', 5)
