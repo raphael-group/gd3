@@ -147,7 +147,7 @@ function mutation_matrix(params) {
       }
 
       // Adjust height if sampleAnnotations
-      if (showSampleAnnotations && annotationData.sampleToAnnotations) {
+      if (showSampleAnnotations) {
         var firstAnnotation = Object.keys(annotationData.sampleToAnnotations)[0];
             numAnnTypes = annotationData.sampleToAnnotations[firstAnnotation].length;
         height = height + numAnnTypes*geneHeight;
@@ -521,7 +521,7 @@ function mutation_matrix(params) {
         // Initialize sample annotations data if desired
         var sampleAnnotations,
             annotationColorScales = [];
-        if(showSampleAnnotations && annotationData.sampleToAnnotations) {
+        if(showSampleAnnotations) {
           var yAdjust = geneHeight*genes.length + labelHeight,
               sampleAs = annotationData.sampleToAnnotations,
               aColors = annotationData.annotationToColor || {};
@@ -756,7 +756,7 @@ function mutation_matrix(params) {
             .text(samplesPerCol + ' ' + sampleStr);
 
 
-        if (showSampleAnnotations && annotationData.sampleToAnnotations) {
+        if (showSampleAnnotations) {
           var sampleAs = annotationData.sampleToAnnotations,
               aColors = annotationData.annotationToColor || {};
           sampleAnnotations.each(function(d) {
@@ -1202,7 +1202,7 @@ function mutation_matrix(params) {
   }
 
   chart.addSampleAnnotations = function(data) {
-    annotationData = data || {};
+    annotationData = data;
     showSampleAnnotations = true;
     return chart;
   }
