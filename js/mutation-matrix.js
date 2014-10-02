@@ -1202,8 +1202,9 @@ function mutation_matrix(params) {
   }
 
   chart.addSampleAnnotations = function(data) {
-    annotationData = data;
-    showSampleAnnotations = true;
+    annotationData = data || {};
+    // only show sample annotations if the data exists
+    if (annotationData.sampleToAnnotations) showSampleAnnotations = true;
     return chart;
   }
 
