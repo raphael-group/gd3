@@ -125,10 +125,11 @@
     </div>
 
     <script src="../bower_components/d3/d3.min.js"></script>
-    <script src="../bower_components/jquery/jquery.min.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/d3-tip/index.js"></script>
     <script src="../js/mutation-matrix.js"></script>
     <script>
+    d3.json('../example-data/sampleAnnotations.json', function(annData) {
     d3.json('../example-data/example-mutation-matrix.json', function(data) {
       var styling = {
         bgColor: '#ccc',
@@ -167,9 +168,11 @@
             .addSampleLegend()
             .addMutationLegend()
             .addSortingMenu()
+            .addSampleAnnotations(annData)
             .addTooltips(function(d, i){ return "Sample: " + d.sample + "<br/>Dataset: " + d.dataset + "<br/>Type: " + d.ty; })
             .width(650)
         );
+    });
     });
     </script>
   </body>

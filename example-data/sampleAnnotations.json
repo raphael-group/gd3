@@ -1,0 +1,1543 @@
+{
+  "annotationToColor": {
+    "High Risk": "#1b9e77", 
+    "Low Risk": "#a6761d", 
+    "Medium Risk": "#e7298a", 
+    "Subtype2": "#66a61e", 
+    "Subtype3": "#d95f02", 
+    "Subtype1": "#e6ab02", 
+    "Subtype4": "#7570b3"
+  }, 
+  "sampleToAnnotations": {
+    "TCGA-D1-A16J": [
+      "High Risk", 
+      "Subtype4", 
+      0.333382272034383
+    ], 
+    "TCGA-22-4604": [
+      "High Risk", 
+      "Subtype4", 
+      0.023440511503537986
+    ], 
+    "TCGA-A5-A0G9": [
+      "Low Risk", 
+      "Subtype2", 
+      0.9315461633420395
+    ], 
+    "TCGA-A5-A0GN": [
+      "High Risk", 
+      "Subtype2", 
+      0.7419140138108163
+    ], 
+    "TCGA-22-4601": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.5883202260632769
+    ], 
+    "TCGA-B8-4621": [
+      "Low Risk", 
+      "Subtype3", 
+      0.741144118007704
+    ], 
+    "TCGA-CV-5978": [
+      "Low Risk", 
+      "Subtype1", 
+      0.48027189676493
+    ], 
+    "TCGA-FD-A3B7": [
+      "High Risk", 
+      "Subtype3", 
+      0.07052096922743167
+    ], 
+    "TCGA-D1-A16E": [
+      "High Risk", 
+      "Subtype3", 
+      0.06890732914885944
+    ], 
+    "TCGA-AA-3696": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.2021676266863096
+    ], 
+    "TCGA-66-2727": [
+      "High Risk", 
+      "Subtype2", 
+      0.29523934951520403
+    ], 
+    "TCGA-A7-A0CJ": [
+      "Low Risk", 
+      "Subtype2", 
+      0.544266966554517
+    ], 
+    "TCGA-17-Z008": [
+      "Low Risk", 
+      "Subtype4", 
+      0.27553574844064643
+    ], 
+    "TCGA-43-6143": [
+      "Low Risk", 
+      "Subtype1", 
+      0.060423156392774735
+    ], 
+    "TCGA-49-6745": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.21527503624913913
+    ], 
+    "TCGA-A7-A0CD": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.2808807093729514
+    ], 
+    "TCGA-G2-A2EJ": [
+      "Low Risk", 
+      "Subtype1", 
+      0.5927621899400229
+    ], 
+    "TCGA-49-6742": [
+      "Low Risk", 
+      "Subtype2", 
+      0.6078788766795838
+    ], 
+    "TCGA-17-Z001": [
+      "Low Risk", 
+      "Subtype4", 
+      0.8593425521795276
+    ], 
+    "TCGA-BH-A0H7": [
+      "Low Risk", 
+      "Subtype3", 
+      0.6507946480445977
+    ], 
+    "TCGA-BP-5178": [
+      "Low Risk", 
+      "Subtype4", 
+      0.6307117004724063
+    ], 
+    "TCGA-D8-A1JP": [
+      "High Risk", 
+      "Subtype3", 
+      0.3843119680769236
+    ], 
+    "TCGA-AG-A01W": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.2115005591436453
+    ], 
+    "TCGA-22-0944": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.3961949537847528
+    ], 
+    "TCGA-BS-A0U7": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.16678245880685105
+    ], 
+    "TCGA-BS-A0TE": [
+      "Low Risk", 
+      "Subtype1", 
+      0.325601093431215
+    ], 
+    "TCGA-CV-7177": [
+      "High Risk", 
+      "Subtype1", 
+      0.8416659423063196
+    ], 
+    "TCGA-AN-A0FD": [
+      "Low Risk", 
+      "Subtype2", 
+      0.5709203842230132
+    ], 
+    "TCGA-BS-A0TA": [
+      "High Risk", 
+      "Subtype3", 
+      0.12211316446518228
+    ], 
+    "TCGA-CJ-4899": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.3138946707301117
+    ], 
+    "TCGA-60-2710": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.916776818345469
+    ], 
+    "TCGA-37-4133": [
+      "High Risk", 
+      "Subtype3", 
+      0.6631356263930804
+    ], 
+    "TCGA-BP-4992": [
+      "Low Risk", 
+      "Subtype2", 
+      0.688759506884349
+    ], 
+    "TCGA-GI-A2C8": [
+      "High Risk", 
+      "Subtype4", 
+      0.25841396166403874
+    ], 
+    "TCGA-37-4135": [
+      "High Risk", 
+      "Subtype1", 
+      0.4475246759894991
+    ], 
+    "TCGA-B0-4823": [
+      "Low Risk", 
+      "Subtype1", 
+      0.8961135361553978
+    ], 
+    "TCGA-H7-7774": [
+      "High Risk", 
+      "Subtype4", 
+      0.9327781710712019
+    ], 
+    "TCGA-24-1105": [
+      "High Risk", 
+      "Subtype1", 
+      0.8159367287155518
+    ], 
+    "TCGA-49-4487": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.07216633833738895
+    ], 
+    "TCGA-44-6776": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.008854367680399489
+    ], 
+    "TCGA-61-2008": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.11870565765825247
+    ], 
+    "TCGA-50-5939": [
+      "High Risk", 
+      "Subtype3", 
+      0.6449149716266641
+    ], 
+    "TCGA-B0-4815": [
+      "High Risk", 
+      "Subtype2", 
+      0.22780384480921712
+    ], 
+    "TCGA-BG-A0LX": [
+      "High Risk", 
+      "Subtype4", 
+      0.0770525281391069
+    ], 
+    "TCGA-CV-7099": [
+      "Low Risk", 
+      "Subtype3", 
+      0.4015684617968639
+    ], 
+    "TCGA-44-6779": [
+      "Low Risk", 
+      "Subtype1", 
+      0.4991199760880989
+    ], 
+    "TCGA-44-6778": [
+      "High Risk", 
+      "Subtype4", 
+      0.255154571053816
+    ], 
+    "TCGA-49-4488": [
+      "Low Risk", 
+      "Subtype4", 
+      0.7426957606298198
+    ], 
+    "TCGA-CR-6491": [
+      "High Risk", 
+      "Subtype3", 
+      0.5362385960254429
+    ], 
+    "TCGA-CR-6492": [
+      "High Risk", 
+      "Subtype1", 
+      0.546070275694025
+    ], 
+    "TCGA-50-5051": [
+      "Low Risk", 
+      "Subtype4", 
+      0.6415721654766178
+    ], 
+    "TCGA-B0-4714": [
+      "High Risk", 
+      "Subtype1", 
+      0.4824403986564141
+    ], 
+    "TCGA-17-Z033": [
+      "High Risk", 
+      "Subtype1", 
+      0.9197877335360121
+    ], 
+    "TCGA-E2-A14P": [
+      "Low Risk", 
+      "Subtype2", 
+      0.17258678566600516
+    ], 
+    "TCGA-B5-A0JT": [
+      "Low Risk", 
+      "Subtype2", 
+      0.46226273366860215
+    ], 
+    "TCGA-CV-6951": [
+      "High Risk", 
+      "Subtype1", 
+      0.9820729644520841
+    ], 
+    "TCGA-BA-7269": [
+      "High Risk", 
+      "Subtype2", 
+      0.4590884518025812
+    ], 
+    "TCGA-CV-6955": [
+      "High Risk", 
+      "Subtype4", 
+      0.797216095426929
+    ], 
+    "TCGA-BK-A0C9": [
+      "High Risk", 
+      "Subtype2", 
+      0.5795841385974955
+    ], 
+    "TCGA-BH-A0H9": [
+      "High Risk", 
+      "Subtype2", 
+      0.896659188142294
+    ], 
+    "TCGA-B0-5097": [
+      "High Risk", 
+      "Subtype2", 
+      0.9328855048714749
+    ], 
+    "TCGA-21-1077": [
+      "Low Risk", 
+      "Subtype4", 
+      0.6478496345603008
+    ], 
+    "TCGA-76-4928": [
+      "Low Risk", 
+      "Subtype1", 
+      0.5540761912795155
+    ], 
+    "TCGA-BT-A3PK": [
+      "Low Risk", 
+      "Subtype3", 
+      0.8578172065914681
+    ], 
+    "TCGA-43-2578": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.9627277398313682
+    ], 
+    "TCGA-21-1071": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.20291464519274294
+    ], 
+    "TCGA-22-5482": [
+      "High Risk", 
+      "Subtype1", 
+      0.47906916696765234
+    ], 
+    "TCGA-22-5480": [
+      "High Risk", 
+      "Subtype2", 
+      0.13418923377142478
+    ], 
+    "TCGA-32-2632": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.4346505333823263
+    ], 
+    "TCGA-DK-A1AE": [
+      "High Risk", 
+      "Subtype1", 
+      0.7364839227082883
+    ], 
+    "TCGA-BP-5001": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.15368016572435117
+    ], 
+    "TCGA-DK-A1AG": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.9922271293410434
+    ], 
+    "TCGA-A6-2670": [
+      "Low Risk", 
+      "Subtype3", 
+      0.13250966144039966
+    ], 
+    "TCGA-18-5595": [
+      "Low Risk", 
+      "Subtype4", 
+      0.3168572279614038
+    ], 
+    "TCGA-D1-A163": [
+      "High Risk", 
+      "Subtype3", 
+      0.6544695060512103
+    ], 
+    "TCGA-34-5928": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.18985903496186218
+    ], 
+    "TCGA-66-2795": [
+      "High Risk", 
+      "Subtype1", 
+      0.6641257460617083
+    ], 
+    "TCGA-46-3767": [
+      "High Risk", 
+      "Subtype2", 
+      0.020355630878475917
+    ], 
+    "TCGA-73-4666": [
+      "High Risk", 
+      "Subtype4", 
+      0.019621872254802164
+    ], 
+    "TCGA-46-3765": [
+      "High Risk", 
+      "Subtype4", 
+      0.007194558241783278
+    ], 
+    "TCGA-18-5592": [
+      "Low Risk", 
+      "Subtype1", 
+      0.34637916482474407
+    ], 
+    "TCGA-C4-A0EZ": [
+      "High Risk", 
+      "Subtype1", 
+      0.35068527985437536
+    ], 
+    "TCGA-76-6193": [
+      "High Risk", 
+      "Subtype2", 
+      0.5664874213219876
+    ], 
+    "TCGA-34-5236": [
+      "Low Risk", 
+      "Subtype1", 
+      0.5326773190611832
+    ], 
+    "TCGA-06-2563": [
+      "Low Risk", 
+      "Subtype1", 
+      0.5491876851581953
+    ], 
+    "TCGA-AA-3982": [
+      "Low Risk", 
+      "Subtype2", 
+      0.7562592222025055
+    ], 
+    "TCGA-CV-7104": [
+      "Low Risk", 
+      "Subtype2", 
+      0.6470906108652511
+    ], 
+    "TCGA-35-5375": [
+      "High Risk", 
+      "Subtype1", 
+      0.715564762843444
+    ], 
+    "TCGA-33-4532": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.8495033538952965
+    ], 
+    "TCGA-AX-A05W": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.16702540347055506
+    ], 
+    "TCGA-17-Z014": [
+      "Low Risk", 
+      "Subtype3", 
+      0.8004061903723974
+    ], 
+    "TCGA-41-2575": [
+      "Low Risk", 
+      "Subtype4", 
+      0.32665833265138833
+    ], 
+    "TCGA-17-Z023": [
+      "Low Risk", 
+      "Subtype4", 
+      0.3692972367087636
+    ], 
+    "TCGA-AX-A05S": [
+      "Low Risk", 
+      "Subtype2", 
+      0.24376723999291094
+    ], 
+    "TCGA-44-6146": [
+      "High Risk", 
+      "Subtype1", 
+      0.7734914590735021
+    ], 
+    "TCGA-33-4538": [
+      "High Risk", 
+      "Subtype4", 
+      0.9697387442050706
+    ], 
+    "TCGA-CQ-5324": [
+      "Low Risk", 
+      "Subtype1", 
+      0.543779185883423
+    ], 
+    "TCGA-51-4079": [
+      "High Risk", 
+      "Subtype3", 
+      0.8038107795930242
+    ], 
+    "TCGA-13-0755": [
+      "Low Risk", 
+      "Subtype2", 
+      0.02607965174903637
+    ], 
+    "TCGA-CV-6941": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.30759391701679273
+    ], 
+    "TCGA-66-2754": [
+      "Low Risk", 
+      "Subtype4", 
+      0.18961966920387552
+    ], 
+    "TCGA-AA-A01I": [
+      "Low Risk", 
+      "Subtype4", 
+      0.15385739520024289
+    ], 
+    "TCGA-60-2722": [
+      "Low Risk", 
+      "Subtype3", 
+      0.3623917295307769
+    ], 
+    "TCGA-60-2723": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.35402803739737
+    ], 
+    "TCGA-A5-A0GW": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.5872035589694081
+    ], 
+    "TCGA-25-1317": [
+      "High Risk", 
+      "Subtype1", 
+      0.8754920535852169
+    ], 
+    "TCGA-66-2759": [
+      "High Risk", 
+      "Subtype4", 
+      0.36646013283729817
+    ], 
+    "TCGA-66-2758": [
+      "High Risk", 
+      "Subtype4", 
+      0.10600026150556852
+    ], 
+    "TCGA-AG-3999": [
+      "Low Risk", 
+      "Subtype3", 
+      0.44991545907432007
+    ], 
+    "TCGA-24-1466": [
+      "High Risk", 
+      "Subtype4", 
+      0.832935817761577
+    ], 
+    "TCGA-A5-A0GH": [
+      "High Risk", 
+      "Subtype3", 
+      0.9393813242908228
+    ], 
+    "TCGA-13-0890": [
+      "High Risk", 
+      "Subtype2", 
+      0.7472336324492925
+    ], 
+    "TCGA-A5-A0GJ": [
+      "High Risk", 
+      "Subtype1", 
+      0.4153428647405014
+    ], 
+    "TCGA-A5-A0GE": [
+      "High Risk", 
+      "Subtype4", 
+      0.4091471997930636
+    ], 
+    "TCGA-50-5936": [
+      "High Risk", 
+      "Subtype4", 
+      0.7601056306443833
+    ], 
+    "TCGA-B0-5701": [
+      "Low Risk", 
+      "Subtype4", 
+      0.9354129272765679
+    ], 
+    "TCGA-24-1469": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.07415917054881238
+    ], 
+    "TCGA-50-5931": [
+      "Low Risk", 
+      "Subtype2", 
+      0.7896478513089475
+    ], 
+    "TCGA-B5-A0JZ": [
+      "High Risk", 
+      "Subtype2", 
+      0.9105467987296888
+    ], 
+    "TCGA-22-5477": [
+      "Low Risk", 
+      "Subtype3", 
+      0.9397220557782062
+    ], 
+    "TCGA-AB-3009": [
+      "High Risk", 
+      "Subtype2", 
+      0.6391790724227954
+    ], 
+    "TCGA-44-6144": [
+      "High Risk", 
+      "Subtype3", 
+      0.14761674325279972
+    ], 
+    "TCGA-22-5474": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.2874772591215514
+    ], 
+    "TCGA-AB-3001": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.866540748795445
+    ], 
+    "TCGA-50-6592": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.8329586661513411
+    ], 
+    "TCGA-AG-3612": [
+      "High Risk", 
+      "Subtype1", 
+      0.21968423065776954
+    ], 
+    "TCGA-BH-A0BR": [
+      "Low Risk", 
+      "Subtype2", 
+      0.17612714996215395
+    ], 
+    "TCGA-CV-7433": [
+      "High Risk", 
+      "Subtype2", 
+      0.2883692212115372
+    ], 
+    "TCGA-D1-A17U": [
+      "High Risk", 
+      "Subtype3", 
+      0.11923890932736858
+    ], 
+    "TCGA-18-4086": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.9332250867202067
+    ], 
+    "TCGA-17-Z057": [
+      "High Risk", 
+      "Subtype3", 
+      0.8293962958119846
+    ], 
+    "TCGA-CV-6942": [
+      "High Risk", 
+      "Subtype3", 
+      0.6836568408992827
+    ], 
+    "TCGA-CQ-6219": [
+      "Low Risk", 
+      "Subtype4", 
+      0.11579666508256226
+    ], 
+    "TCGA-D1-A160": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.2552787879840417
+    ], 
+    "TCGA-49-4507": [
+      "Low Risk", 
+      "Subtype2", 
+      0.7358778556251601
+    ], 
+    "TCGA-05-4422": [
+      "Low Risk", 
+      "Subtype4", 
+      0.19581789701494057
+    ], 
+    "TCGA-46-3768": [
+      "Low Risk", 
+      "Subtype2", 
+      0.8835226258158806
+    ], 
+    "TCGA-66-2766": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.88685495876703
+    ], 
+    "TCGA-CV-7238": [
+      "High Risk", 
+      "Subtype1", 
+      0.1337728014713211
+    ], 
+    "TCGA-BB-7870": [
+      "High Risk", 
+      "Subtype3", 
+      0.37175765143888995
+    ], 
+    "TCGA-G2-A3IB": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.11617178024209696
+    ], 
+    "TCGA-24-1474": [
+      "Low Risk", 
+      "Subtype3", 
+      0.6420899874729145
+    ], 
+    "TCGA-AA-3955": [
+      "High Risk", 
+      "Subtype2", 
+      0.7355620661783766
+    ], 
+    "TCGA-AA-3956": [
+      "Low Risk", 
+      "Subtype2", 
+      0.3913759205314524
+    ], 
+    "TCGA-AR-A24O": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.692128297816846
+    ], 
+    "TCGA-CV-7252": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.5170235446128301
+    ], 
+    "TCGA-18-3417": [
+      "Low Risk", 
+      "Subtype3", 
+      0.7561728571633861
+    ], 
+    "TCGA-73-4676": [
+      "High Risk", 
+      "Subtype3", 
+      0.2274672861274014
+    ], 
+    "TCGA-73-4677": [
+      "High Risk", 
+      "Subtype3", 
+      0.43296489119742887
+    ], 
+    "TCGA-73-4670": [
+      "High Risk", 
+      "Subtype4", 
+      0.7222258493277088
+    ], 
+    "TCGA-GC-A3I6": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.10448480213360012
+    ], 
+    "TCGA-AG-A015": [
+      "Low Risk", 
+      "Subtype3", 
+      0.4488556659908456
+    ], 
+    "TCGA-BH-A0E0": [
+      "High Risk", 
+      "Subtype2", 
+      0.8011930609970805
+    ], 
+    "TCGA-50-5068": [
+      "Low Risk", 
+      "Subtype3", 
+      0.13106937716638556
+    ], 
+    "TCGA-34-2608": [
+      "High Risk", 
+      "Subtype4", 
+      0.8655710673855034
+    ], 
+    "TCGA-EY-A212": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.3828460493777317
+    ], 
+    "TCGA-75-5146": [
+      "Low Risk", 
+      "Subtype1", 
+      0.7441198932875133
+    ], 
+    "TCGA-CN-4727": [
+      "Low Risk", 
+      "Subtype1", 
+      0.47278598263703275
+    ], 
+    "TCGA-CV-7424": [
+      "High Risk", 
+      "Subtype1", 
+      0.30855626896774
+    ], 
+    "TCGA-FD-A3NA": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.21571207120101477
+    ], 
+    "TCGA-DQ-5624": [
+      "Low Risk", 
+      "Subtype3", 
+      0.1387493803115909
+    ], 
+    "TCGA-17-Z043": [
+      "Low Risk", 
+      "Subtype2", 
+      0.020714124329585526
+    ], 
+    "TCGA-17-Z042": [
+      "Low Risk", 
+      "Subtype4", 
+      0.028582631404264647
+    ], 
+    "TCGA-55-5899": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.20224636932562345
+    ], 
+    "TCGA-75-6206": [
+      "High Risk", 
+      "Subtype1", 
+      0.1419585648002526
+    ], 
+    "TCGA-66-2778": [
+      "Low Risk", 
+      "Subtype3", 
+      0.584899437649579
+    ], 
+    "TCGA-FI-A2D2": [
+      "High Risk", 
+      "Subtype1", 
+      0.32239837378865477
+    ], 
+    "TCGA-BG-A0MO": [
+      "Low Risk", 
+      "Subtype1", 
+      0.6026852801305607
+    ], 
+    "TCGA-66-2777": [
+      "Low Risk", 
+      "Subtype2", 
+      0.2853775612373707
+    ], 
+    "TCGA-DK-A1AF": [
+      "Low Risk", 
+      "Subtype4", 
+      0.8014371027900133
+    ], 
+    "TCGA-66-2770": [
+      "High Risk", 
+      "Subtype2", 
+      0.3265201816100367
+    ], 
+    "TCGA-18-3421": [
+      "Low Risk", 
+      "Subtype4", 
+      0.43170736542999577
+    ], 
+    "TCGA-AF-3913": [
+      "High Risk", 
+      "Subtype3", 
+      0.09997383420869987
+    ], 
+    "TCGA-CZ-4853": [
+      "High Risk", 
+      "Subtype2", 
+      0.8384841591943496
+    ], 
+    "TCGA-AA-3869": [
+      "Low Risk", 
+      "Subtype1", 
+      0.8501638214198628
+    ], 
+    "TCGA-14-1456": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.5794313669978983
+    ], 
+    "TCGA-24-2262": [
+      "Low Risk", 
+      "Subtype1", 
+      0.06699724836033027
+    ], 
+    "TCGA-CJ-4881": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.5451366753229917
+    ], 
+    "TCGA-CV-7437": [
+      "High Risk", 
+      "Subtype3", 
+      0.5088072153601401
+    ], 
+    "TCGA-G2-A3IE": [
+      "High Risk", 
+      "Subtype3", 
+      0.777362177669331
+    ], 
+    "TCGA-A8-A079": [
+      "Low Risk", 
+      "Subtype4", 
+      0.11884261089725756
+    ], 
+    "TCGA-60-2709": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.5218112735198683
+    ], 
+    "TCGA-33-6737": [
+      "Low Risk", 
+      "Subtype4", 
+      0.4034653909155982
+    ], 
+    "TCGA-BL-A13I": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.7413066816991863
+    ], 
+    "TCGA-17-Z011": [
+      "High Risk", 
+      "Subtype1", 
+      0.5138862525948055
+    ], 
+    "TCGA-33-4586": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.21559117152218554
+    ], 
+    "TCGA-CZ-5456": [
+      "Low Risk", 
+      "Subtype2", 
+      0.7414543908496629
+    ], 
+    "TCGA-33-4582": [
+      "High Risk", 
+      "Subtype3", 
+      0.6399935358812443
+    ], 
+    "TCGA-B2-5641": [
+      "Low Risk", 
+      "Subtype4", 
+      0.0546045343488194
+    ], 
+    "TCGA-CV-7429": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.9151918869290788
+    ], 
+    "TCGA-CN-6021": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.8041470886043868
+    ], 
+    "TCGA-A1-A0SO": [
+      "High Risk", 
+      "Subtype1", 
+      0.28712500954344444
+    ], 
+    "TCGA-CN-6023": [
+      "High Risk", 
+      "Subtype2", 
+      0.8206259298139441
+    ], 
+    "TCGA-CV-5434": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.9295572215991166
+    ], 
+    "TCGA-AG-3883": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.8196612730158103
+    ], 
+    "TCGA-34-2596": [
+      "High Risk", 
+      "Subtype2", 
+      0.47468674443923753
+    ], 
+    "TCGA-CN-6019": [
+      "High Risk", 
+      "Subtype1", 
+      0.9058707275502731
+    ], 
+    "TCGA-BH-A0DK": [
+      "High Risk", 
+      "Subtype1", 
+      0.662116485928035
+    ], 
+    "TCGA-DK-A3IT": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.1412760238572518
+    ], 
+    "TCGA-DK-A3IS": [
+      "Low Risk", 
+      "Subtype2", 
+      0.1427361979444467
+    ], 
+    "TCGA-DK-A3IQ": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.34596824672281445
+    ], 
+    "TCGA-DQ-7588": [
+      "Low Risk", 
+      "Subtype1", 
+      0.814219273903777
+    ], 
+    "TCGA-DQ-7589": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.9832696445004572
+    ], 
+    "TCGA-80-5611": [
+      "High Risk", 
+      "Subtype4", 
+      0.9311799082777944
+    ], 
+    "TCGA-E2-A109": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.21478323900890772
+    ], 
+    "TCGA-AA-3819": [
+      "High Risk", 
+      "Subtype4", 
+      0.9542346714994115
+    ], 
+    "TCGA-18-3411": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.45165144639042976
+    ], 
+    "TCGA-60-2711": [
+      "Low Risk", 
+      "Subtype4", 
+      0.6665277777082363
+    ], 
+    "TCGA-44-4112": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.24734164223944233
+    ], 
+    "TCGA-75-6211": [
+      "High Risk", 
+      "Subtype4", 
+      0.30583131704313393
+    ], 
+    "TCGA-18-3415": [
+      "High Risk", 
+      "Subtype3", 
+      0.46330131409616604
+    ], 
+    "TCGA-CR-5248": [
+      "High Risk", 
+      "Subtype4", 
+      0.9858081652550157
+    ], 
+    "TCGA-BG-A0M4": [
+      "High Risk", 
+      "Subtype1", 
+      0.4017055980616008
+    ], 
+    "TCGA-A8-A06X": [
+      "Low Risk", 
+      "Subtype2", 
+      0.5135639598809749
+    ], 
+    "TCGA-56-5897": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.5264420640343475
+    ], 
+    "TCGA-C4-A0F6": [
+      "Low Risk", 
+      "Subtype1", 
+      0.6410605634651999
+    ], 
+    "TCGA-C8-A12W": [
+      "Low Risk", 
+      "Subtype1", 
+      0.560189401697091
+    ], 
+    "TCGA-61-1995": [
+      "High Risk", 
+      "Subtype1", 
+      0.1393840477628776
+    ], 
+    "TCGA-24-1553": [
+      "High Risk", 
+      "Subtype3", 
+      0.6069693351673824
+    ], 
+    "TCGA-AK-3428": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.3283125865057165
+    ], 
+    "TCGA-66-2783": [
+      "Low Risk", 
+      "Subtype1", 
+      0.0203424435548466
+    ], 
+    "TCGA-66-2786": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.5675675253422791
+    ], 
+    "TCGA-CN-6995": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.3551594717464168
+    ], 
+    "TCGA-GV-A3JW": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.4138798100454002
+    ], 
+    "TCGA-FD-A3N6": [
+      "Low Risk", 
+      "Subtype3", 
+      0.1205393520613457
+    ], 
+    "TCGA-B5-A0K8": [
+      "Low Risk", 
+      "Subtype4", 
+      0.33492457607222736
+    ], 
+    "TCGA-51-4081": [
+      "High Risk", 
+      "Subtype3", 
+      0.37968370240177074
+    ], 
+    "TCGA-51-4080": [
+      "High Risk", 
+      "Subtype3", 
+      0.37453954483959073
+    ], 
+    "TCGA-CV-7242": [
+      "Low Risk", 
+      "Subtype1", 
+      0.18181931872911328
+    ], 
+    "TCGA-49-4486": [
+      "Low Risk", 
+      "Subtype2", 
+      0.40808397036952104
+    ], 
+    "TCGA-BP-5183": [
+      "High Risk", 
+      "Subtype3", 
+      0.08217439304911811
+    ], 
+    "TCGA-18-4721": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.12067314723104905
+    ], 
+    "TCGA-EW-A1PD": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.21441397657173789
+    ], 
+    "TCGA-BT-A20U": [
+      "Low Risk", 
+      "Subtype4", 
+      0.3962610522345509
+    ], 
+    "TCGA-13-0923": [
+      "High Risk", 
+      "Subtype4", 
+      0.9379506337566139
+    ], 
+    "TCGA-49-4514": [
+      "Low Risk", 
+      "Subtype3", 
+      0.4873219619628484
+    ], 
+    "TCGA-05-4418": [
+      "Low Risk", 
+      "Subtype2", 
+      0.5781408998453083
+    ], 
+    "TCGA-18-3407": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.8431752773687525
+    ], 
+    "TCGA-BH-A1EY": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.15347545164634024
+    ], 
+    "TCGA-13-0792": [
+      "High Risk", 
+      "Subtype4", 
+      0.04422731519547807
+    ], 
+    "TCGA-E5-A2PC": [
+      "High Risk", 
+      "Subtype4", 
+      0.6215167570434303
+    ], 
+    "TCGA-CR-7383": [
+      "High Risk", 
+      "Subtype4", 
+      0.5634054351363897
+    ], 
+    "TCGA-CN-5359": [
+      "High Risk", 
+      "Subtype4", 
+      0.19286731899479026
+    ], 
+    "TCGA-67-3774": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.7238592924269673
+    ], 
+    "TCGA-AA-3846": [
+      "Low Risk", 
+      "Subtype3", 
+      0.11608886134821883
+    ], 
+    "TCGA-A8-A082": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.1694730739742384
+    ], 
+    "TCGA-05-4395": [
+      "Low Risk", 
+      "Subtype2", 
+      0.7546688269299973
+    ], 
+    "TCGA-09-2044": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.43493547712290137
+    ], 
+    "TCGA-22-5478": [
+      "High Risk", 
+      "Subtype3", 
+      0.3091298257210069
+    ], 
+    "TCGA-35-3615": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.17776029814295802
+    ], 
+    "TCGA-C8-A132": [
+      "Low Risk", 
+      "Subtype3", 
+      0.7843148695752089
+    ], 
+    "TCGA-DI-A0WH": [
+      "Low Risk", 
+      "Subtype4", 
+      0.5789910689873059
+    ], 
+    "TCGA-AA-3848": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.9258133849971579
+    ], 
+    "TCGA-BP-4781": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.06290046400512461
+    ], 
+    "TCGA-66-2791": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.354572608538146
+    ], 
+    "TCGA-BT-A2LA": [
+      "High Risk", 
+      "Subtype4", 
+      0.3924407912846214
+    ], 
+    "TCGA-CR-7380": [
+      "High Risk", 
+      "Subtype1", 
+      0.7859662798541188
+    ], 
+    "TCGA-B2-4098": [
+      "Low Risk", 
+      "Subtype4", 
+      0.8953171716402877
+    ], 
+    "TCGA-B2-4099": [
+      "High Risk", 
+      "Subtype1", 
+      0.16411774893509434
+    ], 
+    "TCGA-34-5240": [
+      "Low Risk", 
+      "Subtype1", 
+      0.1073755847943001
+    ], 
+    "TCGA-39-5021": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.7380067543281293
+    ], 
+    "TCGA-39-5022": [
+      "Low Risk", 
+      "Subtype3", 
+      0.6313981605472536
+    ], 
+    "TCGA-AP-A1DQ": [
+      "Low Risk", 
+      "Subtype3", 
+      0.7632700938519502
+    ], 
+    "TCGA-BT-A20N": [
+      "Low Risk", 
+      "Subtype3", 
+      0.4203132503788797
+    ], 
+    "TCGA-27-1835": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.8408681965473102
+    ], 
+    "TCGA-12-1597": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.5741183692225242
+    ], 
+    "TCGA-AG-3898": [
+      "Low Risk", 
+      "Subtype2", 
+      0.9410141763671312
+    ], 
+    "TCGA-A2-A0SY": [
+      "High Risk", 
+      "Subtype3", 
+      0.6269242371218586
+    ], 
+    "TCGA-AB-2968": [
+      "Low Risk", 
+      "Subtype4", 
+      0.9224078863104488
+    ], 
+    "TCGA-A7-A26E": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.5780732937146934
+    ], 
+    "TCGA-AG-A036": [
+      "High Risk", 
+      "Subtype1", 
+      0.541609333642771
+    ], 
+    "TCGA-44-2655": [
+      "High Risk", 
+      "Subtype1", 
+      0.7585709027784842
+    ], 
+    "TCGA-AG-A032": [
+      "High Risk", 
+      "Subtype4", 
+      0.6842960635415115
+    ], 
+    "TCGA-22-4599": [
+      "Low Risk", 
+      "Subtype3", 
+      0.8495340916955181
+    ], 
+    "TCGA-05-4389": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.3946026675485438
+    ], 
+    "TCGA-49-4506": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.35043107557806674
+    ], 
+    "TCGA-CV-6940": [
+      "High Risk", 
+      "Subtype3", 
+      0.36204902614624335
+    ], 
+    "TCGA-17-Z018": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.6175876917284392
+    ], 
+    "TCGA-BT-A20X": [
+      "Low Risk", 
+      "Subtype2", 
+      0.9264923859066871
+    ], 
+    "TCGA-22-1012": [
+      "High Risk", 
+      "Subtype3", 
+      0.06531004393626616
+    ], 
+    "TCGA-D8-A27K": [
+      "Low Risk", 
+      "Subtype3", 
+      0.8875241121581318
+    ], 
+    "TCGA-A8-A08J": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.18419108808213402
+    ], 
+    "TCGA-17-Z017": [
+      "High Risk", 
+      "Subtype2", 
+      0.581953880933024
+    ], 
+    "TCGA-06-0241": [
+      "High Risk", 
+      "Subtype2", 
+      0.4865558867445954
+    ], 
+    "TCGA-05-4384": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.8066912852535567
+    ], 
+    "TCGA-CV-7248": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.7932137746198121
+    ], 
+    "TCGA-A8-A09W": [
+      "Low Risk", 
+      "Subtype1", 
+      0.48469646381203824
+    ], 
+    "TCGA-BA-6868": [
+      "High Risk", 
+      "Subtype4", 
+      0.12661165188541068
+    ], 
+    "TCGA-B0-4837": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.49459394112973176
+    ], 
+    "TCGA-E9-A1N9": [
+      "Low Risk", 
+      "Subtype4", 
+      0.8653114837587667
+    ], 
+    "TCGA-CV-6933": [
+      "High Risk", 
+      "Subtype1", 
+      0.16973070535434742
+    ], 
+    "TCGA-GC-A3RB": [
+      "High Risk", 
+      "Subtype1", 
+      0.9580569478238801
+    ], 
+    "TCGA-B5-A11I": [
+      "Medium Risk", 
+      "Subtype2", 
+      0.9260977097166188
+    ], 
+    "TCGA-43-3394": [
+      "High Risk", 
+      "Subtype1", 
+      0.6482063062023469
+    ], 
+    "TCGA-CV-6935": [
+      "High Risk", 
+      "Subtype2", 
+      0.9568703634952032
+    ], 
+    "TCGA-CN-6010": [
+      "Medium Risk", 
+      "Subtype1", 
+      0.4403120252772671
+    ], 
+    "TCGA-BP-4768": [
+      "High Risk", 
+      "Subtype1", 
+      0.5002531679863946
+    ], 
+    "TCGA-AG-4015": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.1728400383518568
+    ], 
+    "TCGA-46-6025": [
+      "Medium Risk", 
+      "Subtype4", 
+      0.37654501502620397
+    ], 
+    "TCGA-EW-A1P8": [
+      "High Risk", 
+      "Subtype3", 
+      0.11693131019476355
+    ], 
+    "TCGA-39-5037": [
+      "Low Risk", 
+      "Subtype3", 
+      0.218836227686661
+    ], 
+    "TCGA-39-5036": [
+      "Low Risk", 
+      "Subtype1", 
+      0.3569884178229088
+    ], 
+    "TCGA-C8-A1HN": [
+      "Medium Risk", 
+      "Subtype3", 
+      0.8528838911341747
+    ], 
+    "TCGA-AG-A02G": [
+      "High Risk", 
+      "Subtype3", 
+      0.16333366946694883
+    ], 
+    "TCGA-D8-A1X6": [
+      "High Risk", 
+      "Subtype1", 
+      0.3174824836091483
+    ], 
+    "TCGA-AG-3896": [
+      "High Risk", 
+      "Subtype2", 
+      0.1398582574412477
+    ]
+  }
+}
