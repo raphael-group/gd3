@@ -3,8 +3,8 @@ function heatmap (params) {
       style  = params.style || {};
 
   // Style options
-  var cellHeight = style.cellHeight || 20,
-      cellWidth = style.cellWidth || 20,
+  var cellHeight = style.cellHeight || 10,
+      cellWidth = style.cellWidth || 10,
       fontFamily = style.fontFamily || 'sans-serif',
       fontSize = style.fontSize || '10px',
       height = style.height || 400,
@@ -264,7 +264,13 @@ function heatmap (params) {
           heatmapCells.style('stroke', 'none');
           //mouseScrubRegion.style('fill', 'none');
         });
-      }
+      }// end renderLegend
+
+
+      // Resize SVG based on its content
+      svg.attr('height', fig.node().getBBox().height);
+      svg.attr('width', fig.node().getBBox().width);
+
     });// end selection.each();
   } // end chart()
 
