@@ -79,8 +79,8 @@ function heatmap (params) {
       });
 
       heatmapCells
-          .attr('x', function(d){return d.x*cellWidth})
-          .attr('y', function(d){return d.y*cellHeight})
+          .attr('x', function(d){return xs.indexOf(d.x)*cellWidth})
+          .attr('y', function(d){return ys.indexOf(d.y)*cellHeight})
           .attr('height', cellHeight)
           .attr('width', cellWidth)
           .style('fill', function(d){return color(d.value)})
