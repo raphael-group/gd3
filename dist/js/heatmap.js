@@ -59,6 +59,7 @@ function heatmap (params) {
               .data(cells)
               .enter()
               .append('rect')
+                .attr('data-value', function(d) { return d.value; });
 
       var mouseoverLinesG = heatmap.append('g').attr('class', 'vizHeatmapMouseoverLines');
       var mouseoverLine1 = mouseoverLinesG.append('line'),
@@ -203,7 +204,7 @@ function heatmap (params) {
         }
         var legend = legendBarG.append('rect')
             .attr('width', legendWidth)
-            .attr('height', xs.length*cellHeight)
+            .attr('height', makeLegendHorizontal ? width : height)
             .style('fill','red');
 
         var gradient = legendBarG.append("svg:defs")
@@ -237,6 +238,18 @@ function heatmap (params) {
         }
 
         legend.style('fill', 'url(#gradient)');
+
+        legendBarG.append('text')
+            .attr('x', 0)
+            .attr('y', legend.attr('width'))
+            .attr('transform', 'rotate(90)')
+            .text(max);
+        legendBarG.append('text')
+            .attr('x', legend.attr('height'))
+            .attr('y', legend.attr('width'))
+            .attr('transform', 'rotate(90)')
+            .attr('text-anchor', 'end')
+            .text(min)
 
         var mouseScrubRegion = legendBarG.append('rect').style('fill', 'black');
         legend.on('mousemove', function(d,i) {
