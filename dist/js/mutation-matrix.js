@@ -528,6 +528,18 @@ function mutation_matrix(params) {
           sampleAnnotations = matrix.append('g')
               .attr('transform', 'translate(0,'+yAdjust+')');
 
+          // Append row labels
+          var sampleAnnotationLabelsGroup = fig.append('g');
+          var sampleAnnotationLabels = sampleAnnotationLabelsGroup.selectAll('text')
+                .data(annotationData.categories)
+                .enter()
+                .append('text')
+                  .attr('text-anchor', 'end')
+                  .attr('width', geneLabels.node().getBBox().width)
+                  .attr('x', labelWidth)
+                  .attr('y', function(d,i) { return yAdjust + (i+1)*geneHeight - 4; })
+                  .text(function(d){return d});
+
           // Calculate the bounds of the color scale
           var dataBounds = [];
           for(var i = 0; i < sampleAs[Object.keys(sampleAs)[0]].length; i++) dataBounds.push(null);
