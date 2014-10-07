@@ -1175,6 +1175,69 @@ function mutation_matrix(params) {
         sampleSorterInterface();
       } // End renderSortingMenu()
 
+      function renderSampleAnnotationsLegend() {
+        var sampleSort = selection.append('div')
+            .attr('id', 'gd3-mutmtx-sample-annotation-legend')
+            .style('margin-left', labelWidth + 'px')
+            .style('font-size', 12 + 'px');
+        sampleSort.append('p')
+          .style('font-weight','bold')
+          .text('Sample Annotations Legend:');
+
+        console.log(annotationData);
+        var annData = annotationData,
+            annCategories = annData.categories,
+            annToColor = annotationData.annotationToColor,
+            sampleToAnn = annotationData.sampleToAnnotations,
+
+            legendG = sampleSort.append('div'),
+            legend = legendG.selectAll('div').data(annCategories).enter().append('div');
+
+        // Get the set of sample annotation types for each category
+        var categorySets = {};
+        annCategories.forEach(function(c) { categorySets[c] = {}; });
+        Object.keys(sampleToAnn).forEach(function(sample) {
+          var annotations = sampleToAnn[sample];
+          annotations.forEach(function(ann,i) {
+            var category = annCategories[i];
+            categorySets[category][ann] = null;
+          });
+        });
+        Object.keys(categorySets).forEach(function(c) {
+          categorySets[c] = Object.keys(categorySets[c]).sort();
+        });
+
+        // Create legend
+        legend.each(function(category) {
+          var thisEl = d3.select(this),
+              annotations = categorySets[category];
+
+          thisEl.append('p').style('margin','0px').text(category+':');
+          var labels = thisEl.append('div').selectAll('div')
+                  .data(annotations)
+                  .enter()
+                  .append('div')
+                    .style('border', '1px solid #ccc')
+                    .style('display', 'inline-block')
+                    .style('padding', '5px')
+                    .each(function(ann) {
+                      var annEl = d3.select(this);
+                      annEl.append('div')
+                          .style('background-color', annToColor[annEl.datum()])
+                          .style('display', 'inline-block')
+                          .style('height', '20px')
+                          .style('margin-right', '5px')
+                          .style('width', '20px');
+                      annEl.append('span')
+                          .style('display', 'inline-block')
+                          .text(annEl.datum());
+                    });
+          thisEl.style('margin-bottom', '15px');
+          console.log(category, annotations);
+        });
+
+      } // end render sampleAnnotationLegend
+
       renderMutationMatrix();
 
       if (showCoverage) {
@@ -1188,6 +1251,9 @@ function mutation_matrix(params) {
       }
       if (showSortingMenu) {
         renderSortingMenu();
+      }
+      if (showSampleAnnotations) {
+        renderSampleAnnotationsLegend();
       }
 
     });
