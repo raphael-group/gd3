@@ -1180,18 +1180,28 @@ function mutation_matrix(params) {
             .attr('id', 'gd3-mutmtx-sample-annotation-legend')
             .style('margin-left', labelWidth + 'px')
             .style('font-size', 12 + 'px');
-        sampleSort.append('p')
-          .style('font-weight','bold')
-          .text('Sample Annotations Legend:');
 
-        console.log(annotationData);
         var annData = annotationData,
             annCategories = annData.categories,
             annToColor = annotationData.annotationToColor,
             sampleToAnn = annotationData.sampleToAnnotations,
 
+            title = sampleSort.append('a'),
             legendG = sampleSort.append('div'),
             legend = legendG.selectAll('div').data(annCategories).enter().append('div');
+
+        // Hide legendG by default
+        legendG.style('visibility', 'hidden').style('display', 'none');
+
+        // Append title/link of legend
+        title.style('font-weight', 'bold')
+            .text('Sample Annotations Legend:')
+            .on('click', function() {
+              d3.event.preventDefault();
+              var isVisible = legendG.style('visibility') == 'visible';
+              legendG.style('visibility', isVisible ? 'hidden' : 'visible');
+              legendG.style('display', isVisible ? 'none' : 'block');
+            });
 
         // Get the set of sample annotation types for each category
         var categorySets = {};
