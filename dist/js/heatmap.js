@@ -3,8 +3,8 @@ function heatmap (params) {
       style  = params.style || {};
 
   // Style options
-  var cellHeight = style.cellHeight || 10,
-      cellWidth = style.cellWidth || 10,
+  var cellHeight = style.cellHeight || 14,
+      cellWidth = style.cellWidth || 14,
       fontFamily = style.fontFamily || 'sans-serif',
       fontSize = style.fontSize || '10px',
       height = style.height || 400,
@@ -15,6 +15,10 @@ function heatmap (params) {
   var renderXLabels = false,
       renderYLabels = false,
       renderLegend = false;
+
+  // Sample annotation information
+  var annotationData,
+      showSampleAnnotations = false;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -55,7 +59,7 @@ function heatmap (params) {
 
       var heatmap = fig.append('g').attr('class','vizHeatmap');
 
-      var heatmapCells = heatmap.selectAll('rect')
+      var heatmapCells = heatmap.append('g').selectAll('rect')
               .data(cells)
               .enter()
               .append('rect')
@@ -144,6 +148,78 @@ function heatmap (params) {
             d3.select('#vizHeatmapYLabel'+d.y).style('fill','#000').style('font-weight','normal');
             d3.select(this).style('stroke', 'none');
           });
+
+
+      // Add sample annotation cells if they exist
+      if (showSampleAnnotations) {
+        // Format data
+        var sampleToAnnotations = annotationData.sampleToAnnotations,
+            samples = Object.keys(sampleToAnnotations).filter(function(sample) {
+              return xs.indexOf(sample) >= 0; // eliminates any samples not currently shown
+            }),
+            annotations = vals = samples.map(function (key) {
+              var values = sampleToAnnotations[key],
+                  values = values.map(function(annotation, i) { return {x:key, y:i, value:annotation}; });
+              return values;
+            });
+
+        // Flatten annotations
+        annotations = annotations.reduce(function(a, b) { return a.concat(b); });
+
+        // Create color scales
+        var annotationColorScales = [],
+            aColors = annotationData.annotationToColor || {};
+
+        // Calculate the bounds of the color scale
+        var dataBounds = [];
+        for(var i = 0; i < annotationData.categories.length; i++) {
+          dataBounds.push(null);
+        }
+        for (var a in annotations) {
+          var annotation = annotations[a],
+              category = annotation.y,
+              value = annotation.value;
+          // Skip calculating color scale if the category type isn't continuous
+          if (typeof(value) !== 'number') continue;
+
+          if(dataBounds[category] == null) {
+            dataBounds[category] = {};
+            dataBounds[category].min = Number.POSITIVE_INFINITY;
+            dataBounds[category].max = Number.NEGATIVE_INFINITY;
+          }
+
+          dataBounds[i].min = d < dataBounds[i].min ? d : dataBounds[i].min;
+          dataBounds[i].max = d > dataBounds[i].max ? d : dataBounds[i].max;
+        }
+
+        // Create the color scales
+        dataBounds.forEach(function(d,i) {
+          if(d ==  null) {
+            annotationColorScales.push(null);
+          } else {
+            scale = d3.scale.linear()
+              .domain([d.min,d.max])
+              .range(['#fcc5c0','#49006a'])
+              .interpolate(d3.interpolateLab);
+            annotationColorScales.push(scale);
+          }
+        });
+
+        // Draw annotation information
+        var annotationCells = heatmap.append('g').selectAll('rect')
+            .data(annotations)
+            .enter()
+              .append('rect')
+                  .attr('height', cellHeight)
+                  .attr('width', cellWidth)
+                  .attr('x', function(d) {
+                      return xs.indexOf(d.x) * cellWidth;
+                  })
+                  .attr('y', function(d) { return d.y*cellHeight + ys.length*cellHeight; })
+                  .style('fill', function(d,i) {
+                      return typeof(d) === 'number' ? annotationColorScales[i](d) : aColors[d];
+                  });
+      }
 
       // Group for yLabels placement
       var yLabelsG = fig.append('g').attr('class','vizHeatmapYLabels');
@@ -286,6 +362,13 @@ function heatmap (params) {
 
   chart.addLegend = function () {
     renderLegend = true;
+    return chart;
+  }
+
+  chart.addSampleAnnotations = function(data) {
+    annotationData = data || {};
+    // only show sample annotations if the data exists
+    if (annotationData.sampleToAnnotations) showSampleAnnotations = true;
     return chart;
   }
 
