@@ -3,10 +3,10 @@ function heatmap (params) {
       style  = params.style || {};
 
   // Style options
-  var cellHeight = style.cellHeight || 15,
-      cellWidth = style.cellWidth || 15,
+  var cellHeight = style.cellHeight || 10,
+      cellWidth = style.cellWidth || 10,
       fontFamily = style.fontFamily || 'sans-serif',
-      fontSize = style.fontSize || '12px',
+      fontSize = style.fontSize || '10px',
       height = style.height || 400,
       margins = style.margins || {bottom: 0, left: 0, right: 0, top: 0},
       width = style.width || 400;
@@ -14,11 +14,11 @@ function heatmap (params) {
   // Rendering flags
   var renderXLabels = false,
       renderYLabels = false,
-      renderLegend = false,
-      makeLegendHorizontal = false;
+      renderLegend = false;
 
   function chart(selection) {
     selection.each(function(data) {
+      console.log(data);
       // Select the svg element, if it exists.
       var svg = d3.select(this)
           .selectAll('svg')
@@ -59,7 +59,6 @@ function heatmap (params) {
               .data(cells)
               .enter()
               .append('rect')
-                .attr('data-value', function(d) { return d.value; });
 
       var mouseoverLinesG = heatmap.append('g').attr('class', 'vizHeatmapMouseoverLines');
       var mouseoverLine1 = mouseoverLinesG.append('line'),
@@ -194,17 +193,11 @@ function heatmap (params) {
             .style('stroke-width', 2);
 
         var xMod = parseFloat(heatmap.attr('transform').replace('translate(','').split(',')[0]);
-        if(makeLegendHorizontal) {
-          xMod = xMod + xLabelsG.node().getBBox().height;
-          xMod = xMod + heatmap.node().getBBox().height + 10;
-          legendG.attr('transform','translate(0,'+xMod+') rotate(-90)');
-        } else {
-          xMod = xMod + heatmap.node().getBBox().width + 10;
-          legendG.attr('transform','translate('+xMod+',0)');
-        }
+        xMod = xMod + heatmap.node().getBBox().width + 10;
+        legendG.attr('transform','translate('+xMod+',0)');
         var legend = legendBarG.append('rect')
             .attr('width', legendWidth)
-            .attr('height', makeLegendHorizontal ? width : height)
+            .attr('height', xs.length*cellHeight)
             .style('fill','red');
 
         var gradient = legendBarG.append("svg:defs")
@@ -239,37 +232,21 @@ function heatmap (params) {
 
         legend.style('fill', 'url(#gradient)');
 
-        legendBarG.append('text')
-            .attr('x', 0)
-            .attr('y', legend.attr('width'))
-            .attr('transform', 'rotate(90)')
-            .text(max);
-        legendBarG.append('text')
-            .attr('x', legend.attr('height'))
-            .attr('y', legend.attr('width'))
-            .attr('transform', 'rotate(90)')
-            .attr('text-anchor', 'end')
-            .text(min)
-
         var mouseScrubRegion = legendBarG.append('rect').style('fill', 'black');
         legend.on('mousemove', function(d,i) {
           // legendYOffset assumes that parent groups of legendG do not translate Y
           //    if this does not hold, than there will be bugs with this function
           var mouse = d3.mouse(this),
               legendYOffset = parseFloat(legendG.attr('transform').replace('translate(','').split(',')[1].replace(')','')),
-              legendYLoc = makeLegendHorizontal ? mouse[1] : mouse[1] - legendYOffset,
+              legendYLoc = mouse[1] - legendYOffset,
               loc = 1 - legendYLoc / legend.attr('height'),
               locValue = loc*max,
-              scrubError = max/50;
+              scrubError = max/40;
 
           var unitScalar = legend.attr('height') / parseFloat(max),
               scrubHeight = 2*(unitScalar*scrubError),
               scrubY = legendYLoc-unitScalar*scrubError;
           scrubHeight = scrubHeight + scrubY > legend.attr('height') ? scrubHeight - Math.abs(scrubHeight+scrubY - legend.attr('height')) : scrubHeight;
-
-          // if(makeLegendHorizontal) {
-          //   scrubY = mouse[1] - unitScalar*scrubError;
-          // }
 
           mouseScrubRegion.attr('x', legend.attr('x')+cellWidth)
               .attr('y', scrubY)
@@ -292,22 +269,8 @@ function heatmap (params) {
 
       // Resize SVG based on its content
       svg.attr('height', fig.node().getBBox().height);
-      //svg.attr('width', fig.node().getBBox().width);
+      svg.attr('width', fig.node().getBBox().width);
 
-      var heatmapStartX = parseFloat(heatmap.attr('transform').split('translate(')[1].split(',')[0]),
-          heatmapW = heatmap.node().getBBox().width;
-      var zoom = d3.behavior.zoom()
-          .on('zoom', function() {
-            var t = zoom.translate(),
-                tx = t[0];
-
-            heatmap.attr('transform', 'translate('+(tx + heatmapStartX)+',0)');
-
-            var xLabelsGy = xLabelsG.attr('transform').split('translate(')[1].split(',')[1].split(')')[0];
-            xLabelsG.attr('transform', 'translate('+tx+','+xLabelsGy+')');
-
-          });
-      svg.call(zoom);
     });// end selection.each();
   } // end chart()
 
@@ -321,9 +284,8 @@ function heatmap (params) {
     return chart;
   }
 
-  chart.addLegend = function (makeHorizontal) {
+  chart.addLegend = function () {
     renderLegend = true;
-    makeLegendHorizontal = makeHorizontal || false;
     return chart;
   }
 

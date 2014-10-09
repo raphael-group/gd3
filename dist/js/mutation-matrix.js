@@ -75,9 +75,7 @@ function mutation_matrix(params) {
           sampleTypes = data.sampleTypes || [],
           typeToSamples = data.typeToSamples || {},
           samples = data.samples;
-
-      console.log(data);
-
+      
       var genes = Object.keys(M),
           numGenes = genes.length;
 
@@ -146,11 +144,73 @@ function mutation_matrix(params) {
         }
       }
 
-      // Adjust height if sampleAnnotations
+      // Update the height and sample annotation colors if necessary
+      var categorySets = {};
       if (showSampleAnnotations) {
-        var firstAnnotation = Object.keys(annotationData.sampleToAnnotations)[0];
-            numAnnTypes = annotationData.sampleToAnnotations[firstAnnotation].length;
-        height = height + numAnnTypes*geneHeight;
+          var categories = annotationData.categories || [],
+              sampleAs = annotationData.sampleToAnnotations || {},
+              aColors = annotationData.annotationToColor || {};
+
+          // Adjust height if sampleAnnotations
+          var firstAnnotation = Object.keys(annotationData.sampleToAnnotations)[0];
+              numAnnTypes = annotationData.sampleToAnnotations[firstAnnotation].length;
+          height = height + numAnnTypes*geneHeight;
+
+          // Assign colors for each annotation
+          var annotationColors = {};
+
+          categories.forEach(function(c, i){
+            var isNumeric = true,
+                data = [],
+                values = [];
+
+            Object.keys(sampleAs).forEach(function(s){
+                // Determine if the value is numeric
+                var ty = typeof(sampleAs[s][i]) === 'number';
+                isNumeric = isNumeric && ty;
+
+                // Replace blank values with "No data"
+                var val = sampleAs[s][i];
+                if (val == "" || val == null) val = "No data";
+
+                // Record the value
+                data.push(val);
+                if (isNumeric) values.push(sampleAs[s][i]);
+              });
+
+            // Doesn't matter if there are no numeric values, d3.max and d3.min
+            // can handle it and will return null
+            var d = {min: d3.min(values), max: d3.max(values) };
+
+            // Assign colors to all annotations
+            var scale;
+            aColors[c]["No data"] = "#333"; // all blank annotations are assigned this color
+            if(isNumeric) {
+              scale = d3.scale.linear()
+                .domain([d.min, d.max])
+                .range(['#fcc5c0','#49006a'])
+                .interpolate(d3.interpolateLab);
+              scale.type = "linear";
+            } else {
+              // Assign a unique color to each unique annotation value
+              var uniqItems = data.filter(function(item, pos) {
+                return data.indexOf(item) == pos;
+              });
+              var uniqColors = uniqItems.map(function(d){
+                if (aColors[c] && aColors[c][d]) return aColors[c][d];
+                else return '#' + Math.floor(Math.random()*16777215).toString(16); // uniform at random color
+              });
+
+              categorySets[c] = uniqItems.map(function(d){ return {cat: c, ann: d}});
+
+              // Use an ordinal scale to map each item to a color
+              scale = d3.scale.ordinal()
+                .domain(uniqItems)
+                .range(uniqColors);
+              scale.type = "ordinal";
+            }
+            annotationColors[c] = scale;
+        });
       }
 
       // Map each gene to the samples they're mutated in
@@ -519,12 +579,10 @@ function mutation_matrix(params) {
             });
 
         // Initialize sample annotations data if desired
-        var sampleAnnotations,
-            annotationColorScales = [];
+        var sampleAnnotations;
         if(showSampleAnnotations) {
-          var yAdjust = geneHeight*genes.length + labelHeight,
-              sampleAs = annotationData.sampleToAnnotations,
-              aColors = annotationData.annotationToColor || {};
+          var yAdjust = geneHeight*genes.length + labelHeight;
+
           sampleAnnotations = matrix.append('g')
               .attr('transform', 'translate(0,'+yAdjust+')');
 
@@ -540,38 +598,6 @@ function mutation_matrix(params) {
                   .attr('y', function(d,i) { return yAdjust + (i+1)*geneHeight - 4; })
                   .text(function(d){return d});
 
-          // Calculate the bounds of the color scale
-          var dataBounds = [];
-          for(var i = 0; i < sampleAs[Object.keys(sampleAs)[0]].length; i++) dataBounds.push(null);
-          for (var k in Object.keys(sampleAs)) {
-            var key = Object.keys(sampleAs)[k],
-                data = sampleAs[key];
-            data.forEach(function(d,i) {
-              if (typeof(d) !== 'number') return;
-              if (dataBounds[i] == null) {
-                dataBounds[i] = {}
-                dataBounds[i].min = d;
-                dataBounds[i].max = d;
-              } else {
-                dataBounds[i].min = d < dataBounds[i].min ? d : dataBounds[i].min;
-                dataBounds[i].max = d > dataBounds[i].max ? d : dataBounds[i].max;
-              }
-            });
-          }
-
-          // Create the color scales
-          dataBounds.forEach(function(d,i) {
-            if(d ==  null) {
-              annotationColorScales.push(null);
-            } else {
-              scale = d3.scale.linear()
-                .domain([d.min,d.max])
-                .range(['#fcc5c0','#49006a'])
-                .interpolate(d3.interpolateLab);
-              annotationColorScales.push(scale);
-            }
-          });
-
           // Append each annotation to the matrix
           sampleAnnotations.each(function(d) {
               var name = d.name,
@@ -586,7 +612,7 @@ function mutation_matrix(params) {
                         .attr('x', 0)
                         .attr('y', function(d,i){ return geneHeight*i; })
                         .style('fill', function(d,i) {
-                            return typeof(d) === 'number' ? annotationColorScales[i](d): aColors[d];
+                            return annotationColors[categories[i]](d);
                         });
               }
             });
@@ -1181,70 +1207,93 @@ function mutation_matrix(params) {
             .style('margin-left', labelWidth + 'px')
             .style('font-size', 12 + 'px');
 
-        var annData = annotationData,
-            annCategories = annData.categories,
-            annToColor = annotationData.annotationToColor,
-            sampleToAnn = annotationData.sampleToAnnotations,
-
-            title = sampleSort.append('a'),
-            legendG = sampleSort.append('div'),
-            legend = legendG.selectAll('div').data(annCategories).enter().append('div');
-
+        var title = sampleSort.append('a'),
+            legend = sampleSort.append('div');
+        
         // Hide legendG by default
-        legendG.style('visibility', 'hidden').style('display', 'none');
+        legend.style('visibility', 'hidden').style('display', 'none');
 
         // Append title/link of legend
         title.style('font-weight', 'bold')
             .text('Sample Annotations Legend:')
             .on('click', function() {
               d3.event.preventDefault();
-              var isVisible = legendG.style('visibility') == 'visible';
-              legendG.style('visibility', isVisible ? 'hidden' : 'visible');
-              legendG.style('display', isVisible ? 'none' : 'block');
+              var isVisible = legend.style('visibility') == 'visible';
+              legend.style('visibility', isVisible ? 'hidden' : 'visible');
+              legend.style('display', isVisible ? 'none' : 'block');
             });
 
-        // Get the set of sample annotation types for each category
-        var categorySets = {};
-        annCategories.forEach(function(c) { categorySets[c] = {}; });
-        Object.keys(sampleToAnn).forEach(function(sample) {
-          var annotations = sampleToAnn[sample];
-          annotations.forEach(function(ann,i) {
-            var category = annCategories[i];
-            categorySets[category][ann] = null;
-          });
-        });
-        Object.keys(categorySets).forEach(function(c) {
-          categorySets[c] = Object.keys(categorySets[c]).sort();
-        });
-
         // Create legend
-        legend.each(function(category) {
-          var thisEl = d3.select(this),
-              annotations = categorySets[category];
+        var categoryEls = legend.selectAll(".category")
+              .data(categories).enter()
+              .append("p")
+              .style("margin", "0px")
+              .text(function(c){ return c; });
 
-          thisEl.append('p').style('margin','0px').text(category+':');
-          var labels = thisEl.append('div').selectAll('div')
-                  .data(annotations)
-                  .enter()
-                  .append('div')
-                    .style('border', '1px solid #ccc')
-                    .style('display', 'inline-block')
-                    .style('padding', '5px')
-                    .each(function(ann) {
-                      var annEl = d3.select(this);
-                      annEl.append('div')
-                          .style('background-color', annToColor[annEl.datum()])
-                          .style('display', 'inline-block')
-                          .style('height', '20px')
-                          .style('margin-right', '5px')
-                          .style('width', '20px');
-                      annEl.append('span')
-                          .style('display', 'inline-block')
-                          .text(annEl.datum());
-                    });
-          thisEl.style('margin-bottom', '15px');
-          console.log(category, annotations);
-        });
+        var numericAnnotations = categoryEls
+              .filter(function(c){ return annotationColors[c].type !== "ordinal"; })
+              .append("div")
+              .each(function(c, i){
+                  var el = d3.select(this),
+                      scale = annotationColors[c];
+
+                  el.append("span")
+                    .style("margin-right", "10px")
+                    .text(d3.min(scale.domain()));
+
+                  var gradientSVG = el.append("svg")
+                        .style("width", 80)
+                        .style("height", 15);
+
+                  el.append("span")
+                    .style("margin-left", "10px")
+                    .text(d3.max(scale.domain()));
+
+                  var gradient = gradientSVG.append("svg:defs")
+                        .append("svg:linearGradient")
+                        .attr("id", "gradient" + i)
+                        .attr("x1", "0%")
+                        .attr("y1", "0%")
+                        .attr("x2", "100%")
+                        .attr("y2", "0%");
+
+                  gradient.append("svg:stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", d3.min(scale.range()))
+                    .attr("stop-opacity", 1);
+
+                  gradient.append("svg:stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", d3.max(scale.range()))
+                    .attr("stop-opacity", 1);
+
+
+                  gradientSVG.append('rect')
+                    .attr('width', 80)
+                    .attr('height', 15)
+                    .style('fill','url(#gradient' + i + ')');
+
+              });
+
+        categoryEls.append("br")
+        var categoricalAnnotations = categoryEls
+              .filter(function(c){ return annotationColors[c].type === "ordinal"; })
+              .selectAll(".annotation")
+              .data(function(c){ return categorySets[c]; }).enter()
+              .append("div")
+              .style('display', 'inline-block')
+              .style('padding', '5px');
+
+        categoricalAnnotations.append("div")
+            .style('background-color', function(d){ return annotationColors[d.cat](d.ann); })
+            .style('display', 'inline-block')
+            .style('height', '15px')
+            .style('width', '15px')
+            .style('margin-right', '5px');
+
+        categoricalAnnotations.append("div")
+            .style('display', 'inline-block')
+            .text(function(d){ return d.ann; });
 
       } // end render sampleAnnotationLegend
 
