@@ -56,24 +56,25 @@ function heatmap (params) {
       //- Orange/yellow colors
       // var colors = ['#ffeda0','#f03b20'],
 
-      // Yellow-green-blue
-      //console.log(min, max, d3.range(min, max, (max-min)/12))
+      // Yellow-green-blue gradient
       var colors = ["rgb(58, 76, 247)", "rgb(0, 78, 247)", "rgb(82, 137, 248)", "rgb(150, 225, 250)",
                     "rgb(169, 242, 91)", "rgb(170, 241, 56)", "rgb(192, 243, 61)", "rgb(241, 246, 72)",
                     "rgb(255, 247, 76)", "rgb(245, 223, 91)", "rgb(241, 214, 131)", "rgb(243, 222, 182)"],
           numColors = colors.length,
           step = (max-min)/numColors,
           color = d3.scale.linear()
-              .domain(d3.range(min, max + step, (max+step-min)/numColors))
+              .domain(d3.range(min, max, step).concat([max]))
               .range(colors);
 
       var heatmap = fig.append('g').attr('class','vizHeatmap');
 
-      var heatmapCells = heatmap.selectAll('rect')
-              .data(cells)
-              .enter()
+      var heatmapCells = heatmap.selectAll('.hmap-rect')
+              .data(cells).enter()
               .append('rect')
-                .attr('data-value', function(d) { return d.value; });
+                .attr('data-value', function(d) { return d.value; })
+      heatmapCells.append("title").text(function(d){
+        return ["x: " + d.x, "y: " + d.y, "value: " + d.value].join("\n");
+      });
 
       var mouseoverLinesG = heatmap.append('g').attr('class', 'vizHeatmapMouseoverLines');
       var mouseoverLine1 = mouseoverLinesG.append('line'),
@@ -98,7 +99,7 @@ function heatmap (params) {
           .attr('y', function(d){return ys.indexOf(d.y)*cellHeight})
           .attr('height', cellHeight)
           .attr('width', cellWidth)
-          .style('fill', function(d){return color(d.value)})
+          .style('fill', function(d, i){ return color(d.value)})
           .on('mouseover', function(d,i) {
             d3.select('#vizHeatmapXLabel'+d.x).style('fill','#f00').style('font-weight','bold');
             d3.select('#vizHeatmapYLabel'+d.y).style('fill','#f00').style('font-weight','bold');
@@ -216,13 +217,15 @@ function heatmap (params) {
                 if (aColors[c] && aColors[c][d]) return aColors[c][d];
                 else return '#' + Math.floor(Math.random()*16777215).toString(16); // uniform at random color
               });
-
               // Use an ordinal scale to map each item to a color
               scale = d3.scale.ordinal()
                 .domain(uniqItems)
                 .range(uniqColors);
               scale.type = "ordinal";
             }
+            console.log(c)
+            console.log(scale.domain())
+            console.log(scale.range())
             annotationColors[c] = scale;
         });
 
@@ -242,7 +245,11 @@ function heatmap (params) {
               .attr('width', cellWidth)
               .attr('x', function(d) { return d.x * cellWidth; })
               .attr('y', function(d) { return sampleAnnotationSpacer + d.y*cellHeight + ys.length*cellHeight; })
-              .style('fill', function(d,i) { return annotationColors[categories[d.y]](d.value); });
+              .style('fill', function(d,i) {
+                // console.log(d.value, categories[d.y], d3.rgb(annotationColors[categories[d.y]](d.value)))
+                return annotationColors[categories[d.y]](d.value);
+              });
+        annotationCells.append("title").text(function(d){ return d.value; });
       }
 
       // Group for yLabels placement
@@ -252,7 +259,10 @@ function heatmap (params) {
       if (renderYLabels) {
         var fontSizeInt = parseInt(fontSize.replace('px','')),
             yLabelData = ys.map(function(d){ return { dy: 0, name: d}})
-                           .concat(categories.map(function(d){ return {dy: sampleAnnotationSpacer, name: d}; }));
+
+        if (showSampleAnnotations){
+          yLabelData = yLabelData.concat(categories.map(function(d){ return {dy: sampleAnnotationSpacer, name: d}; }));
+        }
 
         yLabelsG.selectAll('text')
           .data(yLabelData).enter()
@@ -317,7 +327,7 @@ function heatmap (params) {
                 .attr("x2", "0%")
                 .attr("y2", "0%");
 
-        colors.reverse().forEach(function(c, i){
+        colors.forEach(function(c, i){
           gradient.append("svg:stop")
               .attr("offset", i*1./numColors)
               .attr("stop-color", c)
@@ -327,13 +337,13 @@ function heatmap (params) {
         legend.style('fill', 'url(#gradient)');
 
         legendBarG.append('text')
-            .attr('x', 0)
+            .attr('x', legend.attr('height'))
             .attr('y', legend.attr('width'))
             .attr('transform', 'rotate(90)')
             .text(min);
 
         legendBarG.append('text')
-            .attr('x', legend.attr('height'))
+            .attr('x', 0)
             .attr('y', legend.attr('width'))
             .attr('transform', 'rotate(90)')
             .attr('text-anchor', 'end')

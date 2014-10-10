@@ -617,7 +617,8 @@ function mutation_matrix(params) {
                         .attr('y', function(d,i){ return geneHeight*i; })
                         .style('fill', function(d,i) {
                             return annotationColors[categories[i]](d);
-                        });
+                        })
+                    .append("title").text(function(d){ return name + ": " + d; });
               }
             });
         }// end draw Sample annotations
