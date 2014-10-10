@@ -18,7 +18,8 @@ function mutation_matrix(params) {
       labelWidth = style.labelWidth || 100,
       minBoxWidth = style.minBoxWidth || 20,
       mutationLegendHeight = style.mutationLegendHeight || 30,
-      sampleStroke = style.sampleStroke || 1;
+      sampleStroke = style.sampleStroke || 1,
+      sampleAnnotationSpacer = style.sampleAnnotationSpacer || 15;
 
   var styleLookup = {
     'bgColor': bgColor,
@@ -75,7 +76,7 @@ function mutation_matrix(params) {
           sampleTypes = data.sampleTypes || [],
           typeToSamples = data.typeToSamples || {},
           samples = data.samples;
-      
+
       var genes = Object.keys(M),
           numGenes = genes.length;
 
@@ -116,6 +117,7 @@ function mutation_matrix(params) {
           datasetTypeLegendHeight = multiDataset ? (sampleTypes.length+1)*15 : 0,
           width = fullWidth - (showSampleLegend ? datasetLegendWidth : 0),
           height = genes.length * geneHeight + boxMargin,
+          rectHeight = height,
           tickWidth,
           samplesPerCol;
 
@@ -154,7 +156,8 @@ function mutation_matrix(params) {
           // Adjust height if sampleAnnotations
           var firstAnnotation = Object.keys(annotationData.sampleToAnnotations)[0];
               numAnnTypes = annotationData.sampleToAnnotations[firstAnnotation].length;
-          height = height + numAnnTypes*geneHeight;
+          rectHeight = height;
+          height = height + numAnnTypes*geneHeight + sampleAnnotationSpacer;
 
           // Assign colors for each annotation
           var annotationColors = {};
@@ -470,7 +473,7 @@ function mutation_matrix(params) {
       fig.append('rect')
           .style('fill', bgColor)
           .attr('width', width - labelWidth - boxMargin)
-          .attr('height', height)
+          .attr('height', rectHeight)
           .attr('transform', 'translate(' + (labelWidth + boxMargin) + ',' +
               labelHeight + ')');
 
@@ -581,7 +584,7 @@ function mutation_matrix(params) {
         // Initialize sample annotations data if desired
         var sampleAnnotations;
         if(showSampleAnnotations) {
-          var yAdjust = geneHeight*genes.length + labelHeight;
+          var yAdjust = geneHeight*genes.length + labelHeight + 10;
 
           sampleAnnotations = matrix.append('g')
               .attr('transform', 'translate(0,'+yAdjust+')');
@@ -857,7 +860,7 @@ function mutation_matrix(params) {
           coverageContainer.text(generateCoverageStr());
           renderMutationMatrix();
       }
-      
+
       // Function for toggling sampleTypes
       function toggleSampleType(el, ty){
         var active = sampleTypeToInclude[ty],

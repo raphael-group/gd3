@@ -9,12 +9,14 @@ function heatmap (params) {
       fontSize = style.fontSize || '10px',
       height = style.height || 400,
       margins = style.margins || {bottom: 0, left: 0, right: 0, top: 0},
-      width = style.width || 400;
+      width = style.width || 400,
+      sampleAnnotationSpacer = style.sampleAnnotationSpacer || 5;
 
   // Rendering flags
   var renderXLabels = false,
       renderYLabels = false,
-      renderLegend = false;
+      renderLegend = false,
+      makeLegendHorizontal = true;
 
   // Sample annotation information
   var annotationData,
@@ -22,7 +24,6 @@ function heatmap (params) {
 
   function chart(selection) {
     selection.each(function(data) {
-      console.log(data);
       // Select the svg element, if it exists.
       var svg = d3.select(this)
           .selectAll('svg')
@@ -52,17 +53,27 @@ function heatmap (params) {
           if (tmp > max) max = tmp;
       }
 
-      var colors = ['#ffeda0','#f03b20'],
+      //- Orange/yellow colors
+      // var colors = ['#ffeda0','#f03b20'],
+
+      // Yellow-green-blue
+      //console.log(min, max, d3.range(min, max, (max-min)/12))
+      var colors = ["rgb(58, 76, 247)", "rgb(0, 78, 247)", "rgb(82, 137, 248)", "rgb(150, 225, 250)",
+                    "rgb(169, 242, 91)", "rgb(170, 241, 56)", "rgb(192, 243, 61)", "rgb(241, 246, 72)",
+                    "rgb(255, 247, 76)", "rgb(245, 223, 91)", "rgb(241, 214, 131)", "rgb(243, 222, 182)"],
+          numColors = colors.length,
+          step = (max-min)/numColors,
           color = d3.scale.linear()
-              .domain([min, max])
+              .domain(d3.range(min, max + step, (max+step-min)/numColors))
               .range(colors);
 
       var heatmap = fig.append('g').attr('class','vizHeatmap');
 
-      var heatmapCells = heatmap.append('g').selectAll('rect')
+      var heatmapCells = heatmap.selectAll('rect')
               .data(cells)
               .enter()
               .append('rect')
+                .attr('data-value', function(d) { return d.value; });
 
       var mouseoverLinesG = heatmap.append('g').attr('class', 'vizHeatmapMouseoverLines');
       var mouseoverLine1 = mouseoverLinesG.append('line'),
@@ -152,73 +163,86 @@ function heatmap (params) {
 
       // Add sample annotation cells if they exist
       if (showSampleAnnotations) {
-        // Format data
-        var sampleToAnnotations = annotationData.sampleToAnnotations,
-            samples = Object.keys(sampleToAnnotations).filter(function(sample) {
-              return xs.indexOf(sample) >= 0; // eliminates any samples not currently shown
-            }),
-            annotations = vals = samples.map(function (key) {
-              var values = sampleToAnnotations[key],
-                  values = values.map(function(annotation, i) { return {x:key, y:i, value:annotation}; });
-              return values;
-            });
-
-        // Flatten annotations
-        annotations = annotations.reduce(function(a, b) { return a.concat(b); });
-
-        // Create color scales
-        var annotationColorScales = [],
-            aColors = annotationData.annotationToColor || {};
-
-        // Calculate the bounds of the color scale
-        var dataBounds = [];
-        for(var i = 0; i < annotationData.categories.length; i++) {
-          dataBounds.push(null);
-        }
-        for (var a in annotations) {
-          var annotation = annotations[a],
-              category = annotation.y,
-              value = annotation.value;
-          // Skip calculating color scale if the category type isn't continuous
-          if (typeof(value) !== 'number') continue;
-
-          if(dataBounds[category] == null) {
-            dataBounds[category] = {};
-            dataBounds[category].min = Number.POSITIVE_INFINITY;
-            dataBounds[category].max = Number.NEGATIVE_INFINITY;
-          }
-
-          dataBounds[i].min = d < dataBounds[i].min ? d : dataBounds[i].min;
-          dataBounds[i].max = d > dataBounds[i].max ? d : dataBounds[i].max;
+        function ValOrNoData(val){
+          if (val == "" || val == null) return "No data";
+          else return val;
         }
 
-        // Create the color scales
-        dataBounds.forEach(function(d,i) {
-          if(d ==  null) {
-            annotationColorScales.push(null);
-          } else {
-            scale = d3.scale.linear()
-              .domain([d.min,d.max])
-              .range(['#fcc5c0','#49006a'])
-              .interpolate(d3.interpolateLab);
-            annotationColorScales.push(scale);
-          }
+        var categories = annotationData.categories || [],
+              sampleAs = annotationData.sampleToAnnotations || {},
+              aColors = annotationData.annotationToColor || {},
+              samples = Object.keys(sampleAs);
+
+          // Assign colors for each annotation
+          var annotationColors = {};
+
+          categories.forEach(function(c, i){
+            var isNumeric = true,
+                data = [],
+                values = [];
+
+            Object.keys(sampleAs).forEach(function(s){
+                // Determine if the value is numeric
+                var ty = typeof(sampleAs[s][i]) === 'number';
+                isNumeric = isNumeric && ty;
+
+                // Replace blank values with "No data"
+                var val = ValOrNoData(sampleAs[s][i]);
+
+                // Record the value
+                data.push(val);
+                if (isNumeric) values.push(sampleAs[s][i]);
+              });
+
+            // Doesn't matter if there are no numeric values, d3.max and d3.min
+            // can handle it and will return null
+            var d = {min: d3.min(values), max: d3.max(values) };
+
+            // Assign colors to all annotations
+            var scale;
+            aColors[c]["No data"] = "#333"; // all blank annotations are assigned this color
+            if(isNumeric) {
+              scale = d3.scale.linear()
+                .domain([d.min, d.max])
+                .range(['#fcc5c0','#49006a'])
+                .interpolate(d3.interpolateLab);
+              scale.type = "linear";
+            } else {
+              // Assign a unique color to each unique annotation value
+              var uniqItems = data.filter(function(item, pos) {
+                return data.indexOf(item) == pos;
+              });
+              var uniqColors = uniqItems.map(function(d){
+                if (aColors[c] && aColors[c][d]) return aColors[c][d];
+                else return '#' + Math.floor(Math.random()*16777215).toString(16); // uniform at random color
+              });
+
+              // Use an ordinal scale to map each item to a color
+              scale = d3.scale.ordinal()
+                .domain(uniqItems)
+                .range(uniqColors);
+              scale.type = "ordinal";
+            }
+            annotationColors[c] = scale;
         });
 
         // Draw annotation information
-        var annotationCells = heatmap.append('g').selectAll('rect')
-            .data(annotations)
-            .enter()
-              .append('rect')
-                  .attr('height', cellHeight)
-                  .attr('width', cellWidth)
-                  .attr('x', function(d) {
-                      return xs.indexOf(d.x) * cellWidth;
-                  })
-                  .attr('y', function(d) { return d.y*cellHeight + ys.length*cellHeight; })
-                  .style('fill', function(d,i) {
-                      return typeof(d) === 'number' ? annotationColorScales[i](d) : aColors[d];
-                  });
+        var categoryRows = heatmap.selectAll(".category-row")
+          .data(categories).enter()
+          .append("g");
+
+        var annotationCells = categoryRows.selectAll('.sample-annotation-rect')
+            .data(function(c, i){
+              return samples.map(function(s){
+                return { x: xs.indexOf(s), y: i, value: ValOrNoData(sampleAs[s][i]) };
+              }).filter(function(d){ return d.x >= 0; })
+            }).enter()
+            .append('rect')
+              .attr('height', cellHeight)
+              .attr('width', cellWidth)
+              .attr('x', function(d) { return d.x * cellWidth; })
+              .attr('y', function(d) { return sampleAnnotationSpacer + d.y*cellHeight + ys.length*cellHeight; })
+              .style('fill', function(d,i) { return annotationColors[categories[d.y]](d.value); });
       }
 
       // Group for yLabels placement
@@ -226,17 +250,19 @@ function heatmap (params) {
 
       // Add labels to the y axis
       if (renderYLabels) {
-        var fontSizeInt = parseInt(fontSize.replace('px',''));
+        var fontSizeInt = parseInt(fontSize.replace('px','')),
+            yLabelData = ys.map(function(d){ return { dy: 0, name: d}})
+                           .concat(categories.map(function(d){ return {dy: sampleAnnotationSpacer, name: d}; }));
+
         yLabelsG.selectAll('text')
-          .data(ys)
-          .enter()
+          .data(yLabelData).enter()
             .append('text')
               .attr('id', function(d,i){return 'vizHeatmapYLabel'+i})
               .attr('text-anchor','end')
-              .attr('y', function(d,i) {return i*cellHeight + cellHeight/2+fontSizeInt/2})
-              .text(function(d){return d});
+              .attr('y', function(d,i) {return d.dy + i*cellHeight + cellHeight/2+fontSizeInt/2})
+              .text(function(d){return d.name});
         yLabelsG.selectAll('text')
-          .attr('x',yLabelsG.node().getBBox().width);
+          .attr('x',yLabelsG.node().getBBox().width-2);
         heatmap.attr('transform','translate('+(yLabelsG.node().getBBox().width+2)+',0)');
       }
 
@@ -268,12 +294,17 @@ function heatmap (params) {
             .style('stroke','black')
             .style('stroke-width', 2);
 
-        var xMod = parseFloat(heatmap.attr('transform').replace('translate(','').split(',')[0]);
-        xMod = xMod + heatmap.node().getBBox().width + 10;
-        legendG.attr('transform','translate('+xMod+',0)');
+        var xMod = 10;
+        if(makeLegendHorizontal) {
+          xMod += xLabelsG.node().getBBox().height + heatmap.node().getBBox().height + 10;
+          legendG.attr('transform','translate(0,' + xMod + ') rotate(-90)');
+        } else {
+          xMod += margins.left + width;
+          legendG.attr('transform','translate(' + xMod + ',0)');
+        }
         var legend = legendBarG.append('rect')
             .attr('width', legendWidth)
-            .attr('height', xs.length*cellHeight)
+            .attr('height', makeLegendHorizontal ? width : ys.length * cellHeight)
             .style('fill','red');
 
         var gradient = legendBarG.append("svg:defs")
@@ -284,29 +315,26 @@ function heatmap (params) {
                 .attr("x2", "0%")
                 .attr("y2", "0%");
 
-        gradient.append("svg:stop")
-            .attr("offset", "0%")
-            .attr("stop-color", colors[0])
-            .attr("stop-opacity", 1);
-
-        if(colors.length == 2) {
+        colors.forEach(function(c, i){
           gradient.append("svg:stop")
-              .attr("offset", "100%")
-              .attr("stop-color", colors[1])
+              .attr("offset", i*1./numColors)
+              .attr("stop-color", c)
               .attr("stop-opacity", 1);
-        } else {
-          gradient.append("svg:stop")
-              .attr("offset", "50%")
-              .attr("stop-color", colors[1])
-              .attr("stop-opacity", 1);
-
-          gradient.append("svg:stop")
-              .attr("offset", "100%")
-              .attr("stop-color", colors[2])
-              .attr("stop-opacity", 1);
-        }
+        })
 
         legend.style('fill', 'url(#gradient)');
+
+        legendBarG.append('text')
+            .attr('x', 0)
+            .attr('y', legend.attr('width'))
+            .attr('transform', 'rotate(90)')
+            .text(max);
+        legendBarG.append('text')
+            .attr('x', legend.attr('height'))
+            .attr('y', legend.attr('width'))
+            .attr('transform', 'rotate(90)')
+            .attr('text-anchor', 'end')
+            .text(min)
 
         var mouseScrubRegion = legendBarG.append('rect').style('fill', 'black');
         legend.on('mousemove', function(d,i) {
@@ -314,7 +342,7 @@ function heatmap (params) {
           //    if this does not hold, than there will be bugs with this function
           var mouse = d3.mouse(this),
               legendYOffset = parseFloat(legendG.attr('transform').replace('translate(','').split(',')[1].replace(')','')),
-              legendYLoc = mouse[1] - legendYOffset,
+              legendYLoc = makeLegendHorizontal ? mouse[1] : mouse[1] - legendYOffset,
               loc = 1 - legendYLoc / legend.attr('height'),
               locValue = loc*max,
               scrubError = max/40;
@@ -323,6 +351,10 @@ function heatmap (params) {
               scrubHeight = 2*(unitScalar*scrubError),
               scrubY = legendYLoc-unitScalar*scrubError;
           scrubHeight = scrubHeight + scrubY > legend.attr('height') ? scrubHeight - Math.abs(scrubHeight+scrubY - legend.attr('height')) : scrubHeight;
+
+          // if(makeLegendHorizontal) {
+          //   scrubY = mouse[1] - unitScalar*scrubError;
+          // }
 
           mouseScrubRegion.attr('x', legend.attr('x')+cellWidth)
               .attr('y', scrubY)
@@ -342,11 +374,24 @@ function heatmap (params) {
         });
       }// end renderLegend
 
-
       // Resize SVG based on its content
       svg.attr('height', fig.node().getBBox().height);
-      svg.attr('width', fig.node().getBBox().width);
+      //svg.attr('width', fig.node().getBBox().width);
 
+      var heatmapStartX = parseFloat(heatmap.attr('transform').split('translate(')[1].split(',')[0]),
+          heatmapW = heatmap.node().getBBox().width;
+      var zoom = d3.behavior.zoom()
+          .on('zoom', function() {
+            var t = zoom.translate(),
+                tx = t[0];
+
+            heatmap.attr('transform', 'translate('+(tx + heatmapStartX)+',0)');
+
+            var xLabelsGy = xLabelsG.attr('transform').split('translate(')[1].split(',')[1].split(')')[0];
+            xLabelsG.attr('transform', 'translate('+tx+','+xLabelsGy+')');
+
+          });
+      svg.call(zoom);
     });// end selection.each();
   } // end chart()
 
