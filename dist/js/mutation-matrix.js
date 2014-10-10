@@ -599,6 +599,7 @@ function mutation_matrix(params) {
                   .attr('width', geneLabels.node().getBBox().width)
                   .attr('x', labelWidth)
                   .attr('y', function(d,i) { return yAdjust + (i+1)*geneHeight - 4; })
+                  .style('font-size', 12) // TODO: need a way not to hard-code this
                   .text(function(d){return d});
 
           // Append each annotation to the matrix

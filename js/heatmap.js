@@ -286,7 +286,9 @@ function heatmap (params) {
 
       // Add legend
       if (renderLegend) {
-        var legendWidth = cellWidth < 10 ? 10 : cellWidth;
+        var legendWidth = cellWidth < 10 ? 10 : cellWidth,
+            legendHeight = makeLegendHorizontal ? d3.max([ys.length * cellWidth, 250]) : xs.length * cellHeight;
+
         legendRefLine.attr('x1',0)
             .attr('x2',legendWidth)
             .attr('y1',(xs.length*cellHeight)/2)
@@ -304,7 +306,7 @@ function heatmap (params) {
         }
         var legend = legendBarG.append('rect')
             .attr('width', legendWidth)
-            .attr('height', makeLegendHorizontal ? width : ys.length * cellHeight)
+            .attr('height', legendHeight)
             .style('fill','red');
 
         var gradient = legendBarG.append("svg:defs")
@@ -315,7 +317,7 @@ function heatmap (params) {
                 .attr("x2", "0%")
                 .attr("y2", "0%");
 
-        colors.forEach(function(c, i){
+        colors.reverse().forEach(function(c, i){
           gradient.append("svg:stop")
               .attr("offset", i*1./numColors)
               .attr("stop-color", c)
@@ -328,13 +330,23 @@ function heatmap (params) {
             .attr('x', 0)
             .attr('y', legend.attr('width'))
             .attr('transform', 'rotate(90)')
-            .text(max);
+            .text(min);
+
         legendBarG.append('text')
             .attr('x', legend.attr('height'))
             .attr('y', legend.attr('width'))
             .attr('transform', 'rotate(90)')
             .attr('text-anchor', 'end')
-            .text(min)
+            .text(max)
+
+        if (makeLegendHorizontal){
+          legendBarG.append('text')
+              .attr('x', legend.attr('height')/2)
+              .attr('y', legend.attr('width'))
+              .attr('transform', 'rotate(90)')
+              .attr('text-anchor', 'middle')
+              .text(data.name + " value");
+        }
 
         var mouseScrubRegion = legendBarG.append('rect').style('fill', 'black');
         legend.on('mousemove', function(d,i) {
