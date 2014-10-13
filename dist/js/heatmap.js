@@ -261,15 +261,14 @@ function heatmap (params) {
           yLabelData = yLabelData.concat(categories.map(function(d){ return {dy: sampleAnnotationSpacer, name: d}; }));
         }
 
-        yLabelsG.selectAll('text')
+        var yLabels = yLabelsG.selectAll('text')
           .data(yLabelData).enter()
             .append('text')
               .attr('id', function(d,i){return 'vizHeatmapYLabel'+i})
               .attr('text-anchor','end')
               .attr('y', function(d,i) {return d.dy + i*cellHeight + cellHeight/2+fontSizeInt/2})
               .text(function(d){return d.name});
-        yLabelsG.selectAll('text')
-          .attr('x',yLabelsG.node().getBBox().width-2);
+        yLabels.attr('x',yLabelsG.node().getBBox().width-2);
         heatmap.attr('transform','translate('+(yLabelsG.node().getBBox().width+2)+',0)');
       }
 
@@ -279,7 +278,7 @@ function heatmap (params) {
           .attr('transform', 'translate(0,'+heatmap.node().getBBox().height+')');
       if (renderXLabels) {
         var fontSizeInt = parseInt(fontSize.replace('px',''));
-        xLabelsG.selectAll('text')
+        var xLabels = xLabelsG.selectAll('text')
           .data(xs)
           .enter()
             .append('text')
@@ -408,6 +407,18 @@ function heatmap (params) {
 
             var xLabelsGy = xLabelsG.attr('transform').split('translate(')[1].split(',')[1].split(')')[0];
             xLabelsG.attr('transform', 'translate('+tx+','+xLabelsGy+')');
+
+            // Fade out/in heatmap and annotation cells that are out/in the viewport
+            function inViewPort(x){ return (x + 1) * cellWidth + tx > 0; }
+            function cellVisibility(x){ return inViewPort(x) ? 1 : 0.25; }
+
+            heatmapCells.style("opacity", function(d){ return cellVisibility(xs.indexOf(d.x)); });
+            if (renderXLabels){
+              xLabels.style("opacity", function(sampleName){ return cellVisibility(xs.indexOf(sampleName)); });
+            }
+            if (showSampleAnnotations){
+              annotationCells.style("opacity", function(d){ return cellVisibility(d.x); });
+            }
 
           });
       svg.call(zoom);
