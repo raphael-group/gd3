@@ -19,7 +19,7 @@ function mutation_matrix(params) {
       minBoxWidth = style.minBoxWidth || 20,
       mutationLegendHeight = style.mutationLegendHeight || 30,
       sampleStroke = style.sampleStroke || 1,
-      sampleAnnotationSpacer = style.sampleAnnotationSpacer || 15;
+      sampleAnnotationSpacer = style.sampleAnnotationSpacer || 10;
 
   var styleLookup = {
     'bgColor': bgColor,
@@ -584,10 +584,10 @@ function mutation_matrix(params) {
         // Initialize sample annotations data if desired
         var sampleAnnotations;
         if(showSampleAnnotations) {
-          var yAdjust = geneHeight*genes.length + labelHeight + 10;
+          var yAdjust = geneHeight*genes.length + labelHeight + sampleAnnotationSpacer;
 
           sampleAnnotations = matrix.append('g')
-              .attr('transform', 'translate(0,'+yAdjust+')');
+              .attr('transform', 'translate(0,' + yAdjust + ')');
 
           // Append row labels
           var sampleAnnotationLabelsGroup = fig.append('g');
@@ -598,7 +598,7 @@ function mutation_matrix(params) {
                   .attr('text-anchor', 'end')
                   .attr('width', geneLabels.node().getBBox().width)
                   .attr('x', labelWidth)
-                  .attr('y', function(d,i) { return yAdjust + (i+1)*geneHeight - 4; })
+                  .attr('y', function(d,i) { return yAdjust + (i+1)*geneHeight - geneHeight/4; })
                   .style('font-size', 12) // TODO: need a way not to hard-code this
                   .text(function(d){return d});
 
@@ -612,9 +612,9 @@ function mutation_matrix(params) {
                     .data(sampleAs[name])
                     .enter()
                     .append('rect')
-                        .attr('height', geneHeight)
+                        .attr('height', geneHeight/2)
                         .attr('x', 0)
-                        .attr('y', function(d,i){ return geneHeight*i; })
+                        .attr('y', function(d,i){ return geneHeight/4 + geneHeight*i; })
                         .style('fill', function(d,i) {
                             return annotationColors[categories[i]](d);
                         })
