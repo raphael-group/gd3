@@ -223,9 +223,6 @@ function heatmap (params) {
                 .range(uniqColors);
               scale.type = "ordinal";
             }
-            console.log(c)
-            console.log(scale.domain())
-            console.log(scale.range())
             annotationColors[c] = scale;
         });
 

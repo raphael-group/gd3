@@ -615,9 +615,7 @@ function mutation_matrix(params) {
                         .attr('height', geneHeight/2)
                         .attr('x', 0)
                         .attr('y', function(d,i){ return geneHeight/4 + geneHeight*i; })
-                        .style('fill', function(d,i) {
-                            return annotationColors[categories[i]](d);
-                        })
+                        .style('fill', function(d,i) { return annotationColors[categories[i]](d); })
                     .append("title").text(function(d){ return name + ": " + d; });
               }
             });
@@ -804,9 +802,13 @@ function mutation_matrix(params) {
               aColors = annotationData.annotationToColor || {};
           sampleAnnotations.each(function(d) {
             var name = d.name,
-                thisEl = d3.select(this);
+                thisEl = d3.select(this),
+                visible = inViewPort(d.snid),
+                active =  sampleTypeToInclude[sampleToTypes[d._id]];
+
             thisEl.selectAll('rect')
-                .attr('width', tickWidth);
+              .attr('width', tickWidth)
+              .style("opacity", visible && active ? 1 : active ? 0.25 : 0);
           });
         }
 
