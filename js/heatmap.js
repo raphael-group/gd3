@@ -275,6 +275,13 @@ function heatmap (params) {
               .text(function(d){return d.name});
         yLabels.attr('x',yLabelsG.node().getBBox().width-2);
         heatmap.attr('transform','translate('+(yLabelsG.node().getBBox().width+2)+',0)');
+
+        yLabels.each(function(d) {
+          var thisEl = d3.select(this),
+              text = thisEl.text(),
+              isAnnotation = categories.indexOf(text) > -1;
+          if (isAnnotation) thisEl.style('font-size', annotationFontSize);
+        });
       }
 
       // Add labels to the x axis
