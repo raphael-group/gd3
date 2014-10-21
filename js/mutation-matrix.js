@@ -19,7 +19,7 @@ function mutation_matrix(params) {
       minBoxWidth = style.minBoxWidth || 20,
       mutationLegendHeight = style.mutationLegendHeight || 30,
       sampleStroke = style.sampleStroke || 1,
-      sampleAnnotationSpacer = style.sampleAnnotationSpacer || 10;
+      sampleAnnotationSpacer = style.sampleAnnotationSpacer || 5;
 
   var styleLookup = {
     'bgColor': bgColor,
@@ -42,9 +42,13 @@ function mutation_matrix(params) {
 
   // Define the set of mutation types we are considering, and by default show them all
   var mutationTypes = params.mutationTypes || ["snv", "inactive_snv", "del", "amp", "fus", "other"],
-    mutationTypeToInclude = {};
+    mutationTypeToInclude = {},
+    mutationTypesPresent = {};
 
-  mutationTypes.forEach(function(d){ mutationTypeToInclude[d] = true; });
+  mutationTypes.forEach(function(d){
+    mutationTypeToInclude[d] = true;
+    mutationTypesPresent[d] = false;
+  });
 
   // Define globals to be used when filtering the mutation matrix by sample type
   var sampleTypeToInclude = {},
@@ -61,7 +65,8 @@ function mutation_matrix(params) {
       showSortingMenu = false,
       showTooltips = false,
       showDuplicates = false,
-      addOnClick = false;
+      addOnClick = false,
+      annotationsIncludeNoData = false;
 
   // Sample annotation information
   var annotationData,
@@ -157,7 +162,7 @@ function mutation_matrix(params) {
           var firstAnnotation = Object.keys(annotationData.sampleToAnnotations)[0];
               numAnnTypes = annotationData.sampleToAnnotations[firstAnnotation].length;
           rectHeight = height;
-          height = height + numAnnTypes*geneHeight + sampleAnnotationSpacer;
+          height = height + numAnnTypes*(geneHeight + sampleAnnotationSpacer);
 
           // Assign colors for each annotation
           var annotationColors = {};
@@ -169,16 +174,18 @@ function mutation_matrix(params) {
 
             Object.keys(sampleAs).forEach(function(s){
                 // Determine if the value is numeric
-                var ty = typeof(sampleAs[s][i]) === 'number';
-                isNumeric = isNumeric && ty;
+                var ty = typeof(sampleAs[s][i]),
+                    val = sampleAs[s][i];
+                isNumeric = isNumeric && (val == null || val == "" || ty === 'number');
 
-                // Replace blank values with "No data"
-                var val = sampleAs[s][i];
-                if (val == "" || val == null) val = "No data";
+                // Ignore blank values
+                if (!(val == "" || val == null)){
+                  data.push(val);
+                  if (isNumeric) values.push(sampleAs[s][i]);
+                } else {
+                  annotationsIncludeNoData = true;
+                }
 
-                // Record the value
-                data.push(val);
-                if (isNumeric) values.push(sampleAs[s][i]);
               });
 
             // Doesn't matter if there are no numeric values, d3.max and d3.min
@@ -187,7 +194,7 @@ function mutation_matrix(params) {
 
             // Assign colors to all annotations
             var scale;
-            aColors[c]["No data"] = "#333"; // all blank annotations are assigned this color
+
             if(isNumeric) {
               scale = d3.scale.linear()
                 .domain([d.min, d.max])
@@ -219,7 +226,7 @@ function mutation_matrix(params) {
       // Compute height of SVG
       var svgHeight = height + labelHeight;
       if (showSampleAnnotations)
-        svgHeight += categories.length*geneHeight/2 + 2*sampleAnnotationSpacer;
+        svgHeight += categories.length*geneHeight/2 + 3*sampleAnnotationSpacer;
 
       // Map each gene to the samples they're mutated in
       var geneToSamples = {};
@@ -318,6 +325,7 @@ function mutation_matrix(params) {
                     muts.genes.push( {gene: g, dataset: sampleToTypes[s._id], ty: t, sample: s, mutTys: allMutTys } );
                     mutated = true;
                     mutTys.push( t );
+                    mutationTypesPresent[t] = true;
                     if (genesMutInSample.indexOf(g) == -1)
                       genesMutInSample.push( g );
                   });
@@ -482,9 +490,9 @@ function mutation_matrix(params) {
           .attr('transform', 'translate(' + (labelWidth + boxMargin) + ',0)');
 
       // Add groups that include sample labels
-      var sampleYAdjust = geneHeight*genes.length + sampleAnnotationSpacer;
+      var sampleYAdjust = geneHeight*genes.length + 3*sampleAnnotationSpacer;
       if (showSampleAnnotations)
-        sampleYAdjust += sampleAnnotationSpacer + (categories.length * geneHeight/2);
+        sampleYAdjust += 2*sampleAnnotationSpacer + (categories.length * (geneHeight/2 + sampleAnnotationSpacer));
 
       var sampleLabelsG = fig.append("svg:g")
 
@@ -539,59 +547,6 @@ function mutation_matrix(params) {
       geneLabels.attr('transform', function(d, i) {
               return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
           });
-
-      // Initialize sample annotations data if desired
-      var sampleAnnotations;
-      if(showSampleAnnotations) {
-        var yAdjust = geneHeight*genes.length + sampleAnnotationSpacer;
-
-        sampleAnnotations = matrix.append('g')
-            .attr('transform', 'translate(0,' + yAdjust + ')');
-
-        // Append row labels
-        var sampleAnnotationLabelsGroup = fig.append('g');
-        var sampleAnnotationLabels = sampleAnnotationLabelsGroup.selectAll('text')
-              .data(annotationData.categories)
-              .enter()
-              .append('text')
-                .attr('text-anchor', 'end')
-                .attr('class', 'sampleAnnotationLabel')
-                .attr('x', geneLabels.node().getBBox().width)
-                .attr('y', function(d,i) { return yAdjust + (i+1)*geneHeight - geneHeight/4; })
-                .style('font-size', 12) // TODO: need a way not to hard-code this
-                .text(function(d){return d});
-
-        sampleAnnotationLabels.each(function() {
-          var tmpWidth = d3.select(this).node().getBBox().width;
-          maxLabelWidth = maxLabelWidth > tmpWidth ? maxLabelWidth : tmpWidth;
-        });
-
-        labelWidth = maxLabelWidth;
-
-        sampleAnnotationLabels.attr('x', labelWidth);
-        geneLabels.attr('transform', function(d, i) {
-                return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
-            });
-
-        // Append each annotation to the matrix
-        sampleAnnotations.each(function(d) {
-            var name = d.name,
-                thisEl = d3.select(this);
-
-            if(sampleAs[name]) {
-              thisEl.selectAll('rect')
-                  .data(sampleAs[name])
-                  .enter()
-                  .append('rect')
-                      .attr('height', geneHeight/2)
-                      .attr('x', 0)
-                      .attr('y', function(d,i){ return geneHeight/4 + geneHeight*i; })
-                      .style('fill', function(d,i) { return annotationColors[categories[i]](d); })
-                  .append("title").text(function(d){ return name + ": " + d; });
-            }
-          });
-      }// end draw Sample annotations
-
 
       // Add horizontal lines to separate rows (genes)
       fig.selectAll('.horizontal-line')
@@ -662,6 +617,64 @@ function mutation_matrix(params) {
                 return d.cooccurring ? coocurringColor : exclusiveColor;
               }
             });
+
+        // Initialize sample annotations data if desired
+        var sampleAnnotations;
+        if(showSampleAnnotations) {
+          var yAdjust = geneHeight*genes.length + 3*sampleAnnotationSpacer;
+
+          sampleAnnotations = matrix.append('g')
+              .attr('transform', 'translate(0,' + yAdjust + ')');
+
+          // Append row labels
+          var sampleAnnotationLabelsGroup = fig.append('g');
+          var sampleAnnotationLabels = sampleAnnotationLabelsGroup.selectAll('text')
+                .data(annotationData.categories)
+                .enter()
+                .append('text')
+                  .attr('text-anchor', 'end')
+                  .attr('width', geneLabels.node().getBBox().width)
+                  .attr('x', labelWidth)
+                  .attr('y', function(d,i) { return yAdjust + i*(sampleAnnotationSpacer+geneHeight/2) + geneHeight/2;})
+                  .style('font-size', 12) // TODO: need a way not to hard-code this
+                  .text(function(d){return d});
+
+          // Append each annotation to the matrix
+          sampleAnnotations.each(function(d) {
+              var name = d.name,
+                  thisEl = d3.select(this);
+
+              if(sampleAs[name]) {
+                thisEl.selectAll('rect')
+                    .data(sampleAs[name])
+                    .enter()
+                    .append('rect')
+                        .attr('height', geneHeight/2)
+                        .attr('x', 0)
+                        .attr('y', function(d,i){ return (sampleAnnotationSpacer+geneHeight/2)*i; })
+                        .style('fill', function(d,i) {
+                          if (d == "" || d == null) return "#333";
+                          else return annotationColors[categories[i]](d);
+                        })
+                    .append("title").text(function(d){
+                      if (d == "" || d == null) return name + ": No data"
+                      else return name + ": " + d;
+                    });
+              }
+            });
+
+          sampleAnnotationLabels.each(function() {
+          var tmpWidth = d3.select(this).node().getBBox().width;
+            maxLabelWidth = maxLabelWidth > tmpWidth ? maxLabelWidth : tmpWidth;
+          });
+
+          labelWidth = maxLabelWidth;
+
+          sampleAnnotationLabels.attr('x', labelWidth);
+          geneLabels.attr('transform', function(d, i) {
+                  return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
+              });
+        }// end draw Sample annotations
 
       var other = mutations.append('line')
         .filter(function(d){ return isOther(d.ty); })
@@ -1068,72 +1081,82 @@ function mutation_matrix(params) {
         left += mutationRectWidth + 10 + 220;
 
         // SNVs (full ticks)
-        snvLegend.append('rect')
-            .attr('height', geneHeight)
-            .attr('width', mutationRectWidth)
-            .style('fill', blockColorMedium);
+        if (mutationTypesPresent['snv']){
+          snvLegend.append('rect')
+              .attr('height', geneHeight)
+              .attr('width', mutationRectWidth)
+              .style('fill', blockColorMedium);
 
-        snvLegend.append('text')
-            .attr('dx', mutationRectWidth + 10)
-            .attr('dy', 3 * geneHeight / 4)
-            .style('fill', '#000')
-            .text('SNV');
+          snvLegend.append('text')
+              .attr('dx', mutationRectWidth + 10)
+              .attr('dy', 3 * geneHeight / 4)
+              .style('fill', '#000')
+              .text('SNV');
+        }
 
         // Inactivating SNVs (stripped full ticks)
-        inactiveSNVLegend.append('rect')
-            .attr('height', geneHeight)
-            .attr('width', mutationRectWidth)
-            .style('fill', blockColorMedium);
+        if (mutationTypesPresent['inactive_snv']){
+          inactiveSNVLegend.append('rect')
+              .attr('height', geneHeight)
+              .attr('width', mutationRectWidth)
+              .style('fill', blockColorMedium);
 
-        inactiveSNVLegend.append('rect')
-            .attr('y', 3 * geneHeight / 8)
-            .attr('height', geneHeight / 4)
-            .attr('width', mutationRectWidth)
-            .style('fill', '#000');
+          inactiveSNVLegend.append('rect')
+              .attr('y', 3 * geneHeight / 8)
+              .attr('height', geneHeight / 4)
+              .attr('width', mutationRectWidth)
+              .style('fill', '#000');
 
-        inactiveSNVLegend.append('text')
-            .attr('dx', mutationRectWidth + 10)
-            .attr('dy', 3 * geneHeight / 4)
-            .style('fill', '#000')
-            .text('Inactivating');
+          inactiveSNVLegend.append('text')
+              .attr('dx', mutationRectWidth + 10)
+              .attr('dy', 3 * geneHeight / 4)
+              .style('fill', '#000')
+              .text('Inactivating');
+        }
 
         // Deletions (down ticks)
-        delLegend.append('rect')
-            .attr('y', geneHeight / 2)
-            .attr('height', geneHeight / 2)
-            .attr('width', mutationRectWidth)
-            .style('fill', blockColorMedium);
+        if (mutationTypesPresent['del']){
+          delLegend.append('rect')
+              .attr('y', geneHeight / 2)
+              .attr('height', geneHeight / 2)
+              .attr('width', mutationRectWidth)
+              .style('fill', blockColorMedium);
 
-        delLegend.append('text')
-            .attr('dx', mutationRectWidth + 5)
-            .attr('dy', 3 * geneHeight / 4)
-            .style('fill', '#000')
-            .text('Deletion');
+          delLegend.append('text')
+              .attr('dx', mutationRectWidth + 5)
+              .attr('dy', 3 * geneHeight / 4)
+              .style('fill', '#000')
+              .text('Deletion');
+        }
 
         // Amplifications (up ticks)
-        ampLegend.append('rect')
-            .attr('height', geneHeight / 2)
-            .attr('width', mutationRectWidth)
-            .style('fill', blockColorMedium);
+        if (mutationTypesPresent['amp']){
+          ampLegend.append('rect')
+              .attr('height', geneHeight / 2)
+              .attr('width', mutationRectWidth)
+              .style('fill', blockColorMedium);
 
-        ampLegend.append('text')
-            .attr('dx', mutationRectWidth + 10)
-            .attr('dy', 3*geneHeight / 4)
-            .style('fill', '#000')
-            .text('Amplification');
+          ampLegend.append('text')
+              .attr('dx', mutationRectWidth + 10)
+              .attr('dy', 3*geneHeight / 4)
+              .style('fill', '#000')
+              .text('Amplification');
+        }
 
         // Fusion legend
-        fusionLegend.append('path')
-            .attr('d', d3.svg.symbol().type('triangle-up').size(30))
-            .attr('transform', 'translate(0,' + 3*geneHeight/8 + ')rotate(90)')
-            .style('stroke', bgColor)
-            .style('fill', blockColorMedium);
+        if (mutationTypesPresent['fus']){
+          fusionLegend.append('path')
+              .attr('d', d3.svg.symbol().type('triangle-up').size(30))
+              .attr('transform', 'translate(0,' + 3*geneHeight/8 + ')rotate(90)')
+              .style('stroke', bgColor)
+              .style('fill', blockColorMedium);
 
-        fusionLegend.append('text')
-            .attr('dx', mutationRectWidth + 10)
-            .attr('dy', 3 * geneHeight / 4)
-            .style('fill', '#000')
-            .text('Fusion/Rearrangement/Splice Variant');
+          fusionLegend.append('text')
+              .attr('dx', mutationRectWidth + 10)
+              .attr('dy', 3 * geneHeight / 4)
+              .style('fill', '#000')
+              .text('Fusion/Rearrangement/Splice Variant');
+        }
 
         // Samples/box (the width/locations are set in renderMutationMatrix())
         mutationLegend.append('rect')
@@ -1277,6 +1300,22 @@ function mutation_matrix(params) {
               legend.style('visibility', isVisible ? 'hidden' : 'visible');
               legend.style('display', isVisible ? 'none' : 'block');
             });
+
+        // Add a no data item
+        if (annotationsIncludeNoData){
+          var noData = legend.append("div")
+                .style('display', 'inline-block')
+                .style('padding', '5px');
+
+          noData.append("div")
+              .style('background-color', "#333")
+              .style('display', 'inline-block')
+              .style('height', '15px')
+              .style('width', '15px')
+              .style('margin-right', '5px');
+
+          noData.append("div").style('display', 'inline-block').text("No data");
+        }
 
         // Create legend
         var categoryEls = legend.selectAll(".category")

@@ -124,15 +124,15 @@ function heatmap (params) {
 
             Object.keys(sampleAs).forEach(function(s){
                 // Determine if the value is numeric
-                var ty = typeof(sampleAs[s][i]) === 'number';
-                isNumeric = isNumeric && ty;
+                var ty = typeof(sampleAs[s][i]),
+                    val = sampleAs[s][i];
+                isNumeric = isNumeric && (val == null || val == "" || ty === 'number');
 
-                // Replace blank values with "No data"
-                var val = ValOrNoData(sampleAs[s][i]);
-
-                // Record the value
-                data.push(val);
-                if (isNumeric) values.push(sampleAs[s][i]);
+                // Ignore blank values
+                if (!(val == "" || val == null)){
+                  data.push(val);
+                  if (isNumeric) values.push(sampleAs[s][i]);
+                }
               });
 
             // Doesn't matter if there are no numeric values, d3.max and d3.min
@@ -141,7 +141,6 @@ function heatmap (params) {
 
             // Assign colors to all annotations
             var scale;
-            aColors[c]["No data"] = "#333"; // all blank annotations are assigned this color
             if(isNumeric) {
               scale = d3.scale.linear()
                 .domain([d.min, d.max])
@@ -183,11 +182,13 @@ function heatmap (params) {
               .attr('x', function(d) { return d.x * cellWidth; })
               .attr('y', function(d) { return sampleAnnotationSpacer + d.y*cellHeight + ys.length*cellHeight; })
               .style('fill', function(d,i) {
-                // console.log(d.value, categories[d.y], d3.rgb(annotationColors[categories[d.y]](d.value)))
-                return annotationColors[categories[d.y]](d.value);
+                if (d.value != "" && d.value != null) return annotationColors[categories[d.y]](d.value);
+                else return "#333";
               });
-        annotationCells.append("title").text(function(d){ return d.value; })
-            .style('font-size', annotationFontSize);
+        annotationCells.append("title").text(function(d){
+          if (d.value != "" && d.value != null) return d.value;
+          else return "No data";
+        });
       }
 
       // Construct mouseover lines
