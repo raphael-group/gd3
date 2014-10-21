@@ -274,6 +274,14 @@ function heatmap (params) {
               .attr('y', function(d,i) {return d.dy + i*cellHeight + cellHeight/2+fontSizeInt/2})
               .text(function(d){return d.name});
         yLabels.attr('x',yLabelsG.node().getBBox().width-2);
+
+        yLabels.each(function(d) {
+          var thisEl = d3.select(this),
+              text = thisEl.text(),
+              isAnnotation = categories.indexOf(text) > -1;
+          if (isAnnotation) thisEl.style('font-size', annotationFontSize);
+        });
+
         heatmap.attr('transform','translate('+(yLabelsG.node().getBBox().width+2)+',0)');
       }
 
