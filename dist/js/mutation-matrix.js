@@ -226,7 +226,7 @@ function mutation_matrix(params) {
       // Compute height of SVG
       var svgHeight = height + labelHeight;
       if (showSampleAnnotations)
-        svgHeight += categories.length*geneHeight/2 + 3*sampleAnnotationSpacer;
+        svgHeight += categories.length*(geneHeight/2 + sampleAnnotationSpacer) + 3*sampleAnnotationSpacer;
 
       // Map each gene to the samples they're mutated in
       var geneToSamples = {};
@@ -492,7 +492,7 @@ function mutation_matrix(params) {
       // Add groups that include sample labels
       var sampleYAdjust = geneHeight*genes.length + 3*sampleAnnotationSpacer;
       if (showSampleAnnotations)
-        sampleYAdjust += 2*sampleAnnotationSpacer + (categories.length * (geneHeight/2 + sampleAnnotationSpacer));
+        sampleYAdjust += sampleAnnotationSpacer + (categories.length * (geneHeight/2 + sampleAnnotationSpacer));
 
       var sampleLabelsG = fig.append("svg:g")
 
@@ -809,9 +809,10 @@ function mutation_matrix(params) {
 
         // Move the matrix
         matrix.attr('transform', function(d) { return 'translate(' + x(sampleToIndex[d.snid]) + ')'; });
-        sampleLabels.attr('transform', function(d) {
-          return 'translate(' + x(sampleToIndex[d.snid]) + ',' + sampleYAdjust + ')rotate(90)';
-        });
+        sampleLabels.attr("y", -tickWidth/4)
+          .attr('transform', function(d) {
+            return 'translate(' + x(sampleToIndex[d.snid]) + ',' + sampleYAdjust + ')rotate(90)';
+          });
 
         // Update the text size of the sample names depending on the zoom level
         // represented by `tickWidth`
@@ -1374,6 +1375,7 @@ function mutation_matrix(params) {
       } // end render sampleAnnotationLegend
 
       renderMutationMatrix();
+      svg.attr('height', fig.node().getBBox().height);
 
       if (showCoverage) {
         renderCoverage();
