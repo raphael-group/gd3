@@ -526,10 +526,72 @@ function mutation_matrix(params) {
           .attr('class', 'gene-name')
           .attr('font-size', 14)
           .attr('text-anchor', 'end')
-          .attr('transform', function(d, i) {
-              return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
-          })
           .text(function(g) { return g+ ' (' + geneToFreq[g] + ')'; });
+
+      var maxLabelWidth = 0;
+      geneLabels.each(function() {
+        var tmpWidth = d3.select(this).node().getBBox().width;
+        maxLabelWidth = maxLabelWidth > tmpWidth ? maxLabelWidth : tmpWidth;
+      });
+
+      labelWidth = maxLabelWidth;
+
+      geneLabels.attr('transform', function(d, i) {
+              return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
+          });
+
+      // Initialize sample annotations data if desired
+      var sampleAnnotations;
+      if(showSampleAnnotations) {
+        var yAdjust = geneHeight*genes.length + sampleAnnotationSpacer;
+
+        sampleAnnotations = matrix.append('g')
+            .attr('transform', 'translate(0,' + yAdjust + ')');
+
+        // Append row labels
+        var sampleAnnotationLabelsGroup = fig.append('g');
+        var sampleAnnotationLabels = sampleAnnotationLabelsGroup.selectAll('text')
+              .data(annotationData.categories)
+              .enter()
+              .append('text')
+                .attr('text-anchor', 'end')
+                .attr('class', 'sampleAnnotationLabel')
+                .attr('x', geneLabels.node().getBBox().width)
+                .attr('y', function(d,i) { return yAdjust + (i+1)*geneHeight - geneHeight/4; })
+                .style('font-size', 12) // TODO: need a way not to hard-code this
+                .text(function(d){return d});
+
+        sampleAnnotationLabels.each(function() {
+          var tmpWidth = d3.select(this).node().getBBox().width;
+          maxLabelWidth = maxLabelWidth > tmpWidth ? maxLabelWidth : tmpWidth;
+        });
+
+        labelWidth = maxLabelWidth;
+
+        sampleAnnotationLabels.attr('x', labelWidth);
+        geneLabels.attr('transform', function(d, i) {
+                return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
+            });
+
+        // Append each annotation to the matrix
+        sampleAnnotations.each(function(d) {
+            var name = d.name,
+                thisEl = d3.select(this);
+
+            if(sampleAs[name]) {
+              thisEl.selectAll('rect')
+                  .data(sampleAs[name])
+                  .enter()
+                  .append('rect')
+                      .attr('height', geneHeight/2)
+                      .attr('x', 0)
+                      .attr('y', function(d,i){ return geneHeight/4 + geneHeight*i; })
+                      .style('fill', function(d,i) { return annotationColors[categories[i]](d); })
+                  .append("title").text(function(d){ return name + ": " + d; });
+            }
+          });
+      }// end draw Sample annotations
+
 
       // Add horizontal lines to separate rows (genes)
       fig.selectAll('.horizontal-line')
@@ -600,47 +662,6 @@ function mutation_matrix(params) {
                 return d.cooccurring ? coocurringColor : exclusiveColor;
               }
             });
-
-        // Initialize sample annotations data if desired
-        var sampleAnnotations;
-        if(showSampleAnnotations) {
-          var yAdjust = geneHeight*genes.length + sampleAnnotationSpacer;
-
-          sampleAnnotations = matrix.append('g')
-              .attr('transform', 'translate(0,' + yAdjust + ')');
-
-          // Append row labels
-          var sampleAnnotationLabelsGroup = fig.append('g');
-          var sampleAnnotationLabels = sampleAnnotationLabelsGroup.selectAll('text')
-                .data(annotationData.categories)
-                .enter()
-                .append('text')
-                  .attr('text-anchor', 'end')
-                  .attr('width', geneLabels.node().getBBox().width)
-                  .attr('x', labelWidth)
-                  .attr('y', function(d,i) { return yAdjust + (i+1)*geneHeight - geneHeight/4; })
-                  .style('font-size', 12) // TODO: need a way not to hard-code this
-                  .text(function(d){return d});
-
-          // Append each annotation to the matrix
-          sampleAnnotations.each(function(d) {
-              var name = d.name,
-                  thisEl = d3.select(this);
-
-              if(sampleAs[name]) {
-                thisEl.selectAll('rect')
-                    .data(sampleAs[name])
-                    .enter()
-                    .append('rect')
-                        .attr('height', geneHeight/2)
-                        .attr('x', 0)
-                        .attr('y', function(d,i){ return geneHeight/4 + geneHeight*i; })
-                        .style('fill', function(d,i) { return annotationColors[categories[i]](d); })
-                    .append("title").text(function(d){ return name + ": " + d; });
-              }
-            });
-        }// end draw Sample annotations
-
 
       var other = mutations.append('line')
         .filter(function(d){ return isOther(d.ty); })
@@ -946,7 +967,6 @@ function mutation_matrix(params) {
               .attr('dy', legendBoxSize - 3)
               .attr('dx', 20)
               .text(function(type) {return type;});
-    
       }// end renderSampleLegend()
 
     function renderMutationLegend(){
@@ -971,7 +991,6 @@ function mutation_matrix(params) {
             d3.select(el).selectAll("*")
               .style("fill-opacity", opacity)
               .style("stroke-opacity", opacity);
-            
             mutationTypeToInclude[ty] = !active;
             updateMutationMatrix();
         }

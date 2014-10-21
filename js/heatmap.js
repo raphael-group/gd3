@@ -3,7 +3,8 @@ function heatmap (params) {
       style  = params.style || {};
 
   // Style options
-  var cellHeight = style.cellHeight || 14,
+  var annotationFontSize = style.annotationFontSize || '10px',
+      cellHeight = style.cellHeight || 14,
       cellWidth = style.cellWidth || 14,
       fontFamily = style.fontFamily || 'sans-serif',
       fontSize = style.fontSize || '10px',

@@ -3,7 +3,8 @@ function heatmap (params) {
       style  = params.style || {};
 
   // Style options
-  var cellHeight = style.cellHeight || 14,
+  var annotationFontSize = style.annotationFontSize || '10px',
+      cellHeight = style.cellHeight || 14,
       cellWidth = style.cellWidth || 14,
       fontFamily = style.fontFamily || 'sans-serif',
       fontSize = style.fontSize || '10px',
@@ -185,7 +186,8 @@ function heatmap (params) {
                 // console.log(d.value, categories[d.y], d3.rgb(annotationColors[categories[d.y]](d.value)))
                 return annotationColors[categories[d.y]](d.value);
               });
-        annotationCells.append("title").text(function(d){ return d.value; });
+        annotationCells.append("title").text(function(d){ return d.value; })
+            .style('font-size', annotationFontSize);
       }
 
       // Construct mouseover lines
