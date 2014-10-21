@@ -76,12 +76,6 @@ function heatmap (params) {
         return ["x: " + d.x, "y: " + d.y, "value: " + d.value].join("\n");
       });
 
-      var mouseoverLinesG = heatmap.append('g').attr('class', 'vizHeatmapMouseoverLines');
-      var mouseoverLine1 = mouseoverLinesG.append('line'),
-          mouseoverLine2 = mouseoverLinesG.append('line'),
-          mouseoverLine3 = mouseoverLinesG.append('line'),
-          mouseoverLine4 = mouseoverLinesG.append('line');
-
       var legendG = fig.append('g'),
           legendBarG = legendG.append('g');
       var legendRefLine = legendG.append('line');
@@ -100,61 +94,6 @@ function heatmap (params) {
           .attr('height', cellHeight)
           .attr('width', cellWidth)
           .style('fill', function(d, i){ return color(d.value)})
-          .on('mouseover', function(d,i) {
-            d3.select('#vizHeatmapXLabel'+d.x).style('fill','#f00').style('font-weight','bold');
-            d3.select('#vizHeatmapYLabel'+d.y).style('fill','#f00').style('font-weight','bold');
-            d3.select(this).style('stroke', 'black').style('stroke-width', 2);
-            var dX = xs.indexOf(d.x),
-                dY = ys.indexOf(d.y);
-
-            var refLineScalar = d.value/max;
-            legendRefLine.attr('y1',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
-                .attr('y2',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
-                .style('stroke', 'black');
-
-            // Fix for mouseout of heatmap causing stroke to be set to none
-            if (mouseoverLine1.style('stroke') == 'none') mouseoverLine1.style('stroke', 'black');
-            if (mouseoverLine2.style('stroke') == 'none') mouseoverLine2.style('stroke', 'black');
-            if (mouseoverLine3.style('stroke') == 'none') mouseoverLine3.style('stroke', 'black');
-            if (mouseoverLine4.style('stroke') == 'none') mouseoverLine4.style('stroke', 'black');
-
-            if (mouseoverLine1.attr('row') != dY) {
-              mouseoverLine1
-                .attr('x1', 0)
-                .attr('x2', cellWidth*xs.length)
-                .attr('y1', dY*cellHeight)
-                .attr('y2', dY*cellHeight)
-                .style('stroke', 'black')
-                .style('stroke-width', '1px')
-                .attr('row',dY);
-              mouseoverLine2
-                  .attr('x1', 0)
-                  .attr('x2', cellWidth*xs.length)
-                  .attr('y1', dY*cellHeight+cellHeight)
-                  .attr('y2', dY*cellHeight+cellHeight)
-                  .style('stroke', 'black')
-                  .style('stroke-width', '1px')
-                  .attr('row',dY);
-            }
-            if (mouseoverLine3.attr('col') != dX) {
-              mouseoverLine3
-                .attr('x1', dX*cellWidth)
-                .attr('x2', dX*cellWidth)
-                .attr('y1', 0)
-                .attr('y2', cellHeight*ys.length)
-                .style('stroke', 'black')
-                .style('stroke-width', '1px')
-                .attr('col', dX);
-              mouseoverLine4
-                .attr('x1', dX*cellWidth+cellWidth)
-                .attr('x2', dX*cellWidth+cellWidth)
-                .attr('y1', 0)
-                .attr('y2', cellHeight*ys.length)
-                .style('stroke', 'black')
-                .style('stroke-width', '1px')
-                .attr('col', dX);
-            }
-          })
           .on('mouseout', function(d) {
             d3.select('#vizHeatmapXLabel'+d.x).style('fill','#000').style('font-weight','normal');
             d3.select('#vizHeatmapYLabel'+d.y).style('fill','#000').style('font-weight','normal');
@@ -248,6 +187,69 @@ function heatmap (params) {
               });
         annotationCells.append("title").text(function(d){ return d.value; });
       }
+
+      // Construct mouseover lines
+      var mouseoverLinesG = heatmap.append('g').attr('class', 'vizHeatmapMouseoverLines');
+      var mouseoverLine1 = mouseoverLinesG.append('line'),
+          mouseoverLine2 = mouseoverLinesG.append('line'),
+          mouseoverLine3 = mouseoverLinesG.append('line'),
+          mouseoverLine4 = mouseoverLinesG.append('line');
+
+      heatmapCells.on('mouseover', function(d,i) {
+            d3.select('#vizHeatmapXLabel'+d.x).style('fill','#f00').style('font-weight','bold');
+            d3.select('#vizHeatmapYLabel'+d.y).style('fill','#f00').style('font-weight','bold');
+            d3.select(this).style('stroke', 'black').style('stroke-width', 2);
+            var dX = xs.indexOf(d.x),
+                dY = ys.indexOf(d.y);
+
+            var refLineScalar = d.value/max;
+            legendRefLine.attr('y1',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
+                .attr('y2',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
+                .style('stroke', 'black');
+
+            // Fix for mouseout of heatmap causing stroke to be set to none
+            if (mouseoverLine1.style('stroke') == 'none') mouseoverLine1.style('stroke', 'black');
+            if (mouseoverLine2.style('stroke') == 'none') mouseoverLine2.style('stroke', 'black');
+            if (mouseoverLine3.style('stroke') == 'none') mouseoverLine3.style('stroke', 'black');
+            if (mouseoverLine4.style('stroke') == 'none') mouseoverLine4.style('stroke', 'black');
+
+            if (mouseoverLine1.attr('row') != dY) {
+              mouseoverLine1
+                .attr('x1', 0)
+                .attr('x2', cellWidth*xs.length)
+                .attr('y1', dY*cellHeight)
+                .attr('y2', dY*cellHeight)
+                .style('stroke', 'black')
+                .style('stroke-width', '1px')
+                .attr('row',dY);
+              mouseoverLine2
+                  .attr('x1', 0)
+                  .attr('x2', cellWidth*xs.length)
+                  .attr('y1', dY*cellHeight+cellHeight)
+                  .attr('y2', dY*cellHeight+cellHeight)
+                  .style('stroke', 'black')
+                  .style('stroke-width', '1px')
+                  .attr('row',dY);
+            }
+            if (mouseoverLine3.attr('col') != dX) {
+              mouseoverLine3
+                .attr('x1', dX*cellWidth)
+                .attr('x2', dX*cellWidth)
+                .attr('y1', 0)
+                .attr('y2', heatmap.node().getBBox().height)
+                .style('stroke', 'black')
+                .style('stroke-width', '1px')
+                .attr('col', dX);
+              mouseoverLine4
+                .attr('x1', dX*cellWidth+cellWidth)
+                .attr('x2', dX*cellWidth+cellWidth)
+                .attr('y1', 0)
+                .attr('y2', heatmap.node().getBBox().height)
+                .style('stroke', 'black')
+                .style('stroke-width', '1px')
+                .attr('col', dX);
+            }
+          })
 
       // Group for yLabels placement
       var yLabelsG = fig.append('g').attr('class','vizHeatmapYLabels');
