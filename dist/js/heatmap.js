@@ -59,16 +59,6 @@ function heatmap (params) {
           if (tmp > max) max = tmp;
       }
 
-      // Add annotations to cells
-      if (annotationData.categories.length > 0){
-        cells.forEach(function(d){
-          d.annotations = []
-          annotationData.categories.forEach(function(c, i){
-            d.annotations.push( { category: c, value: annotationData.sampleToAnnotations[d.x][i] } );
-          });
-        })
-      }
-
       //- Orange/yellow colors
       // var colors = ['#ffeda0','#f03b20'],
 
