@@ -19,6 +19,8 @@ function heatmap (params) {
       renderLegend = false,
       makeLegendHorizontal = true,
       showTooltips = false,
+      showOnClick = false,
+      onclickFunction,
       tip,
       annotate;
 
@@ -307,10 +309,10 @@ function heatmap (params) {
                       resetCellStyle(d, i, this);
                       removeMouseoverLines();
                     })
-                    .on("click", function(d){
+                    .on("click", function(d, i){
                         // Show the annotation, and add the user defined clickability
                         activate(d, i, this);
-                        // if (addOnClick){ onclickFunction(d, i); }
+                        if (showOnClick) onclickFunction(d, i);
                     });
       }
       else{
@@ -322,7 +324,7 @@ function heatmap (params) {
         });
 
         // Add the onclick function (if necessary)
-        // if (addOnClick) heatmapCells.on("click", onclickFunction);
+        if (showOnClick) heatmapCells.on("click", onclickFunction);
       }
 
       // Group for yLabels placement
@@ -538,6 +540,12 @@ function heatmap (params) {
     if (tip){
       tip.html(annotater);
     }
+    return chart;
+  }
+
+chart.addOnClick = function (onclick) {
+    showOnClick = true;
+    onclickFunction = onclick;
     return chart;
   }
 
