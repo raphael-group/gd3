@@ -17,7 +17,10 @@ function heatmap (params) {
   var renderXLabels = false,
       renderYLabels = false,
       renderLegend = false,
-      makeLegendHorizontal = true;
+      makeLegendHorizontal = true,
+      showTooltips = false,
+      tip,
+      annotate;
 
   // Sample annotation information
   var annotationData,
@@ -54,6 +57,16 @@ function heatmap (params) {
           if (tmp > max) max = tmp;
       }
 
+      // Add annotations to cells
+      if (annotationData.categories.length > 0){
+        cells.forEach(function(d){
+          d.annotations = []
+          annotationData.categories.forEach(function(c, i){
+            d.annotations.push( { category: c, value: annotationData.sampleToAnnotations[d.x][i] } );
+          });
+        })
+      }
+
       //- Orange/yellow colors
       // var colors = ['#ffeda0','#f03b20'],
 
@@ -81,26 +94,12 @@ function heatmap (params) {
           legendBarG = legendG.append('g');
       var legendRefLine = legendG.append('line');
 
-      heatmap.on('mouseout', function(d) {
-        mouseoverLine1.style('stroke', 'none');
-        mouseoverLine2.style('stroke', 'none');
-        mouseoverLine3.style('stroke', 'none');
-        mouseoverLine4.style('stroke', 'none');
-        legendRefLine.style('stroke','none')
-      });
-
       heatmapCells
           .attr('x', function(d){return xs.indexOf(d.x)*cellWidth})
           .attr('y', function(d){return ys.indexOf(d.y)*cellHeight})
           .attr('height', cellHeight)
           .attr('width', cellWidth)
-          .style('fill', function(d, i){ return color(d.value)})
-          .on('mouseout', function(d) {
-            d3.select('#vizHeatmapXLabel'+d.x).style('fill','#000').style('font-weight','normal');
-            d3.select('#vizHeatmapYLabel'+d.y).style('fill','#000').style('font-weight','normal');
-            d3.select(this).style('stroke', 'none');
-          });
-
+          .style('fill', function(d, i){ return color(d.value)});
 
       // Add sample annotation cells if they exist
       if (showSampleAnnotations) {
@@ -192,67 +191,139 @@ function heatmap (params) {
       }
 
       // Construct mouseover lines
+      function renderMouseoverLine(d, i, el){
+        d3.select('#vizHeatmapXLabel'+d.x).style('fill','#f00').style('font-weight','bold');
+        d3.select('#vizHeatmapYLabel'+d.y).style('fill','#f00').style('font-weight','bold');
+        d3.select(el).style('stroke', 'black').style('stroke-width', 2);
+        var dX = xs.indexOf(d.x),
+            dY = ys.indexOf(d.y);
+
+        var refLineScalar = d.value/max;
+        legendRefLine.attr('y1',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
+            .attr('y2',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
+            .style('stroke', 'black');
+
+        // Fix for mouseout of heatmap causing stroke to be set to none
+        if (mouseoverLine1.style('stroke') == 'none') mouseoverLine1.style('stroke', 'black');
+        if (mouseoverLine2.style('stroke') == 'none') mouseoverLine2.style('stroke', 'black');
+        if (mouseoverLine3.style('stroke') == 'none') mouseoverLine3.style('stroke', 'black');
+        if (mouseoverLine4.style('stroke') == 'none') mouseoverLine4.style('stroke', 'black');
+
+        if (mouseoverLine1.attr('row') != dY) {
+          mouseoverLine1
+            .attr('x1', 0)
+            .attr('x2', cellWidth*xs.length)
+            .attr('y1', dY*cellHeight)
+            .attr('y2', dY*cellHeight)
+            .style('stroke', 'black')
+            .style('stroke-width', '1px')
+            .attr('row',dY);
+          mouseoverLine2
+              .attr('x1', 0)
+              .attr('x2', cellWidth*xs.length)
+              .attr('y1', dY*cellHeight+cellHeight)
+              .attr('y2', dY*cellHeight+cellHeight)
+              .style('stroke', 'black')
+              .style('stroke-width', '1px')
+              .attr('row',dY);
+        }
+        if (mouseoverLine3.attr('col') != dX) {
+          mouseoverLine3
+            .attr('x1', dX*cellWidth)
+            .attr('x2', dX*cellWidth)
+            .attr('y1', 0)
+            .attr('y2', heatmap.node().getBBox().height)
+            .style('stroke', 'black')
+            .style('stroke-width', '1px')
+            .attr('col', dX);
+          mouseoverLine4
+            .attr('x1', dX*cellWidth+cellWidth)
+            .attr('x2', dX*cellWidth+cellWidth)
+            .attr('y1', 0)
+            .attr('y2', heatmap.node().getBBox().height)
+            .style('stroke', 'black')
+            .style('stroke-width', '1px')
+            .attr('col', dX);
+        }
+      }
+
+      function removeMouseoverLines() {
+        mouseoverLine1.style('stroke', 'none');
+        mouseoverLine2.style('stroke', 'none');
+        mouseoverLine3.style('stroke', 'none');
+        mouseoverLine4.style('stroke', 'none');
+        legendRefLine.style('stroke','none')
+      }
+
+      function resetCellStyle(d, i, el){
+        d3.select('#vizHeatmapXLabel'+d.x).style('fill','#000').style('font-weight','normal');
+        d3.select('#vizHeatmapYLabel'+d.y).style('fill','#000').style('font-weight','normal');
+        d3.select(el).style('stroke', 'none');
+      }
+
       var mouseoverLinesG = heatmap.append('g').attr('class', 'vizHeatmapMouseoverLines');
       var mouseoverLine1 = mouseoverLinesG.append('line'),
           mouseoverLine2 = mouseoverLinesG.append('line'),
           mouseoverLine3 = mouseoverLinesG.append('line'),
           mouseoverLine4 = mouseoverLinesG.append('line');
 
-      heatmapCells.on('mouseover', function(d,i) {
-            d3.select('#vizHeatmapXLabel'+d.x).style('fill','#f00').style('font-weight','bold');
-            d3.select('#vizHeatmapYLabel'+d.y).style('fill','#f00').style('font-weight','bold');
-            d3.select(this).style('stroke', 'black').style('stroke-width', 2);
-            var dX = xs.indexOf(d.x),
-                dY = ys.indexOf(d.y);
+      
+      /////////////////////////////////////////////////////////////////////////
+      // Add annotations to the heatmap (if required)
+      if (showTooltips){
+        // Initialize the tooltip
+        tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(annotate);
 
-            var refLineScalar = d.value/max;
-            legendRefLine.attr('y1',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
-                .attr('y2',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
-                .style('stroke', 'black');
+        svg.call(tip);
 
-            // Fix for mouseout of heatmap causing stroke to be set to none
-            if (mouseoverLine1.style('stroke') == 'none') mouseoverLine1.style('stroke', 'black');
-            if (mouseoverLine2.style('stroke') == 'none') mouseoverLine2.style('stroke', 'black');
-            if (mouseoverLine3.style('stroke') == 'none') mouseoverLine3.style('stroke', 'black');
-            if (mouseoverLine4.style('stroke') == 'none') mouseoverLine4.style('stroke', 'black');
+        // 
+        var tooltipEl = "div.heatmap-tooltip";
 
-            if (mouseoverLine1.attr('row') != dY) {
-              mouseoverLine1
-                .attr('x1', 0)
-                .attr('x2', cellWidth*xs.length)
-                .attr('y1', dY*cellHeight)
-                .attr('y2', dY*cellHeight)
-                .style('stroke', 'black')
-                .style('stroke-width', '1px')
-                .attr('row',dY);
-              mouseoverLine2
-                  .attr('x1', 0)
-                  .attr('x2', cellWidth*xs.length)
-                  .attr('y1', dY*cellHeight+cellHeight)
-                  .attr('y2', dY*cellHeight+cellHeight)
-                  .style('stroke', 'black')
-                  .style('stroke-width', '1px')
-                  .attr('row',dY);
-            }
-            if (mouseoverLine3.attr('col') != dX) {
-              mouseoverLine3
-                .attr('x1', dX*cellWidth)
-                .attr('x2', dX*cellWidth)
-                .attr('y1', 0)
-                .attr('y2', heatmap.node().getBBox().height)
-                .style('stroke', 'black')
-                .style('stroke-width', '1px')
-                .attr('col', dX);
-              mouseoverLine4
-                .attr('x1', dX*cellWidth+cellWidth)
-                .attr('x2', dX*cellWidth+cellWidth)
-                .attr('y1', 0)
-                .attr('y2', heatmap.node().getBBox().height)
-                .style('stroke', 'black')
-                .style('stroke-width', '1px')
-                .attr('col', dX);
-            }
-          })
+        // Define the bevhaior for closing out (X-ing out) the tooltip
+        var closeout = function(d){
+          tip.hide(d);
+          d3.select(this).on("mouseout", function(){ tip.hide(d); });
+          toggleInfo(false, true);
+        }
+
+        // Define the behavior for showing the tooltip
+        var activate = function(d, i, el){
+          renderMouseoverLine(d, i, el);
+          tip.show(d);
+          d3.select(tooltipEl).insert("span", ":first-child")
+            .style("cursor", "pointer")
+            .style("float", "right")
+            .attr("class", "x")
+            .on("click", closeout)
+            .text("X");
+        }
+        // Bind the tooltip behavior
+        heatmapCells.on("mouseover", function(d, i){ activate(d, i, this); })
+                    .on("mouseout", function(d, i){
+                      tip.hide(d, i);
+                      resetCellStyle(d, i, this);
+                      removeMouseoverLines();
+                    })
+                    .on("click", function(d){
+                        // Show the annotation, and add the user defined clickability
+                        activate(d, i, this);
+                        // if (addOnClick){ onclickFunction(d, i); }
+                    });
+      }
+      else{
+        // 
+        heatmapCells.on('mouseover', function(d, i){ renderMouseoverLine(d, i, this); });
+        heatmapCells.on('mouseout', function(d, i){
+          removeMouseoverLines();
+          resetCellStyle(d, i, this)
+        });
+
+        // Add the onclick function (if necessary)
+        // if (addOnClick) heatmapCells.on("click", onclickFunction);
+      }
 
       // Group for yLabels placement
       var yLabelsG = fig.append('g').attr('class','vizHeatmapYLabels');
@@ -411,6 +482,7 @@ function heatmap (params) {
 
       var heatmapStartX = parseFloat(heatmap.attr('transform').split('translate(')[1].split(',')[0]),
           heatmapW = heatmap.node().getBBox().width;
+
       var zoom = d3.behavior.zoom()
           .on('zoom', function() {
             var t = zoom.translate(),
@@ -457,6 +529,15 @@ function heatmap (params) {
     annotationData = data || {};
     // only show sample annotations if the data exists
     if (annotationData.sampleToAnnotations) showSampleAnnotations = true;
+    return chart;
+  }
+
+ chart.addTooltips = function (annotater) {
+    showTooltips = true;
+    annotate = annotater;
+    if (tip){
+      tip.html(annotater);
+    }
     return chart;
   }
 
