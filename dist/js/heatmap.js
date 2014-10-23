@@ -272,7 +272,7 @@ function heatmap (params) {
         svg.call(tip);
 
         // 
-        var tooltipEl = "div.heatmap-tooltip";
+        var tooltipEl = "div.gd3-tooltip";
 
         // Define the bevhaior for closing out (X-ing out) the tooltip
         var closeout = function(d){
@@ -292,6 +292,21 @@ function heatmap (params) {
             .on("click", closeout)
             .text("X");
         }
+
+        // Toggle the more- and less-info divs appropriately
+        var toggleInfo = function (more, less){
+          d3.select(tooltipEl + " div.more-info").style("display", more ? "inline" : "none" );
+          d3.select(tooltipEl + " div.less-info").style("display", less ? "inline" : "none") ;
+        }
+        
+        // Activate and toggle the .more- and .less-info divs
+        var activateAndToggle = function(d, i, el){
+          activate(d, i, el);
+          toggleInfo(true, false);
+          resetCellStyle(d, i, el);
+          removeMouseoverLines();
+        }
+
         // Bind the tooltip behavior
         heatmapCells.on("mouseover", function(d, i){ activate(d, i, this); })
                     .on("mouseout", function(d, i){
@@ -301,7 +316,8 @@ function heatmap (params) {
                     })
                     .on("click", function(d, i){
                         // Show the annotation, and add the user defined clickability
-                        activate(d, i, this);
+                        d3.select(this).on("mouseout", function(d, i){ activateAndToggle(d, i, this); });
+                        activateAndToggle(d, i, this)
                         if (showOnClick) onclickFunction(d, i);
                     });
       }

@@ -702,7 +702,7 @@ function mutation_matrix(params) {
         //  * the div.less-info is hidden
         //  * the div.more-info is shown
 
-        var tooltipEl = "div.m2-tooltip";
+        var tooltipEl = "div.gd3-tooltip";
 
         // Toggle the more- and less-info divs appropriately
         var toggleInfo = function (more, less){
