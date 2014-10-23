@@ -1353,12 +1353,12 @@ function mutation_matrix(params) {
 
                   gradient.append("svg:stop")
                     .attr("offset", "0%")
-                    .attr("stop-color", d3.min(scale.range()))
+                    .attr("stop-color", scale(d3.min(scale.domain())))
                     .attr("stop-opacity", 1);
 
                   gradient.append("svg:stop")
                     .attr("offset", "100%")
-                    .attr("stop-color", d3.max(scale.range()))
+                    .attr("stop-color", scale(d3.max(scale.domain())))
                     .attr("stop-opacity", 1);
 
 
