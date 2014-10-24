@@ -141,7 +141,7 @@ function heatmap (params) {
                 .range(contColors)
                 .interpolate(d3.interpolateLab);
               scale.type = "linear";
-              
+
               // Increase the count of categories with continuous data
               numContCats += 1;
               if (numContCats > continuousScaleColors.length){
@@ -177,10 +177,10 @@ function heatmap (params) {
               }).filter(function(d){ return d.x >= 0; })
             }).enter()
             .append('rect')
-              .attr('height', cellHeight)
+              .attr('height', cellHeight/2)
               .attr('width', cellWidth)
               .attr('x', function(d) { return d.x * cellWidth; })
-              .attr('y', function(d) { return sampleAnnotationSpacer + d.y*cellHeight + ys.length*cellHeight; })
+              .attr('y', function(d) { return sampleAnnotationSpacer + d.y*(cellHeight/2) + ys.length*cellHeight; })
               .style('fill', function(d,i) {
                 if (d.value != "" && d.value != null) return annotationColors[categories[d.y]](d.value);
                 else return "#333";
@@ -356,7 +356,11 @@ function heatmap (params) {
             .append('text')
               .attr('id', function(d,i){return 'vizHeatmapYLabel'+i})
               .attr('text-anchor','end')
-              .attr('y', function(d,i) {return d.dy + i*cellHeight + cellHeight/2+fontSizeInt/2})
+              .attr('y', function(d,i) {
+                var aSize = parseInt(annotationFontSize.replace('px',''));
+                if (i >= ys.length) return sampleAnnotationSpacer + (i-ys.length)*(cellHeight/2) + ys.length*cellHeight + aSize - 2;
+                return d.dy + i*cellHeight + cellHeight/2+fontSizeInt/2;
+              })
               .text(function(d){return d.name});
 
 
