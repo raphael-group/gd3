@@ -466,24 +466,17 @@ function mutation_matrix(params) {
           .domain([0, numMutatedSamples])
           .range([labelWidth + boxMargin, width - boxMargin]);
 
-      // Zoom behavior
-      var zoom = d3.behavior.zoom()
-          .x(x)
-          .scaleExtent([1, Math.round( minBoxWidth * numMutatedSamples / width)])
-          .on('zoom', function() { renderMutationMatrix(); });
-
       svg.attr('id', 'mutation-matrix')
           .attr('width', width)
           .attr('height', svgHeight)
-          .attr('xmlns', 'http://www.w3.org/2000/svg')
-          .call(zoom);
+          .attr('xmlns', 'http://www.w3.org/2000/svg');
 
       // Offset the image placement using the margins
       var fig = svg.append("g")
           .attr('transform', 'translate(' + boxMargin + ',' + boxMargin + ')');
 
       // Append the rectangle that will serve as the background of the ticks
-      fig.append('rect')
+      var bgRect = fig.append('rect')
           .style('fill', bgColor)
           .attr('width', width - labelWidth - boxMargin)
           .attr('height', rectHeight)
@@ -504,7 +497,7 @@ function mutation_matrix(params) {
           .style("font-size", "10px")
           .text(function(s) { return s.name; });
 
-      sampleLabelsG.append("text")
+      var sampleLabelsLabel = sampleLabelsG.append("text")
         .attr("y", sampleYAdjust + 10)
         .attr("text-anchor", "end")
         .attr("x", labelWidth)
@@ -544,12 +537,18 @@ function mutation_matrix(params) {
 
       labelWidth = maxLabelWidth;
 
+      x = d3.scale.linear()
+          .domain([0, numMutatedSamples])
+          .range([labelWidth + boxMargin, width - boxMargin]);
+
       geneLabels.attr('transform', function(d, i) {
               return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
           });
 
+      bgRect.attr('transform', 'translate('+labelWidth+','+ '0)');
+
       // Add horizontal lines to separate rows (genes)
-      fig.selectAll('.horizontal-line')
+      var rowLines = fig.selectAll('.horizontal-line')
           .data(genes)
           .enter()
           .append('line')
@@ -670,7 +669,19 @@ function mutation_matrix(params) {
 
           labelWidth = maxLabelWidth;
 
+          x = d3.scale.linear()
+            .domain([0, numMutatedSamples])
+            .range([labelWidth + boxMargin, width - boxMargin]);
+
+          rowLines.attr('transform', function(d, i) {
+              var moveX = labelWidth + boxMargin,
+                  moveY = i*geneHeight;
+              return 'translate(' + moveX + ',' + moveY +')';
+            });
+
+          bgRect.attr('transform', 'translate('+labelWidth+','+ '0)');
           sampleAnnotationLabels.attr('x', labelWidth);
+          sampleLabelsLabel.attr('x', labelWidth);
           geneLabels.attr('transform', function(d, i) {
                   return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
               });
@@ -746,6 +757,15 @@ function mutation_matrix(params) {
                  });
       }
       else if ( addOnClick ){ mutations.on("click", onclickFunction); }
+
+
+
+      // Zoom behavior
+      var zoom = d3.behavior.zoom()
+          .x(x)
+          .scaleExtent([1, Math.round( minBoxWidth * numMutatedSamples / width)])
+          .on('zoom', function() { renderMutationMatrix(); });
+      svg.call(zoom);
 
       //////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////

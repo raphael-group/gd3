@@ -259,7 +259,7 @@ function heatmap (params) {
           mouseoverLine3 = mouseoverLinesG.append('line'),
           mouseoverLine4 = mouseoverLinesG.append('line');
 
-      
+
       /////////////////////////////////////////////////////////////////////////
       // Add annotations to the heatmap (if required)
       if (showTooltips){
@@ -271,7 +271,6 @@ function heatmap (params) {
 
         svg.call(tip);
 
-        // 
         var tooltipEl = "div.gd3-tooltip";
 
         // Define the bevhaior for closing out (X-ing out) the tooltip
@@ -298,7 +297,7 @@ function heatmap (params) {
           d3.select(tooltipEl + " div.more-info").style("display", more ? "inline" : "none" );
           d3.select(tooltipEl + " div.less-info").style("display", less ? "inline" : "none") ;
         }
-        
+
         // Activate and toggle the .more- and .less-info divs
         var activateAndToggle = function(d, i, el){
           activate(d, i, el);
@@ -320,9 +319,7 @@ function heatmap (params) {
                         activateAndToggle(d, i, this)
                         if (showOnClick) onclickFunction(d, i);
                     });
-      }
-      else{
-        // 
+      } else {
         heatmapCells.on('mouseover', function(d, i){ renderMouseoverLine(d, i, this); });
         heatmapCells.on('mouseout', function(d, i){
           removeMouseoverLines();
@@ -352,7 +349,8 @@ function heatmap (params) {
               .attr('text-anchor','end')
               .attr('y', function(d,i) {return d.dy + i*cellHeight + cellHeight/2+fontSizeInt/2})
               .text(function(d){return d.name});
-        yLabels.attr('x',yLabelsG.node().getBBox().width-2);
+
+
 
         yLabels.each(function(d) {
           var thisEl = d3.select(this),
@@ -361,7 +359,22 @@ function heatmap (params) {
           if (isAnnotation) thisEl.style('font-size', annotationFontSize);
         });
 
-        heatmap.attr('transform','translate('+(yLabelsG.node().getBBox().width+2)+',0)');
+        var maxLabelWidth = 0;
+        yLabels.each(function() {
+          var tmpWidth = d3.select(this).node().getBBox().width;
+          maxLabelWidth = maxLabelWidth > tmpWidth ? maxLabelWidth : tmpWidth;
+        });
+
+        //labelWidth = maxLabelWidth;
+
+        // yLabels.attr('transform', function(d, i) {
+        //         return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
+        //     });
+
+        yLabels.attr('x', maxLabelWidth);
+
+        heatmap.attr('transform','translate('+(maxLabelWidth+2)+',0)');
+        console.log(maxLabelWidth, heatmap.attr('transform'));
       }
 
       // Add labels to the x axis
@@ -379,6 +392,8 @@ function heatmap (params) {
                 var x = i*cellWidth + cellWidth/2 + yLabelsG.node().getBBox().width;
                 return 'translate('+x+',3)rotate(90)'
               })
+              .style('fill','#95A5A6')
+              .style('font-size', '10px')
               .text(function(d){return d});
       }
 
