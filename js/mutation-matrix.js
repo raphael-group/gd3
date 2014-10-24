@@ -11,6 +11,7 @@ function mutation_matrix(params) {
       colorSampleTypes = style.colorSampleTypes || true,
       coocurringColor = style.coocurringColor || 'orange',
       exclusiveColor = style.exclusiveColor || 'blue',
+      continuousScaleColors = style.continuousScaleColors || [['#fcc5c0','#49006a'], ['#ffffff', '#000000']],
       fullWidth = style.width || 500,
       fullHeight = style.height || 300,
       geneHeight = style.geneHeight || 20,
@@ -56,7 +57,8 @@ function mutation_matrix(params) {
       ticks,
       annotate,
       tip,
-      onclickFunction;
+      onclickFunction,
+      numContCats = 0;
 
   // These variables determine what extras to show in the chart
   var showCoverage = false,
@@ -196,11 +198,18 @@ function mutation_matrix(params) {
             var scale;
 
             if(isNumeric) {
+              var contColors = continuousScaleColors[numContCats];
               scale = d3.scale.linear()
                 .domain([d.min, d.max])
-                .range(['#fcc5c0','#49006a'])
+                .range(contColors)
                 .interpolate(d3.interpolateLab);
               scale.type = "linear";
+
+              // Increase the count of categories with continuous data
+              numContCats += 1;
+              if (numContCats > continuousScaleColors.length){
+                numContCats = 0;
+              }
             } else {
               // Assign a unique color to each unique annotation value
               var uniqItems = data.filter(function(item, pos) {

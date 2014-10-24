@@ -11,6 +11,7 @@ function heatmap (params) {
       height = style.height || 400,
       margins = style.margins || {bottom: 0, left: 0, right: 0, top: 0},
       width = style.width || 400,
+      continuousScaleColors = style.continuousScaleColors || [['#fcc5c0','#49006a'], ['#ffffff', '#000000']],
       sampleAnnotationSpacer = style.sampleAnnotationSpacer || 5;
 
   // Rendering flags
@@ -22,7 +23,8 @@ function heatmap (params) {
       showOnClick = false,
       onclickFunction,
       tip,
-      annotate;
+      annotate,
+      numContCats = 0;
 
   // Sample annotation information
   var annotationData,
@@ -133,11 +135,18 @@ function heatmap (params) {
             // Assign colors to all annotations
             var scale;
             if(isNumeric) {
+              var contColors = continuousScaleColors[numContCats];
               scale = d3.scale.linear()
                 .domain([d.min, d.max])
-                .range(['#fcc5c0','#49006a'])
+                .range(contColors)
                 .interpolate(d3.interpolateLab);
               scale.type = "linear";
+              
+              // Increase the count of categories with continuous data
+              numContCats += 1;
+              if (numContCats > continuousScaleColors.length){
+                numContCats = 0;
+              }
             } else {
               // Assign a unique color to each unique annotation value
               var uniqItems = data.filter(function(item, pos) {
