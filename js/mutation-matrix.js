@@ -1007,192 +1007,223 @@ function mutation_matrix(params) {
             legendFontSize = 11,
             left = mutationRectWidth/2;
 
-        // Add legend SVG
-        var mutationLegend = selection.append('svg')
-            .attr('id', 'mutation-legend')
-            .attr('height', mutationLegendHeight)
-            .attr('width', width)
-            .style('margin-left', labelWidth + boxMargin)
-            .append('g')
-              .style('font-size', legendFontSize);
+        var mutationLegend = selection.append('a').text('Show mutation legend:')
+            .attr('id','mutmtx-mutLegend-title')
+            .style('font-weight', 'bold')
+            .style('font-size', '12px')
+            .style('margin-left', labelWidth + 'px')
+            .on('click', function() {d3.event.preventDefault(); });
+
+        var mutationLegendTip = null;
+        mutationLegend.on('mouseover', function(d) {
+          var titlePos = $('#mutmtx-mutLegend-title').position();
+          mutationLegendTip = d3.select('body').append('div')
+            .attr('id', 'mutmtx-mutLegend-tip')
+            .style('background', '#fff')
+            .style('border', '1px solid #ccc')
+            .style('padding', '10px')
+            .style('position', 'absolute')
+            .style('top', (titlePos.top + 15) + 'px')
+            .style('left', titlePos.left + 'px')
+            .style('max-width', '500px');
+
+          renderMutLegend();
+
+          function renderMutLegend() {
+            left = mutationRectWidth/2;
+            // Add legend SVG
+            var mutationLegend = mutationLegendTip.append('svg')
+                .attr('id', 'mutation-legend')
+                .attr('height', mutationLegendHeight)
+                .attr('width', 500)
+                .append('g')
+                  .style('font-size', legendFontSize);
 
 
-        function toggleMutationType(el, ty){
-            var active = mutationTypeToInclude[ty],
-              opacity = active ? 0.5 : 1;
+            function toggleMutationType(el, ty){
+                var active = mutationTypeToInclude[ty],
+                    opacity = active ? 0.5 : 1;
 
-            d3.select(el).selectAll("*")
-              .style("fill-opacity", opacity)
-              .style("stroke-opacity", opacity);
-            mutationTypeToInclude[ty] = !active;
-            updateMutationMatrix();
-        }
+                d3.select(el).selectAll("*")
+                  .style("fill-opacity", opacity)
+                  .style("stroke-opacity", opacity);
+                mutationTypeToInclude[ty] = !active;
+                updateMutationMatrix();
+            }
 
-        // If the data contains multiple datasets, then mutations are
-        //    colored by dataset, so the exclusive/co-occurring cells won't
-        //    be shown. The dataset legend will float to the right of the
-        //    mutation matrix.
-        if(!multiDataset) {
-          // Exclusive ticks
-          mutationLegend.append('rect')
-              .attr('x', left)
-              .attr('height', geneHeight)
-              .attr('width', mutationRectWidth)
-              .style('fill', exclusiveColor);
+            // If the data contains multiple datasets, then mutations are
+            //    colored by dataset, so the exclusive/co-occurring cells won't
+            //    be shown. The dataset legend will float to the right of the
+            //    mutation matrix.
+            if(!multiDataset) {
+              // Exclusive ticks
+              mutationLegend.append('rect')
+                  .attr('x', left)
+                  .attr('height', geneHeight)
+                  .attr('width', mutationRectWidth)
+                  .style('fill', exclusiveColor);
 
-          mutationLegend.append('text')
-              .attr('x', mutationRectWidth + 10)
-              .attr('y', 3*geneHeight/4)
-              .style('fill', '#000')
-              .text('Exclusive');
+              mutationLegend.append('text')
+                  .attr('x', mutationRectWidth + 10)
+                  .attr('y', 3*geneHeight/4)
+                  .style('fill', '#000')
+                  .text('Exclusive');
 
-          left += mutationRectWidth + 10 + 65;
+              left += mutationRectWidth + 10 + 65;
 
-          // Co-occurring ticks
-          mutationLegend.append('rect')
-              .attr('x', left)
-              .attr('height', geneHeight)
-              .attr('width', mutationRectWidth)
-              .style('fill', coocurringColor);
+              // Co-occurring ticks
+              mutationLegend.append('rect')
+                  .attr('x', left)
+                  .attr('height', geneHeight)
+                  .attr('width', mutationRectWidth)
+                  .style('fill', coocurringColor);
 
-          mutationLegend.append('text')
-              .attr('x', left + mutationRectWidth + 10)
-              .attr('y', 3*geneHeight/4)
-              .style('fill', '#000')
-              .text('Co-occurring');
+              mutationLegend.append('text')
+                  .attr('x', left + mutationRectWidth + 10)
+                  .attr('y', 3*geneHeight/4)
+                  .style('fill', '#000')
+                  .text('Co-occurring');
 
-          left += mutationRectWidth + 10 + 85;
-        }
+              left += mutationRectWidth + 10 + 85;
+            }
 
-        // Add groups to hold each legend item
-        var snvLegend = mutationLegend.append("g")
-          .attr("transform", "translate(" + left + ",0)")
-          .style("cursor", "pointer")
-          .on("click", function(){ toggleMutationType(this, "snv"); });
+            // Add groups to hold each legend item
+            var snvLegend = mutationLegend.append("g")
+              .attr("transform", "translate(" + left + ",0)")
+              .style("cursor", "pointer")
+              .on("click", function(){ toggleMutationType(this, "snv"); });
 
-        left += mutationRectWidth + 10 + 10 + 25;
+            left += mutationRectWidth + 10 + 10 + 25;
 
-        var inactiveSNVLegend = mutationLegend.append("g")
-          .attr("transform", "translate(" + left + ",0)")
-          .style("cursor", "pointer")
-          .on("click", function(){ toggleMutationType(this, "inactive_snv"); });
+            var inactiveSNVLegend = mutationLegend.append("g")
+              .attr("transform", "translate(" + left + ",0)")
+              .style("cursor", "pointer")
+              .on("click", function(){ toggleMutationType(this, "inactive_snv"); });
 
-        left += mutationRectWidth + 10 + 75;
+            left += mutationRectWidth + 10 + 75;
 
-        var delLegend = mutationLegend.append("g")
-          .attr("transform", "translate(" + left + ",0)")
-          .style("cursor", "pointer")
-          .on("click", function(){ toggleMutationType(this, "del"); });
+            var delLegend = mutationLegend.append("g")
+              .attr("transform", "translate(" + left + ",0)")
+              .style("cursor", "pointer")
+              .on("click", function(){ toggleMutationType(this, "del"); });
 
-        left += mutationRectWidth + 10 + 55;
+            left += mutationRectWidth + 10 + 55;
 
-        var ampLegend = mutationLegend.append("g")
-          .attr("transform", "translate(" + left + ",0)")
-          .style("cursor", "pointer")
-          .on("click", function(){ toggleMutationType(this, "amp"); });
+            var ampLegend = mutationLegend.append("g")
+              .attr("transform", "translate(" + left + ",0)")
+              .style("cursor", "pointer")
+              .on("click", function(){ toggleMutationType(this, "amp"); });
 
-        left += mutationRectWidth + 10 + 75;
+            left += mutationRectWidth + 10 + 75;
 
-        var fusionLegend = mutationLegend.append("g")
-          .attr("transform", "translate(" + left + ",0)")
-          .style("cursor", "pointer")
-          .on("click", function(){ toggleMutationType(this, "fus"); });
+            var fusionLegend = mutationLegend.append("g")
+              .attr("transform", "translate(" + left + ",0)")
+              .style("cursor", "pointer")
+              .on("click", function(){ toggleMutationType(this, "fus"); });
 
-        left += mutationRectWidth + 10 + 220;
+            left += mutationRectWidth + 10 + 220;
 
-        // SNVs (full ticks)
-        if (mutationTypesPresent['snv']){
-          snvLegend.append('rect')
-              .attr('height', geneHeight)
-              .attr('width', mutationRectWidth)
-              .style('fill', blockColorMedium);
+            // SNVs (full ticks)
+            if (mutationTypesPresent['snv']){
+              snvLegend.append('rect')
+                  .attr('height', geneHeight)
+                  .attr('width', mutationRectWidth)
+                  .style('fill', blockColorMedium);
 
-          snvLegend.append('text')
-              .attr('dx', mutationRectWidth + 10)
-              .attr('dy', 3 * geneHeight / 4)
-              .style('fill', '#000')
-              .text('SNV');
-        }
+              snvLegend.append('text')
+                  .attr('dx', mutationRectWidth + 10)
+                  .attr('dy', 3 * geneHeight / 4)
+                  .style('fill', '#000')
+                  .text('SNV');
+            }
 
-        // Inactivating SNVs (stripped full ticks)
-        if (mutationTypesPresent['inactive_snv']){
-          inactiveSNVLegend.append('rect')
-              .attr('height', geneHeight)
-              .attr('width', mutationRectWidth)
-              .style('fill', blockColorMedium);
+            // Inactivating SNVs (stripped full ticks)
+            if (mutationTypesPresent['inactive_snv']){
+              inactiveSNVLegend.append('rect')
+                  .attr('height', geneHeight)
+                  .attr('width', mutationRectWidth)
+                  .style('fill', blockColorMedium);
 
-          inactiveSNVLegend.append('rect')
-              .attr('y', 3 * geneHeight / 8)
-              .attr('height', geneHeight / 4)
-              .attr('width', mutationRectWidth)
-              .style('fill', '#000');
+              inactiveSNVLegend.append('rect')
+                  .attr('y', 3 * geneHeight / 8)
+                  .attr('height', geneHeight / 4)
+                  .attr('width', mutationRectWidth)
+                  .style('fill', '#000');
 
-          inactiveSNVLegend.append('text')
-              .attr('dx', mutationRectWidth + 10)
-              .attr('dy', 3 * geneHeight / 4)
-              .style('fill', '#000')
-              .text('Inactivating');
-        }
+              inactiveSNVLegend.append('text')
+                  .attr('dx', mutationRectWidth + 10)
+                  .attr('dy', 3 * geneHeight / 4)
+                  .style('fill', '#000')
+                  .text('Inactivating');
+            }
 
-        // Deletions (down ticks)
-        if (mutationTypesPresent['del']){
-          delLegend.append('rect')
-              .attr('y', geneHeight / 2)
-              .attr('height', geneHeight / 2)
-              .attr('width', mutationRectWidth)
-              .style('fill', blockColorMedium);
+            // Deletions (down ticks)
+            if (mutationTypesPresent['del']){
+              delLegend.append('rect')
+                  .attr('y', geneHeight / 2)
+                  .attr('height', geneHeight / 2)
+                  .attr('width', mutationRectWidth)
+                  .style('fill', blockColorMedium);
 
-          delLegend.append('text')
-              .attr('dx', mutationRectWidth + 5)
-              .attr('dy', 3 * geneHeight / 4)
-              .style('fill', '#000')
-              .text('Deletion');
-        }
+              delLegend.append('text')
+                  .attr('dx', mutationRectWidth + 5)
+                  .attr('dy', 3 * geneHeight / 4)
+                  .style('fill', '#000')
+                  .text('Deletion');
+            }
 
-        // Amplifications (up ticks)
-        if (mutationTypesPresent['amp']){
-          ampLegend.append('rect')
-              .attr('height', geneHeight / 2)
-              .attr('width', mutationRectWidth)
-              .style('fill', blockColorMedium);
+            // Amplifications (up ticks)
+            if (mutationTypesPresent['amp']){
+              ampLegend.append('rect')
+                  .attr('height', geneHeight / 2)
+                  .attr('width', mutationRectWidth)
+                  .style('fill', blockColorMedium);
 
-          ampLegend.append('text')
-              .attr('dx', mutationRectWidth + 10)
-              .attr('dy', 3*geneHeight / 4)
-              .style('fill', '#000')
-              .text('Amplification');
-        }
+              ampLegend.append('text')
+                  .attr('dx', mutationRectWidth + 10)
+                  .attr('dy', 3*geneHeight / 4)
+                  .style('fill', '#000')
+                  .text('Amplification');
+            }
 
-        // Fusion legend
-        if (mutationTypesPresent['fus']){
-          fusionLegend.append('path')
-              .attr('d', d3.svg.symbol().type('triangle-up').size(30))
-              .attr('transform', 'translate(0,' + 3*geneHeight/8 + ')rotate(90)')
-              .style('stroke', bgColor)
-              .style('fill', blockColorMedium);
+            // Fusion legend
+            if (mutationTypesPresent['fus']){
+              fusionLegend.append('path')
+                  .attr('d', d3.svg.symbol().type('triangle-up').size(30))
+                  .attr('transform', 'translate(0,' + 3*geneHeight/8 + ')rotate(90)')
+                  .style('stroke', bgColor)
+                  .style('fill', blockColorMedium);
 
-          fusionLegend.append('text')
-              .attr('dx', mutationRectWidth + 10)
-              .attr('dy', 3 * geneHeight / 4)
-              .style('fill', '#000')
-              .text('Fusion/Rearrangement/Splice Variant');
-        }
+              fusionLegend.append('text')
+                  .attr('dx', mutationRectWidth + 10)
+                  .attr('dy', 3 * geneHeight / 4)
+                  .style('fill', '#000')
+                  .text('Fusion/Rearrangement/Splice Variant');
+            }
 
-        // Samples/box (the width/locations are set in renderMutationMatrix())
-        mutationLegend.append('rect')
-            .attr('x', left)
-            .attr('id', 'sampleWidthRect')
-            .attr('width', samplesPerCol * tickWidth - (2*sampleStroke))
-            .attr('height', geneHeight)
-            .style('fill', blockColorMedium);
+            // Samples/box (the width/locations are set in renderMutationMatrix())
+            mutationLegend.append('rect')
+                .attr('x', left)
+                .attr('id', 'sampleWidthRect')
+                .attr('width', samplesPerCol * tickWidth - (2*sampleStroke))
+                .attr('height', geneHeight)
+                .style('fill', blockColorMedium);
 
-        mutationLegend.append('text')
-            .attr('id', 'sampleWidthText')
-            .attr('x', left)
-            .attr('y', 3 * geneHeight / 4)
-            .attr("transform", "translate(" + (tickWidth + 5) + ",0)")
-            .style('fill', '#000')
-            .text(samplesPerCol == 1 ? '1 sample' : samplesPerCol + ' samples')
+            mutationLegend.append('text')
+                .attr('id', 'sampleWidthText')
+                .attr('x', left)
+                .attr('y', 3 * geneHeight / 4)
+                .attr("transform", "translate(" + (tickWidth + 5) + ",0)")
+                .style('fill', '#000')
+                .text(samplesPerCol == 1 ? '1 sample' : samplesPerCol + ' samples');
+          }
+        });
+
+        mutationLegend.on('mouseout', function() {
+          d3.select('#mutation-legend').remove();
+          mutationLegendTip.remove();
+          mutationLegendTip = null;
+        });
       }// end renderMutationLegend()
 
 
@@ -1305,109 +1336,125 @@ function mutation_matrix(params) {
             .style('margin-left', labelWidth + 'px')
             .style('font-size', 12 + 'px');
 
-        var title = sampleSort.append('a'),
-            legend = sampleSort.append('div');
-        
-        // Hide legendG by default
-        legend.style('visibility', 'hidden').style('display', 'none');
+        var title = sampleSort.append('a');
 
         // Append title/link of legend
         title.style('font-weight', 'bold')
-            .text('Sample Annotations Legend:')
-            .on('click', function() {
-              d3.event.preventDefault();
-              var isVisible = legend.style('visibility') == 'visible';
-              legend.style('visibility', isVisible ? 'hidden' : 'visible');
-              legend.style('display', isVisible ? 'none' : 'block');
-            });
+            .text('Sample Annotations Legend:');
 
-        // Add a no data item
-        if (annotationsIncludeNoData){
-          var noData = legend.append("div")
+        // Add hover tooltip for legend
+        title.on('mouseover', function(d) {
+          var titlePos = $('#gd3-mutmtx-sample-annotation-legend a').position();
+          console.log(titlePos);
+          titleTip = d3.select('body').append('div')
+            .attr('id', 'mutmtx-legend-tip')
+            .style('background', '#fff')
+            .style('border', '1px solid #ccc')
+            .style('padding', '10px')
+            .style('position', 'absolute')
+            .style('top', (titlePos.top + 15) + 'px')
+            .style('left', titlePos.left + 'px')
+            .style('max-width', '500px');
+
+          var legend = titleTip.append('div');
+
+          // Add a no data item
+          if (annotationsIncludeNoData){
+            var noData = legend.append("div")
+                  .style('display', 'inline-block')
+                  .style('padding', '5px')
+
+            noData.append("div")
+                .style('background-color', "#333")
                 .style('display', 'inline-block')
-                .style('padding', '5px');
+                .style('height', '15px')
+                .style('width', '15px')
+                .style('margin-right', '5px');
 
-          noData.append("div")
-              .style('background-color', "#333")
-              .style('display', 'inline-block')
-              .style('height', '15px')
-              .style('width', '15px')
-              .style('margin-right', '5px');
+            noData.append("div").style('display', 'inline-block').text("No data");
 
-          noData.append("div").style('display', 'inline-block').text("No data");
-        }
+            // Create legend
+            var categoryEls = legend.selectAll(".category")
+                  .data(categories).enter()
+                  .append("p")
+                  .style("margin", "0px")
+                  .text(function(c){ return c; });
 
-        // Create legend
-        var categoryEls = legend.selectAll(".category")
-              .data(categories).enter()
-              .append("p")
-              .style("margin", "0px")
-              .text(function(c){ return c; });
+            var numericAnnotations = categoryEls
+                  .filter(function(c){
+                    if (annotationColors[c] == undefined) return false;
+                    return annotationColors[c].type !== "ordinal";
+                  })
+                  .append("div")
+                  .each(function(c, i){
+                      var el = d3.select(this),
+                          scale = annotationColors[c];
 
-        var numericAnnotations = categoryEls
-              .filter(function(c){ return annotationColors[c].type !== "ordinal"; })
-              .append("div")
-              .each(function(c, i){
-                  var el = d3.select(this),
-                      scale = annotationColors[c];
+                      el.append("span")
+                        .style("margin-right", "10px")
+                        .text(d3.min(scale.domain()));
 
-                  el.append("span")
-                    .style("margin-right", "10px")
-                    .text(d3.min(scale.domain()));
+                      var gradientSVG = el.append("svg")
+                            .style("width", 80)
+                            .style("height", 15);
 
-                  var gradientSVG = el.append("svg")
-                        .style("width", 80)
-                        .style("height", 15);
+                      el.append("span")
+                        .style("margin-left", "10px")
+                        .text(d3.max(scale.domain()));
 
-                  el.append("span")
-                    .style("margin-left", "10px")
-                    .text(d3.max(scale.domain()));
+                      var gradient = gradientSVG.append("svg:defs")
+                            .append("svg:linearGradient")
+                            .attr("id", "gradient" + i)
+                            .attr("x1", "0%")
+                            .attr("y1", "0%")
+                            .attr("x2", "100%")
+                            .attr("y2", "0%");
 
-                  var gradient = gradientSVG.append("svg:defs")
-                        .append("svg:linearGradient")
-                        .attr("id", "gradient" + i)
-                        .attr("x1", "0%")
-                        .attr("y1", "0%")
-                        .attr("x2", "100%")
-                        .attr("y2", "0%");
+                      gradient.append("svg:stop")
+                        .attr("offset", "0%")
+                        .attr("stop-color", scale(d3.min(scale.domain())))
+                        .attr("stop-opacity", 1);
 
-                  gradient.append("svg:stop")
-                    .attr("offset", "0%")
-                    .attr("stop-color", scale(d3.min(scale.domain())))
-                    .attr("stop-opacity", 1);
-
-                  gradient.append("svg:stop")
-                    .attr("offset", "100%")
-                    .attr("stop-color", scale(d3.max(scale.domain())))
-                    .attr("stop-opacity", 1);
+                      gradient.append("svg:stop")
+                        .attr("offset", "100%")
+                        .attr("stop-color", scale(d3.max(scale.domain())))
+                        .attr("stop-opacity", 1);
 
 
-                  gradientSVG.append('rect')
-                    .attr('width', 80)
-                    .attr('height', 15)
-                    .style('fill','url(#gradient' + i + ')');
+                      gradientSVG.append('rect')
+                        .attr('width', 80)
+                        .attr('height', 15)
+                        .style('fill','url(#gradient' + i + ')');
 
-              });
+                  });
 
-        categoryEls.append("br")
-        var categoricalAnnotations = categoryEls
-              .filter(function(c){ return annotationColors[c].type === "ordinal"; })
-              .selectAll(".annotation")
-              .data(function(c){ return categorySets[c]; }).enter()
-              .append("div")
-              .style('display', 'inline-block')
-              .style('padding', '5px');
+            categoryEls.append("br")
+            var categoricalAnnotations = categoryEls
+                  .filter(function(c){
+                    if (annotationColors[c] == undefined) return false;
+                    return annotationColors[c].type === "ordinal";
+                  })
+                  .selectAll(".annotation")
+                  .data(function(c){ return categorySets[c]; }).enter()
+                  .append("div")
+                  .style('display', 'inline-block')
+                  .style('padding', '5px');
 
-        categoricalAnnotations.append("div")
-            .style('background-color', function(d){ return annotationColors[d.cat](d.ann); })
-            .style('display', 'inline-block')
-            .style('height', '15px')
-            .style('width', '15px')
-            .style('margin-right', '5px');
+            categoricalAnnotations.append("div")
+                .style('background-color', function(d){ return annotationColors[d.cat](d.ann); })
+                .style('display', 'inline-block')
+                .style('height', '15px')
+                .style('width', '15px')
+                .style('margin-right', '5px');
 
-        categoricalAnnotations.append("div")
-            .style('display', 'inline-block')
-            .text(function(d){ return d.ann; });
+            categoricalAnnotations.append("div")
+                .style('display', 'inline-block')
+                .text(function(d){ return d.ann; });
+          }
+        })
+        .on('mouseout', function(d) {
+          d3.select('#mutmtx-legend-tip').remove();
+        });
 
       } // end render sampleAnnotationLegend
 
