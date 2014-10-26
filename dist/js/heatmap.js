@@ -168,7 +168,7 @@ function heatmap (params) {
         // Draw annotation information
         var categoryRows = heatmap.selectAll(".category-row")
           .data(categories).enter()
-          .append("g");
+          .append("g")
 
         var annotationCells = categoryRows.selectAll('.sample-annotation-rect')
             .data(function(c, i){
@@ -180,7 +180,7 @@ function heatmap (params) {
               .attr('height', cellHeight/2)
               .attr('width', cellWidth)
               .attr('x', function(d) { return d.x * cellWidth; })
-              .attr('y', function(d) { return sampleAnnotationSpacer + d.y*(cellHeight/2) + ys.length*cellHeight; })
+              .attr('y', function(d, i) { return (d.y + 1)*sampleAnnotationSpacer + d.y*(cellHeight/2) + ys.length*cellHeight; })
               .style('fill', function(d,i) {
                 if (d.value != "" && d.value != null) return annotationColors[categories[d.y]](d.value);
                 else return "#333";
@@ -348,7 +348,7 @@ function heatmap (params) {
             yLabelData = ys.map(function(d){ return { dy: 0, name: d}})
 
         if (showSampleAnnotations){
-          yLabelData = yLabelData.concat(categories.map(function(d){ return {dy: sampleAnnotationSpacer, name: d}; }));
+          yLabelData = yLabelData.concat(categories.map(function(d, i){ return {dy: (i+1)*sampleAnnotationSpacer, name: d}; }));
         }
 
         var yLabels = yLabelsG.selectAll('text')
@@ -358,7 +358,7 @@ function heatmap (params) {
               .attr('text-anchor','end')
               .attr('y', function(d,i) {
                 var aSize = parseInt(annotationFontSize.replace('px',''));
-                if (i >= ys.length) return sampleAnnotationSpacer + (i-ys.length)*(cellHeight/2) + ys.length*cellHeight + aSize - 2;
+                if (i >= ys.length) return d.dy + (i-ys.length)*(cellHeight/2) + ys.length*cellHeight + aSize - 3;
                 return d.dy + i*cellHeight + cellHeight/2+fontSizeInt/2;
               })
               .text(function(d){return d.name});
@@ -393,6 +393,7 @@ function heatmap (params) {
       var xLabelsG = fig.append('g')
           .attr('class','vizHeatmapXLabels')
           .attr('transform', 'translate(0,'+heatmap.node().getBBox().height+')');
+
       if (renderXLabels) {
         var fontSizeInt = parseInt(fontSize.replace('px',''));
         var xLabels = xLabelsG.selectAll('text')
