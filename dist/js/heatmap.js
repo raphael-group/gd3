@@ -387,7 +387,6 @@ function heatmap (params) {
         yLabels.attr('x', maxLabelWidth);
 
         heatmap.attr('transform','translate('+(maxLabelWidth+2)+',0)');
-        console.log(maxLabelWidth, heatmap.attr('transform'));
       }
 
       // Add labels to the x axis
