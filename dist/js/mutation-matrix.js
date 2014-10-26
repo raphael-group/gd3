@@ -1269,6 +1269,7 @@ function mutation_matrix(params) {
             var categoryEls = mutationLegendTip.selectAll(".category")
                   .data(categories).enter()
                   .append("p")
+                  .filter(function(c){ return c !== "Cancer type"; })
                   .style("margin", "0px")
                   .style("font-size", "12px")
                   .text(function(c){ return c; });
