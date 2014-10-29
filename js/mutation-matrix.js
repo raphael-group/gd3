@@ -941,8 +941,9 @@ function mutation_matrix(params) {
       }
 
       function renderCoverage() {
-        var coverage_span = selection.append('span')
+        var coverage_span = selection.append('div')
             .style('float', 'right')
+            .style("font-size", "14px")
             .style('margin-right', (showSampleLegend ? datasetLegendWidth - legendMarginLeft : 0) + 'px');
 
         coverage_span.append('b').text('Coverage: ');
@@ -1011,19 +1012,20 @@ function mutation_matrix(params) {
               .text(function(type) {return type;});
       }// end renderSampleLegend()
 
+    var mutationLegendTip = null;
     function renderMutationLegend(){
         var mutationRectWidth = 10,
             legendFontSize = 11,
             left = mutationRectWidth/2;
 
-        var mutationLegend = selection.append('a').text('Show mutation legend:')
+        var mutationLegend = selection.append('div')
+            .append('a').text('Legend [+]')
             .attr('id','mutmtx-mutLegend-title')
             .style('font-weight', 'bold')
-            .style('font-size', '12px')
+            .style('font-size', '14px')
             .style('margin-left', labelWidth + 'px')
             .on('click', function() {d3.event.preventDefault(); });
 
-        var mutationLegendTip = null;
         mutationLegend.on('mouseover', function(d) {
           var titlePos = $('#mutmtx-mutLegend-title').position();
           mutationLegendTip = d3.select('body').append('div')
@@ -1039,15 +1041,16 @@ function mutation_matrix(params) {
           renderMutLegend();
 
           function renderMutLegend() {
-            left = mutationRectWidth/2;
-            // Add legend SVG
-            var mutationLegend = mutationLegendTip.append('svg')
-                .attr('id', 'mutation-legend')
-                .attr('height', mutationLegendHeight)
-                .attr('width', 500)
-                .append('g')
-                  .style('font-size', legendFontSize);
+            // Append a title
+            mutationLegendTip.append("b").text("Aberrations");
+            mutationLegendTip.append("br");
 
+            // Add legend SVG
+            var mutationLegendSVG = mutationLegendTip.append('svg')
+                  .attr('id', 'mutation-legend')
+                  .attr('height', mutationLegendHeight)
+                  // .attr('width', 500)
+            var mutationLegend = mutationLegendSVG.append('g').style('font-size', legendFontSize);
 
             function toggleMutationType(el, ty){
                 var active = mutationTypeToInclude[ty],
@@ -1064,6 +1067,7 @@ function mutation_matrix(params) {
             //    colored by dataset, so the exclusive/co-occurring cells won't
             //    be shown. The dataset legend will float to the right of the
             //    mutation matrix.
+            left = mutationRectWidth/2;
             if(!multiDataset) {
               // Exclusive ticks
               mutationLegend.append('rect')
@@ -1097,40 +1101,50 @@ function mutation_matrix(params) {
             }
 
             // Add groups to hold each legend item
-            var snvLegend = mutationLegend.append("g")
-              .attr("transform", "translate(" + left + ",0)")
-              .style("cursor", "pointer")
-              .on("click", function(){ toggleMutationType(this, "snv"); });
+            if (mutationTypesPresent['snv']){
+              var snvLegend = mutationLegend.append("g")
+                .attr("transform", "translate(" + left + ",0)")
+                .style("cursor", "pointer")
+                .on("click", function(){ toggleMutationType(this, "snv"); });
 
-            left += mutationRectWidth + 10 + 10 + 25;
+              left += mutationRectWidth + 10 + 10 + 25;
+            }
 
-            var inactiveSNVLegend = mutationLegend.append("g")
-              .attr("transform", "translate(" + left + ",0)")
-              .style("cursor", "pointer")
-              .on("click", function(){ toggleMutationType(this, "inactive_snv"); });
+            if (mutationTypesPresent['inactive_snv']){
+              var inactiveSNVLegend = mutationLegend.append("g")
+                .attr("transform", "translate(" + left + ",0)")
+                .style("cursor", "pointer")
+                .on("click", function(){ toggleMutationType(this, "inactive_snv"); });
 
-            left += mutationRectWidth + 10 + 75;
+              left += mutationRectWidth + 10 + 75;
+            }
 
-            var delLegend = mutationLegend.append("g")
-              .attr("transform", "translate(" + left + ",0)")
-              .style("cursor", "pointer")
-              .on("click", function(){ toggleMutationType(this, "del"); });
+            if (mutationTypesPresent['del']){
+              var delLegend = mutationLegend.append("g")
+                .attr("transform", "translate(" + left + ",0)")
+                .style("cursor", "pointer")
+                .on("click", function(){ toggleMutationType(this, "del"); });
 
-            left += mutationRectWidth + 10 + 55;
+              left += mutationRectWidth + 10 + 55;
+            }
 
-            var ampLegend = mutationLegend.append("g")
-              .attr("transform", "translate(" + left + ",0)")
-              .style("cursor", "pointer")
-              .on("click", function(){ toggleMutationType(this, "amp"); });
+            if (mutationTypesPresent['amp']){
+              var ampLegend = mutationLegend.append("g")
+                .attr("transform", "translate(" + left + ",0)")
+                .style("cursor", "pointer")
+                .on("click", function(){ toggleMutationType(this, "amp"); });
 
-            left += mutationRectWidth + 10 + 75;
+              left += mutationRectWidth + 10 + 75;
+            }
 
-            var fusionLegend = mutationLegend.append("g")
-              .attr("transform", "translate(" + left + ",0)")
-              .style("cursor", "pointer")
-              .on("click", function(){ toggleMutationType(this, "fus"); });
+            if (mutationTypesPresent['fus']){
+              var fusionLegend = mutationLegend.append("g")
+                .attr("transform", "translate(" + left + ",0)")
+                .style("cursor", "pointer")
+                .on("click", function(){ toggleMutationType(this, "fus"); });
 
-            left += mutationRectWidth + 10 + 220;
+              left += mutationRectWidth + 10 + 220;
+            }
 
             // SNVs (full ticks)
             if (mutationTypesPresent['snv']){
@@ -1225,6 +1239,113 @@ function mutation_matrix(params) {
                 .attr("transform", "translate(" + (tickWidth + 5) + ",0)")
                 .style('fill', '#000')
                 .text(samplesPerCol == 1 ? '1 sample' : samplesPerCol + ' samples');
+
+            mutationLegendSVG.attr("width", mutationLegend.node().getBBox().width)
+          }
+
+          // Add a sample annotations legend
+          if (showSampleAnnotations){
+            // Add a break and a title
+            mutationLegendTip.append("br");
+            mutationLegendTip.append("b").text("Sample annotations");
+            mutationLegendTip.append("br");
+
+            // Add a no data item
+            if (annotationsIncludeNoData){
+              var noData = mutationLegendTip.append("div")
+                    .style('display', 'inline-block')
+                    .style('padding', '5px')
+                    .style("font-size", "12px")
+
+              noData.append("div")
+                  .style('background-color', "#333")
+                  .style('display', 'inline-block')
+                  .style('height', '12px')
+                  .style('width', '12px')
+                  .style('margin-right', '5px');
+
+              noData.append("div").style('display', 'inline-block').text("No data");
+            }
+
+            // Create legend
+            var categoryEls = mutationLegendTip.selectAll(".category")
+                  .data(categories).enter()
+                  .append("p")
+                  .filter(function(c){ return c !== "Cancer type"; })
+                  .style("margin", "0px")
+                  .style("font-size", "12px")
+                  .text(function(c){ return c; });
+
+            var numericAnnotations = categoryEls
+                  .filter(function(c){
+                    if (annotationColors[c] == undefined) return false;
+                    return annotationColors[c].type !== "ordinal";
+                  })
+                  .append("div")
+                  .each(function(c, i){
+                      var el = d3.select(this),
+                          scale = annotationColors[c];
+
+                      el.append("span")
+                        .style("margin-right", "10px")
+                        .text(d3.min(scale.domain()));
+
+                      var gradientSVG = el.append("svg")
+                            .style("width", 80)
+                            .style("height", 15);
+
+                      el.append("span")
+                        .style("margin-left", "10px")
+                        .text(d3.max(scale.domain()));
+
+                      var gradient = gradientSVG.append("svg:defs")
+                            .append("svg:linearGradient")
+                            .attr("id", "gradient" + i)
+                            .attr("x1", "0%")
+                            .attr("y1", "0%")
+                            .attr("x2", "100%")
+                            .attr("y2", "0%");
+
+                      gradient.append("svg:stop")
+                        .attr("offset", "0%")
+                        .attr("stop-color", scale(d3.min(scale.domain())))
+                        .attr("stop-opacity", 1);
+
+                      gradient.append("svg:stop")
+                        .attr("offset", "100%")
+                        .attr("stop-color", scale(d3.max(scale.domain())))
+                        .attr("stop-opacity", 1);
+
+
+                      gradientSVG.append('rect')
+                        .attr('width', 80)
+                        .attr('height', 15)
+                        .style('fill','url(#gradient' + i + ')');
+
+                  });
+
+            categoryEls.append("br")
+            var categoricalAnnotations = categoryEls
+                  .filter(function(c){
+                    if (annotationColors[c] == undefined) return false;
+                    return annotationColors[c].type === "ordinal";
+                  })
+                  .selectAll(".annotation")
+                  .data(function(c){ return categorySets[c]; }).enter()
+                  .append("div")
+                  .style('display', 'inline-block')
+                  .style('padding', '5px');
+
+            categoricalAnnotations.append("div")
+                .style('background-color', function(d){ return annotationColors[d.cat](d.ann); })
+                .style('display', 'inline-block')
+                .style('height', '12px')
+                .style('width', '12px')
+                .style('margin-right', '5px');
+
+            categoricalAnnotations.append("div")
+                .style('display', 'inline-block')
+                .text(function(d){ return d.ann; });
           }
         });
 
@@ -1244,6 +1365,7 @@ function mutation_matrix(params) {
 
         var interfaceLink = sampleSort.append('a')
             .style('font-weight', 'bold')
+            .style("font-size", "14px")
             .text('Sort mutation matrix by: ')
             .on('click', function() {
               // TODO enable hiding/showing menu
@@ -1339,135 +1461,9 @@ function mutation_matrix(params) {
         sampleSorterInterface();
       } // End renderSortingMenu()
 
-      function renderSampleAnnotationsLegend() {
-        var sampleSort = selection.append('div')
-            .attr('id', 'gd3-mutmtx-sample-annotation-legend')
-            .style('margin-left', labelWidth + 'px')
-            .style('font-size', 12 + 'px');
-
-        var title = sampleSort.append('a');
-
-        // Append title/link of legend
-        title.style('font-weight', 'bold')
-            .text('Sample Annotations Legend:');
-
-        // Add hover tooltip for legend
-        title.on('mouseover', function(d) {
-          var titlePos = $('#gd3-mutmtx-sample-annotation-legend a').position();
-          console.log(titlePos);
-          titleTip = d3.select('body').append('div')
-            .attr('id', 'mutmtx-legend-tip')
-            .style('background', '#fff')
-            .style('border', '1px solid #ccc')
-            .style('padding', '10px')
-            .style('position', 'absolute')
-            .style('top', (titlePos.top + 15) + 'px')
-            .style('left', titlePos.left + 'px')
-            .style('max-width', '500px');
-
-          var legend = titleTip.append('div');
-
-          // Add a no data item
-          if (annotationsIncludeNoData){
-            var noData = legend.append("div")
-                  .style('display', 'inline-block')
-                  .style('padding', '5px')
-
-            noData.append("div")
-                .style('background-color', "#333")
-                .style('display', 'inline-block')
-                .style('height', '15px')
-                .style('width', '15px')
-                .style('margin-right', '5px');
-
-            noData.append("div").style('display', 'inline-block').text("No data");
-
-            // Create legend
-            var categoryEls = legend.selectAll(".category")
-                  .data(categories).enter()
-                  .append("p")
-                  .style("margin", "0px")
-                  .text(function(c){ return c; });
-
-            var numericAnnotations = categoryEls
-                  .filter(function(c){
-                    if (annotationColors[c] == undefined) return false;
-                    return annotationColors[c].type !== "ordinal";
-                  })
-                  .append("div")
-                  .each(function(c, i){
-                      var el = d3.select(this),
-                          scale = annotationColors[c];
-
-                      el.append("span")
-                        .style("margin-right", "10px")
-                        .text(d3.min(scale.domain()));
-
-                      var gradientSVG = el.append("svg")
-                            .style("width", 80)
-                            .style("height", 15);
-
-                      el.append("span")
-                        .style("margin-left", "10px")
-                        .text(d3.max(scale.domain()));
-
-                      var gradient = gradientSVG.append("svg:defs")
-                            .append("svg:linearGradient")
-                            .attr("id", "gradient" + i)
-                            .attr("x1", "0%")
-                            .attr("y1", "0%")
-                            .attr("x2", "100%")
-                            .attr("y2", "0%");
-
-                      gradient.append("svg:stop")
-                        .attr("offset", "0%")
-                        .attr("stop-color", scale(d3.min(scale.domain())))
-                        .attr("stop-opacity", 1);
-
-                      gradient.append("svg:stop")
-                        .attr("offset", "100%")
-                        .attr("stop-color", scale(d3.max(scale.domain())))
-                        .attr("stop-opacity", 1);
-
-
-                      gradientSVG.append('rect')
-                        .attr('width', 80)
-                        .attr('height', 15)
-                        .style('fill','url(#gradient' + i + ')');
-
-                  });
-
-            categoryEls.append("br")
-            var categoricalAnnotations = categoryEls
-                  .filter(function(c){
-                    if (annotationColors[c] == undefined) return false;
-                    return annotationColors[c].type === "ordinal";
-                  })
-                  .selectAll(".annotation")
-                  .data(function(c){ return categorySets[c]; }).enter()
-                  .append("div")
-                  .style('display', 'inline-block')
-                  .style('padding', '5px');
-
-            categoricalAnnotations.append("div")
-                .style('background-color', function(d){ return annotationColors[d.cat](d.ann); })
-                .style('display', 'inline-block')
-                .style('height', '15px')
-                .style('width', '15px')
-                .style('margin-right', '5px');
-
-            categoricalAnnotations.append("div")
-                .style('display', 'inline-block')
-                .text(function(d){ return d.ann; });
-          }
-        })
-        .on('mouseout', function(d) {
-          d3.select('#mutmtx-legend-tip').remove();
-        });
-
-      } // end render sampleAnnotationLegend
-
+      // Render the mutation matrix and then reset its height to remove whitespace
       renderMutationMatrix();
+      svg.attr('height', svg.node().getBBox().height);
 
       if (showCoverage) {
         renderCoverage();
@@ -1480,9 +1476,6 @@ function mutation_matrix(params) {
       }
       if (showSortingMenu) {
         renderSortingMenu();
-      }
-      if (showSampleAnnotations) {
-        renderSampleAnnotationsLegend();
       }
 
     });

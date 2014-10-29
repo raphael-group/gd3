@@ -941,8 +941,9 @@ function mutation_matrix(params) {
       }
 
       function renderCoverage() {
-        var coverage_span = selection.append('span')
+        var coverage_span = selection.append('div')
             .style('float', 'right')
+            .style("font-size", "14px")
             .style('margin-right', (showSampleLegend ? datasetLegendWidth - legendMarginLeft : 0) + 'px');
 
         coverage_span.append('b').text('Coverage: ');
@@ -1017,10 +1018,11 @@ function mutation_matrix(params) {
             legendFontSize = 11,
             left = mutationRectWidth/2;
 
-        var mutationLegend = selection.append('a').text('Legend [+]')
+        var mutationLegend = selection.append('div')
+            .append('a').text('Legend [+]')
             .attr('id','mutmtx-mutLegend-title')
             .style('font-weight', 'bold')
-            .style('font-size', '12px')
+            .style('font-size', '14px')
             .style('margin-left', labelWidth + 'px')
             .on('click', function() {d3.event.preventDefault(); });
 
@@ -1359,11 +1361,11 @@ function mutation_matrix(params) {
         var sampleSort = selection.append('div')
             .attr('id', 'sample-sorting-interface')
             .style('margin-left', labelWidth + 'px')
-            .style('font-size', 12 + 'px')
-            .style("display", "inline");
+            .style('font-size', 12 + 'px');
 
         var interfaceLink = sampleSort.append('a')
             .style('font-weight', 'bold')
+            .style("font-size", "14px")
             .text('Sort mutation matrix by: ')
             .on('click', function() {
               // TODO enable hiding/showing menu
@@ -1459,7 +1461,9 @@ function mutation_matrix(params) {
         sampleSorterInterface();
       } // End renderSortingMenu()
 
+      // Render the mutation matrix and then reset its height to remove whitespace
       renderMutationMatrix();
+      svg.attr('height', svg.node().getBBox().height);
 
       if (showCoverage) {
         renderCoverage();
