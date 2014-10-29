@@ -199,7 +199,7 @@ function mutation_matrix(params) {
 
             if(isNumeric) {
               var contColors = continuousScaleColors[numContCats];
-              console.log(contColors)
+
               scale = d3.scale.linear()
                 .domain([d.min, d.max])
                 .range(contColors)
