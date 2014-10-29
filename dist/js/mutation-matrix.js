@@ -199,6 +199,7 @@ function mutation_matrix(params) {
 
             if(isNumeric) {
               var contColors = continuousScaleColors[numContCats];
+              console.log(contColors)
               scale = d3.scale.linear()
                 .domain([d.min, d.max])
                 .range(contColors)
@@ -207,7 +208,7 @@ function mutation_matrix(params) {
 
               // Increase the count of categories with continuous data
               numContCats += 1;
-              if (numContCats > continuousScaleColors.length){
+              if (numContCats >= continuousScaleColors.length){
                 numContCats = 0;
               }
             } else {

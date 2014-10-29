@@ -145,7 +145,7 @@ function heatmap (params) {
 
               // Increase the count of categories with continuous data
               numContCats += 1;
-              if (numContCats > continuousScaleColors.length){
+              if (numContCats >= continuousScaleColors.length){
                 numContCats = 0;
               }
             } else {
