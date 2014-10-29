@@ -901,7 +901,7 @@ function mutation_matrix(params) {
 
             thisEl.selectAll('rect')
               .attr('width', tickWidth)
-              .style("opacity", visible && active ? 1 : active ? 0.25 : 0);
+              .style("opacity", visible && active ? 1 : active ? 0.1 : 0);
           });
         }
 
