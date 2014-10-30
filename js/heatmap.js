@@ -61,6 +61,8 @@ function heatmap (params) {
           if (tmp > max) max = tmp;
       }
 
+      var legendScale = d3.scale.linear().domain([min, max]);
+
       //- Orange/yellow colors
       // var colors = ['#ffeda0','#f03b20'],
 
@@ -199,10 +201,12 @@ function heatmap (params) {
         var dX = xs.indexOf(d.x),
             dY = ys.indexOf(d.y);
 
-        var refLineScalar = d.value/max;
-        legendRefLine.attr('y1',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
-            .attr('y2',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
-            .style('stroke', 'black');
+        var lineLoc = legendScale(max) - legendScale(d.value);
+        legendRefLine.attr('y1', lineLoc).attr('y2', lineLoc).style('stroke','black');
+        // var refLineScalar = d.value/max;
+        // legendRefLine.attr('y1',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
+        //     .attr('y2',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
+        //     .style('stroke', 'black');
 
         // Fix for mouseout of heatmap causing stroke to be set to none
         if (mouseoverLine1.style('stroke') == 'none') mouseoverLine1.style('stroke', 'black');
@@ -414,6 +418,8 @@ function heatmap (params) {
       if (renderLegend) {
         var legendWidth = cellWidth < 10 ? 10 : cellWidth,
             legendHeight = makeLegendHorizontal ? d3.max([ys.length * cellWidth, 250]) : xs.length * cellHeight;
+
+        legendScale.range([0,legendHeight]);
 
         legendRefLine.attr('x1',0)
             .attr('x2',legendWidth)
