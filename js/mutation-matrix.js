@@ -983,7 +983,6 @@ function mutation_matrix(params) {
                   .attr('width', datasetLegendWidth - legendMarginLeft)
                   .attr('height', datasetTypeLegendHeight)
                   .style('float', 'right')
-                  .style('margin-top', labelHeight + boxMargin)
                   .style('margin-left', legendMarginLeft)
                   .style('margin-bottom', 10)
                   .style('font-size', 10);
