@@ -471,6 +471,38 @@ function mutation_matrix(params) {
           .enter()
             .append('svg');
 
+      // Offset the image placement using the margins
+      var fig = svg.append("g")
+          .attr('transform', 'translate(' + boxMargin + ',' + boxMargin + ')');
+
+      // Add the row (gene) labels
+      var geneLabelGroups = fig.selectAll('.geneLabels')
+          .data(genes)
+          .enter()
+          .append('svg:g')
+            .attr('class', 'geneLabel')
+            .attr('transform', function(d, i) {
+              return 'translate(0,'+(geneToIndex[d]*geneHeight)+')';
+            });
+
+      var geneLabels = geneLabelGroups.append('text')
+          .attr('class', 'gene-name')
+          .attr('font-size', 14)
+          .attr('text-anchor', 'end')
+          .text(function(g) { return g+ ' (' + geneToFreq[g] + ')'; });
+
+      var maxLabelWidth = 0;
+      geneLabels.each(function() {
+        var tmpWidth = d3.select(this).node().getBBox().width;
+        maxLabelWidth = maxLabelWidth > tmpWidth ? maxLabelWidth : tmpWidth;
+      });
+
+      labelWidth = maxLabelWidth;
+
+      geneLabels.attr('transform', function(d, i) {
+              return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
+          });
+
       // Scales for the height/width of rows/columns
       var x = d3.scale.linear()
           .domain([0, numMutatedSamples])
@@ -480,10 +512,6 @@ function mutation_matrix(params) {
           .attr('width', width)
           .attr('height', svgHeight)
           .attr('xmlns', 'http://www.w3.org/2000/svg');
-
-      // Offset the image placement using the margins
-      var fig = svg.append("g")
-          .attr('transform', 'translate(' + boxMargin + ',' + boxMargin + ')');
 
       // Append the rectangle that will serve as the background of the ticks
       var bgRect = fig.append('rect')
@@ -523,37 +551,9 @@ function mutation_matrix(params) {
             .attr('class', 'sample')
             .attr('id', function(s) { return s.name; });
 
-      // Add the row (gene) labels
-      var geneLabelGroups = fig.selectAll('.geneLabels')
-          .data(genes)
-          .enter()
-          .append('svg:g')
-            .attr('class', 'geneLabel')
-            .attr('transform', function(d, i) {
-              return 'translate(0,'+(geneToIndex[d]*geneHeight)+')';
-            });
-
-      var geneLabels = geneLabelGroups.append('text')
-          .attr('class', 'gene-name')
-          .attr('font-size', 14)
-          .attr('text-anchor', 'end')
-          .text(function(g) { return g+ ' (' + geneToFreq[g] + ')'; });
-
-      var maxLabelWidth = 0;
-      geneLabels.each(function() {
-        var tmpWidth = d3.select(this).node().getBBox().width;
-        maxLabelWidth = maxLabelWidth > tmpWidth ? maxLabelWidth : tmpWidth;
-      });
-
-      labelWidth = maxLabelWidth;
-
       x = d3.scale.linear()
           .domain([0, numMutatedSamples])
           .range([labelWidth + boxMargin, width - boxMargin]);
-
-      geneLabels.attr('transform', function(d, i) {
-              return 'translate('+labelWidth+','+(geneHeight - boxMargin)+')';
-          });
 
       bgRect.attr('transform', 'translate('+labelWidth+','+ '0)');
 
