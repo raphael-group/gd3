@@ -303,8 +303,10 @@ function cna_browser(params){
 				});
 
 				// Move the vertical bar around the target genes
-				verticalBars.attr("x", function(d){ return normalize(d.start); })
-					.attr("width", function(d){ return normalize(d.end) - normalize(d.start); });
+				if (data.segments.length > 0){
+					verticalBars.attr("x", function(d){ return normalize(d.start); })
+						.attr("width", function(d){ return normalize(d.end) - normalize(d.start); });
+				}
 			}
 
 			updateCNABrowser = function (){
