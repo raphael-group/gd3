@@ -245,14 +245,16 @@ function cna_browser(params){
 					.attr('id', function (d, i) { return "interval-" + i; });
 
 				// Add a vertical bar that spans the target gene
-				verticalBars = svg.selectAll('.vert-bar')
-					.data(geneJSON.filter(function(d){ return d.selected; })).enter()
-					.append("rect")
-					.attr("y", initIntervalH)
-					.attr("width", function(d){ return normalize(d.end) - normalize(d.start); })
-					.attr("height", height - initIntervalH)
-					.style("fill", selectedColor)
-					.style("fill-opacity", 0.5);
+				if (data.segments.length > 0){
+					verticalBars = svg.selectAll('.vert-bar')
+						.data(geneJSON.filter(function(d){ return d.selected; })).enter()
+						.append("rect")
+						.attr("y", initIntervalH)
+						.attr("width", function(d){ return normalize(d.end) - normalize(d.start); })
+						.attr("height", height - initIntervalH)
+						.style("fill", selectedColor)
+						.style("fill-opacity", 0.5);
+				}
 
 				// Add tooltips to the intervals
 				if (showTooltips){
