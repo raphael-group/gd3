@@ -58,6 +58,7 @@ function mutation_matrix(params) {
       annotate,
       tip,
       onclickFunction,
+      sampleToIndex,
       numContCats = 0;
 
   // These variables determine what extras to show in the chart
@@ -457,7 +458,7 @@ function mutation_matrix(params) {
       // Parse the mutation data and sort the samples using a default sort order
       var sampleSortOrder = [GENE_FREQ, SAMPLE_TYPE, EXCLUSIVITY, MUTATION_TYPE, SAMPLE_NAME];
       var sampleMutations, sampleToGeneIndex, sampleToExclusivity,
-          sampleToIndex, geneToFreq, geneToSampleMutationType, coverage;
+          geneToFreq, geneToSampleMutationType, coverage;
       updateMutationData();
 
       //////////////////////////////////////////////////////////////////////////
@@ -1545,6 +1546,11 @@ chart.addOnClick = function (fn) {
     addOnClick = true;
     onclickFunction = fn;
     return chart; 
+  }
+
+  chart.sampleOrder = function (_){
+    if (!arguments.length) return sampleToIndex;
+    return sampleToIndex = _;
   }
 
 

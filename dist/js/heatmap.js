@@ -3,7 +3,8 @@ function heatmap (params) {
       style  = params.style || {};
 
   // Style options
-  var annotationFontSize = style.annotationFontSize || '10px',
+  var animationSpeed = style.animationSpeed || 300,
+      annotationFontSize = style.annotationFontSize || '10px',
       cellHeight = style.cellHeight || 14,
       cellWidth = style.cellWidth || 14,
       fontFamily = style.fontFamily || 'sans-serif',
@@ -25,6 +26,9 @@ function heatmap (params) {
       onclickFunction,
       tip,
       annotate,
+      sampleToIndex,
+      setSampleIndex,
+      reorderSamples,
       numContCats = 0;
 
   // Sample annotation information
@@ -83,6 +87,7 @@ function heatmap (params) {
               .data(cells).enter()
               .append('rect')
                 .attr('data-value', function(d) { return d.value; })
+
       heatmapCells.append("title").text(function(d){
         return ["x: " + d.x, "y: " + d.y, "value: " + d.value].join("\n");
       });
@@ -91,8 +96,22 @@ function heatmap (params) {
           legendBarG = legendG.append('g');
       var legendRefLine = legendG.append('line');
 
+      // Define a sample order, by default in the order the samples (xs) were given
+      setSampleIndex = function(newSampleIndex){
+        sampleToIndex = {};
+        if (!newSampleIndex){ sampleOrder = xs; }
+        else{
+          var sampleOrder = xs.sort(function(a, b){
+            return d3.ascending(newSampleIndex[a], newSampleIndex[b]);
+          });
+        }
+        sampleOrder.forEach(function(x, i){ sampleToIndex[x] = i; })
+      }
+
+      setSampleIndex();
+
       heatmapCells
-          .attr('x', function(d){return xs.indexOf(d.x)*cellWidth})
+          .attr('x', function(d){return sampleToIndex[d.x] * cellWidth})
           .attr('y', function(d){return ys.indexOf(d.y)*cellHeight})
           .attr('height', cellHeight)
           .attr('width', cellWidth)
@@ -175,9 +194,9 @@ function heatmap (params) {
 
         var annotationCells = categoryRows.selectAll('.sample-annotation-rect')
             .data(function(c, i){
-              return samples.map(function(s){
-                return { x: xs.indexOf(s), y: i, value: ValOrNoData(sampleAs[s][i]) };
-              }).filter(function(d){ return d.x >= 0; })
+              return xs.map(function(s){
+                return { x: sampleToIndex[s], y: i, value: ValOrNoData(sampleAs[s][i]), sample: s };
+              })
             }).enter()
             .append('rect')
               .attr('height', cellHeight/2)
@@ -188,6 +207,7 @@ function heatmap (params) {
                 if (d.value != "" && d.value != null) return annotationColors[categories[d.y]](d.value);
                 else return "#333";
               });
+
         annotationCells.append("title").text(function(d){
           if (d.value != "" && d.value != null) return d.value;
           else return "No data";
@@ -199,7 +219,7 @@ function heatmap (params) {
         d3.select('#vizHeatmapXLabel'+d.x).style('fill','#f00').style('font-weight','bold');
         d3.select('#vizHeatmapYLabel'+d.y).style('fill','#f00').style('font-weight','bold');
         d3.select(el).style('stroke', 'black').style('stroke-width', 2);
-        var dX = xs.indexOf(d.x),
+        var dX = sampleToIndex[d.x],
             dY = ys.indexOf(d.y);
 
         var lineLoc = legendScale(max) - legendScale(d.value);
@@ -541,16 +561,28 @@ function heatmap (params) {
             function inViewPort(x){ return (x) * cellWidth + tx > 0; }
             function cellVisibility(x){ return inViewPort(x) ? 1 : 0.1; }
 
-            heatmapCells.style("opacity", function(d){ return cellVisibility(xs.indexOf(d.x)); });
+            heatmapCells.style("opacity", function(d){ return cellVisibility(sampleToIndex[d.x]); });
             if (renderXLabels){
-              xLabels.style("opacity", function(sampleName){ return cellVisibility(xs.indexOf(sampleName)); });
+              xLabels.style("opacity", function(sampleName){ return cellVisibility(sampleToIndex[sampleName]); });
             }
             if (showSampleAnnotations){
-              annotationCells.style("opacity", function(d){ return cellVisibility(d.x); });
+              annotationCells.style("opacity", function(d){ return cellVisibility(sampleToIndex[d.sample]); });
             }
 
           });
       svg.call(zoom);
+
+      reorderSamples = function (){
+        heatmapCells.transition().duration(animationSpeed)
+          .delay(function(d){ return sampleToIndex[d.x]; })
+          .attr('x', function(d) { return sampleToIndex[d.x] * cellWidth; });
+        xLabels.transition().duration(animationSpeed)
+          .attr('transform', function(d,i) {
+            var x = sampleToIndex[d] * cellWidth + cellWidth/2 + yLabelsG.node().getBBox().width;
+            return 'translate('+x+',3)rotate(90)'
+          })
+        annotationCells.attr('x', function(d){ return sampleToIndex[d.sample] * cellWidth; });
+      }
     });// end selection.each();
   } // end chart()
 
@@ -589,6 +621,14 @@ chart.addOnClick = function (onclick) {
     showOnClick = true;
     onclickFunction = onclick;
     return chart;
+  }
+
+  chart.sampleOrder = function (_){
+    if (arguments.length){
+      setSampleIndex(_);
+      reorderSamples();
+    }
+    return sampleToIndex;
   }
 
   return chart;
