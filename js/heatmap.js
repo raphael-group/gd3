@@ -115,13 +115,15 @@ function heatmap (params) {
           .attr('y', function(d){return ys.indexOf(d.y)*cellHeight})
           .attr('height', cellHeight)
           .attr('width', cellWidth)
-          .style('fill', function(d, i){ return color(d.value)});
+          .style('fill', function(d, i){
+            return d.value === null ? "#d0d0d0" : color(d.value);
+          });
 
       // Add sample annotation cells if they exist
       if (showSampleAnnotations) {
-        function ValOrNoData(val){
-          if (val == "" || val == null) return "No data";
-          else return val;
+        function ValOrNoData(arr, i){
+          if (!arr || arr[i] == "" || arr[i] == null) return "No data";
+          else return arr[i];
         }
 
         var categories = annotationData.categories || [],
@@ -195,7 +197,7 @@ function heatmap (params) {
         var annotationCells = categoryRows.selectAll('.sample-annotation-rect')
             .data(function(c, i){
               return xs.map(function(s){
-                return { x: sampleToIndex[s], y: i, value: ValOrNoData(sampleAs[s][i]), sample: s };
+                return { x: sampleToIndex[s], y: i, value: ValOrNoData(sampleAs[s], i), sample: s };
               })
             }).enter()
             .append('rect')
