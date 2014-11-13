@@ -88,8 +88,13 @@ function heatmap (params) {
               .append('rect')
                 .attr('data-value', function(d) { return d.value; })
 
+      function ValOrNoData(arr, i){
+        if (!arr || arr[i] == "" || arr[i] == null) return "No data";
+        else return arr[i];
+      }
+
       heatmapCells.append("title").text(function(d){
-        return ["x: " + d.x, "y: " + d.y, "value: " + d.value].join("\n");
+        return ["x: " + d.x, "y: " + d.y, "value: " + ValOrNoData(d.value)].join("\n");
       });
 
       var legendG = fig.append('g'),
@@ -121,10 +126,6 @@ function heatmap (params) {
 
       // Add sample annotation cells if they exist
       if (showSampleAnnotations) {
-        function ValOrNoData(arr, i){
-          if (!arr || arr[i] == "" || arr[i] == null) return "No data";
-          else return arr[i];
-        }
 
         var categories = annotationData.categories || [],
               sampleAs = annotationData.sampleToAnnotations || {},
@@ -472,7 +473,7 @@ function heatmap (params) {
                 .attr("x2", "0%")
                 .attr("y2", "0%");
 
-        colors.forEach(function(c, i){
+        colors.reverse().forEach(function(c, i){
           gradient.append("svg:stop")
               .attr("offset", i*1./numColors)
               .attr("stop-color", c)
@@ -486,14 +487,14 @@ function heatmap (params) {
             .attr('y', legend.attr('width'))
             .attr('transform', 'rotate(90)')
             .attr('text-anchor', 'end')
-            .text(legendFormat(min));
+            .text(legendFormat(max));
 
         legendBarG.append('text')
             .attr('x', 0)
             .attr('y', legend.attr('width'))
             .attr('transform', 'rotate(90)')
             .attr('text-anchor', 'start')
-            .text(legendFormat(max))
+            .text(legendFormat(min))
 
         if (makeLegendHorizontal){
           legendBarG.append('text')
