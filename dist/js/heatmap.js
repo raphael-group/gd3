@@ -94,7 +94,8 @@ function heatmap (params) {
       }
 
       heatmapCells.append("title").text(function(d){
-        return ["x: " + d.x, "y: " + d.y, "value: " + ValOrNoData(d.value)].join("\n");
+        var title = ["x: " + d.x, "y: " + d.y, "value: " + (d.value === null ?  "No data" : d.value)];
+        return title.join("\n");
       });
 
       var legendG = fig.append('g'),
@@ -225,7 +226,7 @@ function heatmap (params) {
         var dX = sampleToIndex[d.x],
             dY = ys.indexOf(d.y);
 
-        var lineLoc = legendScale(max) - legendScale(d.value);
+        var lineLoc = legendScale(d.value);
         legendRefLine.attr('y1', lineLoc).attr('y2', lineLoc).style('stroke','black');
         // var refLineScalar = d.value/max;
         // legendRefLine.attr('y1',ys.length*cellHeight-(refLineScalar*ys.length*cellHeight))
