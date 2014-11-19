@@ -119,6 +119,14 @@ function mutation_matrix(params) {
       sampleTypes.sort();
       sampleTypes.forEach(function(t){ sampleTypeToInclude[t] = true; });
 
+      // Manually create the typeToSamples object if it wasn't provided
+      if (!data.typeToSamples){
+        sampleTypes.forEach(function(t){ typeToSamples[t] = []; })
+        Object.keys(sampleToTypes).forEach(function(s){
+          typeToSamples[sampleToTypes[s]].push( s );
+        });
+      }
+
       // Then determine whether the data includes multiple datasets
       var multiDataset = (sampleTypes.length > 1) && colorSampleTypes,
           datasetLegendWidth = multiDataset ? 100 : 0,
