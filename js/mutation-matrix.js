@@ -113,7 +113,9 @@ function mutation_matrix(params) {
       // Collect all unique types for all samples
       for(var i = 0; i < samples.length; i++) {
         if(sampleTypes.indexOf(sampleToTypes[samples[i]._id]) == -1) {
-          sampleTypes.push(sampleToTypes[samples[i]._id]);
+          if (sampleToTypes[samples[i]._id]){ // ignore samples with no type
+            sampleTypes.push(sampleToTypes[samples[i]._id]);
+          }
         }
       }
       sampleTypes.sort();
