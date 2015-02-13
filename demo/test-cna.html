@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example Mutation Matrix</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td valign="top" style='padding-right:100px'>
+          <h3>MYC <small>(modified to include some deletions)</small></h3>
+          <div id="test1"></div>
+        </td>
+        <td valign="top">
+          <h3>PDGFRA <small>(modified to include some deletions)</small></h3>
+          <div id="test2"></div>
+        </td>
+      </tr>
+    </table>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../gd3.js"></script>
+    <script>
+    d3.json('testData/example-cna.json', function(data) {
+      d3.select('#test1')
+        .datum(data.MYC)
+        .call(gd3.cna());
+      d3.select('#test2')
+        .datum(data.PDGFRA)
+        .call(gd3.cna());
+    });
+    </script>
+  </body>
+</html>

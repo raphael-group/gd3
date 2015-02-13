@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example Transcript Annotation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div id="heatmap"></div>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../gd3.js"></script>
+    <script>
+    d3.json('testData/example-heatmap.json', function(data) {
+      d3.json('testData/exampleAnnotations.json', function(adata) {
+        data.annotations = adata;
+        var hStyle = {width: 800};
+        d3.select('#heatmap')
+            .datum(data)
+            .call(gd3.heatmap({style:hStyle}));
+      });
+    });
+    </script>
+  </body>
+</html>

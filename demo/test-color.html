@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example Color Formatting</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+</style>
+  </head>
+  <body>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../gd3.js"></script>
+    <script>
+      var body = d3.select('body');
+      var palettes = body.append('div');
+      palettes.append('h1').text('Default category palettes')
+      palettes.append('p').text('The first four colors used are color blind friendly.');
+
+      var data = [],
+          swatchStyle = {
+            display: 'inline-block',
+            height: '10px',
+            'margin-right': '2px',
+            width: '20px'
+          };
+
+      for (var i = 0; i < 20; i++) {
+        data.push(i);
+        var palette = gd3.color.categories(data); // return the palette
+
+        palette = gd3.color.categoryPalette; // or statically reference it
+
+        palettes.append('div').selectAll('div')
+            .data(data)
+            .enter()
+              .append('div')
+                  .style(swatchStyle)
+                  .style('background-color', function(d) { return palette(d); });
+
+      }
+
+      body.append('hr');
+
+      body.append('p').text('D3 palettes for comparison');
+
+      var tableaus = body.append('div');
+      tableaus.append('div').selectAll('div')
+          .data(d3.scale.category10().range())
+          .enter()
+            .append('div')
+                .style(swatchStyle)
+                .style('background-color', function(d) { return d; });
+      tableaus.append('div').selectAll('div')
+          .data(d3.scale.category20().range())
+          .enter()
+            .append('div')
+                .style(swatchStyle)
+                .style('background-color', function(d) { return d; });
+
+      body.append('hr');
+
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      body.append('h1').text('Default annotation palettes');
+
+      body.append('p').text('Discrete annotation palettes');
+
+      body.append('div').selectAll('div')
+          .data(gd3.color.palettes.annotation_discrete)
+          .enter()
+          .append('div')
+          .selectAll('div')
+              .data(function(d) { return d; })
+              .enter()
+              .append('div')
+                  .style(swatchStyle)
+                  .style('background-color', function(d) { return d; });
+
+      body.append('p').text('Continuous annotation palettes');
+
+      body.append('div').selectAll('div')
+          .data(gd3.color.palettes.annotation_continuous)
+          .enter()
+          .append('div')
+          .selectAll('div')
+              .data(function(d) { return d; })
+              .enter()
+              .append('div')
+                  .style(swatchStyle)
+                  .style('background-color', function(d) { return d; });
+
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      body.append('h2').text('For mutation matrix examples, try sorting by category');
+      body.append('p').text('Mutation matrix with default coloring, no categories specified');
+      var m1 = body.append('div');
+      body.append('br').append('br');
+      body.append('p').text('Mutation matrix with its categories added');
+      var m2 = body.append('div');
+      body.append('br').append('br');
+      body.append('p').text('Mutation matrix with its categories added and some additional ones');
+      var m3 = body.append('div');
+      body.append('hr');
+      var t1 = body.append('div');
+      body.append('hr');
+      var cna1 = body.append('div');
+      body.append('br');
+      var cna2 = body.append('div');
+
+      // clear the palette information for the next example
+      gd3.color.categoryPalette = undefined;
+
+      var mutmtxStyle = {
+        width: 800
+      }
+
+      d3.json('testData/example2-mutation-matrix.json', function(data) {
+        d3.json('testData/exampleAnnotations.json', function(annData) {
+
+          data.annotations = annData;
+
+          m1.datum(data)
+            .call(gd3.mutationMatrix({style:mutmtxStyle}));
+
+          var categories = ['BLCA', 'BRCA', 'COADREAD', 'GBM','HNSC','KIRC','LAML','LUAD','LUSC','OV','UCEC'];
+          gd3.color.categories(categories);
+
+          m2.datum(data)
+            .call(gd3.mutationMatrix({style:mutmtxStyle}));
+
+          var categories = [1,2,'BLCA', 'BRCA', 'COADREAD', 'GBM','HNSC','KIRC','LAML','LUAD','LUSC','OV','UCEC'];
+          gd3.color.categories(categories);
+
+          m3.datum(data)
+            .call(gd3.mutationMatrix({style:mutmtxStyle}));
+        });
+      });
+
+      // Render the transcripts and see if the color is the same.
+
+      d3.json('testData/example2-transcript.json', function(data) {
+        var styling = {
+          height: 180,
+          width: 345
+        };
+
+        var sampleTypes = {}, params = {}, vizData = [];
+        params.style=styling;
+
+        var categories = ['BLCA', 'BRCA', 'COADREAD', 'GBM', 'HNSC', 'LUAD', 'LUSC', 'OV', 'SCNAH'];
+
+        for (gKey in Object.keys(data)) {
+          var gene = Object.keys(data)[gKey], transcriptList = Object.keys(data[gene]);
+
+          for (tKey in transcriptList) {
+            var transcript = transcriptList[tKey], domains = data[gene][transcript].domains, length = data[gene][transcript].length, mutations = data[gene][transcript].mutations;
+
+            var mKeys = Object.keys(mutations);
+            for(mKey in mKeys) {
+              var m = mKeys[mKey], cancer = mutations[m].cancer;
+              sampleTypes[cancer] = 0;
+            }
+
+            vizData.push({gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations, mutationCategories: categories, proteinDomainDB: 'PFAM'});
+          }
+        }
+        sampleTypes = Object.keys(sampleTypes);
+        params.sampleTypes = sampleTypes;
+
+        // Update color categories
+        var categories = [1,2,'BLCA', 'BRCA', 'COADREAD', 'GBM','HNSC','KIRC','LAML','LUAD','LUSC','OV','UCEC'];
+        gd3.color.categories(categories);
+
+        // Draw STAG1 where no scrollbar should appear
+        t1.datum(vizData[0])
+            .call(gd3.transcript(params));
+
+        // Draw BRAF where an activating (top) scrollbar should appear
+        d3.select('#test2')
+          .append('h3')
+          .html(vizData[1].gene + " <small>" + vizData[1].transcript + "</small>");
+        d3.select('#test2')
+            .datum(vizData[1])
+            .call(gd3.transcript(params));
+
+        // Draw ARID1A where both inactivating (bottom) and activating (top)
+        // scrollbars should appear
+        d3.select('#test3')
+          .append('h3')
+          .html(vizData[2].gene + " <small>" + vizData[2].transcript + "</small>");
+        d3.select('#test3')
+            .datum(vizData[2])
+            .call(gd3.transcript(params));
+      });
+
+      d3.json('testData/example-cna.json', function(data) {
+        cna2.datum(data.PDGFRA)
+          .call(gd3.cna());
+      });
+
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      // Test annoatation coloring
+      body.append('hr');
+      body.append('hr');
+
+      var mutmtxA = body.append('div'),
+          aBreak = body.append('br').append('br'),
+          hmapA = body.append('div');
+
+      d3.json('testData/exampleAnnotations.json', function(annData) {
+
+        gd3.color.annotations('Gender', ['female', 'male'], 'discrete', ['#ff0000', '#0000ff']);
+
+        var values = Object.keys(annData.sampleToAnnotations).map(function(key) {
+              return annData.sampleToAnnotations[key][0];
+            });
+        values = d3.set(values).values().map(function(d) { return + d; });
+        gd3.color.annotations('Survival (days)', [d3.min(values), d3.max(values)], 'continuous', ['#88ff88', '#000000']);
+
+        d3.json('testData/example2-mutation-matrix.json', function(data) {
+          data.annotations = annData;
+
+          var categories = ['BLCA', 'BRCA', 'COADREAD', 'GBM','HNSC','KIRC','LAML','LUAD','LUSC','OV','UCEC'];
+          gd3.color.categories(categories);
+
+          mutmtxA.datum(data)
+            .call(gd3.mutationMatrix({style:mutmtxStyle}));
+        });
+
+        d3.json('testData/example-heatmap.json', function(data) {
+          data.annotations = annData;
+          var hStyle = {width: 800};
+          hmapA.datum(data)
+              .call(gd3.heatmap({style:hStyle}));
+        });
+      });
+    </script>
+  </body>
+</html>

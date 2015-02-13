@@ -1,19 +1,23 @@
 {
-    "name" : "gd3",
-    "version" : "0.0.1",
-    "ignore":[
-    	"dev/",
-    	"examples/",
-    	"*.py",
-        "js/",
-        "style/",
-        "example-data/",
-        "tutorials/",
-        "update_dist.sh"
-    ],
-    "dependencies": {
-    	"d3": "3",
-        "jquery": ">=1.7",
-        "d3-tip": "latest"
-    }
+  "name": "gd3prime",
+  "version": "1.0.0",
+  "homepage": "https://github.com/connorgr/gd3prime",
+  "authors": [
+    "connor <connor@cs.brown.edu>"
+  ],
+  "main": "gd3.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3-tip": "~0.6.4",
+    "d3": "~3.4.11",
+    "jquery": "~2.1.1"
+  }
 }

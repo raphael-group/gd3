@@ -1,0 +1,1853 @@
+{
+        "CDH2": {
+            "NM_001792": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 378, 
+                            "name": "Cadherin_repeat", 
+                            "start": 273
+                        }, 
+                        {
+                            "end": 494, 
+                            "name": "Cadherin_repeat", 
+                            "start": 386
+                        }, 
+                        {
+                            "end": 601, 
+                            "name": "Cadherin_repeat", 
+                            "start": 508
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 123, 
+                            "name": "Cadherin_pro", 
+                            "start": 31
+                        }, 
+                        {
+                            "end": 701, 
+                            "name": "Cadherin", 
+                            "start": 608
+                        }, 
+                        {
+                            "end": 904, 
+                            "name": "Cadherin_C", 
+                            "start": 753
+                        }
+                    ], 
+                    "SMART": []
+                }, 
+                "length": 906, 
+                "mutations": [
+                    {
+                        "aan": "N", 
+                        "aao": "Y", 
+                        "dataset": "SCNAH", 
+                        "locus": "388", 
+                        "sample": "TCGA-BR-8369", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "W", 
+                        "dataset": "SCNAH", 
+                        "locus": "272", 
+                        "sample": "TCGA-CG-4477", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "A", 
+                        "dataset": "SCNAL", 
+                        "locus": "368", 
+                        "sample": "TCGA-CG-5734", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "D", 
+                        "dataset": "SCNAL", 
+                        "locus": "407", 
+                        "sample": "TCGA-D7-6524", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "L", 
+                        "dataset": "SCNAH", 
+                        "locus": "897", 
+                        "sample": "TCGA-D7-6822", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "K", 
+                        "dataset": "SCNAH", 
+                        "locus": "59", 
+                        "sample": "TCGA-D7-6822", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "V", 
+                        "dataset": "SCNAL", 
+                        "locus": "700", 
+                        "sample": "TCGA-D7-A4Z0", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "51", 
+                        "sample": "TCGA-HU-8604", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "E", 
+                        "aao": "G", 
+                        "dataset": "SCNAL", 
+                        "locus": "52", 
+                        "sample": "TCGA-HU-A4G3", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "EGFR": {
+            "NM_005228": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 274, 
+                            "name": "FU", 
+                            "start": 231
+                        }, 
+                        {
+                            "end": 598, 
+                            "name": "FU", 
+                            "start": 558
+                        }, 
+                        {
+                            "end": 674, 
+                            "name": "TM_ErbB1", 
+                            "start": 634
+                        }, 
+                        {
+                            "end": 1019, 
+                            "name": "PTKc_EGFR", 
+                            "start": 704
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 168, 
+                            "name": "Recep_L_domain", 
+                            "start": 57
+                        }, 
+                        {
+                            "end": 337, 
+                            "name": "Furin-like", 
+                            "start": 185
+                        }, 
+                        {
+                            "end": 481, 
+                            "name": "Recep_L_domain", 
+                            "start": 361
+                        }
+                    ], 
+                    "SMART": [
+                        {
+                            "end": 540, 
+                            "name": "FU", 
+                            "start": 504
+                        }, 
+                        {
+                            "end": 968, 
+                            "name": "TyrKc", 
+                            "start": 713
+                        }
+                    ]
+                }, 
+                "length": 1210, 
+                "mutations": [
+                    {
+                        "aan": "M", 
+                        "aao": "V", 
+                        "dataset": "SCNAH", 
+                        "locus": "85", 
+                        "sample": "TCGA-D7-6521", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "ERBB2": {
+            "NM_004448": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 280, 
+                            "name": "FU", 
+                            "start": 235
+                        }, 
+                        {
+                            "end": 544, 
+                            "name": "FU", 
+                            "start": 510
+                        }, 
+                        {
+                            "end": 607, 
+                            "name": "FU", 
+                            "start": 562
+                        }, 
+                        {
+                            "end": 684, 
+                            "name": "TM_ErbB2", 
+                            "start": 641
+                        }, 
+                        {
+                            "end": 990, 
+                            "name": "PTKc_HER2", 
+                            "start": 712
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 173, 
+                            "name": "Recep_L_domain", 
+                            "start": 52
+                        }, 
+                        {
+                            "end": 343, 
+                            "name": "Furin-like", 
+                            "start": 189
+                        }, 
+                        {
+                            "end": 486, 
+                            "name": "Recep_L_domain", 
+                            "start": 366
+                        }, 
+                        {
+                            "end": 976, 
+                            "name": "Pkinase_Tyr", 
+                            "start": 720
+                        }
+                    ], 
+                    "SMART": []
+                }, 
+                "length": 1255, 
+                "mutations": [
+                    {
+                        "aan": "F", 
+                        "aao": "S", 
+                        "dataset": "SCNAH", 
+                        "locus": "974", 
+                        "sample": "TCGA-CG-4466", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "S", 
+                        "dataset": "SCNAH", 
+                        "locus": "310", 
+                        "sample": "TCGA-CG-5730", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "D", 
+                        "dataset": "EBV", 
+                        "locus": "769", 
+                        "sample": "TCGA-HU-A4H0", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "P", 
+                        "dataset": "SCNAH", 
+                        "locus": "39", 
+                        "sample": "TCGA-IN-8663", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "G", 
+                        "dataset": "SCNAH", 
+                        "locus": "776", 
+                        "sample": "TCGA-IN-8663", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "ERBB3": {
+            "NM_001982": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 266, 
+                            "name": "FU", 
+                            "start": 226
+                        }, 
+                        {
+                            "end": 592, 
+                            "name": "FU", 
+                            "start": 552
+                        }, 
+                        {
+                            "end": 676, 
+                            "name": "TM_ErbB3", 
+                            "start": 638
+                        }, 
+                        {
+                            "end": 979, 
+                            "name": "PTK_HER3", 
+                            "start": 701
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 167, 
+                            "name": "Recep_L_domain", 
+                            "start": 56
+                        }, 
+                        {
+                            "end": 332, 
+                            "name": "Furin-like", 
+                            "start": 179
+                        }, 
+                        {
+                            "end": 474, 
+                            "name": "Recep_L_domain", 
+                            "start": 353
+                        }, 
+                        {
+                            "end": 965, 
+                            "name": "Pkinase_Tyr", 
+                            "start": 709
+                        }
+                    ], 
+                    "SMART": [
+                        {
+                            "end": 215, 
+                            "name": "FU", 
+                            "start": 180
+                        }
+                    ]
+                }, 
+                "length": 1342, 
+                "mutations": [
+                    {
+                        "aan": "H", 
+                        "aao": "Q", 
+                        "dataset": "SCNAH", 
+                        "locus": "934", 
+                        "sample": "TCGA-BR-4357", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "R", 
+                        "dataset": "SCNAH", 
+                        "locus": "667", 
+                        "sample": "TCGA-BR-6454", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "I", 
+                        "dataset": "SCNAL", 
+                        "locus": "671", 
+                        "sample": "TCGA-BR-6563", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "V", 
+                        "dataset": "EBV", 
+                        "locus": "104", 
+                        "sample": "TCGA-BR-6706", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "K", 
+                        "dataset": "EBV", 
+                        "locus": "314", 
+                        "sample": "TCGA-BR-8381", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "D", 
+                        "dataset": "SCNAL", 
+                        "locus": "297", 
+                        "sample": "TCGA-BR-A4QM", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "H", 
+                        "dataset": "SCNAH", 
+                        "locus": "228", 
+                        "sample": "TCGA-CD-8527", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "M", 
+                        "aao": "V", 
+                        "dataset": "SCNAH", 
+                        "locus": "104", 
+                        "sample": "TCGA-D7-A4YU", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "D", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "1001", 
+                        "sample": "TCGA-EQ-8122", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "L", 
+                        "dataset": "SCNAH", 
+                        "locus": "1182", 
+                        "sample": "TCGA-FP-7735", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "ERBB4": {
+            "NM_005235": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 274, 
+                            "name": "FU", 
+                            "start": 229
+                        }, 
+                        {
+                            "end": 549, 
+                            "name": "FU", 
+                            "start": 503
+                        }, 
+                        {
+                            "end": 596, 
+                            "name": "FU", 
+                            "start": 554
+                        }, 
+                        {
+                            "end": 685, 
+                            "name": "TM_ErbB4", 
+                            "start": 642
+                        }, 
+                        {
+                            "end": 1006, 
+                            "name": "PTKc_HER4", 
+                            "start": 710
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 167, 
+                            "name": "Recep_L_domain", 
+                            "start": 55
+                        }, 
+                        {
+                            "end": 334, 
+                            "name": "Furin-like", 
+                            "start": 186
+                        }, 
+                        {
+                            "end": 478, 
+                            "name": "Recep_L_domain", 
+                            "start": 358
+                        }, 
+                        {
+                            "end": 974, 
+                            "name": "Pkinase_Tyr", 
+                            "start": 718
+                        }
+                    ], 
+                    "SMART": []
+                }, 
+                "length": 1308, 
+                "mutations": [
+                    {
+                        "aan": "E", 
+                        "aao": "A", 
+                        "dataset": "SCNAL", 
+                        "locus": "4", 
+                        "sample": "TCGA-BR-6705", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "K", 
+                        "dataset": "SCNAH", 
+                        "locus": "1223", 
+                        "sample": "TCGA-BR-7197", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "F", 
+                        "dataset": "SCNAH", 
+                        "locus": "1102", 
+                        "sample": "TCGA-BR-7901", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "L", 
+                        "dataset": "EBV", 
+                        "locus": "710", 
+                        "sample": "TCGA-BR-7958", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "W", 
+                        "aao": "R", 
+                        "dataset": "SCNAH", 
+                        "locus": "488", 
+                        "sample": "TCGA-BR-8295", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "S", 
+                        "dataset": "SCNAL", 
+                        "locus": "522", 
+                        "sample": "TCGA-BR-8370", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "L", 
+                        "dataset": "SCNAH", 
+                        "locus": "1163", 
+                        "sample": "TCGA-BR-8485", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "F", 
+                        "dataset": "SCNAL", 
+                        "locus": "1102", 
+                        "sample": "TCGA-BR-8590", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "N", 
+                        "dataset": "SCNAH", 
+                        "locus": "626", 
+                        "sample": "TCGA-BR-8679", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "K", 
+                        "aao": "N", 
+                        "dataset": "SCNAH", 
+                        "locus": "358", 
+                        "sample": "TCGA-BR-A4J8", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "I", 
+                        "dataset": "SCNAH", 
+                        "locus": "1274", 
+                        "sample": "TCGA-BR-A4PD", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "I", 
+                        "aao": "V", 
+                        "dataset": "SCNAL", 
+                        "locus": "840", 
+                        "sample": "TCGA-CD-5813", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "P", 
+                        "dataset": "SCNAH", 
+                        "locus": "1132", 
+                        "sample": "TCGA-CD-8524", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "K", 
+                        "aao": "Q", 
+                        "dataset": "SCNAH", 
+                        "locus": "1063", 
+                        "sample": "TCGA-CD-A48A", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "L", 
+                        "dataset": "SCNAH", 
+                        "locus": "798", 
+                        "sample": "TCGA-CG-4436", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "R", 
+                        "dataset": "SCNAH", 
+                        "locus": "927", 
+                        "sample": "TCGA-D7-6820", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "M", 
+                        "aao": "K", 
+                        "dataset": "SCNAL", 
+                        "locus": "1223", 
+                        "sample": "TCGA-D7-A4Z0", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "S", 
+                        "dataset": "SCNAL", 
+                        "locus": "774", 
+                        "sample": "TCGA-D7-A4Z0", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "A", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "1220", 
+                        "sample": "TCGA-IN-8462", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "JAK2": {
+            "NM_004972": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 414, 
+                            "name": "FERM_C_JAK2", 
+                            "start": 243
+                        }, 
+                        {
+                            "end": 482, 
+                            "name": "SH2_Jak2", 
+                            "start": 386
+                        }, 
+                        {
+                            "end": 806, 
+                            "name": "PTK_Jak2_Jak3_rpt1", 
+                            "start": 549
+                        }, 
+                        {
+                            "end": 1127, 
+                            "name": "PTKc_Jak2_Jak3_rpt2", 
+                            "start": 844
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 805, 
+                            "name": "Pkinase_Tyr", 
+                            "start": 545
+                        }, 
+                        {
+                            "end": 1119, 
+                            "name": "Pkinase_Tyr", 
+                            "start": 849
+                        }
+                    ], 
+                    "SMART": [
+                        {
+                            "end": 270, 
+                            "name": "B41", 
+                            "start": 38
+                        }
+                    ]
+                }, 
+                "length": 1132, 
+                "mutations": [
+                    {
+                        "aan": "R", 
+                        "aao": "L", 
+                        "dataset": "EBV", 
+                        "locus": "651", 
+                        "sample": "TCGA-BR-6706", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "G", 
+                        "dataset": "SCNAH", 
+                        "locus": "858", 
+                        "sample": "TCGA-D7-6815", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "R", 
+                        "dataset": "EBV", 
+                        "locus": "683", 
+                        "sample": "TCGA-HU-8608", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "MET": {
+            "NM_000245": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 516, 
+                            "name": "Sema_MET", 
+                            "start": 25
+                        }, 
+                        {
+                            "end": 656, 
+                            "name": "IPT_plexin_repeat1", 
+                            "start": 563
+                        }, 
+                        {
+                            "end": 740, 
+                            "name": "IPT_plexin_repeat2", 
+                            "start": 657
+                        }, 
+                        {
+                            "end": 837, 
+                            "name": "IPT_plexin_repeat3", 
+                            "start": 742
+                        }, 
+                        {
+                            "end": 1343, 
+                            "name": "PTKc_Met_Ron", 
+                            "start": 1082
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 562, 
+                            "name": "PSI", 
+                            "start": 519
+                        }, 
+                        {
+                            "end": 1337, 
+                            "name": "Pkinase_Tyr", 
+                            "start": 1078
+                        }
+                    ], 
+                    "SMART": [
+                        {
+                            "end": 487, 
+                            "name": "Sema", 
+                            "start": 52
+                        }, 
+                        {
+                            "end": 934, 
+                            "name": "IPT", 
+                            "start": 838
+                        }
+                    ]
+                }, 
+                "length": 1390, 
+                "mutations": [
+                    {
+                        "aan": "splice", 
+                        "aao": "L", 
+                        "dataset": "SCNAH", 
+                        "locus": "1312", 
+                        "sample": "TCGA-CG-4438", 
+                        "ty": "Splice_Site"
+                    }
+                ]
+            }
+        }, 
+        "NRG1": {
+            "NM_013962": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 342, 
+                            "name": "Ig_Pro_neuregulin-1", 
+                            "start": 268
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 344, 
+                            "name": "I-set", 
+                            "start": 254
+                        }
+                    ], 
+                    "SMART": []
+                }, 
+                "length": 422, 
+                "mutations": []
+            }, 
+            "NM_013964": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 127, 
+                            "name": "Ig_Pro_neuregulin", 
+                            "start": 53
+                        }, 
+                        {
+                            "end": 222, 
+                            "name": "EGF_CA", 
+                            "start": 190
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 129, 
+                            "name": "I-set", 
+                            "start": 39
+                        }, 
+                        {
+                            "end": 630, 
+                            "name": "Neuregulin", 
+                            "start": 235
+                        }
+                    ], 
+                    "SMART": []
+                }, 
+                "length": 640, 
+                "mutations": [
+                    {
+                        "aan": "G", 
+                        "aao": "D", 
+                        "dataset": "SCNAH", 
+                        "locus": "585", 
+                        "sample": "TCGA-BR-4357", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "G", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "223", 
+                        "sample": "TCGA-BR-7901", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "P", 
+                        "dataset": "SCNAH", 
+                        "locus": "533", 
+                        "sample": "TCGA-BR-8485", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "P", 
+                        "dataset": "SCNAL", 
+                        "locus": "431", 
+                        "sample": "TCGA-CD-8531", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "622", 
+                        "sample": "TCGA-CG-4440", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "R", 
+                        "dataset": "SCNAH", 
+                        "locus": "606", 
+                        "sample": "TCGA-D7-6520", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }, 
+        "OBSCN": {
+            "NM_001098623": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 191, 
+                            "name": "Ig", 
+                            "start": 127
+                        }, 
+                        {
+                            "end": 602, 
+                            "name": "FN3", 
+                            "start": 515
+                        }, 
+                        {
+                            "end": 872, 
+                            "name": "Ig", 
+                            "start": 815
+                        }, 
+                        {
+                            "end": 1252, 
+                            "name": "Ig", 
+                            "start": 1184
+                        }, 
+                        {
+                            "end": 1332, 
+                            "name": "Ig", 
+                            "start": 1276
+                        }, 
+                        {
+                            "end": 1716, 
+                            "name": "Ig_Semaphorin_C", 
+                            "start": 1631
+                        }, 
+                        {
+                            "end": 1898, 
+                            "name": "Ig_Semaphorin_C", 
+                            "start": 1817
+                        }, 
+                        {
+                            "end": 1984, 
+                            "name": "Ig", 
+                            "start": 1916
+                        }, 
+                        {
+                            "end": 2251, 
+                            "name": "Ig", 
+                            "start": 2183
+                        }, 
+                        {
+                            "end": 2361, 
+                            "name": "Ig", 
+                            "start": 2308
+                        }, 
+                        {
+                            "end": 2542, 
+                            "name": "Ig", 
+                            "start": 2486
+                        }, 
+                        {
+                            "end": 2736, 
+                            "name": "Ig_Semaphorin_C", 
+                            "start": 2666
+                        }, 
+                        {
+                            "end": 2913, 
+                            "name": "Ig_Semaphorin_C", 
+                            "start": 2838
+                        }, 
+                        {
+                            "end": 2987, 
+                            "name": "Ig", 
+                            "start": 2933
+                        }, 
+                        {
+                            "end": 3274, 
+                            "name": "Ig_Semaphorin_C", 
+                            "start": 3192
+                        }, 
+                        {
+                            "end": 3885, 
+                            "name": "Ig_Semaphorin_C", 
+                            "start": 3807
+                        }, 
+                        {
+                            "end": 3975, 
+                            "name": "Ig_Semaphorin_C", 
+                            "start": 3899
+                        }, 
+                        {
+                            "end": 4246, 
+                            "name": "Ig", 
+                            "start": 4176
+                        }, 
+                        {
+                            "end": 4608, 
+                            "name": "FN3", 
+                            "start": 4523
+                        }, 
+                        {
+                            "end": 4982, 
+                            "name": "Ig", 
+                            "start": 4915
+                        }, 
+                        {
+                            "end": 5213, 
+                            "name": "Ig", 
+                            "start": 5143
+                        }, 
+                        {
+                            "end": 5664, 
+                            "name": "SH3_Obscurin_like", 
+                            "start": 5602
+                        }, 
+                        {
+                            "end": 5873, 
+                            "name": "RhoGEF", 
+                            "start": 5697
+                        }, 
+                        {
+                            "end": 6196, 
+                            "name": "Ig", 
+                            "start": 6125
+                        }, 
+                        {
+                            "end": 6443, 
+                            "name": "Ig", 
+                            "start": 6374
+                        }, 
+                        {
+                            "end": 6652, 
+                            "name": "PKc", 
+                            "start": 6474
+                        }, 
+                        {
+                            "end": 7548, 
+                            "name": "Ig", 
+                            "start": 7480
+                        }, 
+                        {
+                            "end": 7642, 
+                            "name": "FN3", 
+                            "start": 7557
+                        }, 
+                        {
+                            "end": 7860, 
+                            "name": "PKc", 
+                            "start": 7678
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 99, 
+                            "name": "I-set", 
+                            "start": 10
+                        }, 
+                        {
+                            "end": 191, 
+                            "name": "I-set", 
+                            "start": 110
+                        }, 
+                        {
+                            "end": 328, 
+                            "name": "I-set", 
+                            "start": 248
+                        }, 
+                        {
+                            "end": 418, 
+                            "name": "I-set", 
+                            "start": 335
+                        }, 
+                        {
+                            "end": 673, 
+                            "name": "I-set", 
+                            "start": 617
+                        }, 
+                        {
+                            "end": 1251, 
+                            "name": "I-set", 
+                            "start": 1176
+                        }, 
+                        {
+                            "end": 1893, 
+                            "name": "I-set", 
+                            "start": 1810
+                        }, 
+                        {
+                            "end": 1983, 
+                            "name": "I-set", 
+                            "start": 1900
+                        }, 
+                        {
+                            "end": 2072, 
+                            "name": "I-set", 
+                            "start": 1990
+                        }, 
+                        {
+                            "end": 2161, 
+                            "name": "I-set", 
+                            "start": 2078
+                        }, 
+                        {
+                            "end": 2250, 
+                            "name": "I-set", 
+                            "start": 2167
+                        }, 
+                        {
+                            "end": 2374, 
+                            "name": "I-set", 
+                            "start": 2293
+                        }, 
+                        {
+                            "end": 2642, 
+                            "name": "I-set", 
+                            "start": 2563
+                        }, 
+                        {
+                            "end": 2731, 
+                            "name": "I-set", 
+                            "start": 2648
+                        }, 
+                        {
+                            "end": 2822, 
+                            "name": "I-set", 
+                            "start": 2738
+                        }, 
+                        {
+                            "end": 2912, 
+                            "name": "I-set", 
+                            "start": 2829
+                        }, 
+                        {
+                            "end": 3000, 
+                            "name": "I-set", 
+                            "start": 2918
+                        }, 
+                        {
+                            "end": 3091, 
+                            "name": "I-set", 
+                            "start": 3011
+                        }, 
+                        {
+                            "end": 3177, 
+                            "name": "I-set", 
+                            "start": 3097
+                        }, 
+                        {
+                            "end": 3269, 
+                            "name": "I-set", 
+                            "start": 3186
+                        }, 
+                        {
+                            "end": 3357, 
+                            "name": "I-set", 
+                            "start": 3275
+                        }, 
+                        {
+                            "end": 3445, 
+                            "name": "I-set", 
+                            "start": 3363
+                        }, 
+                        {
+                            "end": 3533, 
+                            "name": "I-set", 
+                            "start": 3451
+                        }, 
+                        {
+                            "end": 3621, 
+                            "name": "I-set", 
+                            "start": 3539
+                        }, 
+                        {
+                            "end": 3709, 
+                            "name": "I-set", 
+                            "start": 3627
+                        }, 
+                        {
+                            "end": 3797, 
+                            "name": "I-set", 
+                            "start": 3715
+                        }, 
+                        {
+                            "end": 3885, 
+                            "name": "I-set", 
+                            "start": 3803
+                        }, 
+                        {
+                            "end": 3974, 
+                            "name": "I-set", 
+                            "start": 3890
+                        }, 
+                        {
+                            "end": 4154, 
+                            "name": "I-set", 
+                            "start": 4068
+                        }, 
+                        {
+                            "end": 4245, 
+                            "name": "I-set", 
+                            "start": 4160
+                        }, 
+                        {
+                            "end": 4336, 
+                            "name": "I-set", 
+                            "start": 4251
+                        }, 
+                        {
+                            "end": 4427, 
+                            "name": "I-set", 
+                            "start": 4341
+                        }, 
+                        {
+                            "end": 4519, 
+                            "name": "I-set", 
+                            "start": 4433
+                        }, 
+                        {
+                            "end": 4981, 
+                            "name": "I-set", 
+                            "start": 4898
+                        }, 
+                        {
+                            "end": 5216, 
+                            "name": "I-set", 
+                            "start": 5126
+                        }, 
+                        {
+                            "end": 5350, 
+                            "name": "I-set", 
+                            "start": 5260
+                        }, 
+                        {
+                            "end": 5466, 
+                            "name": "I-set", 
+                            "start": 5371
+                        }, 
+                        {
+                            "end": 6106, 
+                            "name": "I-set", 
+                            "start": 6014
+                        }, 
+                        {
+                            "end": 6199, 
+                            "name": "I-set", 
+                            "start": 6108
+                        }, 
+                        {
+                            "end": 6446, 
+                            "name": "I-set", 
+                            "start": 6357
+                        }, 
+                        {
+                            "end": 7548, 
+                            "name": "I-set", 
+                            "start": 7463
+                        }
+                    ], 
+                    "SMART": [
+                        {
+                            "end": 99, 
+                            "name": "IG", 
+                            "start": 20
+                        }, 
+                        {
+                            "end": 328, 
+                            "name": "IG_like", 
+                            "start": 248
+                        }, 
+                        {
+                            "end": 405, 
+                            "name": "IG_like", 
+                            "start": 340
+                        }, 
+                        {
+                            "end": 488, 
+                            "name": "IG_like", 
+                            "start": 427
+                        }, 
+                        {
+                            "end": 964, 
+                            "name": "IGc2", 
+                            "start": 905
+                        }, 
+                        {
+                            "end": 1057, 
+                            "name": "IG", 
+                            "start": 990
+                        }, 
+                        {
+                            "end": 1148, 
+                            "name": "IG", 
+                            "start": 1084
+                        }, 
+                        {
+                            "end": 1424, 
+                            "name": "IG_like", 
+                            "start": 1358
+                        }, 
+                        {
+                            "end": 1527, 
+                            "name": "IG", 
+                            "start": 1450
+                        }, 
+                        {
+                            "end": 1619, 
+                            "name": "IG", 
+                            "start": 1541
+                        }, 
+                        {
+                            "end": 1793, 
+                            "name": "IG_like", 
+                            "start": 1726
+                        }, 
+                        {
+                            "end": 2642, 
+                            "name": "IG", 
+                            "start": 2575
+                        }, 
+                        {
+                            "end": 3091, 
+                            "name": "IG", 
+                            "start": 3012
+                        }, 
+                        {
+                            "end": 3181, 
+                            "name": "IG", 
+                            "start": 3106
+                        }, 
+                        {
+                            "end": 3357, 
+                            "name": "IG_like", 
+                            "start": 3281
+                        }, 
+                        {
+                            "end": 3445, 
+                            "name": "IG", 
+                            "start": 3375
+                        }, 
+                        {
+                            "end": 3533, 
+                            "name": "IG_like", 
+                            "start": 3457
+                        }, 
+                        {
+                            "end": 3621, 
+                            "name": "IG", 
+                            "start": 3545
+                        }, 
+                        {
+                            "end": 3709, 
+                            "name": "IG", 
+                            "start": 3633
+                        }, 
+                        {
+                            "end": 3797, 
+                            "name": "IG_like", 
+                            "start": 3721
+                        }, 
+                        {
+                            "end": 4065, 
+                            "name": "IG", 
+                            "start": 3986
+                        }, 
+                        {
+                            "end": 4154, 
+                            "name": "IG_like", 
+                            "start": 4082
+                        }, 
+                        {
+                            "end": 5350, 
+                            "name": "IG", 
+                            "start": 5267
+                        }, 
+                        {
+                            "end": 5466, 
+                            "name": "IG_like", 
+                            "start": 5382
+                        }, 
+                        {
+                            "end": 6095, 
+                            "name": "IG_like", 
+                            "start": 6024
+                        }, 
+                        {
+                            "end": 6721, 
+                            "name": "S_TKc", 
+                            "start": 6468
+                        }, 
+                        {
+                            "end": 7924, 
+                            "name": "S_TKc", 
+                            "start": 7680
+                        }
+                    ]
+                }, 
+                "length": 7968, 
+                "mutations": [
+                    {
+                        "aan": "I", 
+                        "aao": "V", 
+                        "dataset": "EBV", 
+                        "locus": "5547", 
+                        "sample": "TCGA-BR-6455", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "M", 
+                        "aao": "V", 
+                        "dataset": "SCNAL", 
+                        "locus": "20", 
+                        "sample": "TCGA-BR-6563", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "W", 
+                        "dataset": "EBV", 
+                        "locus": "830", 
+                        "sample": "TCGA-BR-6707", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "W", 
+                        "aao": "R", 
+                        "dataset": "SCNAH", 
+                        "locus": "3183", 
+                        "sample": "TCGA-BR-8286", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "T", 
+                        "aao": "A", 
+                        "dataset": "SCNAH", 
+                        "locus": "1309", 
+                        "sample": "TCGA-BR-8297", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "A", 
+                        "dataset": "SCNAL", 
+                        "locus": "1415", 
+                        "sample": "TCGA-CD-8531", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "L", 
+                        "aao": "P", 
+                        "dataset": "SCNAH", 
+                        "locus": "814", 
+                        "sample": "TCGA-CG-4300", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "K", 
+                        "dataset": "SCNAH", 
+                        "locus": "6032", 
+                        "sample": "TCGA-CG-4443", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "R", 
+                        "dataset": "SCNAH", 
+                        "locus": "5061", 
+                        "sample": "TCGA-HU-8249", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "R", 
+                        "dataset": "SCNAH", 
+                        "locus": "11", 
+                        "sample": "TCGA-HU-8610", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "K", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "1821", 
+                        "sample": "TCGA-HU-A4GF", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "C", 
+                        "aao": "G", 
+                        "dataset": "SCNAH", 
+                        "locus": "1121", 
+                        "sample": "TCGA-HU-A4GP", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "fs", 
+                        "aao": "W", 
+                        "dataset": "SCNAH", 
+                        "locus": "5672", 
+                        "sample": "TCGA-BR-A452", 
+                        "ty": "Frame_Shift_Del"
+                    }
+                ]
+            }
+        }, 
+        "PTPRB": {
+            "NM_001109754": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 94, 
+                            "name": "RICIN", 
+                            "start": 22
+                        }, 
+                        {
+                            "end": 410, 
+                            "name": "FN3", 
+                            "start": 328
+                        }, 
+                        {
+                            "end": 582, 
+                            "name": "FN3", 
+                            "start": 507
+                        }, 
+                        {
+                            "end": 1026, 
+                            "name": "FN3", 
+                            "start": 949
+                        }, 
+                        {
+                            "end": 1112, 
+                            "name": "FN3", 
+                            "start": 1037
+                        }, 
+                        {
+                            "end": 1565, 
+                            "name": "FN3", 
+                            "start": 1479
+                        }, 
+                        {
+                            "end": 1661, 
+                            "name": "FN3", 
+                            "start": 1573
+                        }, 
+                        {
+                            "end": 2178, 
+                            "name": "PTPc", 
+                            "start": 1947
+                        }
+                    ], 
+                    "PFAM": [], 
+                    "SMART": [
+                        {
+                            "end": 672, 
+                            "name": "FN3", 
+                            "start": 595
+                        }, 
+                        {
+                            "end": 758, 
+                            "name": "FN3", 
+                            "start": 685
+                        }, 
+                        {
+                            "end": 1199, 
+                            "name": "FN3", 
+                            "start": 1125
+                        }, 
+                        {
+                            "end": 1465, 
+                            "name": "FN3", 
+                            "start": 1391
+                        }, 
+                        {
+                            "end": 2178, 
+                            "name": "PTPc", 
+                            "start": 1920
+                        }
+                    ]
+                }, 
+                "length": 2215, 
+                "mutations": [
+                    {
+                        "aan": "D", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "236", 
+                        "sample": "TCGA-D7-A4YU", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }, 
+            "NM_002837": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 192, 
+                            "name": "FN3", 
+                            "start": 110
+                        }, 
+                        {
+                            "end": 364, 
+                            "name": "FN3", 
+                            "start": 289
+                        }, 
+                        {
+                            "end": 808, 
+                            "name": "FN3", 
+                            "start": 731
+                        }, 
+                        {
+                            "end": 894, 
+                            "name": "FN3", 
+                            "start": 819
+                        }, 
+                        {
+                            "end": 1347, 
+                            "name": "FN3", 
+                            "start": 1261
+                        }, 
+                        {
+                            "end": 1443, 
+                            "name": "FN3", 
+                            "start": 1355
+                        }, 
+                        {
+                            "end": 1960, 
+                            "name": "PTPc", 
+                            "start": 1729
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 101, 
+                            "name": "fn3", 
+                            "start": 37
+                        }, 
+                        {
+                            "end": 454, 
+                            "name": "fn3", 
+                            "start": 378
+                        }, 
+                        {
+                            "end": 547, 
+                            "name": "fn3", 
+                            "start": 469
+                        }, 
+                        {
+                            "end": 720, 
+                            "name": "fn3", 
+                            "start": 658
+                        }, 
+                        {
+                            "end": 981, 
+                            "name": "fn3", 
+                            "start": 908
+                        }, 
+                        {
+                            "end": 1076, 
+                            "name": "fn3", 
+                            "start": 998
+                        }, 
+                        {
+                            "end": 1160, 
+                            "name": "fn3", 
+                            "start": 1087
+                        }, 
+                        {
+                            "end": 1248, 
+                            "name": "fn3", 
+                            "start": 1176
+                        }
+                    ], 
+                    "SMART": [
+                        {
+                            "end": 1960, 
+                            "name": "PTPc", 
+                            "start": 1702
+                        }
+                    ]
+                }, 
+                "length": 1997, 
+                "mutations": [
+                    {
+                        "aan": "Y", 
+                        "aao": "C", 
+                        "dataset": "SCNAH", 
+                        "locus": "1959", 
+                        "sample": "TCGA-BR-8291", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "V", 
+                        "aao": "E", 
+                        "dataset": "SCNAL", 
+                        "locus": "1160", 
+                        "sample": "TCGA-BR-A453", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Y", 
+                        "aao": "D", 
+                        "dataset": "SCNAH", 
+                        "locus": "922", 
+                        "sample": "TCGA-CD-8530", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "F", 
+                        "aao": "Y", 
+                        "dataset": "SCNAL", 
+                        "locus": "1061", 
+                        "sample": "TCGA-CD-8531", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "Q", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "1974", 
+                        "sample": "TCGA-CG-4466", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "N", 
+                        "aao": "D", 
+                        "dataset": "SCNAH", 
+                        "locus": "1123", 
+                        "sample": "TCGA-EQ-5647", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "splice", 
+                        "aao": "D", 
+                        "dataset": "SCNAH", 
+                        "locus": "109", 
+                        "sample": "TCGA-HU-A4H2", 
+                        "ty": "Splice_Site"
+                    }
+                ]
+            }
+        }, 
+        "PTPRC": {
+            "NM_002838": {
+                "domains": {
+                    "CD": [
+                        {
+                            "end": 462, 
+                            "name": "FN3", 
+                            "start": 392
+                        }, 
+                        {
+                            "end": 565, 
+                            "name": "FN3", 
+                            "start": 485
+                        }, 
+                        {
+                            "end": 911, 
+                            "name": "PTPc", 
+                            "start": 680
+                        }, 
+                        {
+                            "end": 1226, 
+                            "name": "PTPc", 
+                            "start": 971
+                        }
+                    ], 
+                    "PFAM": [
+                        {
+                            "end": 34, 
+                            "name": "PTP_N", 
+                            "start": 7
+                        }, 
+                        {
+                            "end": 62, 
+                            "name": "PTP_N", 
+                            "start": 35
+                        }, 
+                        {
+                            "end": 296, 
+                            "name": "CD45", 
+                            "start": 236
+                        }
+                    ], 
+                    "SMART": [
+                        {
+                            "end": 911, 
+                            "name": "PTPc", 
+                            "start": 652
+                        }, 
+                        {
+                            "end": 1226, 
+                            "name": "PTPc", 
+                            "start": 944
+                        }
+                    ]
+                }, 
+                "length": 1306, 
+                "mutations": [
+                    {
+                        "aan": "H", 
+                        "aao": "Q", 
+                        "dataset": "SCNAL", 
+                        "locus": "895", 
+                        "sample": "TCGA-BR-6453", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "H", 
+                        "aao": "Q", 
+                        "dataset": "SCNAH", 
+                        "locus": "895", 
+                        "sample": "TCGA-BR-8080", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "K", 
+                        "dataset": "SCNAL", 
+                        "locus": "275", 
+                        "sample": "TCGA-BR-A453", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "T", 
+                        "dataset": "SCNAH", 
+                        "locus": "451", 
+                        "sample": "TCGA-CD-A487", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "*", 
+                        "aao": "E", 
+                        "dataset": "SCNAH", 
+                        "locus": "1039", 
+                        "sample": "TCGA-CG-4449", 
+                        "ty": "Nonsense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "L", 
+                        "dataset": "SCNAH", 
+                        "locus": "357", 
+                        "sample": "TCGA-CG-4466", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "R", 
+                        "aao": "W", 
+                        "dataset": "SCNAH", 
+                        "locus": "739", 
+                        "sample": "TCGA-CG-5718", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "S", 
+                        "aao": "A", 
+                        "dataset": "SCNAL", 
+                        "locus": "1224", 
+                        "sample": "TCGA-CG-5720", 
+                        "ty": "Missense_Mutation"
+                    }, 
+                    {
+                        "aan": "P", 
+                        "aao": "Q", 
+                        "dataset": "SCNAH", 
+                        "locus": "1072", 
+                        "sample": "TCGA-HU-A4H6", 
+                        "ty": "Missense_Mutation"
+                    }
+                ]
+            }
+        }
+}

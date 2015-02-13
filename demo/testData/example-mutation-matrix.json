@@ -1,0 +1,1354 @@
+{
+    "M": {
+        "BPTF": {
+            "TCGA-05-4395": [
+                "snv"
+            ], 
+            "TCGA-09-2044": [
+                "snv"
+            ], 
+            "TCGA-12-1597": [
+                "inactive_snv"
+            ], 
+            "TCGA-13-0792": [
+                "inactive_snv"
+            ], 
+            "TCGA-17-Z017": [
+                "snv"
+            ], 
+            "TCGA-17-Z057": [
+                "snv"
+            ], 
+            "TCGA-22-5480": [
+                "snv"
+            ], 
+            "TCGA-22-5482": [
+                "snv"
+            ], 
+            "TCGA-24-1469": [
+                "snv"
+            ], 
+            "TCGA-32-2632": [
+                "snv"
+            ], 
+            "TCGA-33-4586": [
+                "snv"
+            ], 
+            "TCGA-41-2575": [
+                "snv"
+            ], 
+            "TCGA-46-3767": [
+                "snv"
+            ], 
+            "TCGA-50-6592": [
+                "snv"
+            ], 
+            "TCGA-51-4080": [
+                "snv"
+            ], 
+            "TCGA-60-2711": [
+                "snv"
+            ], 
+            "TCGA-61-2008": [
+                "snv"
+            ], 
+            "TCGA-66-2791": [
+                "inactive_snv"
+            ], 
+            "TCGA-66-2795": [
+                "snv"
+            ], 
+            "TCGA-76-6193": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GE": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GN": [
+                "snv"
+            ], 
+            "TCGA-A6-2670": [
+                "snv"
+            ], 
+            "TCGA-A8-A082": [
+                "snv"
+            ], 
+            "TCGA-AA-3819": [
+                "snv"
+            ], 
+            "TCGA-AA-3848": [
+                "snv"
+            ], 
+            "TCGA-AB-2968": [
+                "snv"
+            ], 
+            "TCGA-AG-A032": [
+                "snv"
+            ], 
+            "TCGA-AX-A05S": [
+                "snv"
+            ], 
+            "TCGA-B0-4823": [
+                "inactive_snv"
+            ], 
+            "TCGA-B0-5701": [
+                "snv"
+            ], 
+            "TCGA-B5-A0JZ": [
+                "snv"
+            ], 
+            "TCGA-B8-4621": [
+                "snv"
+            ], 
+            "TCGA-BA-6868": [
+                "snv"
+            ], 
+            "TCGA-C4-A0EZ": [
+                "snv"
+            ], 
+            "TCGA-C8-A132": [
+                "snv"
+            ], 
+            "TCGA-CJ-4881": [
+                "inactive_snv"
+            ], 
+            "TCGA-CQ-6219": [
+                "snv"
+            ], 
+            "TCGA-CV-7104": [
+                "snv"
+            ], 
+            "TCGA-D1-A160": [
+                "snv"
+            ], 
+            "TCGA-D8-A27K": [
+                "snv"
+            ], 
+            "TCGA-DK-A1AF": [
+                "snv"
+            ], 
+            "TCGA-DK-A3IQ": [
+                "snv"
+            ], 
+            "TCGA-DQ-5624": [
+                "snv"
+            ], 
+            "TCGA-EW-A1PD": [
+                "snv"
+            ], 
+            "TCGA-FD-A3B7": [
+                "snv"
+            ], 
+            "TCGA-GC-A3RB": [
+                "snv"
+            ], 
+            "TCGA-GV-A3JW": [
+                "snv"
+            ]
+        }, 
+        "CHD6": {
+            "TCGA-06-0241": [
+                "snv"
+            ], 
+            "TCGA-13-0755": [
+                "snv"
+            ], 
+            "TCGA-14-1456": [
+                "snv"
+            ], 
+            "TCGA-17-Z014": [
+                "snv"
+            ], 
+            "TCGA-17-Z018": [
+                "inactive_snv"
+            ], 
+            "TCGA-18-4086": [
+                "snv"
+            ], 
+            "TCGA-22-4604": [
+                "snv"
+            ], 
+            "TCGA-22-5477": [
+                "amp"
+            ], 
+            "TCGA-22-5478": [
+                "amp"
+            ], 
+            "TCGA-24-1105": [
+                "snv"
+            ], 
+            "TCGA-24-1553": [
+                "snv"
+            ], 
+            "TCGA-25-1317": [
+                "snv"
+            ], 
+            "TCGA-34-5928": [
+                "snv"
+            ], 
+            "TCGA-39-5036": [
+                "snv"
+            ], 
+            "TCGA-44-4112": [
+                "snv"
+            ], 
+            "TCGA-44-6144": [
+                "snv"
+            ], 
+            "TCGA-44-6776": [
+                "snv"
+            ], 
+            "TCGA-46-6025": [
+                "snv"
+            ], 
+            "TCGA-49-4486": [
+                "snv"
+            ], 
+            "TCGA-49-4487": [
+                "snv"
+            ], 
+            "TCGA-55-5899": [
+                "snv"
+            ], 
+            "TCGA-61-1995": [
+                "snv"
+            ], 
+            "TCGA-66-2766": [
+                "amp"
+            ], 
+            "TCGA-66-2786": [
+                "inactive_snv"
+            ], 
+            "TCGA-73-4670": [
+                "inactive_snv"
+            ], 
+            "TCGA-75-5146": [
+                "amp"
+            ], 
+            "TCGA-76-4928": [
+                "snv"
+            ], 
+            "TCGA-80-5611": [
+                "snv"
+            ], 
+            "TCGA-A1-A0SO": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GJ": [
+                "inactive_snv"
+            ], 
+            "TCGA-A7-A0CD": [
+                "snv"
+            ], 
+            "TCGA-A7-A0CJ": [
+                "snv"
+            ], 
+            "TCGA-A8-A079": [
+                "amp"
+            ], 
+            "TCGA-AA-3696": [
+                "snv"
+            ], 
+            "TCGA-AA-3819": [
+                "amp"
+            ], 
+            "TCGA-AA-3846": [
+                "amp"
+            ], 
+            "TCGA-AA-3869": [
+                "amp"
+            ], 
+            "TCGA-AA-3955": [
+                "amp"
+            ], 
+            "TCGA-AA-3956": [
+                "snv"
+            ], 
+            "TCGA-AA-3982": [
+                "amp"
+            ], 
+            "TCGA-AF-3913": [
+                "amp"
+            ], 
+            "TCGA-AG-3612": [
+                "amp"
+            ], 
+            "TCGA-AG-3883": [
+                "amp"
+            ], 
+            "TCGA-AG-3896": [
+                "amp"
+            ], 
+            "TCGA-AG-3898": [
+                "amp"
+            ], 
+            "TCGA-AG-3999": [
+                "amp"
+            ], 
+            "TCGA-AG-4015": [
+                "amp"
+            ], 
+            "TCGA-AG-A015": [
+                "snv"
+            ], 
+            "TCGA-AG-A01W": [
+                "snv"
+            ], 
+            "TCGA-AG-A02G": [
+                "amp"
+            ], 
+            "TCGA-AK-3428": [
+                "snv"
+            ], 
+            "TCGA-AR-A24O": [
+                "inactive_snv"
+            ], 
+            "TCGA-B0-4815": [
+                "snv"
+            ], 
+            "TCGA-B5-A11I": [
+                "snv"
+            ], 
+            "TCGA-BG-A0MO": [
+                "snv"
+            ], 
+            "TCGA-BH-A0BR": [
+                "snv"
+            ], 
+            "TCGA-BH-A0H7": [
+                "inactive_snv", 
+                "amp"
+            ], 
+            "TCGA-BH-A0H9": [
+                "amp"
+            ], 
+            "TCGA-BH-A1EY": [
+                "snv"
+            ], 
+            "TCGA-BT-A20X": [
+                "snv"
+            ], 
+            "TCGA-BT-A2LA": [
+                "snv"
+            ], 
+            "TCGA-BT-A3PK": [
+                "snv"
+            ], 
+            "TCGA-C8-A12W": [
+                "amp"
+            ], 
+            "TCGA-C8-A1HN": [
+                "amp"
+            ], 
+            "TCGA-CJ-4899": [
+                "snv"
+            ], 
+            "TCGA-CN-6021": [
+                "snv"
+            ], 
+            "TCGA-CN-6023": [
+                "snv"
+            ], 
+            "TCGA-CN-6995": [
+                "snv"
+            ], 
+            "TCGA-CR-5248": [
+                "inactive_snv"
+            ], 
+            "TCGA-CV-7242": [
+                "snv"
+            ], 
+            "TCGA-CV-7252": [
+                "snv"
+            ], 
+            "TCGA-CZ-4853": [
+                "snv"
+            ], 
+            "TCGA-D1-A160": [
+                "snv"
+            ], 
+            "TCGA-D1-A16J": [
+                "snv"
+            ], 
+            "TCGA-D8-A1JP": [
+                "inactive_snv"
+            ], 
+            "TCGA-DI-A0WH": [
+                "snv"
+            ], 
+            "TCGA-DK-A1AG": [
+                "snv"
+            ], 
+            "TCGA-E2-A109": [
+                "inactive_snv"
+            ], 
+            "TCGA-E2-A14P": [
+                "amp"
+            ], 
+            "TCGA-EW-A1P8": [
+                "snv"
+            ], 
+            "TCGA-EY-A212": [
+                "amp"
+            ], 
+            "TCGA-GC-A3I6": [
+                "snv"
+            ], 
+            "TCGA-GI-A2C8": [
+                "snv"
+            ], 
+            "TCGA-GV-A3JW": [
+                "snv"
+            ]
+        }, 
+        "KEAP1": {
+            "TCGA-05-4384": [
+                "snv"
+            ], 
+            "TCGA-05-4389": [
+                "snv"
+            ], 
+            "TCGA-05-4395": [
+                "snv"
+            ], 
+            "TCGA-05-4418": [
+                "snv"
+            ], 
+            "TCGA-17-Z001": [
+                "snv"
+            ], 
+            "TCGA-17-Z008": [
+                "snv"
+            ], 
+            "TCGA-17-Z011": [
+                "snv"
+            ], 
+            "TCGA-17-Z018": [
+                "snv"
+            ], 
+            "TCGA-17-Z043": [
+                "snv"
+            ], 
+            "TCGA-18-3407": [
+                "snv"
+            ], 
+            "TCGA-18-5595": [
+                "snv"
+            ], 
+            "TCGA-21-1077": [
+                "snv"
+            ], 
+            "TCGA-22-4599": [
+                "snv"
+            ], 
+            "TCGA-24-1474": [
+                "snv"
+            ], 
+            "TCGA-33-4532": [
+                "inactive_snv"
+            ], 
+            "TCGA-33-4538": [
+                "snv"
+            ], 
+            "TCGA-35-3615": [
+                "inactive_snv"
+            ], 
+            "TCGA-35-5375": [
+                "inactive_snv"
+            ], 
+            "TCGA-37-4133": [
+                "snv"
+            ], 
+            "TCGA-39-5036": [
+                "snv"
+            ], 
+            "TCGA-43-2578": [
+                "snv"
+            ], 
+            "TCGA-43-6143": [
+                "snv"
+            ], 
+            "TCGA-44-2655": [
+                "snv"
+            ], 
+            "TCGA-44-6776": [
+                "snv"
+            ], 
+            "TCGA-44-6778": [
+                "snv"
+            ], 
+            "TCGA-44-6779": [
+                "snv"
+            ], 
+            "TCGA-46-6025": [
+                "inactive_snv"
+            ], 
+            "TCGA-49-4486": [
+                "snv"
+            ], 
+            "TCGA-49-4488": [
+                "snv"
+            ], 
+            "TCGA-49-4506": [
+                "snv"
+            ], 
+            "TCGA-49-4507": [
+                "snv"
+            ], 
+            "TCGA-49-4514": [
+                "inactive_snv"
+            ], 
+            "TCGA-49-6742": [
+                "snv"
+            ], 
+            "TCGA-50-5051": [
+                "snv"
+            ], 
+            "TCGA-50-5068": [
+                "snv"
+            ], 
+            "TCGA-50-5936": [
+                "inactive_snv"
+            ], 
+            "TCGA-50-5939": [
+                "snv"
+            ], 
+            "TCGA-51-4081": [
+                "snv"
+            ], 
+            "TCGA-55-5899": [
+                "snv"
+            ], 
+            "TCGA-60-2710": [
+                "snv"
+            ], 
+            "TCGA-60-2722": [
+                "snv"
+            ], 
+            "TCGA-60-2723": [
+                "snv"
+            ], 
+            "TCGA-66-2754": [
+                "snv"
+            ], 
+            "TCGA-66-2777": [
+                "snv"
+            ], 
+            "TCGA-67-3774": [
+                "snv"
+            ], 
+            "TCGA-73-4666": [
+                "snv"
+            ], 
+            "TCGA-73-4670": [
+                "snv"
+            ], 
+            "TCGA-73-4676": [
+                "snv"
+            ], 
+            "TCGA-73-4677": [
+                "inactive_snv"
+            ], 
+            "TCGA-75-6206": [
+                "snv"
+            ], 
+            "TCGA-75-6211": [
+                "snv"
+            ], 
+            "TCGA-A8-A09W": [
+                "inactive_snv"
+            ], 
+            "TCGA-B0-4815": [
+                "snv"
+            ], 
+            "TCGA-BA-7269": [
+                "snv"
+            ], 
+            "TCGA-BB-7870": [
+                "snv"
+            ], 
+            "TCGA-BP-5183": [
+                "snv"
+            ], 
+            "TCGA-BS-A0TA": [
+                "snv"
+            ], 
+            "TCGA-BS-A0TE": [
+                "inactive_snv"
+            ], 
+            "TCGA-CN-4727": [
+                "snv"
+            ], 
+            "TCGA-CN-5359": [
+                "snv"
+            ], 
+            "TCGA-CN-6010": [
+                "snv"
+            ], 
+            "TCGA-CR-6492": [
+                "snv"
+            ], 
+            "TCGA-CV-5434": [
+                "snv"
+            ], 
+            "TCGA-CV-5978": [
+                "snv"
+            ], 
+            "TCGA-CV-7238": [
+                "snv"
+            ], 
+            "TCGA-CV-7248": [
+                "snv"
+            ], 
+            "TCGA-DQ-7588": [
+                "snv"
+            ], 
+            "TCGA-DQ-7589": [
+                "snv"
+            ], 
+            "TCGA-G2-A2EJ": [
+                "snv"
+            ], 
+            "TCGA-G2-A3IE": [
+                "snv"
+            ]
+        }, 
+        "NFE2L2": {
+            "TCGA-05-4422": [
+                "snv"
+            ], 
+            "TCGA-17-Z023": [
+                "inactive_snv"
+            ], 
+            "TCGA-17-Z033": [
+                "snv"
+            ], 
+            "TCGA-18-3411": [
+                "snv"
+            ], 
+            "TCGA-18-3415": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-18-3417": [
+                "amp"
+            ], 
+            "TCGA-18-3421": [
+                "amp"
+            ], 
+            "TCGA-18-4721": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-18-5592": [
+                "snv"
+            ], 
+            "TCGA-21-1071": [
+                "snv"
+            ], 
+            "TCGA-22-0944": [
+                "amp"
+            ], 
+            "TCGA-22-1012": [
+                "amp"
+            ], 
+            "TCGA-22-4601": [
+                "amp"
+            ], 
+            "TCGA-22-5474": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-22-5477": [
+                "snv"
+            ], 
+            "TCGA-22-5482": [
+                "snv"
+            ], 
+            "TCGA-24-1466": [
+                "amp"
+            ], 
+            "TCGA-24-1553": [
+                "amp"
+            ], 
+            "TCGA-24-2262": [
+                "amp"
+            ], 
+            "TCGA-33-4538": [
+                "amp"
+            ], 
+            "TCGA-33-4582": [
+                "amp"
+            ], 
+            "TCGA-33-4586": [
+                "snv"
+            ], 
+            "TCGA-33-6737": [
+                "amp"
+            ], 
+            "TCGA-34-2596": [
+                "snv"
+            ], 
+            "TCGA-34-2608": [
+                "snv"
+            ], 
+            "TCGA-34-5236": [
+                "snv"
+            ], 
+            "TCGA-34-5240": [
+                "snv"
+            ], 
+            "TCGA-37-4135": [
+                "snv"
+            ], 
+            "TCGA-39-5021": [
+                "amp"
+            ], 
+            "TCGA-39-5022": [
+                "snv"
+            ], 
+            "TCGA-39-5036": [
+                "amp"
+            ], 
+            "TCGA-43-3394": [
+                "amp"
+            ], 
+            "TCGA-46-3765": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-46-3768": [
+                "snv"
+            ], 
+            "TCGA-46-6025": [
+                "amp"
+            ], 
+            "TCGA-50-5931": [
+                "amp"
+            ], 
+            "TCGA-51-4079": [
+                "inactive_snv"
+            ], 
+            "TCGA-51-4081": [
+                "snv"
+            ], 
+            "TCGA-56-5897": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-60-2709": [
+                "snv"
+            ], 
+            "TCGA-66-2727": [
+                "amp"
+            ], 
+            "TCGA-66-2758": [
+                "amp"
+            ], 
+            "TCGA-66-2759": [
+                "amp"
+            ], 
+            "TCGA-66-2766": [
+                "snv", 
+                "amp"
+            ], 
+            "TCGA-66-2770": [
+                "snv"
+            ], 
+            "TCGA-66-2783": [
+                "snv"
+            ], 
+            "TCGA-66-2791": [
+                "amp"
+            ], 
+            "TCGA-66-2795": [
+                "snv"
+            ], 
+            "TCGA-A5-A0G9": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GH": [
+                "snv"
+            ], 
+            "TCGA-A5-A0GW": [
+                "snv"
+            ], 
+            "TCGA-A7-A26E": [
+                "inactive_snv"
+            ], 
+            "TCGA-A8-A08J": [
+                "amp"
+            ], 
+            "TCGA-AP-A1DQ": [
+                "amp"
+            ], 
+            "TCGA-AX-A05W": [
+                "snv"
+            ], 
+            "TCGA-B0-4837": [
+                "snv"
+            ], 
+            "TCGA-B0-5097": [
+                "inactive_snv"
+            ], 
+            "TCGA-B2-4098": [
+                "snv"
+            ], 
+            "TCGA-B5-A0JT": [
+                "snv"
+            ], 
+            "TCGA-BA-7269": [
+                "snv"
+            ], 
+            "TCGA-BG-A0M4": [
+                "inactive_snv"
+            ], 
+            "TCGA-BK-A0C9": [
+                "snv"
+            ], 
+            "TCGA-BL-A13I": [
+                "snv"
+            ], 
+            "TCGA-BP-4768": [
+                "inactive_snv"
+            ], 
+            "TCGA-BP-5178": [
+                "snv"
+            ], 
+            "TCGA-BS-A0U7": [
+                "snv"
+            ], 
+            "TCGA-BT-A20U": [
+                "snv"
+            ], 
+            "TCGA-C4-A0F6": [
+                "snv"
+            ], 
+            "TCGA-CN-5359": [
+                "amp"
+            ], 
+            "TCGA-CN-6019": [
+                "snv"
+            ], 
+            "TCGA-CQ-5324": [
+                "snv"
+            ], 
+            "TCGA-CR-7380": [
+                "amp"
+            ], 
+            "TCGA-CR-7383": [
+                "snv"
+            ], 
+            "TCGA-CV-6933": [
+                "amp"
+            ], 
+            "TCGA-CV-6935": [
+                "snv"
+            ], 
+            "TCGA-CV-6940": [
+                "snv"
+            ], 
+            "TCGA-CV-6941": [
+                "amp"
+            ], 
+            "TCGA-CV-6942": [
+                "snv"
+            ], 
+            "TCGA-CV-6951": [
+                "snv"
+            ], 
+            "TCGA-CV-6955": [
+                "snv"
+            ], 
+            "TCGA-CV-7099": [
+                "snv"
+            ], 
+            "TCGA-CV-7177": [
+                "snv"
+            ], 
+            "TCGA-CV-7424": [
+                "snv"
+            ], 
+            "TCGA-CV-7429": [
+                "snv"
+            ], 
+            "TCGA-CV-7433": [
+                "snv"
+            ], 
+            "TCGA-CV-7437": [
+                "snv"
+            ], 
+            "TCGA-CZ-5456": [
+                "snv"
+            ], 
+            "TCGA-D1-A16E": [
+                "snv"
+            ], 
+            "TCGA-D1-A17U": [
+                "snv"
+            ], 
+            "TCGA-D8-A1X6": [
+                "snv"
+            ], 
+            "TCGA-DK-A1AE": [
+                "snv"
+            ], 
+            "TCGA-DK-A3IT": [
+                "snv"
+            ], 
+            "TCGA-E5-A2PC": [
+                "snv"
+            ], 
+            "TCGA-E9-A1N9": [
+                "amp"
+            ], 
+            "TCGA-FD-A3N6": [
+                "snv"
+            ], 
+            "TCGA-FI-A2D2": [
+                "amp"
+            ], 
+            "TCGA-G2-A3IB": [
+                "snv"
+            ], 
+            "TCGA-H7-7774": [
+                "snv"
+            ]
+        }, 
+        "PTMA": {}, 
+        "RBM45": {}, 
+        "SLK": {
+            "TCGA-06-2563": [
+                "snv"
+            ], 
+            "TCGA-13-0923": [
+                "inactive_snv"
+            ], 
+            "TCGA-17-Z042": [
+                "snv"
+            ], 
+            "TCGA-27-1835": [
+                "snv"
+            ], 
+            "TCGA-37-4135": [
+                "snv"
+            ], 
+            "TCGA-39-5037": [
+                "snv"
+            ], 
+            "TCGA-49-6745": [
+                "snv"
+            ], 
+            "TCGA-66-2727": [
+                "inactive_snv"
+            ], 
+            "TCGA-A2-A0SY": [
+                "snv"
+            ], 
+            "TCGA-AA-A01I": [
+                "snv"
+            ], 
+            "TCGA-B2-4099": [
+                "inactive_snv"
+            ], 
+            "TCGA-B2-5641": [
+                "snv"
+            ], 
+            "TCGA-B5-A0K8": [
+                "snv"
+            ], 
+            "TCGA-BG-A0LX": [
+                "snv"
+            ], 
+            "TCGA-BH-A0DK": [
+                "snv"
+            ], 
+            "TCGA-D1-A163": [
+                "snv"
+            ], 
+            "TCGA-DK-A3IS": [
+                "snv"
+            ]
+        }, 
+        "WAC": {
+            "TCGA-05-4389": [
+                "snv"
+            ], 
+            "TCGA-13-0890": [
+                "inactive_snv"
+            ], 
+            "TCGA-44-6146": [
+                "inactive_snv"
+            ], 
+            "TCGA-66-2778": [
+                "snv"
+            ], 
+            "TCGA-A8-A06X": [
+                "snv"
+            ], 
+            "TCGA-AB-3001": [
+                "inactive_snv"
+            ], 
+            "TCGA-AB-3009": [
+                "inactive_snv"
+            ], 
+            "TCGA-AG-A036": [
+                "snv"
+            ], 
+            "TCGA-AN-A0FD": [
+                "inactive_snv"
+            ], 
+            "TCGA-B0-4714": [
+                "snv"
+            ], 
+            "TCGA-BH-A0E0": [
+                "snv"
+            ], 
+            "TCGA-BP-4781": [
+                "snv"
+            ], 
+            "TCGA-BP-4992": [
+                "snv"
+            ], 
+            "TCGA-BP-5001": [
+                "inactive_snv"
+            ], 
+            "TCGA-BT-A20N": [
+                "snv"
+            ], 
+            "TCGA-CR-6491": [
+                "inactive_snv"
+            ], 
+            "TCGA-D1-A163": [
+                "snv"
+            ], 
+            "TCGA-FD-A3NA": [
+                "snv"
+            ], 
+            "TCGA-G2-A2EJ": [
+                "snv"
+            ]
+        }
+    }, 
+    "typeToNumSamples": {
+        "BLCA": 87,
+        "BRCA": 763,
+        "COADREAD": 193,
+        "GBM": 290,
+        "HNSC": 293,
+        "KIRC": 417,
+        "LAML": 195,
+        "LUAD": 186,
+        "LUSC": 160,
+        "OV": 316,
+        "UCEC": 210
+    },
+    "sampleToTypes": {
+        "TCGA-05-4384": "LUAD", 
+        "TCGA-05-4389": "LUAD", 
+        "TCGA-05-4395": "LUAD", 
+        "TCGA-05-4418": "LUAD", 
+        "TCGA-05-4422": "LUAD", 
+        "TCGA-06-0241": "GBM", 
+        "TCGA-06-2563": "GBM", 
+        "TCGA-09-2044": "OV", 
+        "TCGA-12-1597": "GBM", 
+        "TCGA-13-0755": "OV", 
+        "TCGA-13-0792": "OV", 
+        "TCGA-13-0890": "OV", 
+        "TCGA-13-0923": "OV", 
+        "TCGA-14-1456": "GBM", 
+        "TCGA-17-Z001": "LUAD", 
+        "TCGA-17-Z008": "LUAD", 
+        "TCGA-17-Z011": "LUAD", 
+        "TCGA-17-Z014": "LUAD", 
+        "TCGA-17-Z017": "LUAD", 
+        "TCGA-17-Z018": "LUAD", 
+        "TCGA-17-Z023": "LUAD", 
+        "TCGA-17-Z033": "LUAD", 
+        "TCGA-17-Z042": "LUAD", 
+        "TCGA-17-Z043": "LUAD", 
+        "TCGA-17-Z057": "LUAD", 
+        "TCGA-18-3407": "LUSC", 
+        "TCGA-18-3411": "LUSC", 
+        "TCGA-18-3415": "LUSC", 
+        "TCGA-18-3417": "LUSC", 
+        "TCGA-18-3421": "LUSC", 
+        "TCGA-18-4086": "LUSC", 
+        "TCGA-18-4721": "LUSC", 
+        "TCGA-18-5592": "LUSC", 
+        "TCGA-18-5595": "LUSC", 
+        "TCGA-21-1071": "LUSC", 
+        "TCGA-21-1077": "LUSC", 
+        "TCGA-22-0944": "LUSC", 
+        "TCGA-22-1012": "LUSC", 
+        "TCGA-22-4599": "LUSC", 
+        "TCGA-22-4601": "LUSC", 
+        "TCGA-22-4604": "LUSC", 
+        "TCGA-22-5474": "LUSC", 
+        "TCGA-22-5477": "LUSC", 
+        "TCGA-22-5478": "LUSC", 
+        "TCGA-22-5480": "LUSC", 
+        "TCGA-22-5482": "LUSC", 
+        "TCGA-24-1105": "OV", 
+        "TCGA-24-1466": "OV", 
+        "TCGA-24-1469": "OV", 
+        "TCGA-24-1474": "OV", 
+        "TCGA-24-1553": "OV", 
+        "TCGA-24-2262": "OV", 
+        "TCGA-25-1317": "OV", 
+        "TCGA-27-1835": "GBM", 
+        "TCGA-32-2632": "GBM", 
+        "TCGA-33-4532": "LUSC", 
+        "TCGA-33-4538": "LUSC", 
+        "TCGA-33-4582": "LUSC", 
+        "TCGA-33-4586": "LUSC", 
+        "TCGA-33-6737": "LUSC", 
+        "TCGA-34-2596": "LUSC", 
+        "TCGA-34-2608": "LUSC", 
+        "TCGA-34-5236": "LUSC", 
+        "TCGA-34-5240": "LUSC", 
+        "TCGA-34-5928": "LUSC", 
+        "TCGA-35-3615": "LUAD", 
+        "TCGA-35-5375": "LUAD", 
+        "TCGA-37-4133": "LUSC", 
+        "TCGA-37-4135": "LUSC", 
+        "TCGA-39-5021": "LUSC", 
+        "TCGA-39-5022": "LUSC", 
+        "TCGA-39-5036": "LUSC", 
+        "TCGA-39-5037": "LUSC", 
+        "TCGA-41-2575": "GBM", 
+        "TCGA-43-2578": "LUSC", 
+        "TCGA-43-3394": "LUSC", 
+        "TCGA-43-6143": "LUSC", 
+        "TCGA-44-2655": "LUAD", 
+        "TCGA-44-4112": "LUAD", 
+        "TCGA-44-6144": "LUAD", 
+        "TCGA-44-6146": "LUAD", 
+        "TCGA-44-6776": "LUAD", 
+        "TCGA-44-6778": "LUAD", 
+        "TCGA-44-6779": "LUAD", 
+        "TCGA-46-3765": "LUSC", 
+        "TCGA-46-3767": "LUSC", 
+        "TCGA-46-3768": "LUSC", 
+        "TCGA-46-6025": "LUSC", 
+        "TCGA-49-4486": "LUAD", 
+        "TCGA-49-4487": "LUAD", 
+        "TCGA-49-4488": "LUAD", 
+        "TCGA-49-4506": "LUAD", 
+        "TCGA-49-4507": "LUAD", 
+        "TCGA-49-4514": "LUAD", 
+        "TCGA-49-6742": "LUAD", 
+        "TCGA-49-6745": "LUAD", 
+        "TCGA-50-5051": "LUAD", 
+        "TCGA-50-5068": "LUAD", 
+        "TCGA-50-5931": "LUAD", 
+        "TCGA-50-5936": "LUAD", 
+        "TCGA-50-5939": "LUAD", 
+        "TCGA-50-6592": "LUAD", 
+        "TCGA-51-4079": "LUSC", 
+        "TCGA-51-4080": "LUSC", 
+        "TCGA-51-4081": "LUSC", 
+        "TCGA-55-5899": "LUAD", 
+        "TCGA-56-5897": "LUSC", 
+        "TCGA-60-2709": "LUSC", 
+        "TCGA-60-2710": "LUSC", 
+        "TCGA-60-2711": "LUSC", 
+        "TCGA-60-2722": "LUSC", 
+        "TCGA-60-2723": "LUSC", 
+        "TCGA-61-1995": "OV", 
+        "TCGA-61-2008": "OV", 
+        "TCGA-66-2727": "LUSC", 
+        "TCGA-66-2754": "LUSC", 
+        "TCGA-66-2758": "LUSC", 
+        "TCGA-66-2759": "LUSC", 
+        "TCGA-66-2766": "LUSC", 
+        "TCGA-66-2770": "LUSC", 
+        "TCGA-66-2777": "LUSC", 
+        "TCGA-66-2778": "LUSC", 
+        "TCGA-66-2783": "LUSC", 
+        "TCGA-66-2786": "LUSC", 
+        "TCGA-66-2791": "LUSC", 
+        "TCGA-66-2795": "LUSC", 
+        "TCGA-67-3774": "LUAD", 
+        "TCGA-73-4666": "LUAD", 
+        "TCGA-73-4670": "LUAD", 
+        "TCGA-73-4676": "LUAD", 
+        "TCGA-73-4677": "LUAD", 
+        "TCGA-75-5146": "LUAD", 
+        "TCGA-75-6206": "LUAD", 
+        "TCGA-75-6211": "LUAD", 
+        "TCGA-76-4928": "GBM", 
+        "TCGA-76-6193": "GBM", 
+        "TCGA-80-5611": "LUAD", 
+        "TCGA-A1-A0SO": "BRCA", 
+        "TCGA-A2-A0SY": "BRCA", 
+        "TCGA-A5-A0G9": "UCEC", 
+        "TCGA-A5-A0GE": "UCEC", 
+        "TCGA-A5-A0GH": "UCEC", 
+        "TCGA-A5-A0GJ": "UCEC", 
+        "TCGA-A5-A0GN": "UCEC", 
+        "TCGA-A5-A0GW": "UCEC", 
+        "TCGA-A6-2670": "COADREAD", 
+        "TCGA-A7-A0CD": "BRCA", 
+        "TCGA-A7-A0CJ": "BRCA", 
+        "TCGA-A7-A26E": "BRCA", 
+        "TCGA-A8-A06X": "BRCA", 
+        "TCGA-A8-A079": "BRCA", 
+        "TCGA-A8-A082": "BRCA", 
+        "TCGA-A8-A08J": "BRCA", 
+        "TCGA-A8-A09W": "BRCA", 
+        "TCGA-AA-3696": "COADREAD", 
+        "TCGA-AA-3819": "COADREAD", 
+        "TCGA-AA-3846": "COADREAD", 
+        "TCGA-AA-3848": "COADREAD", 
+        "TCGA-AA-3869": "COADREAD", 
+        "TCGA-AA-3955": "COADREAD", 
+        "TCGA-AA-3956": "COADREAD", 
+        "TCGA-AA-3982": "COADREAD", 
+        "TCGA-AA-A01I": "COADREAD", 
+        "TCGA-AB-2968": "LAML", 
+        "TCGA-AB-3001": "LAML", 
+        "TCGA-AB-3009": "LAML", 
+        "TCGA-AF-3913": "COADREAD", 
+        "TCGA-AG-3612": "COADREAD", 
+        "TCGA-AG-3883": "COADREAD", 
+        "TCGA-AG-3896": "COADREAD", 
+        "TCGA-AG-3898": "COADREAD", 
+        "TCGA-AG-3999": "COADREAD", 
+        "TCGA-AG-4015": "COADREAD", 
+        "TCGA-AG-A015": "COADREAD", 
+        "TCGA-AG-A01W": "COADREAD", 
+        "TCGA-AG-A02G": "COADREAD", 
+        "TCGA-AG-A032": "COADREAD", 
+        "TCGA-AG-A036": "COADREAD", 
+        "TCGA-AK-3428": "KIRC", 
+        "TCGA-AN-A0FD": "BRCA", 
+        "TCGA-AP-A1DQ": "UCEC", 
+        "TCGA-AR-A24O": "BRCA", 
+        "TCGA-AX-A05S": "UCEC", 
+        "TCGA-AX-A05W": "UCEC", 
+        "TCGA-B0-4714": "KIRC", 
+        "TCGA-B0-4815": "KIRC", 
+        "TCGA-B0-4823": "KIRC", 
+        "TCGA-B0-4837": "KIRC", 
+        "TCGA-B0-5097": "KIRC", 
+        "TCGA-B0-5701": "KIRC", 
+        "TCGA-B2-4098": "KIRC", 
+        "TCGA-B2-4099": "KIRC", 
+        "TCGA-B2-5641": "KIRC", 
+        "TCGA-B5-A0JT": "UCEC", 
+        "TCGA-B5-A0JZ": "UCEC", 
+        "TCGA-B5-A0K8": "UCEC", 
+        "TCGA-B5-A11I": "UCEC", 
+        "TCGA-B8-4621": "KIRC", 
+        "TCGA-BA-6868": "HNSC", 
+        "TCGA-BA-7269": "HNSC", 
+        "TCGA-BB-7870": "HNSC", 
+        "TCGA-BG-A0LX": "UCEC", 
+        "TCGA-BG-A0M4": "UCEC", 
+        "TCGA-BG-A0MO": "UCEC", 
+        "TCGA-BH-A0BR": "BRCA", 
+        "TCGA-BH-A0DK": "BRCA", 
+        "TCGA-BH-A0E0": "BRCA", 
+        "TCGA-BH-A0H7": "BRCA", 
+        "TCGA-BH-A0H9": "BRCA", 
+        "TCGA-BH-A1EY": "BRCA", 
+        "TCGA-BK-A0C9": "UCEC", 
+        "TCGA-BL-A13I": "BLCA", 
+        "TCGA-BP-4768": "KIRC", 
+        "TCGA-BP-4781": "KIRC", 
+        "TCGA-BP-4992": "KIRC", 
+        "TCGA-BP-5001": "KIRC", 
+        "TCGA-BP-5178": "KIRC", 
+        "TCGA-BP-5183": "KIRC", 
+        "TCGA-BS-A0TA": "UCEC", 
+        "TCGA-BS-A0TE": "UCEC", 
+        "TCGA-BS-A0U7": "UCEC", 
+        "TCGA-BT-A20N": "BLCA", 
+        "TCGA-BT-A20U": "BLCA", 
+        "TCGA-BT-A20X": "BLCA", 
+        "TCGA-BT-A2LA": "BLCA", 
+        "TCGA-BT-A3PK": "BLCA", 
+        "TCGA-C4-A0EZ": "BLCA", 
+        "TCGA-C4-A0F6": "BLCA", 
+        "TCGA-C8-A12W": "BRCA", 
+        "TCGA-C8-A132": "BRCA", 
+        "TCGA-C8-A1HN": "BRCA", 
+        "TCGA-CJ-4881": "KIRC", 
+        "TCGA-CJ-4899": "KIRC", 
+        "TCGA-CN-4727": "HNSC", 
+        "TCGA-CN-5359": "HNSC", 
+        "TCGA-CN-6010": "HNSC", 
+        "TCGA-CN-6019": "HNSC", 
+        "TCGA-CN-6021": "HNSC", 
+        "TCGA-CN-6023": "HNSC", 
+        "TCGA-CN-6995": "HNSC", 
+        "TCGA-CQ-5324": "HNSC", 
+        "TCGA-CQ-6219": "HNSC", 
+        "TCGA-CR-5248": "HNSC", 
+        "TCGA-CR-6491": "HNSC", 
+        "TCGA-CR-6492": "HNSC", 
+        "TCGA-CR-7380": "HNSC", 
+        "TCGA-CR-7383": "HNSC", 
+        "TCGA-CV-5434": "HNSC", 
+        "TCGA-CV-5978": "HNSC", 
+        "TCGA-CV-6933": "HNSC", 
+        "TCGA-CV-6935": "HNSC", 
+        "TCGA-CV-6940": "HNSC", 
+        "TCGA-CV-6941": "HNSC", 
+        "TCGA-CV-6942": "HNSC", 
+        "TCGA-CV-6951": "HNSC", 
+        "TCGA-CV-6955": "HNSC", 
+        "TCGA-CV-7099": "HNSC", 
+        "TCGA-CV-7104": "HNSC", 
+        "TCGA-CV-7177": "HNSC", 
+        "TCGA-CV-7238": "HNSC", 
+        "TCGA-CV-7242": "HNSC", 
+        "TCGA-CV-7248": "HNSC", 
+        "TCGA-CV-7252": "HNSC", 
+        "TCGA-CV-7424": "HNSC", 
+        "TCGA-CV-7429": "HNSC", 
+        "TCGA-CV-7433": "HNSC", 
+        "TCGA-CV-7437": "HNSC", 
+        "TCGA-CZ-4853": "KIRC", 
+        "TCGA-CZ-5456": "KIRC", 
+        "TCGA-D1-A160": "UCEC", 
+        "TCGA-D1-A163": "UCEC", 
+        "TCGA-D1-A16E": "UCEC", 
+        "TCGA-D1-A16J": "UCEC", 
+        "TCGA-D1-A17U": "UCEC", 
+        "TCGA-D8-A1JP": "BRCA", 
+        "TCGA-D8-A1X6": "BRCA", 
+        "TCGA-D8-A27K": "BRCA", 
+        "TCGA-DI-A0WH": "UCEC", 
+        "TCGA-DK-A1AE": "BLCA", 
+        "TCGA-DK-A1AF": "BLCA", 
+        "TCGA-DK-A1AG": "BLCA", 
+        "TCGA-DK-A3IQ": "BLCA", 
+        "TCGA-DK-A3IS": "BLCA", 
+        "TCGA-DK-A3IT": "BLCA", 
+        "TCGA-DQ-5624": "HNSC", 
+        "TCGA-DQ-7588": "HNSC", 
+        "TCGA-DQ-7589": "HNSC", 
+        "TCGA-E2-A109": "BRCA", 
+        "TCGA-E2-A14P": "BRCA", 
+        "TCGA-E5-A2PC": "BLCA", 
+        "TCGA-E9-A1N9": "BRCA", 
+        "TCGA-EW-A1P8": "BRCA", 
+        "TCGA-EW-A1PD": "BRCA", 
+        "TCGA-EY-A212": "UCEC", 
+        "TCGA-FD-A3B7": "BLCA", 
+        "TCGA-FD-A3N6": "BLCA", 
+        "TCGA-FD-A3NA": "BLCA", 
+        "TCGA-FI-A2D2": "UCEC", 
+        "TCGA-G2-A2EJ": "BLCA", 
+        "TCGA-G2-A3IB": "BLCA", 
+        "TCGA-G2-A3IE": "BLCA", 
+        "TCGA-GC-A3I6": "BLCA", 
+        "TCGA-GC-A3RB": "BLCA", 
+        "TCGA-GI-A2C8": "BRCA", 
+        "TCGA-GV-A3JW": "BLCA", 
+        "TCGA-H7-7774": "HNSC"
+    }
+}
