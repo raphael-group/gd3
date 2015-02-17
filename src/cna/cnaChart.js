@@ -1,6 +1,8 @@
 import "cnaData";
 
 function cnaChart(style) {
+  var showScrollers = true;
+
   function chart(selection) {
     selection.each(function(data) {
       data = cnaData(data);
@@ -462,9 +464,16 @@ function cnaChart(style) {
 
       } // end renderScrollers()
 
-      renderScrollers();
+      if(showScrollers) renderScrollers();
 
     });//end selection.each()
   }
+
+  chart.showScrollers = function() {
+    if(arguments.length == 0) return showScrollers;
+    showScrollers = arguments[0];
+    return chart;
+  }
+
   return chart;
 }
