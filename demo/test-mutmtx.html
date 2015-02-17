@@ -9,6 +9,7 @@
   </head>
   <body>
     <div id="test"></div>
+    <div id="test2"></div>
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../gd3.js"></script>
     <script>
@@ -18,7 +19,15 @@
     }
 
     d3.json('testData/example2-mutation-matrix.json', function(data) {
+      console.log(data);
       d3.select('#test')
+        .datum(data)
+        .call(gd3.mutationMatrix({style:style}));
+    });
+
+    d3.json('testData/example-mutation-matrix-onecancer.json', function(data) {
+      console.log(data);
+      d3.select('#test2')
         .datum(data)
         .call(gd3.mutationMatrix({style:style}));
     });
