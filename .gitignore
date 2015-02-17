@@ -1,5 +1,4 @@
-node_modules/
-dev/
-*.log
 .DS_Store
 bower_components/
+node_modules/
+gd3.test.js
