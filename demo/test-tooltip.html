@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example Mutation Matrix</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+a {
+  color: steelblue;
+}
+a:visited {
+  color: steelblue;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="test"></div>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../gd3.js"></script>
+    <script>
+
+    function testDownvote(d) {
+      console.log('voted down');
+    }
+    function testUpvote(d) {
+      console.log('voted up');
+    }
+    function testDownvoteVariant(d) {
+      console.log('voted down 2');
+    }
+    function testUpvoteVariant(d) {
+      console.log('voted up 2');
+    }
+
+    var body = d3.select('body');
+
+    var style = {
+      width: 800
+    }
+
+    var svg = body.append('svg')
+        .style('margin-left', '50px')
+        .style('margin-top', '50px')
+        .attr('width', 100)
+        .attr('height', 40);
+    svg.append('rect')
+        .attr('width', 40)
+        .attr('height', 40)
+        .attr('class', 'gd3-tipobj')
+        .style('fill', 'steelblue');
+
+    svg.append('rect')
+        .attr('x', 50)
+        .attr('width', 40)
+        .attr('height', 40)
+        .attr('class', 'gd3-tipobj')
+        .style('fill', 'orange');
+
+    svg.call(gd3.tooltip.make().html(function(d,i) { return '<span>'+i+'</span>'; }));
+
+    body.append('br');
+
+    var svgdos = body.append('svg')
+        .style('margin-left', '50px')
+        .style('margin-top', '50px')
+        .attr('width', 20)
+        .attr('height', 20);
+    svgdos.append('rect')
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('class', 'gd3-tipobj')
+        .style('fill', 'crimson');
+
+    svgdos.call(gd3.tooltip.make().html(function(d) { return '<span>hola</span>'; }));
+
+    body.append('br');
+
+    body.append('hr');
+
+    var testText = new gd3.tooltip.text('Testing tooltip\n'),
+        imgSrc = 'https://www.google.com/images/srpr/logo11w.png',
+        testImg = new gd3.tooltip.image(imgSrc, 'Google\'s logo'),
+        testLink = new gd3.tooltip.link('https://google.com', 'Google Link\n'),
+        testLinkImg = new gd3.tooltip.link('https://google.com', testImg),
+        testVote = new gd3.tooltip.vote(testDownvote,testUpvote,d3.functor(80));
+
+    testText.render(body);
+    body.append('br');
+    testLink.render(body);
+    body.append('br');
+    testLinkImg.render(body);
+    body.append('br');
+    testImg.render(body);
+    body.append('br');
+    testVote.render(body);
+
+    var testTable = new gd3.tooltip.table([ [1,2,3], [4,5,testText] ] );
+    testTable.render(body);
+
+    body.append('br');
+
+    var testDatum = gd3.tooltip.datum({type: 'text', text:'datum text test works' });
+    testDatum.render(body);
+
+    body.append('br');
+    body.append('hr');
+
+    var svgtres = body.append('svg')
+        .style('margin-bottom', '20px')
+        .style('margin-left', '50px')
+        .style('margin-top', '50px')
+        .attr('width', 50)
+        .attr('height', 20);
+    svgtres.append('rect')
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('class', 'gd3-tipobj')
+        .style('fill', 'steelblue');
+    svgtres.append('circle')
+            .attr('cx', 35)
+            .attr('cy',10)
+            .attr('r', 10)
+            .attr('class', 'gd3-tipobj')
+            .style('fill', 'crimson');
+
+    var testingData = [
+          [{ type: 'text', text: 'The title would go here.'},
+            { type: 'link', href: 'https://google.com', body: 'Google link test'}
+          ].map(gd3.tooltip.datum),
+          [{ type: 'text', text: 'El título estaría aquí.'},
+            { type: 'link', href: 'https://google.com', body: 'Google link test'}
+          ].map(gd3.tooltip.datum)
+        ];
+
+    // need to figure out how to call this array intelligently with the tooltip
+    svgtres.call(gd3.tooltip.make().useData(testingData));
+
+    body.append('br');
+    body.append('hr');
+
+    var svg_groupTest = body.append('svg')
+        .style('background', '#ccc')
+        .style('margin-bottom', '20px')
+        .style('margin-left', '50px')
+        .style('margin-top', '50px')
+        .attr('width', 100)
+        .attr('height', 100);
+
+    var groupTest_g = svg_groupTest.selectAll('g')
+        .data(['rect','circle'])
+        .enter()
+        .append('g')
+            .attr('class', 'gd3-tipobj')
+            .style('pointer-events', 'all');
+
+    groupTest_g.each(function(d,i) {
+      var g = d3.select(this),
+          elems = g.selectAll(d).data([1,2]).enter().append(d);
+
+      if(d == 'rect') {
+        elems.attr('height', 20)
+            .attr('width', 20)
+            .attr('x', function(el,j) { return j*25 + 10; })
+            .attr('y', i*25 + 10)
+            .style('fill', 'crimson');
+      } else { // is circle
+        elems.attr('cx', function(el,j) { return j*25 + 20; })
+            .attr('cy', i*25 + 20)
+            .attr('r', 10)
+            .style('fill', 'steelblue');
+      }
+    });
+
+    svg_groupTest.call(gd3.tooltip.make().useData(testingData));
+
+    body.append('br');
+    body.append('hr');
+
+    var mutmtx = body.append('div').attr('id', 'mutmtxtest');
+
+    d3.json('testData/example2-mutation-matrix.json', function(data) {
+      d3.json('testData/exampleAnnotations.json', function(annData) {
+        data.annotations = annData;
+        d3.select('#mutmtxtest')
+          .datum(data)
+          .call(gd3.mutationMatrix({style:style}));
+
+        var cols = mutmtx.selectAll('.mutmtxColumn');
+        cols.classed('gd3-tipobj', true);
+
+        var testMutmtxData = [];
+        cols.each(function(d,i) {
+          testMutmtxData.push([
+            { type: 'table', table: [ [ 1, 2, 3 ], [ 4, 5, 6], [testImg] ]},
+            { type: 'text', text: 'Number ' + i },
+            { type: 'vote', downvoteFn: testDownvote, upvoteFn: testUpvote, voteCountFn: d3.functor(111) }
+          ].map(gd3.tooltip.datum) );
+        });
+
+        mutmtx.select('svg').call(gd3.tooltip.make().useData(testMutmtxData));
+      });
+    });
+
+    body.append('br');
+    body.append('hr');
+
+    body.append('p').text('Test show-on-click functionality for tooltips');
+
+    var svg_hideTest = body.append('svg').style('margin-left', '100px');
+
+    svg_hideTest.append('rect')
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('class', 'gd3-tipobj')
+        .style('fill', 'steelblue');
+    svg_hideTest.append('circle')
+            .attr('cx', 35)
+            .attr('cy',10)
+            .attr('r', 10)
+            .attr('class', 'gd3-tipobj')
+            .style('fill', 'crimson');
+
+    var hiddenData = [
+          [{ type: 'text', text: 'The title would go here.'},
+            { type: 'text', text: 'More text.'},
+            { type: 'link', href: 'https://google.com', body: 'Google link test'},
+            { type: 'vote', downvoteFn: testDownvoteVariant, upvoteFn: testUpvoteVariant, voteCountFn: d3.functor(0) },
+            { type: 'text', text: 'Hidden text', defaultHidden: true },
+            { type: 'text', text: 'Not hidden text', defaultHidden: false },
+            { type: 'text', text: 'Even more hidden text', defaultHidden: true }
+          ].map(gd3.tooltip.datum),
+          [{ type: 'text', text: 'El título estaría aquí.'},
+            { type: 'link', href: 'https://google.com', body: 'Google link test'},
+            { type: 'text', text: 'Texto escondido', defaultHidden: true }
+          ].map(gd3.tooltip.datum)
+        ];
+
+    svg_hideTest.call(gd3.tooltip.make().useData(hiddenData));
+
+    </script>
+  </body>
+</html>

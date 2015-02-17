@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example Transcript Annotation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div id="dendrogram"></div>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../gd3.js"></script>
+    <script>
+    d3.json('testData/example-dendrogram-N30.json', function(data) {
+      var hStyle = {height: 600, width: 1200};
+      d3.select('#dendrogram')
+          .datum(data)
+          .call(gd3.dendrogram({style:hStyle}).showSlider().logScale(false));
+    });
+    </script>
+  </body>
+</html>

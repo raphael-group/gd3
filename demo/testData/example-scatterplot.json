@@ -1,0 +1,19 @@
+{
+  "pts": [
+    { "x": 1, "y": 1, "category": "Cohort1"},
+    { "x": 2, "y": 2, "category": "Cohort2"},
+    { "x": 3, "y": 3, "category": "Cohort1"},
+    { "x": 4, "y": 4, "category": "Cohort2"},
+    { "x": 5, "y": 5, "category": "Cohort1"},
+    { "x": 6, "y": 6, "category": "Cohort2"},
+    { "x": 7, "y": 7, "category": "Cohort1"},
+    { "x": 8, "y": 8, "category": "Cohort2"},
+    { "x": 9, "y": 9, "category": "Cohort1"},
+    { "x": 10, "y": 10, "category": "Cohort2"}
+  ],
+  "title": "Genomics is rad",
+  "xLabel": "An x-axis label",
+  "xScale": { "max":10, "min": 0},
+  "yLabel": "A y-axis label",
+  "yScale": { "max": 10, "min": 0}
+}
