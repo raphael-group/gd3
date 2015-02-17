@@ -241,6 +241,15 @@ function mutmtxChart(style) {
       renderMutationMatrix();
       rerenderMutationMatrix();
 
+      // Change the colors if only one mutation category
+      if(data.datasets.length == 1) {
+        columns.each(function () {
+          var rects = d3.select(this).select('.mutmtx-sampleMutationCells').selectAll('rect'),
+              color = rects.size() > 1 ? style.coocurringColor : style.exclusiveColor;
+          rects.style('fill', color);
+        });
+      }
+
       // Add the coverage (if necessary)
       if (drawCoverage){
         selection.append("p")
@@ -383,7 +392,7 @@ function mutmtxChart(style) {
           });
           categories = Object.keys(categories).sort();
           var categoryLegendKeys = columnCategories.selectAll('div')
-              .data(categories)
+              .data(categories.length > 1 ? categories : ['Co-ocurring', 'Exclusive'])
               .enter()
               .append('div')
                   .style('display', 'inline-block')
@@ -393,6 +402,7 @@ function mutmtxChart(style) {
                       return i == categories.length - 1 ? '0px' : '10px';
                   })
                   .on('click', function(d) {
+                    if(categories.length <= 1) return;
                     var filtering = categoriesToFilter;
                     if(categoriesToFilter.indexOf(d) > -1) {
                       filtering.splice(filtering.indexOf(d), 1);
@@ -405,9 +415,13 @@ function mutmtxChart(style) {
                   });
           // Append the color blocks
           categoryLegendKeys.append('div')
-              .style('background', function(d) {
-                if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d);
-                return colCategoryToColor[d];
+              .style('background', function(d, i) {
+                if(categories.length > 1) {
+                  if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d);
+                  return colCategoryToColor[d];
+                } else {
+                  return i == 0 ? style.coocurringColor : style.exclusiveColor;
+                }
               })
               .style('display', 'inline-block')
               .style('height', style.fontSize + 'px')

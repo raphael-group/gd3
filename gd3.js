@@ -1809,6 +1809,12 @@
         svg.call(zoom);
         renderMutationMatrix();
         rerenderMutationMatrix();
+        if (data.datasets.length == 1) {
+          columns.each(function() {
+            var rects = d3.select(this).select(".mutmtx-sampleMutationCells").selectAll("rect"), color = rects.size() > 1 ? style.coocurringColor : style.exclusiveColor;
+            rects.style("fill", color);
+          });
+        }
         if (drawCoverage) {
           selection.append("p").style("float", "right").html("<b>Coverage:</b> " + data.coverage());
         }
@@ -1886,9 +1892,10 @@
               categories[data.maps.columnIdToCategory[k]] = null;
             });
             categories = Object.keys(categories).sort();
-            var categoryLegendKeys = columnCategories.selectAll("div").data(categories).enter().append("div").style("display", "inline-block").style("font-family", style.fontFamily).style("font-size", style.fontSize).style("margin-right", function(d, i) {
+            var categoryLegendKeys = columnCategories.selectAll("div").data(categories.length > 1 ? categories : [ "Co-ocurring", "Exclusive" ]).enter().append("div").style("display", "inline-block").style("font-family", style.fontFamily).style("font-size", style.fontSize).style("margin-right", function(d, i) {
               return i == categories.length - 1 ? "0px" : "10px";
             }).on("click", function(d) {
+              if (categories.length <= 1) return;
               var filtering = categoriesToFilter;
               if (categoriesToFilter.indexOf(d) > -1) {
                 filtering.splice(filtering.indexOf(d), 1);
@@ -1901,9 +1908,13 @@
                 categories: filtering
               });
             });
-            categoryLegendKeys.append("div").style("background", function(d) {
-              if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d);
-              return colCategoryToColor[d];
+            categoryLegendKeys.append("div").style("background", function(d, i) {
+              if (categories.length > 1) {
+                if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d);
+                return colCategoryToColor[d];
+              } else {
+                return i == 0 ? style.coocurringColor : style.exclusiveColor;
+              }
             }).style("display", "inline-block").style("height", style.fontSize + "px").style("width", style.fontSize / 2 + "px");
             categoryLegendKeys.append("span").style("display", "inline-block").style("margin-left", "2px").text(function(d) {
               return d;
@@ -2189,8 +2200,8 @@
       blockColorStrongest: style.blockColorStrongest || "#2C3E50",
       boxMargin: style.boxMargin || 5,
       colorSampleTypes: style.colorSampleTypes || true,
-      coocurringColor: style.coocurringColor || "orange",
-      exclusiveColor: style.exclusiveColor || "blue",
+      coocurringColor: style.coocurringColor || "#367bbb",
+      exclusiveColor: style.exclusiveColor || "#b4d170",
       fontColor: style.fontColor || "#000",
       fontFamily: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
       fontSize: style.fontSize || 14,

@@ -10,8 +10,8 @@ function mutmtxStyle(style) {
       blockColorStrongest : style.blockColorStrongest || '#2C3E50',
       boxMargin : style.boxMargin || 5, // assumes uniform margins on all sides
       colorSampleTypes : style.colorSampleTypes || true,
-      coocurringColor : style.coocurringColor || 'orange',
-      exclusiveColor : style.exclusiveColor || 'blue',
+      coocurringColor : style.coocurringColor || '#367bbb',
+      exclusiveColor : style.exclusiveColor || '#b4d170',
       fontColor : style.fontColor || '#000',
       fontFamily : '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
       fontSize : style.fontSize || 14,
