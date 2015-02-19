@@ -2852,9 +2852,10 @@
         for (var i = 0; i < data.get("datasets").length; i++) {
           sampleTypeToColor[data.get("datasets")[i]] = d3color(i);
         }
-        var height = style.height, scrollbarWidth = showScrollers ? style.scollbarWidth : 0, width = style.width - scrollbarWidth - style.margin.left - style.margin.right;
+        var height = style.height, scrollbarWidth = showScrollers ? style.scollbarWidth : 0, legendTextWidth = showLegend ? style.legendTextWidth : 0, width = style.width - scrollbarWidth - legendTextWidth - style.margin.left - style.margin.right;
         var mutationResolution = Math.floor(width / style.symbolWidth);
-        var svg = d3.select(this).selectAll("svg").data([ data ]).enter().append("svg").attr("height", height).attr("width", width + scrollbarWidth + style.margin.left + style.margin.right);
+        var actualSVG = d3.select(this).selectAll("svg").data([ data ]).enter().append("svg").attr("height", height).attr("width", width + scrollbarWidth + legendTextWidth + style.margin.left + style.margin.right);
+        var svg = actualSVG.append("g");
         var start = 0, stop = data.get("length");
         var x = d3.scale.linear().domain([ start, stop ]).range([ 0, width ]);
         var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(style.numXTicks).tickSize(0).tickPadding(style.xTickPadding);
@@ -3089,7 +3090,12 @@
             "stroke-width": 1
           }).call(dragSlider);
         }
-        if (showLegend) renderLegend();
+        if (showLegend) {
+          var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth / 2;
+          svg.append("g").attr("transform", "translate(" + effectiveWidth + ",0)").append("text").attr("transform", "rotate(90)").attr("text-anchor", "start").style("font-size", 12).text("Missense");
+          svg.append("g").attr("transform", "translate(" + effectiveWidth + "," + (height / 2 + style.transcriptBarHeight + 20) + ")").append("text").attr("transform", "rotate(90)").attr("text-anchor", "start").style("font-size", 12).text("Inactivating");
+          renderLegend();
+        }
         function renderLegend() {
           var mutationTypes = data.types, numTypes = mutationTypes.length, numRows = Math.ceil(numTypes / 2);
           var svg = selection.append("div").selectAll(".gd3-transcript-legend-svg").data([ data ]).enter().append("svg").attr("class", "gd3-transcript-legend-svg").attr("font-size", 10).attr("width", width), legendGroup = svg.append("g");
@@ -3116,6 +3122,7 @@
           });
           svg.attr("height", legendGroup.node().getBBox().height);
         }
+        actualSVG.attr("height", svg.node().getBBox().height);
         var allMutations = mutationsG.selectAll("path").on("mouseover.dispatch-sample", function(d) {
           gd3.dispatch.sample({
             sample: d.sample,
@@ -3181,6 +3188,7 @@
       width: style.width || 500,
       xTickPadding: style.xTickPadding || 1.25,
       scollbarWidth: style.scrollbarWidth || 15,
+      legendTextWidth: style.legendTextWidth || 15,
       margin: style.margin || {
         left: 5,
         right: 5,

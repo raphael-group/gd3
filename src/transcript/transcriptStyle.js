@@ -9,6 +9,7 @@ function transcriptStyle(style) {
     width: style.width || 500,
     xTickPadding: style.xTickPadding || 1.25,
     scollbarWidth: style.scrollbarWidth || 15,
+    legendTextWidth: style.legendTextWidth || 15,
     margin: style.margin || { left: 5, right: 5, top: 5, bottom: 0 }
   };
 }

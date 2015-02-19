@@ -20,18 +20,20 @@ function transcriptChart(style) {
 
       var height = style.height,
           scrollbarWidth = showScrollers ? style.scollbarWidth : 0,
-          width = style.width - scrollbarWidth - style.margin.left - style.margin.right;
+          legendTextWidth = showLegend ? style.legendTextWidth : 0,
+          width = style.width - scrollbarWidth - legendTextWidth - style.margin.left - style.margin.right;
 
       // max number of mutations that can fit along the axis
       var mutationResolution = Math.floor(width / style.symbolWidth);
 
-      var svg = d3.select(this)
+      var actualSVG = d3.select(this)
           .selectAll('svg')
           .data([data])
           .enter()
             .append('svg')
                 .attr('height', height)
-                .attr('width', width + scrollbarWidth + style.margin.left + style.margin.right);
+                .attr('width', width + scrollbarWidth + legendTextWidth + style.margin.left + style.margin.right);
+      var svg = actualSVG.append('g');
 
       // x scale for the entire visualization based on transcript length
       var start = 0,
@@ -480,7 +482,28 @@ function transcriptChart(style) {
 
       /////////////////////////////////////////////////////////////////////////
       // Render the legend
-      if (showLegend) renderLegend();
+      if (showLegend){
+        // Add the missense/inactivating legend text
+        var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth/2;
+        svg.append('g')
+          .attr('transform', 'translate(' + effectiveWidth + ',0)')
+            .append('text')
+            .attr('transform', 'rotate(90)')
+            .attr('text-anchor', 'start')
+            .style('font-size', 12)
+            .text('Missense')
+
+        svg.append('g')
+          .attr('transform', 'translate(' + effectiveWidth + ',' + (height/2 + style.transcriptBarHeight + 20) + ')')
+            .append('text')
+            .attr('transform', 'rotate(90)')
+            .attr('text-anchor', 'start')
+            .style('font-size', 12)
+            .text('Inactivating');
+
+        renderLegend();
+      }
+
       function renderLegend() {
         var mutationTypes = data.types,
             numTypes = mutationTypes.length,
@@ -545,6 +568,9 @@ function transcriptChart(style) {
 
         svg.attr('height', legendGroup.node().getBBox().height);
       }
+
+      // Set the height to the true height
+      actualSVG.attr('height', svg.node().getBBox().height);
 
       /////////////////////////////////////////////////////////////////////////
       // Dispatch
