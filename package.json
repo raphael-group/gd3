@@ -1,23 +1,26 @@
 {
-	"name" : "gd3",
-	"version" : "0.0.1-alpha",
-	"description" : "The genomics D3 library.",
-	"private": true,
-	"engines": {
-		"node": "0.10.x",
-		"npm": "1.2.x"
-	},
-	"scripts": {
-		"postinstall": "./node_modules/bower/bin/bower install"
-	},
-	"dependencies": {
-		"jsdom" : "latest",
-		"optimist": "latest",
-		"bower": "latest",
-		"uglify-js": "latest"
-  	},
-	"repository": {
-		"type": "git",
-		"url": "git://bitbucket.org/raphaellab/gd3.git"
-	}
+  "name": "gd3prime",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gd3.js",
+  "dependencies": {
+    "uglify-js": "~2.4.15",
+    "smash": "~0.0.12",
+    "bower": "latest"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "./node_modules/bower/bin/bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/connorgr/gd3prime.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/connorgr/gd3prime/issues"
+  },
+  "homepage": "https://github.com/connorgr/gd3prime"
 }

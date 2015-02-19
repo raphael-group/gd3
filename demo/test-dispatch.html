@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example Linking of Views with Dispatch</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+* {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+a {
+  color: steelblue;
+}
+a:visited {
+  color: steelblue;
+}
+
+    </style>
+  </head>
+  <body>
+    <h2>Sample linking</h2>
+    <div id="samples"></div>
+    <hr/>
+    <h2>Form update</h2>
+    <div id="form-linking">
+      <form style='float:right;margin-right:40%'>
+        <b>Form</b><br/><br/>
+        <select id="protein1"><option>--choose protein--</option></select>
+        <br/><br/>
+        <select id="protein2"><option>--choose protein--</option></select>
+        <br/><br/>
+        <input id="pmid" placeholder="PMID">
+        <br/><br/>
+        <textarea id="comments" placeholder="Enter any comments"></textarea>
+      </form>
+    </div>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../gd3.js"></script>
+    <script>
+    var body = d3.select('#samples');
+    var style = {
+      width: 800
+    }
+
+    // Add the mutation matrix
+    var mutmtx = body.append('div').attr('id', 'mutmtxtest');
+    d3.json('testData/example2-mutation-matrix.json', function(mutData) {
+      d3.json('testData/exampleAnnotations.json', function(annData) {
+        mutData.annotations = annData;
+        body.append("h3").text("Mutation matrix")
+        body.append('div').attr('id', '#mutmtxtest')
+          .datum(mutData)
+          .call(gd3.mutationMatrix({style:style}));
+        var sampleNames = mutData.samples.map(function(d){ return d.name; })
+
+        // Add the transcript plot
+        d3.json('testData/example2-transcript.json', function(data) {
+
+          var styling = {
+            height: 180,
+            width: 345
+          };
+
+          var sampleTypes = {},
+              params = {},
+              vizData = [];
+
+          params.style=styling;
+
+          var categories = ['BLCA', 'BRCA', 'COADREAD', 'GBM', 'HNSC', 'LUAD', 'LUSC', 'OV', 'SCNAH'];
+          for (gKey in Object.keys(data)) {
+            var gene = Object.keys(data)[gKey],
+                transcriptList = Object.keys(data[gene]);
+
+            for (tKey in transcriptList) {
+              var transcript = transcriptList[tKey],
+                  domains = data[gene][transcript].domains,
+                  length = data[gene][transcript].length,
+                  mutations = data[gene][transcript].mutations;
+
+              var mKeys = Object.keys(mutations);
+              for(mKey in mKeys) {
+                var m = mKeys[mKey],
+                    cancer = mutations[m].cancer;
+                sampleTypes[cancer] = 0;
+              }
+
+              vizData.push({gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations, mutationCategories: categories, proteinDomainDB: 'PFAM'});
+
+            }
+          }
+          sampleTypes = Object.keys(sampleTypes);
+          params.sampleTypes = sampleTypes;
+
+
+        body.append("h3").text("Transcript plot")
+          body.append("div")
+              .datum(vizData[0])
+              .call(gd3.transcript(params));
+
+
+            d3.json('testData/example-cna.json', function(data) {
+              body.append("h3").text("CNA browser");
+              body.append("div")
+                .datum(data.PDGFRA)
+                .call(gd3.cna());
+            });
+        });
+
+      });
+    });
+
+    d3.json('testData/example-graph.json', function(data) {
+        var style = {
+          nodeColor : ['rgb(38, 125, 255)','rgb(237, 14, 28)']
+        };
+        d3.select('#form-linking')
+            .datum(data)
+            .call(gd3.graph({style:style}));
+
+        d3.selectAll("select")
+          .selectAll(".option")
+          .data(data.nodes).enter()
+          .append("option")
+          .attr('value', function(d){ return d.name; })
+          .text(function(d){ return d.name; });
+    });
+
+    gd3.dispatch.on("interaction.graph", function(d){
+      d3.select("select#protein1").property('value', d.source);
+      d3.select("select#protein2").property('value', d.target);
+    });
+
+
+    body.append('hr');
+    body.append('h1').text('Filtering dispatch test');
+    var filterCategoryMenu = body.append('div').style('margin-bottom', '50px'),
+        filterTypeMenu = body.append('div'),
+        breaker = body.append('br').append('br').append('hr');
+
+    var categories = [
+        'STAD',
+        'BLCA',
+        'BRCA',
+        'COADREAD',
+        'GBM',
+        'HNSC',
+        'KIRC',
+        'LAML',
+        'LUAD',
+        'LUSC',
+        'OV',
+        'UCEC'
+    ];
+    var filterCategoryMenuText = filterCategoryMenu.selectAll('span')
+        .data(categories)
+        .enter()
+        .append('span')
+            .style('border', '1px solid #ccc')
+            .style('font-size', '14px')
+            .style('padding', '10px')
+            .text(function(d){return d;});
+    filterCategoryMenuInput = filterCategoryMenuText.append('input')
+        .attr('type', 'checkbox')
+        .on('click', applyCategoryFilter);
+
+    function applyCategoryFilter() {
+      var checked = filterCategoryMenuInput.filter(function(d) {
+        return d3.select(this).property('checked');
+      });
+
+      var filtering = [];
+      checked.each(function(d) { filtering.push(d); });
+      gd3.dispatch.filterCategory( {categories: filtering });
+    }
+
+    var types = ['snv', 'inactive_snv'];
+    var filterTypeMenuText = filterTypeMenu.selectAll('span')
+        .data(types)
+        .enter()
+        .append('span')
+            .style('border', '1px solid #ccc')
+            .style('font-size', '14px')
+            .style('padding', '10px')
+            .text(function(d){return d;});
+    filterTypeMenuInput = filterTypeMenuText.append('input')
+        .attr('type', 'checkbox')
+        .on('click', applyTypeFilter);
+
+    function applyTypeFilter() {
+      var checked = filterTypeMenuInput.filter(function(d) {
+        return d3.select(this).property('checked');
+      });
+
+      var filtering = [];
+      checked.each(function(d) { filtering.push(d); });
+      gd3.dispatch.filterType( { types: filtering });
+    }
+
+
+    body.append('hr');
+    body.append('h1').text('Sorting dispatch test');
+    var sortMutMtx = body.append('div'),
+        breaker = body.append('br').append('br'),
+        sortHeatmap = body.append('div');
+
+    d3.json('testData/example2-mutation-matrix.json', function(data) {
+      d3.json('testData/exampleAnnotations.json', function(annData) {
+        data.annotations = annData;
+        sortMutMtx.datum(data).call(gd3.mutationMatrix({style:style}));
+      });
+    });
+    d3.json('testData/example-heatmap.json', function(data) {
+      d3.json('testData/exampleAnnotations.json', function(adata) {
+        data.annotations = adata;
+        var hStyle = {height: 260, width: 800};
+        sortHeatmap.datum(data).call(gd3.heatmap({style:hStyle}));
+      });
+    });
+
+    body.append('hr');
+
+
+    </script>
+  </body>
+</html>
