@@ -8,6 +8,7 @@ function cnaStyle(style) {
     geneHighlightColor: style.geneHighlightColor || '#f00',
     geneSelectedColor: style.geneSelectedColor || '#f00',
     genomeBarHeight: style.genomeBarHeight || 14,
+    height: style.height || 400, // only works if scrolling is activated
     horizontalBarHeight: style.horizontalBarHeight || 5,
     horizontalBarSpacing: style.horizontalBarSpacing || 6,
     width: style.width || 500,

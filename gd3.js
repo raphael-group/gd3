@@ -264,6 +264,7 @@
     return cnaData;
   }
   function cnaChart(style) {
+    var showScrollers = true;
     function chart(selection) {
       selection.each(function(data) {
         data = cnaData(data);
@@ -292,17 +293,16 @@
           updateAllComponents();
         });
         svg.call(zoom).on("dblclick.zoom", null);
-        var genomeBarY = ampAreaHeight + style.margin.top;
-        var genomeBar = svg.append("rect").attr("class", "genome").attr("y", genomeBarY).attr("x", 0).attr("width", width).attr("height", style.genomeBarHeight).style("fill", "#ccc");
-        var geneGroups = svg.selectAll(".genes").data(data.get("genes")).enter().append("g").attr("class", "genes"), genes = geneGroups.append("rect").attr("width", function(d) {
+        var genomeBarY = ampAreaHeight + style.margin.top, genomeG = svg.append("g").attr("transform", "translate(0," + genomeBarY + ")"), genomeBar = genomeG.append("rect").attr("class", "genome").attr("width", width).attr("height", style.genomeBarHeight).style("fill", "#ccc");
+        var geneGroups = genomeG.selectAll(".genes").data(data.get("genes")).enter().append("g").attr("class", "genes"), genes = geneGroups.append("rect").attr("width", function(d) {
           return x(d.end) - x(d.start);
-        }).attr("height", style.genomeBarHeight + 2 * style.geneHeightOverflow).attr("y", genomeBarY - style.geneHeightOverflow).style("fill-opacity", function(d) {
+        }).attr("height", style.genomeBarHeight + 2 * style.geneHeightOverflow).attr("y", -style.geneHeightOverflow).style("fill-opacity", function(d) {
           return d.selected ? 1 : .2;
         }).style("fill", function(d) {
           return d.selected ? style.geneSelectedColor : style.geneColor;
         }).attr("id", function(d, i) {
           return "gene-" + i;
-        }), geneLabels = geneGroups.append("text").attr("y", genomeBarY + style.genomeBarHeight / 2 + 5).attr("text-anchor", "middle").style("fill-opacity", function(d) {
+        }), geneLabels = geneGroups.append("text").attr("y", style.genomeBarHeight / 2 + 5).attr("text-anchor", "middle").style("fill-opacity", function(d) {
           return d.selected ? 1 : 0;
         }).style("fill", "#000").style("font-family", style.fontFamily).style("font-size", style.fontSize).text(function(d) {
           return d.label;
@@ -433,8 +433,107 @@
           });
           updateAllComponents();
         });
+        function renderScrollers() {
+          svgActual.attr("height", style.height + "px");
+          genomeG.attr("transform", "translate(0," + style.height / 2 + ")");
+          var ampOffset = style.height / 2 - style.horizontalBarHeight - style.geneHeightOverflow, delOffset = style.height / 2 + style.genomeBarHeight + style.geneHeightOverflow;
+          var ampYs = [], delYs = [];
+          function segY(d) {
+            if (d.ty == "amp") {
+              return ampOffset - style.horizontalBarSpacing * d.index;
+            } else if (d.ty == "del") {
+              return delOffset + style.horizontalBarSpacing * d.index;
+            } else {
+              throw "Segment of unknown type: " + d.ty;
+            }
+          }
+          segs.attr("transform", function(d, i) {
+            var y = segY(d), ys = d.ty == "amp" ? ampYs : delYs;
+            ys.push(y);
+            return "translate(" + x(d.start) + "," + y + ")";
+          });
+          var sG = svg.append("g");
+          var minAmpY = d3.min(ampYs), maxDelY = d3.max(delYs);
+          var ampSegments = segs.filter(function(d) {
+            return d.ty == "amp";
+          }), delSegments = segs.filter(function(d) {
+            return d.ty == "del";
+          });
+          var showAmpScroller = minAmpY < 0, showDelScroller = maxDelY > height;
+          if (!showAmpScroller && !showDelScroller) return;
+          var maxAmpOffset = minAmpY < 0 ? Math.abs(minAmpY) + style.horizontalBarHeight : style.genomeBarHeight, maxDelOffset = maxDelY > height ? maxDelY - style.symbolWidth : style.genomeBarHeight;
+          var gradient = svg.append("svg:defs").append("svg:linearGradient").attr("id", "gd3-cna-scroller-gradient").attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
+          gradient.append("svg:stop").attr("offset", "0%").attr("stop-color", "#eeeeee").attr("stop-opacity", 1);
+          gradient.append("svg:stop").attr("offset", "100%").attr("stop-color", "#666666").attr("stop-opacity", 1);
+          var dragSlider = d3.behavior.drag().on("dragstart", dragStart).on("drag", dragMove).on("dragend", dragEnd);
+          function dragStart(d) {
+            d3.event.sourceEvent.stopPropagation();
+            var thisEl = d3.select(this);
+            thisEl.style("fill", "#888888");
+          }
+          function dragMove(d) {
+            var thisEl = d3.select(this), higher = d.loc == "top" ? d.max : d.min, lower = higher == d.max ? d.min : d.max;
+            if (d3.event.y > lower) {
+              var y = lower;
+            } else if (d3.event.y < higher) {
+              var y = higher;
+            } else {
+              var y = d3.event.y;
+            }
+            thisEl.attr("cy", y);
+            var scrollSegments = d.loc == "top" ? ampSegments : delSegments;
+            var scrollDomain = lower - higher, scrollNow = y - higher, scrollPercent = d.loc == "top" ? 1 - scrollNow / scrollDomain : scrollNow / scrollDomain;
+            var offset = d.loc == "top" ? maxAmpOffset : -1 * maxDelOffset, adjust = offset * scrollPercent;
+            scrollSegments.attr("transform", function(d) {
+              var t = d3.select(this).attr("transform").replace("translate(", "").replace(")", "").split(","), x = +t[0], y = +t[1];
+              return "translate(" + x + "," + (segY(d) + adjust) + ")";
+            });
+            scrollSegments.attr("opacity", function(d) {
+              var y = +d3.select(this).attr("transform").split(",")[1].replace(")", ""), hideY = d.ty == "amp" ? ampOffset : delOffset;
+              if (d.ty == "amp") return y < hideY ? 1 : 0; else return y > hideY ? 1 : 0;
+            });
+          }
+          function dragEnd(d) {
+            var thisEl = d3.select(this);
+            thisEl.style("fill", "url(#gd3-cna-scroller-gradient)");
+          }
+          sG.append("rect").attr("x", 0).attr("y", 0).attr("width", 15).attr("height", style.height).style("fill", "#fff");
+          if (showAmpScroller) {
+            sG.append("line").attr("x1", 6).attr("y1", 10).attr("x2", 6).attr("y2", style.height / 2 - style.genomeBarHeight / 2 + 10).style("stroke", "#ccc").style("stroke-width", 1);
+          }
+          if (showDelScroller) {
+            sG.append("line").attr("x1", 6).attr("y1", style.height / 2 + style.genomeBarHeight / 2 + 10).attr("x2", 6).attr("y2", style.height - 10).style("stroke", "#ccc").style("stroke-width", 1);
+          }
+          var sliderBounds = [ {
+            min: style.height / 2 - style.genomeBarHeight / 2 + 4,
+            max: 6,
+            loc: "top",
+            show: showAmpScroller
+          }, {
+            min: style.height / 2 + style.genomeBarHeight + 4,
+            max: style.height - 6,
+            loc: "bottom",
+            show: showDelScroller
+          } ];
+          sG.selectAll("circle").data(sliderBounds.filter(function(d) {
+            return d.show;
+          })).enter().append("circle").attr("r", 5).attr("cx", 6).attr("cy", function(d) {
+            return d.min;
+          }).style({
+            "box-shadow": "0px 0px 5px 0px rgba(0,0,0,0.75)",
+            fill: "url(#gd3-cna-scroller-gradient)",
+            stroke: "#666",
+            "stroke-width": 1
+          }).call(dragSlider);
+        }
+        if (showScrollers) renderScrollers();
       });
     }
+    chart.showScrollers = function() {
+      if (arguments.length == 0) return showScrollers;
+      showScrollers = arguments[0];
+      return chart;
+    };
     return chart;
   }
   function cnaStyle(style) {
@@ -447,6 +546,7 @@
       geneHighlightColor: style.geneHighlightColor || "#f00",
       geneSelectedColor: style.geneSelectedColor || "#f00",
       genomeBarHeight: style.genomeBarHeight || 14,
+      height: style.height || 400,
       horizontalBarHeight: style.horizontalBarHeight || 5,
       horizontalBarSpacing: style.horizontalBarSpacing || 6,
       width: style.width || 500,
