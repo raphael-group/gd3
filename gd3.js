@@ -2855,9 +2855,10 @@
         for (var i = 0; i < data.get("datasets").length; i++) {
           sampleTypeToColor[data.get("datasets")[i]] = d3color(i);
         }
-        var height = style.height, scrollbarWidth = showScrollers ? style.scollbarWidth : 0, width = style.width - scrollbarWidth - style.margin.left - style.margin.right;
+        var height = style.height, scrollbarWidth = showScrollers ? style.scollbarWidth : 0, legendTextWidth = showLegend ? style.legendTextWidth : 0, width = style.width - scrollbarWidth - legendTextWidth - style.margin.left - style.margin.right;
         var mutationResolution = Math.floor(width / style.symbolWidth);
-        var svg = d3.select(this).selectAll("svg").data([ data ]).enter().append("svg").attr("height", height).attr("width", width + scrollbarWidth + style.margin.left + style.margin.right);
+        var actualSVG = d3.select(this).selectAll("svg").data([ data ]).enter().append("svg").attr("height", height).attr("width", width + scrollbarWidth + legendTextWidth + style.margin.left + style.margin.right);
+        var svg = actualSVG.append("g");
         var start = 0, stop = data.get("length");
         var x = d3.scale.linear().domain([ start, stop ]).range([ 0, width ]);
         var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(style.numXTicks).tickSize(0).tickPadding(style.xTickPadding);
@@ -3092,7 +3093,23 @@
             "stroke-width": 1
           }).call(dragSlider);
         }
-        if (showLegend) renderLegend();
+        if (showLegend) {
+          var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth + 5, axisLegend = actualSVG.append("g");
+          var topLegend = axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + ",0)");
+          bottomLegend = axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + "," + (height / 2 + style.transcriptBarHeight + 20) + ")");
+          var textStyle = {
+            "font-family": style.fontFamily,
+            "font-weight": "bold",
+            opacity: .5
+          };
+          topLegend.selectAll("text").data([ "Protein Seq", "Changes" ]).enter().append("text").attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height / 4).attr("y", function(d, i) {
+            return i * 15;
+          }).style(textStyle).text(function(d) {
+            return d;
+          });
+          bottomLegend.append("text").style(textStyle).attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height / 4).attr("y", 7.5).style(textStyle).text("Inactivating");
+          renderLegend();
+        }
         function renderLegend() {
           var mutationTypes = data.types, numTypes = mutationTypes.length, numRows = Math.ceil(numTypes / 2);
           var svg = selection.append("div").selectAll(".gd3-transcript-legend-svg").data([ data ]).enter().append("svg").attr("class", "gd3-transcript-legend-svg").attr("font-size", 10).attr("width", width), legendGroup = svg.append("g");
@@ -3114,10 +3131,13 @@
           legend.append("path").attr("class", "symbol").attr("d", d3.svg.symbol().type(function(d, i) {
             return d3.svg.symbolTypes[data.mutationTypesToSymbols[d]];
           }).size(2 * style.legendSymbolHeight)).style("stroke", "#95A5A6").style("stroke-width", 2).style("fill", "#95A5A6");
-          legend.append("text").attr("dx", 7).attr("dy", 3).text(function(d) {
+          legend.append("text").attr("dx", 7).attr("dy", 3).style("font-family", style.fontFamily).text(function(d) {
             return d.replace(/_/g, " ");
           });
           svg.attr("height", legendGroup.node().getBBox().height);
+        }
+        if (showLegend) {
+          actualSVG.attr("height", axisLegend.node().getBBox().height);
         }
         var allMutations = mutationsG.selectAll("path").on("mouseover.dispatch-sample", function(d) {
           gd3.dispatch.sample({
@@ -3176,7 +3196,7 @@
   function transcriptStyle(style) {
     return {
       fontFamily: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
-      height: style.height || 200,
+      height: style.height || 250,
       numXTicks: style.numXTicks || 5,
       symbolWidth: style.symbolWidth || 20,
       transcriptBarHeight: style.transcriptBarHeight || 20,
@@ -3184,9 +3204,10 @@
       width: style.width || 500,
       xTickPadding: style.xTickPadding || 1.25,
       scollbarWidth: style.scrollbarWidth || 15,
+      legendTextWidth: style.legendTextWidth || 28,
       margin: style.margin || {
         left: 5,
-        right: 5,
+        right: 15,
         top: 5,
         bottom: 0
       }

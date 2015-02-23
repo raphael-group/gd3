@@ -20,18 +20,20 @@ function transcriptChart(style) {
 
       var height = style.height,
           scrollbarWidth = showScrollers ? style.scollbarWidth : 0,
-          width = style.width - scrollbarWidth - style.margin.left - style.margin.right;
+          legendTextWidth = showLegend ? style.legendTextWidth : 0,
+          width = style.width - scrollbarWidth - legendTextWidth - style.margin.left - style.margin.right;
 
       // max number of mutations that can fit along the axis
       var mutationResolution = Math.floor(width / style.symbolWidth);
 
-      var svg = d3.select(this)
+      var actualSVG = d3.select(this)
           .selectAll('svg')
           .data([data])
           .enter()
             .append('svg')
                 .attr('height', height)
-                .attr('width', width + scrollbarWidth + style.margin.left + style.margin.right);
+                .attr('width', width + scrollbarWidth + legendTextWidth + style.margin.left + style.margin.right);
+      var svg = actualSVG.append('g');
 
       // x scale for the entire visualization based on transcript length
       var start = 0,
@@ -480,7 +482,46 @@ function transcriptChart(style) {
 
       /////////////////////////////////////////////////////////////////////////
       // Render the legend
-      if (showLegend) renderLegend();
+      if (showLegend){
+        // Add the missense/inactivating legend text
+        var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth + 5,
+            axisLegend = actualSVG.append('g');
+
+        var topLegend = axisLegend.append('g')
+                .attr('transform', 'translate(' + effectiveWidth + ',0)')
+            bottomLegend = axisLegend.append('g')
+                .attr('transform', 'translate(' + effectiveWidth + ','
+                      + (height/2 + style.transcriptBarHeight + 20) + ')');
+
+        var textStyle = {
+           "font-family": style.fontFamily,
+           "font-weight": "bold",
+           opacity: .5
+         };
+
+        topLegend.selectAll('text')
+            .data(['Protein Seq', 'Changes'])
+            .enter()
+            .append('text')
+                .attr('transform', 'rotate(90)')
+                .attr('text-anchor', 'middle')
+                .attr('x', style.height/4)
+                .attr('y', function(d,i) { return i*15; })
+                .style(textStyle)
+                .text(function(d) { return d; });
+
+        bottomLegend.append('text')
+            .style(textStyle)
+            .attr('transform', 'rotate(90)')
+            .attr('text-anchor', 'middle')
+            .attr('x', style.height/4)
+            .attr('y', 7.5)
+            .style(textStyle)
+            .text('Inactivating');
+
+        renderLegend();
+      }
+
       function renderLegend() {
         var mutationTypes = data.types,
             numTypes = mutationTypes.length,
@@ -541,9 +582,15 @@ function transcriptChart(style) {
         legend.append('text')
           .attr('dx', 7)
           .attr('dy', 3)
+          .style('font-family', style.fontFamily)
           .text(function(d) { return d.replace(/_/g, ' ')});
 
         svg.attr('height', legendGroup.node().getBBox().height);
+      }
+
+      // Set the height to the true height
+      if (showLegend){
+        actualSVG.attr('height', axisLegend.node().getBBox().height);
       }
 
       /////////////////////////////////////////////////////////////////////////
