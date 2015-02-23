@@ -163,6 +163,35 @@ function cnaChart(style) {
               .style("fill", style.geneSelectedColor)
               .style("fill-opacity", 0.5);
 
+
+      // Updates the position of horizontal bars in the visualization
+      var segY;
+      if(showScrollers) {
+        // Updates the position of horizontal bars in the visualization
+        var ampOffset = style.height / 2 - style.horizontalBarHeight  - style.geneHeightOverflow,
+            delOffset = style.height / 2 + style.genomeBarHeight  + style.geneHeightOverflow;
+        segY = function (d){
+          if (d.ty == "amp"){
+            return  ampOffset - style.horizontalBarSpacing * d.index;
+          } else if (d.ty == "del") {
+            return delOffset + style.horizontalBarSpacing * d.index;
+          } else {
+            throw("Segment of unknown type: " + d.ty);
+          }
+        }
+      } else {
+        segY = function (d){
+          if (d.ty == "amp"){
+            return ampAreaHeight - style.horizontalBarHeight - style.horizontalBarSpacing * d.index;
+          } else if (d.ty == "del") {
+            return (height-delAreaHeight) + style.horizontalBarSpacing * d.index;
+          } else {
+            console.log("Segment of unknown type: " + d.ty);
+          }
+        }
+      }
+
+
       updateGeneBar();
       updateSegments();
 
@@ -208,16 +237,6 @@ function cnaChart(style) {
         });
       }
 
-      // Updates the position of horizontal bars in the visualization
-      function segY(d){
-        if (d.ty == "amp"){
-          return ampAreaHeight - style.horizontalBarHeight - style.horizontalBarSpacing * d.index;
-        } else if (d.ty == "del") {
-          return (height-delAreaHeight) + style.horizontalBarSpacing * d.index;
-        } else {
-          console.log("Segment of unknown type: " + d.ty);
-        }
-      }
       function updateSegments() {
         // Move the intervals into place
         segs.attr("transform", function(d, i){

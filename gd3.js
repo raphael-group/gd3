@@ -345,6 +345,29 @@
         })).enter().append("rect").attr("y", 0).attr("width", function(d) {
           return x(d.end) - x(d.start);
         }).attr("height", height).style("fill", style.geneSelectedColor).style("fill-opacity", .5);
+        var segY;
+        if (showScrollers) {
+          var ampOffset = style.height / 2 - style.horizontalBarHeight - style.geneHeightOverflow, delOffset = style.height / 2 + style.genomeBarHeight + style.geneHeightOverflow;
+          segY = function(d) {
+            if (d.ty == "amp") {
+              return ampOffset - style.horizontalBarSpacing * d.index;
+            } else if (d.ty == "del") {
+              return delOffset + style.horizontalBarSpacing * d.index;
+            } else {
+              throw "Segment of unknown type: " + d.ty;
+            }
+          };
+        } else {
+          segY = function(d) {
+            if (d.ty == "amp") {
+              return ampAreaHeight - style.horizontalBarHeight - style.horizontalBarSpacing * d.index;
+            } else if (d.ty == "del") {
+              return height - delAreaHeight + style.horizontalBarSpacing * d.index;
+            } else {
+              console.log("Segment of unknown type: " + d.ty);
+            }
+          };
+        }
         updateGeneBar();
         updateSegments();
         function updateAllComponents() {
@@ -372,15 +395,6 @@
             var x1 = d3.max([ d.start, d3.max(x.domain()) ]), x2 = d3.min([ d.end, d3.min(x.domain()) ]);
             return "translate(" + x(d.start + (d.end - d.start) / 2) + ",0)";
           });
-        }
-        function segY(d) {
-          if (d.ty == "amp") {
-            return ampAreaHeight - style.horizontalBarHeight - style.horizontalBarSpacing * d.index;
-          } else if (d.ty == "del") {
-            return height - delAreaHeight + style.horizontalBarSpacing * d.index;
-          } else {
-            console.log("Segment of unknown type: " + d.ty);
-          }
         }
         function updateSegments() {
           segs.attr("transform", function(d, i) {
