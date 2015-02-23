@@ -269,7 +269,9 @@ function cnaChart(style) {
       function updateSegments() {
         // Move the intervals into place
         segs.attr("transform", function(d, i){
-          return "translate(" + x(d.start) + "," + segY(d) + ")"
+          var curY = d3.select(this).attr('transform'),
+              y = curY ? +curY.split(',')[1].replace(')','') : segY(d);
+          return "translate(" + x(d.start) + "," + y + ")"
         })
         .attr("width", function(d, i){ return x(d.end) - x(d.start); })
 
@@ -326,22 +328,22 @@ function cnaChart(style) {
 
         // Adjust segment heights
         // Updates the position of horizontal bars in the visualization
-        var ampOffset = style.height / 2 - style.horizontalBarHeight  - style.geneHeightOverflow,
-            delOffset = style.height / 2 + style.genomeBarHeight  + style.geneHeightOverflow;
+        // var ampOffset = style.height / 2 - style.horizontalBarHeight  - style.geneHeightOverflow,
+        //     delOffset = style.height / 2 + style.genomeBarHeight  + style.geneHeightOverflow;
 
         // offsets for scrolling
         var ampYs = [],
             delYs = [];
 
-        function segY(d){
-          if (d.ty == "amp"){
-            return  ampOffset - style.horizontalBarSpacing * d.index;
-          } else if (d.ty == "del") {
-            return delOffset + style.horizontalBarSpacing * d.index;
-          } else {
-            throw("Segment of unknown type: " + d.ty);
-          }
-        }
+        // function segY(d){
+        //   if (d.ty == "amp"){
+        //     return  ampOffset - style.horizontalBarSpacing * d.index;
+        //   } else if (d.ty == "del") {
+        //     return delOffset + style.horizontalBarSpacing * d.index;
+        //   } else {
+        //     throw("Segment of unknown type: " + d.ty);
+        //   }
+        // }
         // Move the intervals into place
         segs.attr("transform", function(d, i){
           var y = segY(d),
