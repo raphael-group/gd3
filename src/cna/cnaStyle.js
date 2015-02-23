@@ -12,6 +12,6 @@ function cnaStyle(style) {
     horizontalBarHeight: style.horizontalBarHeight || 5,
     horizontalBarSpacing: style.horizontalBarSpacing || 6,
     width: style.width || 500,
-    margin: style.margin || {top: 10, bottom: 10}
+    margin: style.margin || {top: 10, right: 20, bottom: 10, left: 0}
   };
 }

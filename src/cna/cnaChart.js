@@ -14,7 +14,7 @@ function cnaChart(style) {
           ampAreaHeight = data.numAmps * style.horizontalBarSpacing,
           delAreaHeight = data.numDels * style.horizontalBarSpacing,
           height = style.margin.top + style.margin.bottom + genomeBarHeight + delAreaHeight + ampAreaHeight,
-          width = style.width;
+          width = style.width - style.margin.left - style.margin.right;
 
       // Determine coloration
       var d3color = d3.scale.category20(),
@@ -30,9 +30,13 @@ function cnaChart(style) {
             .enter()
             .append('svg')
               .attr('height', height)
-              .attr('width', width);
+              .attr('width', style.width);
 
-      var svg = svgActual.append('g');
+      var svg = svgActual.append('g').attr('transform', 'translate('+style.margin.left+','+style.margin.top+')');
+      svgActual.append('rect').attr('x', style.margin.left + width)
+          .attr('width', style.margin.right)
+          .attr('height', height)
+          .style('fill', '#fff');
 
       // Needed for zooming and panning to work
       var bgMasks = svg.selectAll(".cna-bg")
@@ -183,8 +187,8 @@ function cnaChart(style) {
 
         if(showLegendText) {
           // Add the legend text
-          var ampText = svg.append('text'),
-              delText = svg.append('text'),
+          var ampText = svgActual.append('text'),
+              delText = svgActual.append('text'),
               textStyle = {
                 'font-family': style.fontFamily,
                 'font-weight': 'bold',
@@ -194,14 +198,14 @@ function cnaChart(style) {
           ampText.attr('transform', 'rotate(90)')
               .attr('text-anchor', 'middle')
               .attr('x', style.height * 1/4)
-              .attr('y', -width + 15)
+              .attr('y', -width - 5)
               .style(textStyle)
               .text('Amplifications');
 
           delText.attr('transform', 'rotate(90)')
               .attr('text-anchor', 'middle')
               .attr('x', style.height*3/4)
-              .attr('y', -width + 15)
+              .attr('y', -width - 5)
               .style(textStyle)
               .text('Deletions');
         }

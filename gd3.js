@@ -268,13 +268,14 @@
     function chart(selection) {
       selection.each(function(data) {
         data = cnaData(data);
-        var genomeBarHeight = style.genomeBarHeight, ampAreaHeight = data.numAmps * style.horizontalBarSpacing, delAreaHeight = data.numDels * style.horizontalBarSpacing, height = style.margin.top + style.margin.bottom + genomeBarHeight + delAreaHeight + ampAreaHeight, width = style.width;
+        var genomeBarHeight = style.genomeBarHeight, ampAreaHeight = data.numAmps * style.horizontalBarSpacing, delAreaHeight = data.numDels * style.horizontalBarSpacing, height = style.margin.top + style.margin.bottom + genomeBarHeight + delAreaHeight + ampAreaHeight, width = style.width - style.margin.left - style.margin.right;
         var d3color = d3.scale.category20(), segmentTypeToColor = {};
         for (var i = 0; i < data.get("sampleTypes").length; i++) {
           segmentTypeToColor[data.get("sampleTypes")[i]] = d3color(i);
         }
-        var svgActual = d3.select(this).selectAll("svg").data([ data ]).enter().append("svg").attr("height", height).attr("width", width);
-        var svg = svgActual.append("g");
+        var svgActual = d3.select(this).selectAll("svg").data([ data ]).enter().append("svg").attr("height", height).attr("width", style.width);
+        var svg = svgActual.append("g").attr("transform", "translate(" + style.margin.left + "," + style.margin.top + ")");
+        svgActual.append("rect").attr("x", style.margin.left + width).attr("width", style.margin.right).attr("height", height).style("fill", "#fff");
         var bgMasks = svg.selectAll(".cna-bg").data([ {
           y: 0,
           height: ampAreaHeight
@@ -309,7 +310,6 @@
         });
         geneGroups.on("mouseover", function(d) {
           if (!d.fixed) {
-            console.log(d3.select(this).node());
             d3.select(this).select("rect").style("fill", style.geneHighlightColor);
             d3.select(this).select("text").style("fill-opacity", 1);
           }
@@ -359,13 +359,13 @@
             }
           };
           if (showLegendText) {
-            var ampText = svg.append("text"), delText = svg.append("text"), textStyle = {
+            var ampText = svgActual.append("text"), delText = svgActual.append("text"), textStyle = {
               "font-family": style.fontFamily,
               "font-weight": "bold",
               opacity: .5
             };
-            ampText.attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height * 1 / 4).attr("y", -width + 15).style(textStyle).text("Amplifications");
-            delText.attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height * 3 / 4).attr("y", -width + 15).style(textStyle).text("Deletions");
+            ampText.attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height * 1 / 4).attr("y", -width - 5).style(textStyle).text("Amplifications");
+            delText.attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height * 3 / 4).attr("y", -width - 5).style(textStyle).text("Deletions");
           }
         } else {
           segY = function(d) {
@@ -573,7 +573,9 @@
       width: style.width || 500,
       margin: style.margin || {
         top: 10,
-        bottom: 10
+        right: 20,
+        bottom: 10,
+        left: 0
       }
     };
   }
