@@ -95,15 +95,16 @@ gd3.color.annotations = function() {
     colors = arguments[3];
   } else {
     var numOfType = Object.keys(gd3.color.annotationPalettes).filter(function(d) {
+          console.log(d, gd3.color.annotationToType[d], type, gd3.color.annotationToType[d] == type)
           return gd3.color.annotationToType[d] == type;
         }).length, // # of previously defined of this type of scale
         palettes = gd3.color.palettes;
 
         var paletteIndex;
         if(type == 'discrete') {
-          paletteIndex = palettes.annotation_discrete.length % (numOfType + 1);
+          paletteIndex = (numOfType + 1) % palettes.annotation_discrete.length;
         } else {
-          paletteIndex = palettes.annotation_continuous.length % (numOfType + 1);
+          paletteIndex = (numOfType + 1) % palettes.annotation_continuous.length;
         }
 
         var palette = (type == 'discrete' ? palettes.annotation_discrete : palettes.annotation_continuous)[paletteIndex];
