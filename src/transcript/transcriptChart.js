@@ -484,23 +484,39 @@ function transcriptChart(style) {
       // Render the legend
       if (showLegend){
         // Add the missense/inactivating legend text
-        var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth/2,
+        var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth + 5,
             axisLegend = actualSVG.append('g');
-        axisLegend.append('g')
-          .attr('transform', 'translate(' + effectiveWidth + ',0)')
-            .append('text')
-            .attr('transform', 'translate(' + (style.legendTextWidth)/2 + ',42)rotate(90)')
-            .style('font-size', 12)
-            .style('dominant-baseline', 'central')
-            .html('<tspan dy="0" text-anchor="middle">Protein Sequence</tspan>
-                   <tspan x="0" dy="15" text-anchor="middle">Changes</tspan>')
 
-        axisLegend.append('g')
-          .attr('transform', 'translate(' + effectiveWidth + ',' + (height/2 + style.transcriptBarHeight + 20) + ')')
+        var topLegend = axisLegend.append('g')
+                .attr('transform', 'translate(' + effectiveWidth + ',0)')
+            bottomLegend = axisLegend.append('g')
+                .attr('transform', 'translate(' + effectiveWidth + ','
+                      + (height/2 + style.transcriptBarHeight + 20) + ')');
+
+        var textStyle = {
+           "font-family": style.fontFamily,
+           "font-weight": "bold",
+           opacity: .5
+         };
+
+        topLegend.selectAll('text')
+            .data(['Protein Seq', 'Changes'])
+            .enter()
             .append('text')
-            .attr('transform', 'translate(0)rotate(90)')
-            .attr('text-anchor', 'start')
-            .style('font-size', 12)
+                .attr('transform', 'rotate(90)')
+                .attr('text-anchor', 'middle')
+                .attr('x', style.height/4)
+                .attr('y', function(d,i) { return i*15; })
+                .style(textStyle)
+                .text(function(d) { return d; });
+
+        bottomLegend.append('text')
+            .style(textStyle)
+            .attr('transform', 'rotate(90)')
+            .attr('text-anchor', 'middle')
+            .attr('x', style.height/4)
+            .attr('y', 7.5)
+            .style(textStyle)
             .text('Inactivating');
 
         renderLegend();
@@ -566,6 +582,7 @@ function transcriptChart(style) {
         legend.append('text')
           .attr('dx', 7)
           .attr('dy', 3)
+          .style('font-family', style.fontFamily)
           .text(function(d) { return d.replace(/_/g, ' ')});
 
         svg.attr('height', legendGroup.node().getBBox().height);

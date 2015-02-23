@@ -3091,9 +3091,20 @@
           }).call(dragSlider);
         }
         if (showLegend) {
-          var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth / 2, axisLegend = actualSVG.append("g");
-          axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + ",0)").append("text").attr("transform", "translate(" + style.legendTextWidth / 2 + ",42)rotate(90)").style("font-size", 12).style("dominant-baseline", "central").html('<tspan dy="0" text-anchor="middle">Protein Sequence</tspan><tspan x="0" dy="15" text-anchor="middle">Changes</tspan>');
-          axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + "," + (height / 2 + style.transcriptBarHeight + 20) + ")").append("text").attr("transform", "translate(0)rotate(90)").attr("text-anchor", "start").style("font-size", 12).text("Inactivating");
+          var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth + 5, axisLegend = actualSVG.append("g");
+          var topLegend = axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + ",0)");
+          bottomLegend = axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + "," + (height / 2 + style.transcriptBarHeight + 20) + ")");
+          var textStyle = {
+            "font-family": style.fontFamily,
+            "font-weight": "bold",
+            opacity: .5
+          };
+          topLegend.selectAll("text").data([ "Protein Seq", "Changes" ]).enter().append("text").attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height / 4).attr("y", function(d, i) {
+            return i * 15;
+          }).style(textStyle).text(function(d) {
+            return d;
+          });
+          bottomLegend.append("text").style(textStyle).attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height / 4).attr("y", 7.5).style(textStyle).text("Inactivating");
           renderLegend();
         }
         function renderLegend() {
@@ -3117,7 +3128,7 @@
           legend.append("path").attr("class", "symbol").attr("d", d3.svg.symbol().type(function(d, i) {
             return d3.svg.symbolTypes[data.mutationTypesToSymbols[d]];
           }).size(2 * style.legendSymbolHeight)).style("stroke", "#95A5A6").style("stroke-width", 2).style("fill", "#95A5A6");
-          legend.append("text").attr("dx", 7).attr("dy", 3).text(function(d) {
+          legend.append("text").attr("dx", 7).attr("dy", 3).style("font-family", style.fontFamily).text(function(d) {
             return d.replace(/_/g, " ");
           });
           svg.attr("height", legendGroup.node().getBBox().height);
@@ -3193,7 +3204,7 @@
       legendTextWidth: style.legendTextWidth || 28,
       margin: style.margin || {
         left: 5,
-        right: 5,
+        right: 15,
         top: 5,
         bottom: 0
       }
