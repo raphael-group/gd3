@@ -484,19 +484,21 @@ function transcriptChart(style) {
       // Render the legend
       if (showLegend){
         // Add the missense/inactivating legend text
-        var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth/2;
-        svg.append('g')
+        var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth/2,
+            axisLegend = actualSVG.append('g');
+        axisLegend.append('g')
           .attr('transform', 'translate(' + effectiveWidth + ',0)')
             .append('text')
-            .attr('transform', 'rotate(90)')
-            .attr('text-anchor', 'start')
+            .attr('transform', 'translate(' + (style.legendTextWidth)/2 + ',42)rotate(90)')
             .style('font-size', 12)
-            .text('Missense')
+            .style('dominant-baseline', 'central')
+            .html('<tspan dy="0" text-anchor="middle">Protein Sequence</tspan>
+                   <tspan x="0" dy="15" text-anchor="middle">Changes</tspan>')
 
-        svg.append('g')
+        axisLegend.append('g')
           .attr('transform', 'translate(' + effectiveWidth + ',' + (height/2 + style.transcriptBarHeight + 20) + ')')
             .append('text')
-            .attr('transform', 'rotate(90)')
+            .attr('transform', 'translate(0)rotate(90)')
             .attr('text-anchor', 'start')
             .style('font-size', 12)
             .text('Inactivating');
@@ -570,7 +572,9 @@ function transcriptChart(style) {
       }
 
       // Set the height to the true height
-      actualSVG.attr('height', svg.node().getBBox().height);
+      if (showLegend){
+        actualSVG.attr('height', axisLegend.node().getBBox().height);
+      }
 
       /////////////////////////////////////////////////////////////////////////
       // Dispatch

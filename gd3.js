@@ -3091,9 +3091,9 @@
           }).call(dragSlider);
         }
         if (showLegend) {
-          var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth / 2;
-          svg.append("g").attr("transform", "translate(" + effectiveWidth + ",0)").append("text").attr("transform", "rotate(90)").attr("text-anchor", "start").style("font-size", 12).text("Missense");
-          svg.append("g").attr("transform", "translate(" + effectiveWidth + "," + (height / 2 + style.transcriptBarHeight + 20) + ")").append("text").attr("transform", "rotate(90)").attr("text-anchor", "start").style("font-size", 12).text("Inactivating");
+          var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth / 2, axisLegend = actualSVG.append("g");
+          axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + ",0)").append("text").attr("transform", "translate(" + style.legendTextWidth / 2 + ",42)rotate(90)").style("font-size", 12).style("dominant-baseline", "central").html('<tspan dy="0" text-anchor="middle">Protein Sequence</tspan><tspan x="0" dy="15" text-anchor="middle">Changes</tspan>');
+          axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + "," + (height / 2 + style.transcriptBarHeight + 20) + ")").append("text").attr("transform", "translate(0)rotate(90)").attr("text-anchor", "start").style("font-size", 12).text("Inactivating");
           renderLegend();
         }
         function renderLegend() {
@@ -3122,7 +3122,9 @@
           });
           svg.attr("height", legendGroup.node().getBBox().height);
         }
-        actualSVG.attr("height", svg.node().getBBox().height);
+        if (showLegend) {
+          actualSVG.attr("height", axisLegend.node().getBBox().height);
+        }
         var allMutations = mutationsG.selectAll("path").on("mouseover.dispatch-sample", function(d) {
           gd3.dispatch.sample({
             sample: d.sample,
@@ -3180,7 +3182,7 @@
   function transcriptStyle(style) {
     return {
       fontFamily: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
-      height: style.height || 200,
+      height: style.height || 250,
       numXTicks: style.numXTicks || 5,
       symbolWidth: style.symbolWidth || 20,
       transcriptBarHeight: style.transcriptBarHeight || 20,
@@ -3188,7 +3190,7 @@
       width: style.width || 500,
       xTickPadding: style.xTickPadding || 1.25,
       scollbarWidth: style.scrollbarWidth || 15,
-      legendTextWidth: style.legendTextWidth || 15,
+      legendTextWidth: style.legendTextWidth || 28,
       margin: style.margin || {
         left: 5,
         right: 5,
