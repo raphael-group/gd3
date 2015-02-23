@@ -309,6 +309,7 @@
         });
         geneGroups.on("mouseover", function(d) {
           if (!d.fixed) {
+            console.log(d3.select(this).node());
             d3.select(this).select("rect").style("fill", style.geneHighlightColor);
             d3.select(this).select("text").style("fill-opacity", 1);
           }
@@ -449,6 +450,7 @@
         });
         function renderScrollers() {
           svgActual.attr("height", style.height + "px");
+          verticalBars.attr("height", style.height - style.margin.bottom - style.margin.top - 3);
           genomeG.attr("transform", "translate(0," + style.height / 2 + ")");
           var ampOffset = style.height / 2 - style.horizontalBarHeight - style.geneHeightOverflow, delOffset = style.height / 2 + style.genomeBarHeight + style.geneHeightOverflow;
           var ampYs = [], delYs = [];

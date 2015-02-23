@@ -102,6 +102,7 @@ function cnaChart(style) {
 
         geneGroups.on('mouseover', function(d){
           if (!d.fixed){
+            console.log(d3.select(this).node());
             d3.select(this).select('rect').style('fill', style.geneHighlightColor);
             d3.select(this).select("text").style("fill-opacity", 1)
           }
@@ -292,6 +293,7 @@ function cnaChart(style) {
       function renderScrollers () {
         // Adjust canvas for scrollbars
         svgActual.attr('height', style.height + 'px');
+        verticalBars.attr('height', style.height - style.margin.bottom - style.margin.top - 3);
         genomeG.attr('transform', 'translate(0,'+ (style.height / 2 ) + ')' );
 
         // Adjust segment heights
