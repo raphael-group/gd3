@@ -103,7 +103,6 @@ function cnaChart(style) {
 
         geneGroups.on('mouseover', function(d){
           if (!d.fixed){
-            console.log(d3.select(this).node());
             d3.select(this).select('rect').style('fill', style.geneHighlightColor);
             d3.select(this).select("text").style("fill-opacity", 1)
           }
