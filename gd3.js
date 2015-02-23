@@ -264,7 +264,7 @@
     return cnaData;
   }
   function cnaChart(style) {
-    var showScrollers = true;
+    var showScrollers = true, showLegendText = true;
     function chart(selection) {
       selection.each(function(data) {
         data = cnaData(data);
@@ -358,6 +358,15 @@
               throw "Segment of unknown type: " + d.ty;
             }
           };
+          if (showLegendText) {
+            var ampText = svg.append("text"), delText = svg.append("text"), textStyle = {
+              "font-family": style.fontFamily,
+              "font-weight": "bold",
+              opacity: .5
+            };
+            ampText.attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height * 1 / 4).attr("y", -width + 15).style(textStyle).text("Amplifications");
+            delText.attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height * 3 / 4).attr("y", -width + 15).style(textStyle).text("Deletions");
+          }
         } else {
           segY = function(d) {
             if (d.ty == "amp") {
@@ -545,6 +554,11 @@
         if (showScrollers) renderScrollers();
       });
     }
+    chart.showLegendText = function() {
+      if (arguments.length == 0) return showLegendText;
+      showLegendText = arguments[0];
+      return chart;
+    };
     chart.showScrollers = function() {
       if (arguments.length == 0) return showScrollers;
       showScrollers = arguments[0];

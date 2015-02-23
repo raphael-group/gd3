@@ -1,7 +1,8 @@
 import "cnaData";
 
 function cnaChart(style) {
-  var showScrollers = true;
+  var showScrollers = true,
+      showLegendText = true;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -180,6 +181,32 @@ function cnaChart(style) {
             throw("Segment of unknown type: " + d.ty);
           }
         }
+
+        if(showLegendText) {
+          // Add the legend text
+          var ampText = svg.append('text'),
+              delText = svg.append('text'),
+              textStyle = {
+                'font-family': style.fontFamily,
+                'font-weight': 'bold',
+                opacity: .5
+              }
+
+          ampText.attr('transform', 'rotate(90)')
+              .attr('text-anchor', 'middle')
+              .attr('x', style.height * 1/4)
+              .attr('y', -width + 15)
+              .style(textStyle)
+              .text('Amplifications');
+
+          delText.attr('transform', 'rotate(90)')
+              .attr('text-anchor', 'middle')
+              .attr('x', style.height*3/4)
+              .attr('y', -width + 15)
+              .style(textStyle)
+              .text('Deletions');
+        }
+
       } else {
         segY = function (d){
           if (d.ty == "amp"){
@@ -195,6 +222,7 @@ function cnaChart(style) {
 
       updateGeneBar();
       updateSegments();
+
 
       function updateAllComponents() {
         var t = zoom.translate(),
@@ -488,6 +516,12 @@ function cnaChart(style) {
       if(showScrollers) renderScrollers();
 
     });//end selection.each()
+  }
+
+  chart.showLegendText = function() {
+    if(arguments.length == 0) return showLegendText;
+    showLegendText = arguments[0];
+    return chart;
   }
 
   chart.showScrollers = function() {
