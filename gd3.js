@@ -410,14 +410,16 @@
             return "translate(" + x(d.start) + "," + y + ")";
           }).attr("width", function(d, i) {
             return x(d.end) - x(d.start);
+          }).attr("opacity", function(d, i) {
+            var y = +d3.select(this).attr("transform").replace("translate(", "").split(",")[1].replace(")", "");
+            return y < 0 ? 0 : 1;
           });
           var activeIntervals = segments.filter(function(d) {
             var includedSample = data.sampleTypeToInclude[samplesToTypes[d.sample]];
             return includedSample;
           }).style("opacity", 1);
           segments.filter(function(d) {
-            var y = +d3.select(this).select("rect").attr("transform").replace("translate(", "").split(",")[1].replace(")", ""), includedSample = data.sampleTypeToInclude[samplesToTypes[d.sample]];
-            return !includedSample || y < 0;
+            return !data.sampleTypeToInclude[samplesToTypes[d.sample]];
           }).style("opacity", 0);
         }
         segs.attr({
@@ -477,7 +479,7 @@
           });
           var showAmpScroller = minAmpY < 0, showDelScroller = maxDelY > height;
           if (!showAmpScroller && !showDelScroller) return;
-          var maxAmpOffset = minAmpY < 0 ? Math.abs(minAmpY) + style.horizontalBarHeight : style.genomeBarHeight, maxDelOffset = maxDelY > height ? maxDelY - style.symbolWidth : style.genomeBarHeight;
+          var maxAmpOffset = minAmpY < 0 ? Math.abs(minAmpY) + style.horizontalBarHeight : style.genomeBarHeight, maxDelOffset = maxDelY > height ? maxDelY - style.horizontalBarHeight : style.genomeBarHeight;
           var gradient = svg.append("svg:defs").append("svg:linearGradient").attr("id", "gd3-cna-scroller-gradient").attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%").attr("spreadMethod", "pad");
           gradient.append("svg:stop").attr("offset", "0%").attr("stop-color", "#eeeeee").attr("stop-opacity", 1);
           gradient.append("svg:stop").attr("offset", "100%").attr("stop-color", "#666666").attr("stop-opacity", 1);
@@ -506,7 +508,7 @@
             });
             scrollSegments.attr("opacity", function(d) {
               var y = +d3.select(this).attr("transform").split(",")[1].replace(")", ""), hideY = d.ty == "amp" ? ampOffset : delOffset;
-              if (d.ty == "amp") return y < hideY ? 1 : 0; else return y > hideY ? 1 : 0;
+              if (d.ty == "amp") return y < hideY && y >= 0 ? 1 : 0; else return y > hideY ? 1 : 0;
             });
           }
           function dragEnd(d) {

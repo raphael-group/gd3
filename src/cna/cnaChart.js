@@ -277,6 +277,10 @@ function cnaChart(style) {
           return "translate(" + x(d.start) + "," + y + ")"
         })
         .attr("width", function(d, i){ return x(d.end) - x(d.start); })
+        .attr("opacity", function(d, i){
+          var y = +d3.select(this).attr('transform').replace('translate(', '').split(',')[1].replace(')', '');
+          return y < 0 ? 0 : 1;
+        })
 
         // Fade in/out intervals that are from datasets not currently active
         var activeIntervals = segments.filter(function(d){
@@ -285,9 +289,7 @@ function cnaChart(style) {
         })
           .style("opacity", 1);
         segments.filter(function(d){
-          var y = +d3.select(this).select('rect').attr('transform').replace('translate(', '').split(',')[1].replace(')', ''),
-              includedSample = data.sampleTypeToInclude[samplesToTypes[d.sample]];
-          return !includedSample || y < 0;
+          return !data.sampleTypeToInclude[samplesToTypes[d.sample]];;
         }).style("opacity", 0);
 
       }
@@ -379,7 +381,7 @@ function cnaChart(style) {
 
         // Determine scrolling max offset for both activating and inactivating mutations
         var maxAmpOffset = minAmpY < 0 ? Math.abs(minAmpY)+style.horizontalBarHeight : style.genomeBarHeight,
-            maxDelOffset = maxDelY > height ? maxDelY-style.symbolWidth : style.genomeBarHeight;
+            maxDelOffset = maxDelY > height ? maxDelY-style.horizontalBarHeight : style.genomeBarHeight;
 
         // create drag slider gradient
         // Define the gradient
@@ -457,8 +459,8 @@ function cnaChart(style) {
           scrollSegments.attr('opacity', function(d) {
             var y = +d3.select(this).attr('transform').split(',')[1].replace(')',''),
                 hideY = d.ty == 'amp' ? ampOffset : delOffset;
-            if(d.ty == 'amp') return y < hideY ? 1 : 0;
-            else return y > hideY ? 1 : 0;
+            if(d.ty == 'amp') return y < hideY && y >= 0 ? 1 : 0;
+            else return y > hideY  ? 1 : 0;
           });
         }
         function dragEnd(d) {
