@@ -75,8 +75,6 @@
       } else {
         paletteIndex = (numOfType + 1) % palettes.annotation_continuous.length;
       }
-      console.log(annotation, type, numOfType, paletteIndex);
-      console.log(JSON.stringify(gd3.color.annotationToType));
       var palette = (type == "discrete" ? palettes.annotation_discrete : palettes.annotation_continuous)[paletteIndex];
       colors = palette;
     }
@@ -3216,6 +3214,7 @@
             "stroke-width": 1
           }).call(dragSlider);
         }
+        var effectiveHeight = style.height;
         if (showLegend) {
           var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth + 5, axisLegend = actualSVG.append("g");
           var topLegend = axisLegend.append("g").attr("transform", "translate(" + effectiveWidth + ",0)");
@@ -3231,6 +3230,7 @@
             return d;
           });
           bottomLegend.append("text").style(textStyle).attr("transform", "rotate(90)").attr("text-anchor", "middle").attr("x", style.height / 4).attr("y", 7.5).style(textStyle).text("Inactivating");
+          effectiveHeight = 3 * style.height / 4 + bottomLegend.node().getBBox().height;
           renderLegend();
         }
         function renderLegend() {
@@ -3260,7 +3260,7 @@
           svg.attr("height", legendGroup.node().getBBox().height);
         }
         if (showLegend) {
-          actualSVG.attr("height", axisLegend.node().getBBox().height);
+          actualSVG.attr("height", effectiveHeight);
         }
         var allMutations = mutationsG.selectAll("path").on("mouseover.dispatch-sample", function(d) {
           gd3.dispatch.sample({

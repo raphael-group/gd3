@@ -482,6 +482,7 @@ function transcriptChart(style) {
 
       /////////////////////////////////////////////////////////////////////////
       // Render the legend
+      var effectiveHeight = style.height;
       if (showLegend){
         // Add the missense/inactivating legend text
         var effectiveWidth = width + scrollbarWidth + style.margin.left + style.symbolWidth + 5,
@@ -518,6 +519,10 @@ function transcriptChart(style) {
             .attr('y', 7.5)
             .style(textStyle)
             .text('Inactivating');
+
+        // Set the effective height so that both the top and bottom
+        // axis legend labels are entirely visible.
+        effectiveHeight = 3*style.height/4 + bottomLegend.node().getBBox().height;
 
         renderLegend();
       }
@@ -590,7 +595,7 @@ function transcriptChart(style) {
 
       // Set the height to the true height
       if (showLegend){
-        actualSVG.attr('height', axisLegend.node().getBBox().height);
+        actualSVG.attr('height', effectiveHeight);
       }
 
       /////////////////////////////////////////////////////////////////////////
