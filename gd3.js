@@ -269,7 +269,12 @@
     function chart(selection) {
       selection.each(function(data) {
         data = cnaData(data);
-        var genomeBarHeight = style.genomeBarHeight, ampAreaHeight = data.numAmps * style.horizontalBarSpacing, delAreaHeight = data.numDels * style.horizontalBarSpacing, height = style.margin.top + style.margin.bottom + genomeBarHeight + delAreaHeight + ampAreaHeight, width = style.width - style.margin.left - style.margin.right;
+        var genomeBarHeight = style.genomeBarHeight, ampAreaHeight = data.numAmps * style.horizontalBarSpacing, delAreaHeight = data.numDels * style.horizontalBarSpacing, width = style.width - style.margin.left - style.margin.right;
+        if (showScrollers) {
+          var height = style.height;
+        } else {
+          var height = style.margin.top + style.margin.bottom + genomeBarHeight + delAreaHeight + ampAreaHeight;
+        }
         var d3color = d3.scale.category20(), segmentTypeToColor = {};
         for (var i = 0; i < data.get("sampleTypes").length; i++) {
           segmentTypeToColor[data.get("sampleTypes")[i]] = d3color(i);
@@ -277,15 +282,7 @@
         var svgActual = d3.select(this).selectAll("svg").data([ data ]).enter().append("svg").attr("height", height).attr("width", style.width);
         var svg = svgActual.append("g").attr("transform", "translate(" + style.margin.left + "," + style.margin.top + ")");
         svgActual.append("rect").attr("x", style.margin.left + width).attr("width", style.margin.right).attr("height", height).style("fill", "#fff");
-        var bgMasks = svg.selectAll(".cna-bg").data([ {
-          y: 0,
-          height: ampAreaHeight
-        }, {
-          y: height - delAreaHeight,
-          height: delAreaHeight
-        } ]).enter().append("rect").attr("class", "cna-bg").attr("width", width).attr("height", function(d) {
-          return d.height;
-        }).attr("y", function(d) {
+        var bgMasks = svg.append("rect").attr("class", "cna-bg").attr("width", width).attr("height", height).attr("y", function(d) {
           return d.y;
         }).style("fill", style.backgroundColor);
         var start = d3.min(data.segmentDomain), stop = d3.max(data.segmentDomain);
@@ -334,7 +331,7 @@
         });
         var segmentsG = svg.append("g"), segments = segmentsG.selectAll(".segments").data(data.get("segments")).enter().append("g").attr("class", "intervals");
         var minSegmentX = d3.min(data.get("segmentDomain")), maxSegmentX = d3.max(data.get("segmentDomain"));
-        segs = segments.append("rect").attr("fill", function(d) {
+        var segs = segments.append("rect").attr("fill", function(d) {
           if (gd3.color.categoryPalette) return gd3.color.categoryPalette(samplesToTypes[d.sample]);
           return segmentTypeToColor[samplesToTypes[d.sample]];
         }).attr("width", function(d) {
@@ -415,10 +412,12 @@
             return x(d.end) - x(d.start);
           });
           var activeIntervals = segments.filter(function(d) {
-            return data.sampleTypeToInclude[samplesToTypes[d.sample]];
+            var includedSample = data.sampleTypeToInclude[samplesToTypes[d.sample]];
+            return includedSample;
           }).style("opacity", 1);
           segments.filter(function(d) {
-            return !data.sampleTypeToInclude[samplesToTypes[d.sample]];
+            var y = +d3.select(this).select("rect").attr("transform").replace("translate(", "").split(",")[1].replace(")", ""), includedSample = data.sampleTypeToInclude[samplesToTypes[d.sample]];
+            return !includedSample || y < 0;
           }).style("opacity", 0);
         }
         segs.attr({
@@ -573,9 +572,9 @@
       horizontalBarSpacing: style.horizontalBarSpacing || 6,
       width: style.width || 500,
       margin: style.margin || {
-        top: 0,
+        top: 10,
         right: 20,
-        bottom: 20,
+        bottom: 10,
         left: 0
       }
     };
@@ -2989,7 +2988,7 @@
         var zoom = d3.behavior.zoom().x(x).scaleExtent([ 1, 100 ]).on("zoom", function() {
           updateTranscript();
         });
-        svg.call(zoom);
+        actualSVG.call(zoom);
         var mutationsG = tG.append("g").attr("class", "gd3TranscriptMutations"), inactivatingG = mutationsG.append("g"), activatingG = mutationsG.append("g");
         var inactivatingData = data.get("mutations").filter(function(d) {
           return data.isMutationInactivating(d.ty);

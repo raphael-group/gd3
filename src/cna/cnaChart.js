@@ -13,8 +13,13 @@ function cnaChart(style) {
       var genomeBarHeight = style.genomeBarHeight,
           ampAreaHeight = data.numAmps * style.horizontalBarSpacing,
           delAreaHeight = data.numDels * style.horizontalBarSpacing,
-          height = style.margin.top + style.margin.bottom + genomeBarHeight + delAreaHeight + ampAreaHeight,
           width = style.width - style.margin.left - style.margin.right;
+
+      if (showScrollers){
+        var height = style.height;
+      } else {
+        var height = style.margin.top + style.margin.bottom + genomeBarHeight + delAreaHeight + ampAreaHeight;
+      }
 
       // Determine coloration
       var d3color = d3.scale.category20(),
@@ -39,14 +44,10 @@ function cnaChart(style) {
           .style('fill', '#fff');
 
       // Needed for zooming and panning to work
-      var bgMasks = svg.selectAll(".cna-bg")
-              .data([{y: 0, height: ampAreaHeight},
-                     {y: height-delAreaHeight, height: delAreaHeight}
-                    ]).enter()
-              .append('rect')
+      var bgMasks = svg.append('rect')
               .attr("class", "cna-bg")
               .attr('width', width)
-              .attr("height", function(d){ return d.height; })
+              .attr("height", height)
               .attr("y", function(d){ return d.y; })
               .style('fill', style.backgroundColor);
 
@@ -145,7 +146,7 @@ function cnaChart(style) {
       var minSegmentX = d3.min(data.get('segmentDomain')),
           maxSegmentX = d3.max(data.get('segmentDomain'));
 
-      segs = segments.append('rect')
+      var segs = segments.append('rect')
           .attr('fill', function(d){
             if (gd3.color.categoryPalette) return gd3.color.categoryPalette(samplesToTypes[d.sample]);
             return segmentTypeToColor[samplesToTypes[d.sample]]
@@ -226,7 +227,6 @@ function cnaChart(style) {
       updateGeneBar();
       updateSegments();
 
-
       function updateAllComponents() {
         var t = zoom.translate(),
           tx = t[0],
@@ -279,10 +279,16 @@ function cnaChart(style) {
         .attr("width", function(d, i){ return x(d.end) - x(d.start); })
 
         // Fade in/out intervals that are from datasets not currently active
-        var activeIntervals = segments.filter(function(d){ return data.sampleTypeToInclude[samplesToTypes[d.sample]]; })
+        var activeIntervals = segments.filter(function(d){
+          var includedSample = data.sampleTypeToInclude[samplesToTypes[d.sample]];
+          return includedSample;
+        })
           .style("opacity", 1);
-        segments.filter(function(d){ return !data.sampleTypeToInclude[samplesToTypes[d.sample]]; })
-          .style("opacity", 0);
+        segments.filter(function(d){
+          var y = +d3.select(this).select('rect').attr('transform').replace('translate(', '').split(',')[1].replace(')', ''),
+              includedSample = data.sampleTypeToInclude[samplesToTypes[d.sample]];
+          return !includedSample || y < 0;
+        }).style("opacity", 0);
 
       }
 

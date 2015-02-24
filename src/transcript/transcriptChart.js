@@ -75,7 +75,7 @@ function transcriptChart(style) {
         .x(x)
         .scaleExtent([1, 100])
         .on('zoom', function() { updateTranscript() });
-      svg.call(zoom);
+      actualSVG.call(zoom);
 
       // Add mutations to the transcript
       var mutationsG = tG.append('g').attr('class','gd3TranscriptMutations'),
@@ -168,9 +168,9 @@ function transcriptChart(style) {
 
       function updateTranscript() {
         var t = zoom.translate(),
-          tx = t[0],
-          ty = t[1],
-          scale = zoom.scale();
+            tx = t[0],
+            ty = t[1],
+            scale = zoom.scale();
 
         tx = Math.min(tx, 0);
 
