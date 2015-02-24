@@ -572,9 +572,9 @@
       horizontalBarSpacing: style.horizontalBarSpacing || 6,
       width: style.width || 500,
       margin: style.margin || {
-        top: 10,
+        top: 0,
         right: 20,
-        bottom: 10,
+        bottom: 20,
         left: 0
       }
     };
