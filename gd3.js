@@ -331,7 +331,7 @@
         });
         var segmentsG = svg.append("g"), segments = segmentsG.selectAll(".segments").data(data.get("segments")).enter().append("g").attr("class", "intervals");
         var minSegmentX = d3.min(data.get("segmentDomain")), maxSegmentX = d3.max(data.get("segmentDomain"));
-        segs = segments.append("rect").attr("fill", function(d) {
+        var segs = segments.append("rect").attr("fill", function(d) {
           if (gd3.color.categoryPalette) return gd3.color.categoryPalette(samplesToTypes[d.sample]);
           return segmentTypeToColor[samplesToTypes[d.sample]];
         }).attr("width", function(d) {
@@ -2988,7 +2988,7 @@
         var zoom = d3.behavior.zoom().x(x).scaleExtent([ 1, 100 ]).on("zoom", function() {
           updateTranscript();
         });
-        svg.call(zoom);
+        actualSVG.call(zoom);
         var mutationsG = tG.append("g").attr("class", "gd3TranscriptMutations"), inactivatingG = mutationsG.append("g"), activatingG = mutationsG.append("g");
         var inactivatingData = data.get("mutations").filter(function(d) {
           return data.isMutationInactivating(d.ty);

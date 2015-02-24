@@ -146,7 +146,7 @@ function cnaChart(style) {
       var minSegmentX = d3.min(data.get('segmentDomain')),
           maxSegmentX = d3.max(data.get('segmentDomain'));
 
-      segs = segments.append('rect')
+      var segs = segments.append('rect')
           .attr('fill', function(d){
             if (gd3.color.categoryPalette) return gd3.color.categoryPalette(samplesToTypes[d.sample]);
             return segmentTypeToColor[samplesToTypes[d.sample]]
@@ -226,7 +226,6 @@ function cnaChart(style) {
 
       updateGeneBar();
       updateSegments();
-
 
       function updateAllComponents() {
         var t = zoom.translate(),
