@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GD3 Example Mutation Matrix</title>
+    <title>GD3 Example CNA</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -19,6 +19,12 @@
           <div id="test2"></div>
         </td>
       </tr>
+      <tr>
+        <td valign="top">
+          <h3>PDGFRA <small>(modified to include some deletions)</small></h3>
+          <div id="test3"></div>
+        </td>
+      </tr>
     </table>
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../gd3.js"></script>
@@ -28,6 +34,9 @@
         .datum(data.MYC)
         .call(gd3.cna());
       d3.select('#test2')
+        .datum(data.PDGFRA)
+        .call(gd3.cna().showScrollers(true));
+      d3.select('#test3')
         .datum(data.PDGFRA)
         .call(gd3.cna().showScrollers(true));
     });
