@@ -622,6 +622,8 @@ function transcriptChart(style) {
           })
         });
 
+      var transcriptHighlights = d3.selectAll(".transcript-highlight"),
+          highlightRadius = Math.ceil(Math.sqrt(style.symbolWidth) * 1.75);
       gd3.dispatch.on("sample.transcript", function(d){
         var over = d.over, // flag if mouseover or mouseout
             sample = d.sample,
@@ -632,9 +634,25 @@ function transcriptChart(style) {
 
         // Only if there is a mutation in this sample do we update
         // the plot
-        if (gd3_util.selectionSize(affectedMutations)){
-          allMutations.style("opacity", over ? 0.25 : 1);
-          affectedMutations.style("opacity", 1);
+        transcriptHighlights.remove();
+        if (over){
+          var highlightData = [];
+          affectedMutations.each(function(d){
+            var el = d3.select(this),
+                x = +el.attr("transform").split("translate(")[1].split(",")[0],
+                y = +el.attr("transform").split("translate(")[1].split(",")[1].split(")")[0];
+            highlightData.push({x: x, y: y})
+          });
+          transcriptHighlights = svg.selectAll(".transcript-highlight")
+            .data(highlightData).enter()
+            .append("circle")
+            .attr("class", "transcript-highlight")
+            .attr("r", highlightRadius)
+            .attr("stroke", "#000")
+            .attr("stroke-width", 2)
+            .attr("fill-opacity", 0)
+            .attr("cx", function(d){ return d.x + style.margin.left + scrollbarWidth; })
+            .attr("cy", function(d){ return d.y; })
         }
       });
 
