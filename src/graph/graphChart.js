@@ -41,9 +41,7 @@ function graphChart(style) {
           forceWidth = width;
 
       if(drawLegend) {
-        var xLegend = style.width - style.legendWidth,
-            legend = svg.append('g')
-                .attr('transform','translate('+xLegend+',0)')
+        var legend = svg.append('g');
         drawLegendFn(legend);
       }
 
@@ -111,8 +109,9 @@ function graphChart(style) {
           var maxBound = style.nodeRadius+style.nodeStrokeWidth,
               minBoundX = forceWidth - style.nodeRadius - style.nodeStrokeWidth,
               minBoundY = forceHeight - style.nodeRadius - style.nodeStrokeWidth;
-          if(drawLegend) minBoundX = minBoundX - style.legendWidth;
-          d.x = Math.max(maxBound, Math.min(minBoundX, d.x));
+          if(drawLegend) maxBoundX = maxBound + style.legendWidth;
+          else maxBoundX = maxBound;
+          d.x = Math.max(maxBoundX, Math.min(minBoundX, d.x));
           d.y = Math.max(maxBound, Math.min(minBoundY, d.y));
           return 'translate('+ d.x + ',' + d.y + ')';
         });
@@ -134,7 +133,6 @@ function graphChart(style) {
           });
         });
       });
-
 
       if(anchorNodesOnClick) {
         force.drag().on('dragstart', function(d) {

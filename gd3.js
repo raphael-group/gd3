@@ -1094,7 +1094,7 @@
         var nodeColor = d3.scale.linear().domain([ data.minNodeValue, data.maxNodeValue ]).range(style.nodeColor).interpolate(d3.interpolateLab);
         var forceHeight = height, forceWidth = width;
         if (drawLegend) {
-          var xLegend = style.width - style.legendWidth, legend = svg.append("g").attr("transform", "translate(" + xLegend + ",0)");
+          var legend = svg.append("g");
           drawLegendFn(legend);
         }
         var force = d3.layout.force().charge(-400).linkDistance(100).size([ forceWidth, forceHeight ]);
@@ -1122,8 +1122,8 @@
         force.on("tick", function() {
           node.attr("transform", function(d) {
             var maxBound = style.nodeRadius + style.nodeStrokeWidth, minBoundX = forceWidth - style.nodeRadius - style.nodeStrokeWidth, minBoundY = forceHeight - style.nodeRadius - style.nodeStrokeWidth;
-            if (drawLegend) minBoundX = minBoundX - style.legendWidth;
-            d.x = Math.max(maxBound, Math.min(minBoundX, d.x));
+            if (drawLegend) maxBoundX = maxBound + style.legendWidth; else maxBoundX = maxBound;
+            d.x = Math.max(maxBoundX, Math.min(minBoundX, d.x));
             d.y = Math.max(maxBound, Math.min(minBoundY, d.y));
             return "translate(" + d.x + "," + d.y + ")";
           });
