@@ -511,14 +511,16 @@ function transcriptChart(style) {
                 .style(textStyle)
                 .text(function(d) { return d; });
 
-        bottomLegend.append('text')
-            .style(textStyle)
-            .attr('transform', 'rotate(90)')
-            .attr('text-anchor', 'middle')
-            .attr('x', style.height/4)
-            .attr('y', 7.5)
-            .style(textStyle)
-            .text('Inactivating');
+        bottomLegend.selectAll('text')
+            .data(['Inactivating', 'Mutations'])
+            .enter()
+            .append('text')
+                .attr('transform', 'rotate(90)')
+                .attr('text-anchor', 'middle')
+                .attr('x', style.height/4)
+                .attr('y', function(d,i) { return i*15; })
+                .style(textStyle)
+                .text(function(d) { return d; });
 
         // Set the effective height so that both the top and bottom
         // axis legend labels are entirely visible.
