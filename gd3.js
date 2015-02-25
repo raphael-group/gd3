@@ -1847,10 +1847,21 @@
           return d;
         });
         var maxTextWidth = -Infinity;
-        rowLabels.each(function(d) {
-          var w = this.getComputedTextLength();
-          maxTextWidth = w > maxTextWidth ? w : maxTextWidth;
+        rowLabels.each(function() {
+          maxTextWidth = d3.max([ maxTextWidth, this.getComputedTextLength() ]);
         });
+        if (data.annotations) {
+          var names = Object.keys(data.annotations.sampleToAnnotations), categories = data.annotations.categories;
+          var annRowLabelsG = svg.append("g").attr("class", "mutmtx-annRowLabels").attr("transform", "translate(0," + rowLabelsG.node().getBBox().height + ")");
+          var annRowLabels = annRowLabelsG.selectAll("text").data(categories).enter().append("text").attr("text-anchor", "end").attr("y", function(d, i) {
+            return (i + 1) * style.annotationRowHeight + (i + 1) * style.annotationRowSpacing;
+          }).style("font-family", style.fontFamily).style("font-size", style.annotationRowHeight).text(function(d) {
+            return d;
+          });
+          annRowLabels.each(function() {
+            maxTextWidth = d3.max([ maxTextWidth, this.getComputedTextLength() ]);
+          });
+        }
         rowLabels.attr("x", maxTextWidth);
         style.labelWidth = Math.ceil(maxTextWidth) + 5;
         style.matrixWidth = width - style.labelWidth;
@@ -1871,14 +1882,8 @@
           return Math.ceil(rowLabelsG.node().getBBox().height + 10);
         });
         if (data.annotations) {
-          var names = Object.keys(data.annotations.sampleToAnnotations), categories = data.annotations.categories;
-          var annRowLabelsG = svg.append("g").attr("class", "mutmtx-annRowLabels").attr("transform", "translate(0," + rowLabelsG.node().getBBox().height + ")");
-          var annRowLabels = annRowLabelsG.selectAll("text").data(categories).enter().append("text").attr("text-anchor", "end").attr("x", style.labelWidth - 5).attr("y", function(d, i) {
-            return (i + 1) * style.annotationRowHeight + (i + 1) * style.annotationRowSpacing;
-          }).style("font-family", style.fontFamily).style("font-size", style.annotationRowHeight).text(function(d) {
-            return d;
-          });
           var annColoring = data.annotations.annotationToColor;
+          annRowLabels.attr("x", style.labelWidth - 5);
           Object.keys(annColoring).forEach(function(annotation, i) {
             if (gd3.color.annotations(annotation)) {
               return;
