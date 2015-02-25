@@ -1929,7 +1929,8 @@
               maxTextHeight = d3.max([ annTextHeight, maxTextHeight ]);
             }
           });
-          var svgHeight = svg.attr("height"), numAnnotations = data.annotations.sampleToAnnotations[names[0]].length, svgHeight = parseInt(svgHeight) + numAnnotations * (style.annotationRowHeight + 2);
+          var svgHeight = svg.attr("height"), numAnnotations = data.annotations.categories.length, svgHeight = parseInt(svgHeight) + numAnnotations * (style.annotationRowHeight + style.annotationRowSpacing);
+          console.log(numAnnotations, maxTextHeight);
           svg.attr("height", svgHeight + maxTextHeight);
         }
         var zoom = d3.behavior.zoom().x(wholeVisX).scaleExtent([ 1, 14 ]).on("zoom", function() {

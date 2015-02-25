@@ -228,8 +228,8 @@ function mutmtxChart(style) {
 
         // Modify the SVG height based on the sample annotations
         var svgHeight = svg.attr('height'),
-            numAnnotations = data.annotations.sampleToAnnotations[names[0]].length,
-            svgHeight = parseInt(svgHeight) + numAnnotations*(style.annotationRowHeight+2);
+            numAnnotations = data.annotations.categories.length,
+            svgHeight = parseInt(svgHeight) + numAnnotations*(style.annotationRowHeight+style.annotationRowSpacing);
 
         svg.attr('height', svgHeight + maxTextHeight);
       }
