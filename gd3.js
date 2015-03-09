@@ -1930,7 +1930,6 @@
             }
           });
           var svgHeight = svg.attr("height"), numAnnotations = data.annotations.categories.length, svgHeight = parseInt(svgHeight) + numAnnotations * (style.annotationRowHeight + style.annotationRowSpacing);
-          console.log(numAnnotations, maxTextHeight);
           svg.attr("height", svgHeight + maxTextHeight);
         }
         var zoom = d3.behavior.zoom().x(wholeVisX).scaleExtent([ 1, 14 ]).on("zoom", function() {
@@ -2260,22 +2259,29 @@
             sortingOptionsData: sortingOptionsData
           });
           gd3.dispatch.on("sample.mutmtx", function(d) {
-            var over = d.over, sample = d.sample, affectedColumns = columnNames.filter(function(d) {
-              return data.maps.columnIdToLabel[d] == sample;
-            });
-            if (gd3_util.selectionSize(affectedColumns)) {
+            var over = d.over, sample = d.sample, columnsAffected = true;
+            if (drawColumnLabels) {
+              var affectedColumns = columnNames.filter(function(d) {
+                return data.maps.columnIdToLabel[d] == sample;
+              });
+              if (gd3_util.selectionSize(affectedColumns)) {
+                columnNames.style({
+                  opacity: over ? .25 : 1,
+                  "font-weight": "normal"
+                });
+                affectedColumns.style({
+                  opacity: 1,
+                  "font-weight": over ? "bold" : "normal"
+                });
+              } else {
+                columnsAffected = false;
+              }
+            }
+            if (columnsAffected) {
               rects.attr("stroke-opacity", 0);
               rects.filter(function(d) {
                 return data.maps.columnIdToLabel[d.colId] == sample;
               }).attr("stroke-opacity", over ? 1 : 0);
-              columnNames.style({
-                opacity: over ? .25 : 1,
-                "font-weight": "normal"
-              });
-              affectedColumns.style({
-                opacity: 1,
-                "font-weight": over ? "bold" : "normal"
-              });
             }
           });
         }

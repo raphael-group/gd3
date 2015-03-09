@@ -819,21 +819,29 @@ function mutmtxChart(style) {
         gd3.dispatch.on("sample.mutmtx", function(d){
           var over = d.over, // flag if mouseover or mouseout
               sample = d.sample,
-              affectedColumns = columnNames.filter(function(d){
+              columnsAffected = true;
+
+          if (drawColumnLabels){
+              var affectedColumns = columnNames.filter(function(d){
                 return data.maps.columnIdToLabel[d] == sample;
               });
 
-          if (gd3_util.selectionSize(affectedColumns)){
-            // Show the small stroke around each of the sample's mutations
+            if (gd3_util.selectionSize(affectedColumns)){
+              // Highlight the sample name
+              columnNames.style({ "opacity": over ? 0.25 : 1, "font-weight": "normal"});
+              affectedColumns.style({"opacity": 1, "font-weight": over ? "bold" : "normal"});
+            } else {
+              columnsAffected = false;
+            }
+          }
+
+          // Show the small stroke around each of the sample's mutations
+          if (columnsAffected){
             rects.attr("stroke-opacity", 0);
             rects.filter(function(d){
               return data.maps.columnIdToLabel[d.colId] == sample;
             }).attr("stroke-opacity", over ? 1 : 0);
-
-            // Highlight the sample name
-            columnNames.style({ "opacity": over ? 0.25 : 1, "font-weight": "normal"});
-            affectedColumns.style({"opacity": 1, "font-weight": over ? "bold" : "normal"});
-          }
+          }            
         })
       }
 
