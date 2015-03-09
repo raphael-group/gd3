@@ -1282,7 +1282,7 @@
     return data;
   }
   function heatmapChart(style) {
-    var renderAnnotations = true, renderLegend = true, renderXLabels = true, renderYLabels = true;
+    var renderAnnotations = true, renderLegend = true, renderXLabels = true, renderYLabels = true, linkRowLabelsToNCBI = true;
     function chart(selection) {
       selection.each(function(data) {
         data = heatmapData(data);
@@ -1491,6 +1491,11 @@
           }).style("font-size", style.fontSize).text(function(d) {
             return d;
           });
+          if (linkRowLabelsToNCBI) {
+            yLabels.style("cursor", "pointer").on("click", function(gene) {
+              window.open("http://www.ncbi.nlm.nih.gov/gene/?term=" + gene, "_blank");
+            });
+          }
           var maxLabelWidth = 0;
           yLabels.each(function() {
             var tmpWidth = d3.select(this).node().getBBox().width;
@@ -1563,6 +1568,10 @@
     };
     chart.showYLabels = function(state) {
       renderYLabels = state;
+      return chart;
+    };
+    chart.linkRowLabelsToNCBI = function(state) {
+      linkRowLabelsToNCBI = state;
       return chart;
     };
     return chart;
@@ -1827,7 +1836,7 @@
     return data;
   }
   function mutmtxChart(style) {
-    var categoriesToFilter = [], drawHoverLegend = true, drawLegend = false, drawSortingMenu = true, drawCoverage = true, drawColumnLabels = true, showColumnCategories = true, stickyLegend = false, typesToFilter = [];
+    var categoriesToFilter = [], drawHoverLegend = true, drawLegend = false, drawSortingMenu = true, drawCoverage = true, drawColumnLabels = true, showColumnCategories = true, linkRowLabelsToNCBI = true, stickyLegend = false, typesToFilter = [];
     var sortingOptionsData = [ "First active row", "Column category", "Exclusivity", "Name" ];
     function chart(selection) {
       selection.each(function(data) {
@@ -1845,6 +1854,12 @@
         }).style("font-family", style.fontFamily).style("font-size", style.fontSize).text(function(d) {
           return d;
         });
+        if (linkRowLabelsToNCBI) {
+          rowLabels.style("cursor", "pointer").on("click", function(d) {
+            var gene = d.split(" (")[0];
+            window.open("http://www.ncbi.nlm.nih.gov/gene/?term=" + gene, "_blank");
+          });
+        }
         var maxTextWidth = -Infinity;
         rowLabels.each(function() {
           maxTextWidth = d3.max([ maxTextWidth, this.getComputedTextLength() ]);
@@ -2309,6 +2324,10 @@
     };
     chart.showColumnCategories = function(state) {
       showColumnCategories = state;
+      return chart;
+    };
+    chart.linkRowLabelsToNCBI = function(state) {
+      linkRowLabelsToNCBI = state;
       return chart;
     };
     return chart;

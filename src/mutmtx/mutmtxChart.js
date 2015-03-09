@@ -8,6 +8,7 @@ function mutmtxChart(style) {
       drawCoverage = true,
       drawColumnLabels = true,
       showColumnCategories = true,
+      linkRowLabelsToNCBI = true,
       stickyLegend = false,
       typesToFilter = [];
 
@@ -61,7 +62,16 @@ function mutmtxChart(style) {
                     .attr('y', function(d,i) { return style.rowHeight*data.labels.rows.indexOf(d) + style.rowHeight - 3})
                     .style('font-family', style.fontFamily)
                     .style('font-size', style.fontSize)
-                    .text(function(d){return d;});
+                    .text(function(d){return d;})
+
+      // Link out row labels to NCBI
+      if (linkRowLabelsToNCBI){
+        rowLabels.style('cursor', 'pointer')
+          .on("click", function(d){
+            var gene = d.split(" (")[0];
+            window.open('http://www.ncbi.nlm.nih.gov/gene/?term=' + gene, '_blank');
+          });
+      }
 
       var maxTextWidth = -Infinity;
       rowLabels.each(function(){
@@ -875,6 +885,11 @@ function mutmtxChart(style) {
 
   chart.showColumnCategories = function(state) {
     showColumnCategories = state;
+    return chart;
+  }
+
+  chart.linkRowLabelsToNCBI = function(state){
+    linkRowLabelsToNCBI = state;
     return chart;
   }
 

@@ -4,7 +4,8 @@ function heatmapChart(style) {
   var renderAnnotations = true,
       renderLegend = true,
       renderXLabels = true,
-      renderYLabels = true;
+      renderYLabels = true,
+      linkRowLabelsToNCBI = true;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -372,6 +373,13 @@ function heatmapChart(style) {
                     .style('font-size', style.fontSize)
                     .text(function(d) { return d; });
 
+        if (linkRowLabelsToNCBI){
+          yLabels.style('cursor', 'pointer')
+            .on("click", function(gene){
+              window.open('http://www.ncbi.nlm.nih.gov/gene/?term=' + gene, '_blank');
+            });
+        }
+
         // Determine the x positioning of the y labels
         var maxLabelWidth = 0;
         yLabels.each(function() {
@@ -453,6 +461,11 @@ function heatmapChart(style) {
 
   chart.showYLabels = function(state) {
     renderYLabels = state;
+    return chart;
+  }
+
+  chart.linkRowLabelsToNCBI = function(state){
+    linkRowLabelsToNCBI = state;
     return chart;
   }
 
