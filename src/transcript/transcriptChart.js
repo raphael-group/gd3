@@ -622,7 +622,8 @@ function transcriptChart(style) {
           })
         });
 
-      var transcriptHighlights = d3.selectAll(".transcript-highlight"),
+      var transcriptHighlightGroup = actualSVG.insert("g", "g"),
+          transcriptHighlights = transcriptHighlightGroup.selectAll(".transcript-highlight"),
           highlightRadius = Math.ceil(Math.sqrt(style.symbolWidth) * 1.75);
       gd3.dispatch.on("sample.transcript", function(d){
         var over = d.over, // flag if mouseover or mouseout
@@ -643,7 +644,7 @@ function transcriptChart(style) {
                 y = +el.attr("transform").split("translate(")[1].split(",")[1].split(")")[0];
             highlightData.push({x: x, y: y})
           });
-          transcriptHighlights = svg.selectAll(".transcript-highlight")
+          transcriptHighlights = transcriptHighlightGroup.selectAll(".transcript-highlight")
             .data(highlightData).enter()
             .append("circle")
             .attr("class", "transcript-highlight")

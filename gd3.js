@@ -3318,7 +3318,7 @@
             domain: data.domain(d.locus)
           });
         });
-        var transcriptHighlights = d3.selectAll(".transcript-highlight"), highlightRadius = Math.ceil(Math.sqrt(style.symbolWidth) * 1.75);
+        var transcriptHighlightGroup = actualSVG.insert("g", "g"), transcriptHighlights = transcriptHighlightGroup.selectAll(".transcript-highlight"), highlightRadius = Math.ceil(Math.sqrt(style.symbolWidth) * 1.75);
         gd3.dispatch.on("sample.transcript", function(d) {
           var over = d.over, sample = d.sample, affectedMutations = allMutations.filter(function(d) {
             return d.sample == sample;
@@ -3333,7 +3333,7 @@
                 y: y
               });
             });
-            transcriptHighlights = svg.selectAll(".transcript-highlight").data(highlightData).enter().append("circle").attr("class", "transcript-highlight").attr("r", highlightRadius).attr("stroke", "#000").attr("stroke-width", 2).attr("fill-opacity", 0).attr("cx", function(d) {
+            transcriptHighlights = transcriptHighlightGroup.selectAll(".transcript-highlight").data(highlightData).enter().append("circle").attr("class", "transcript-highlight").attr("r", highlightRadius).attr("stroke", "#000").attr("stroke-width", 2).attr("fill-opacity", 0).attr("cx", function(d) {
               return d.x + style.margin.left + scrollbarWidth;
             }).attr("cy", function(d) {
               return d.y;
