@@ -376,7 +376,7 @@ function heatmapChart(style) {
         if (linkRowLabelsToNCBI){
           yLabels.style('cursor', 'pointer')
             .on("click", function(gene){
-              window.open('http://www.ncbi.nlm.nih.gov/gene/?term=' + gene, '_blank');
+              window.open('http://www.ncbi.nlm.nih.gov/gene/?term=(' + gene.toLowerCase() + '%20%5Bsym%5D%20AND%20human%20%5Borganism%5D)', '_blank');
             });
         }
 
