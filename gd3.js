@@ -1282,7 +1282,7 @@
     return data;
   }
   function heatmapChart(style) {
-    var renderAnnotations = true, renderLegend = true, renderXLabels = true, renderYLabels = true, linkRowLabelsToNCBI = true;
+    var renderAnnotations = true, renderLegend = true, renderXLabels = true, renderYLabels = true, linkRowLabelsToNCBI = false, linkOutXLabels = false;
     function chart(selection) {
       selection.each(function(data) {
         data = heatmapData(data);
@@ -1479,11 +1479,16 @@
           annotationXLabelsG = heatmap.append("g").attr("class", "gd3annotationXLabels");
           var verticalOffset = heatmap.node().getBBox().height + style.labelMargins.bottom;
           annotationXLabelsG.attr("transform", "translate(0," + verticalOffset + ")");
-          annotationXLabelsG.selectAll("text").data(data.xs).enter().append("text").attr("y", function(d, i) {
+          var annotationLabelsX = annotationXLabelsG.selectAll("text").data(data.xs).enter().append("text").attr("y", function(d, i) {
             return -i * style.cellWidth;
           }).attr("transform", "rotate(90)").style("font-size", style.annotationLabelFontSize).text(function(d) {
             return d;
           });
+          if (linkOutXLabels) {
+            annotationLabelsX.style("cursor", "pointer").on("click", function(d) {
+              window.open("/sampleView?sample=" + d);
+            });
+          }
         }
         function renderYLabelsFn() {
           var yLabels = yLabelsG.selectAll("text").data(ys).enter().append("text").attr("text-anchor", "end").attr("y", function(d, i) {
@@ -1572,6 +1577,10 @@
     };
     chart.linkRowLabelsToNCBI = function(state) {
       linkRowLabelsToNCBI = state;
+      return chart;
+    };
+    chart.linkOutXLabels = function(state) {
+      linkOutXLabels = state;
       return chart;
     };
     return chart;
@@ -1836,7 +1845,7 @@
     return data;
   }
   function mutmtxChart(style) {
-    var categoriesToFilter = [], drawHoverLegend = true, drawLegend = false, drawSortingMenu = true, drawCoverage = true, drawColumnLabels = true, showColumnCategories = true, linkRowLabelsToNCBI = true, stickyLegend = false, typesToFilter = [];
+    var categoriesToFilter = [], drawHoverLegend = true, drawLegend = false, drawSortingMenu = true, drawCoverage = true, drawColumnLabels = true, showColumnCategories = true, linkRowLabelsToNCBI = false, stickyLegend = false, typesToFilter = [];
     var sortingOptionsData = [ "First active row", "Column category", "Exclusivity", "Name" ];
     function chart(selection) {
       selection.each(function(data) {

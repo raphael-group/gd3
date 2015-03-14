@@ -5,7 +5,8 @@ function heatmapChart(style) {
       renderLegend = true,
       renderXLabels = true,
       renderYLabels = true,
-      linkRowLabelsToNCBI = true;
+      linkRowLabelsToNCBI = false,
+      linkOutXLabels = false;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -353,7 +354,7 @@ function heatmapChart(style) {
         annotationXLabelsG.attr('transform', 'translate(0,'+verticalOffset+')');
 
         // Draw the text labels for each x value
-        annotationXLabelsG.selectAll('text')
+        var annotationLabelsX = annotationXLabelsG.selectAll('text')
             .data(data.xs)
             .enter()
             .append('text')
@@ -361,6 +362,11 @@ function heatmapChart(style) {
             .attr('transform', 'rotate(90)')
             .style('font-size', style.annotationLabelFontSize)
             .text(function(d) { return d; });
+
+        if (linkOutXLabels){
+          annotationLabelsX.style('cursor', 'pointer')
+            .on("click", function(d){ window.open('/sampleView?sample=' + d); });
+        }
       }
 
       function renderYLabelsFn() {
@@ -466,6 +472,11 @@ function heatmapChart(style) {
 
   chart.linkRowLabelsToNCBI = function(state){
     linkRowLabelsToNCBI = state;
+    return chart;
+  }
+
+  chart.linkOutXLabels = function(state){
+    linkOutXLabels = state;
     return chart;
   }
 

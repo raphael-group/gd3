@@ -8,7 +8,7 @@ function mutmtxChart(style) {
       drawCoverage = true,
       drawColumnLabels = true,
       showColumnCategories = true,
-      linkRowLabelsToNCBI = true,
+      linkRowLabelsToNCBI = false,
       stickyLegend = false,
       typesToFilter = [];
 
