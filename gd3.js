@@ -3317,13 +3317,14 @@
             over: false
           });
         }).on("click.dispatch-mutation", function(d) {
+          console.log(d);
           var domain = null;
           gd3.dispatch.mutation({
             dataset: d.dataset,
             gene: data.geneName,
             mutation_class: "snv",
             mutation_type: d.ty,
-            locus: d.locus,
+            change: d.aao + d.locus + d.aan,
             domain: data.domain(d.locus)
           });
         });
