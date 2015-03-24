@@ -365,7 +365,7 @@ function heatmapChart(style) {
 
         if (linkOutXLabels){
           annotationLabelsX.style('cursor', 'pointer')
-            .on("click", function(d){ window.open('/sampleView?sample=' + d); });
+            .on("click", function(d){ document.location.href = '/sampleView?sample=' + d; });
         }
       }
 

@@ -1486,7 +1486,7 @@
           });
           if (linkOutXLabels) {
             annotationLabelsX.style("cursor", "pointer").on("click", function(d) {
-              window.open("/sampleView?sample=" + d);
+              document.location.href = "/sampleView?sample=" + d;
             });
           }
         }
@@ -2922,7 +2922,8 @@
   };
   gd3_tooltipLinkPrototype.render = function(selection) {
     var thisTooltip = this;
-    a = selection.append("a").attr("href", this.href).attr("target", "_new");
+    a = selection.append("a").attr("href", this.href);
+    if (this.href[0] != "/") a.attr("target", "_new");
     if (thisTooltip.body.render) thisTooltip.body.render(a); else a.text(thisTooltip.body.toString());
     a.attr("data-summaryElement", this.summaryElement);
     if (this.summaryElement) a.style("display", "none");
