@@ -2922,7 +2922,7 @@
   };
   gd3_tooltipLinkPrototype.render = function(selection) {
     var thisTooltip = this;
-    a = selection.append("a").attr("href", this.href);
+    a = selection.append("a").attr("href", this.href).attr("target", "_new");
     if (thisTooltip.body.render) thisTooltip.body.render(a); else a.text(thisTooltip.body.toString());
     a.attr("data-summaryElement", this.summaryElement);
     if (this.summaryElement) a.style("display", "none");
