@@ -37,6 +37,7 @@ function tooltipView(style) {
 
     // node = d3.select(document.createElement('div'));
     node = d3.select('body').append('div');
+    node.attr('class','gd3-tooltip')
     node.style({
       background: style.background,
       border: style.border,
