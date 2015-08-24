@@ -45,7 +45,6 @@ function heatmapData(inputData) {
 
       });
       // Set any missing column datasets to null
-      data.columnIdToDataset = {};
       data.annotations.categories.forEach(function(c, i){
         if (c.toLowerCase() === "cancer type" || c.toLowerCase() === "dataset"){
           datasetCatIndex = i;
@@ -55,6 +54,7 @@ function heatmapData(inputData) {
 
     // If this category is giving the dataset (or cancer type) of the
     // column, add it to the map of column IDs to datasets
+    data.columnIdToDataset = {};
     if (datasetCatIndex !== -1){
       data.xs.forEach(function(n){
         data.columnIdToDataset[n] = data.annotations.sampleToAnnotations[n][datasetCatIndex];

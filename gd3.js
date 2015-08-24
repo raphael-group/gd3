@@ -1256,13 +1256,13 @@
           entry = [ d3.min(values), d3.max(values) ];
           data.annotations.annotationToColor[category] = entry;
         });
-        data.columnIdToDataset = {};
         data.annotations.categories.forEach(function(c, i) {
           if (c.toLowerCase() === "cancer type" || c.toLowerCase() === "dataset") {
             datasetCatIndex = i;
           }
         });
       }
+      data.columnIdToDataset = {};
       if (datasetCatIndex !== -1) {
         data.xs.forEach(function(n) {
           data.columnIdToDataset[n] = data.annotations.sampleToAnnotations[n][datasetCatIndex];
