@@ -1690,6 +1690,8 @@
       }
       function sortByFirstActiveRow(c1, c2) {
         var c1First = data.matrix.columnIdToActiveRows[c1][0], c2First = data.matrix.columnIdToActiveRows[c2][0];
+        if (typeof c1First == "undefined") c1First = Number.MAX_VALUE;
+        if (typeof c2First == "undefined") c2First = Number.MAX_VALUE;
         return d3.ascending(c1First, c2First);
       }
       function sortByName(c1, c2) {
@@ -1766,14 +1768,15 @@
       });
       data.datasets = Object.keys(setOfDatasets);
       var cellTypes = [];
+      inputData.samples.forEach(function(d) {
+        data.matrix.columnIdToActiveRows[d._id] = [];
+        data.maps.columnIdToTypes[d._id] = [];
+      });
       sortedRowIds.forEach(function(rowLabel, rowId) {
         var columns = Object.keys(inputData.M[rowLabel]);
         rowId = rowId.toString();
         data.matrix.rowIdToActiveColumns[rowId] = columns;
         columns.forEach(function(colId) {
-          if (!data.matrix.columnIdToActiveRows[colId]) {
-            data.matrix.columnIdToActiveRows[colId] = [];
-          }
           data.matrix.columnIdToActiveRows[colId].push(rowId);
           var type = inputData.M[rowLabel][colId][0];
           data.matrix.cells[[ rowId, colId ].join()] = {
@@ -1781,7 +1784,6 @@
             type: inputData.M[rowLabel][colId][0]
           };
           cellTypes.push(type);
-          if (!data.maps.columnIdToTypes[colId]) data.maps.columnIdToTypes[colId] = [];
           data.maps.columnIdToTypes[colId].push(type);
         });
       });
