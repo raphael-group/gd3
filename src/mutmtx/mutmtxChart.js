@@ -4,7 +4,7 @@ function mutmtxChart(style) {
   var categoriesToFilter = [],
       drawHoverLegend = true,
       drawLegend = false,
-      drawSortingMenu = true,
+      showSortingMenu = true,
       drawCoverage = true,
       drawColumnLabels = true,
       showColumnCategories = true,
@@ -305,7 +305,7 @@ function mutmtxChart(style) {
         data.reorderColumns(sortingOptionsData);
         data.recomputeLabels();
         rerenderMutationMatrix();
-      })
+      });
 
       if(drawLegend) drawLegendFn(selection.append('div').style('width', style.width));
       if(drawHoverLegend) {
@@ -321,7 +321,8 @@ function mutmtxChart(style) {
                 .style('padding', '10px')
                 .style('position','absolute')
                 .style('display','none')
-                .style('visibility','hidden');
+                .style('visibility','hidden')
+                .style('z-index', '10001');
 
         legendHoverHeader.on('click', function() {
           stickyLegend = stickyLegend ? false : true;
@@ -341,7 +342,19 @@ function mutmtxChart(style) {
                 .style('visibility','hidden');
         });
       }
-      if(drawSortingMenu) drawSortingMenu();
+      if(showSortingMenu){
+        console.log("HELLo")
+        drawSortingMenu();
+      } else{
+        console.log("HI")
+        // Sort samples by the given sorting options data
+        gd3.dispatch.on('sort.mutmtx', function(d){
+          console.log("HELLO")
+          data.reorderColumns(d.sortingOptionsData);
+          data.recomputeLabels();
+          rerenderMutationMatrix(true);
+        });
+      }
 
       function drawHoverLegendFn(legend) {
         // make sure the width of the legend is less than the window size
@@ -651,7 +664,6 @@ function mutmtxChart(style) {
                                   neighborText = sortingOptionsData[neighbor];
                               sortingOptionsData[neighbor] = menuText;
                               sortingOptionsData[menuPosition] = neighborText;
-
                               data.reorderColumns(sortingOptionsData);
                               renderMenu();
                               rerenderMutationMatrix(true);
@@ -851,10 +863,19 @@ function mutmtxChart(style) {
             rects.filter(function(d){
               return data.maps.columnIdToLabel[d.colId] == sample;
             }).attr("stroke-opacity", over ? 1 : 0);
-          }            
+          }
         })
       }
 
+      // A getter (which is why it's in the selection.data function)
+      // for determining the order in which the samples are sorted
+      chart.getOrderedColumnLabels = function(sortingOptionsData){
+        data.reorderColumns(sortingOptionsData);
+        var orderedLabels = data.ids.columns.map(function(d) {
+          return data.maps.columnIdToLabel[d];
+        });
+        return orderedLabels;
+      }
     });
   }
 
@@ -879,7 +900,8 @@ function mutmtxChart(style) {
   }
 
   chart.showSortingMenu = function(state) {
-    drawSortingMenu = state;
+    console.log("HELLO")
+    showSortingMenu = state;
     return chart;
   }
 
@@ -895,4 +917,3 @@ function mutmtxChart(style) {
 
   return chart;
 }
-
