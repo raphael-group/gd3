@@ -1845,7 +1845,7 @@
     return data;
   }
   function mutmtxChart(style) {
-    var categoriesToFilter = [], drawHoverLegend = true, drawLegend = false, drawSortingMenu = true, drawCoverage = true, drawColumnLabels = true, showColumnCategories = true, linkRowLabelsToNCBI = false, stickyLegend = false, typesToFilter = [];
+    var categoriesToFilter = [], drawHoverLegend = true, drawLegend = false, showSortingMenu = true, drawCoverage = true, drawColumnLabels = true, showColumnCategories = true, linkRowLabelsToNCBI = false, stickyLegend = false, typesToFilter = [];
     var sortingOptionsData = [ "First active row", "Column category", "Exclusivity", "Name" ];
     function chart(selection) {
       selection.each(function(data) {
@@ -1999,7 +1999,7 @@
         });
         if (drawLegend) drawLegendFn(selection.append("div").style("width", style.width));
         if (drawHoverLegend) {
-          var container = selection.append("div"), legendHoverHeader = container.append("span").style("cursor", "pointer").style("font-family", style.fontFamily).style("font-size", style.fontSize + "px").text("Legend (mouse over)"), legend = container.append("div").style("background", "#fff").style("border", "1px solid #ccc").style("padding", "10px").style("position", "absolute").style("display", "none").style("visibility", "hidden");
+          var container = selection.append("div"), legendHoverHeader = container.append("span").style("cursor", "pointer").style("font-family", style.fontFamily).style("font-size", style.fontSize + "px").text("Legend (mouse over)"), legend = container.append("div").style("background", "#fff").style("border", "1px solid #ccc").style("padding", "10px").style("position", "absolute").style("display", "none").style("visibility", "hidden").style("z-index", "10001");
           legendHoverHeader.on("click", function() {
             stickyLegend = stickyLegend ? false : true;
             legend.selectAll("*").remove();
@@ -2014,7 +2014,18 @@
             legend.style("display", "none").style("visibility", "hidden");
           });
         }
-        if (drawSortingMenu) drawSortingMenu();
+        if (showSortingMenu) {
+          console.log("HELLo");
+          drawSortingMenu();
+        } else {
+          console.log("HI");
+          gd3.dispatch.on("sort.mutmtx", function(d) {
+            console.log("HELLO");
+            data.reorderColumns(d.sortingOptionsData);
+            data.recomputeLabels();
+            rerenderMutationMatrix(true);
+          });
+        }
         function drawHoverLegendFn(legend) {
           var legendW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
           legendW = legendW - 20 - 20;
@@ -2309,6 +2320,13 @@
             }
           });
         }
+        chart.getOrderedColumnLabels = function(sortingOptionsData) {
+          data.reorderColumns(sortingOptionsData);
+          var orderedLabels = data.ids.columns.map(function(d) {
+            return data.maps.columnIdToLabel[d];
+          });
+          return orderedLabels;
+        };
       });
     }
     chart.showHoverLegend = function(state) {
@@ -2328,7 +2346,8 @@
       return chart;
     };
     chart.showSortingMenu = function(state) {
-      drawSortingMenu = state;
+      console.log("HELLO");
+      showSortingMenu = state;
       return chart;
     };
     chart.showColumnCategories = function(state) {
