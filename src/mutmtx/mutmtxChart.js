@@ -343,13 +343,10 @@ function mutmtxChart(style) {
         });
       }
       if(showSortingMenu){
-        console.log("HELLo")
         drawSortingMenu();
       } else{
-        console.log("HI")
         // Sort samples by the given sorting options data
         gd3.dispatch.on('sort.mutmtx', function(d){
-          console.log("HELLO")
           data.reorderColumns(d.sortingOptionsData);
           data.recomputeLabels();
           rerenderMutationMatrix(true);
@@ -900,7 +897,6 @@ function mutmtxChart(style) {
   }
 
   chart.showSortingMenu = function(state) {
-    console.log("HELLO")
     showSortingMenu = state;
     return chart;
   }
