@@ -55,7 +55,7 @@ function transcriptChart(style) {
 
       // Append the axis to the canvas
       var transcriptAxis = tG.append('g')
-              .attr('class', 'xaxis')
+              .attr('class', 'xaxis gd3TranscriptGenome')
               .attr('transform', 'translate(0,' + ( style.height/2 +  style.transcriptBarHeight+6) +')')
               .style('font-family', style.fontFamily)
               .style('font-size', '12px')
@@ -89,7 +89,7 @@ function transcriptChart(style) {
           .data(inactivatingData)
           .enter()
           .append('path')
-            .attr('class', 'symbols')
+            .attr('class', 'symbols gd3MutationSymbol')
             .attr('d', d3.svg.symbol()
               .type(function(d, i) {
                 return d3.svg.symbolTypes[data.get('mutationTypesToSymbols')[d.ty]];

@@ -1111,7 +1111,7 @@
           link.append("line").style("stroke-width", style.edgeWidth).style("stroke", edgeColor(null));
         }
         link.selectAll("line").style("stroke-linecap", "round");
-        var node = graph.append("g").selectAll(".node").data(data.nodes).enter().append("g").style("cursor", "move").call(force.drag);
+        var node = graph.append("g").selectAll(".node").data(data.nodes).enter().append("g").style("cursor", "move").attr("class", "gd3Node").call(force.drag);
         node.append("circle").attr("r", style.nodeRadius).attr("fill", function(d) {
           return nodeColor(d.value);
         }).style("stroke-width", style.nodeStrokeWidth).style("stroke", style.nodeStrokeColor);
@@ -1153,7 +1153,7 @@
           var titleHeight = title.node().getBBox().height + 4, scaleG = legend.append("g").attr("transform", "translate(0," + titleHeight + ")");
           scaleG.append("text").attr("x", style.legendScaleWidth + 2).attr("y", style.legendFontSize).style("font-size", style.legendFontSize).text(data.maxNodeValue);
           scaleG.append("text").attr("x", style.legendScaleWidth + 2).attr("y", style.height / 2).style("font-size", style.legendFontSize).text(data.minNodeValue);
-          var colorScaleRect = scaleG.append("rect").attr("height", style.height / 2).attr("width", style.legendScaleWidth);
+          var colorScaleRect = scaleG.append("rect").attr("height", style.height / 2).attr("width", style.legendScaleWidth).attr("class", "gd3GraphGradientLegend");
           var now = Date.now(), gradientId = "gd3-graph-gradient" + now;
           var gradient = scaleG.append("svg:defs").append("svg:linearGradient").attr("id", gradientId).attr("x1", "0%").attr("y1", "100%").attr("x2", "0%").attr("y2", "0%");
           var scaleRange = nodeColor.range();
@@ -1161,7 +1161,7 @@
             gradient.append("svg:stop").attr("offset", i * 1 / (scaleRange.length - 1)).attr("stop-color", c).attr("stop-opacity", 1);
           });
           colorScaleRect.attr("fill", "url(#" + gradientId + ")");
-          var scaleHeight = scaleG.node().getBBox().height + 4, edgeKeys = legend.append("g").selectAll("g").data(data.edgeCategories).enter().append("g").style("cursor", "pointer").on("click", function(category) {
+          var scaleHeight = scaleG.node().getBBox().height + 4, edgeKeys = legend.append("g").attr("class", "gd3GraphNetworkLegend").selectAll("g").data(data.edgeCategories).enter().append("g").style("cursor", "pointer").on("click", function(category) {
             var catEdges = d3.selectAll("." + instanceIDConst + "-" + category), visible = catEdges.style("opacity") == 1;
             d3.select(this).style("opacity", visible ? .5 : 1);
             catEdges.style("opacity", visible ? 0 : 1);
@@ -1361,7 +1361,7 @@
             mutation_class: "expression"
           });
         });
-        var legendG = svgGroup.append("g");
+        var legendG = svgGroup.append("g").attr("class", "gd3HeatmapLegend");
         yLabelsG = svgGroup.append("g").attr("class", "gd3heatmapYLabels");
         if (renderYLabels) renderYLabelsFn();
         if (renderAnnotations) renderAnnotationsFn();
@@ -1515,9 +1515,13 @@
           data.sortColumns(d.columnLabels);
           heatmapCells.transition().attr("x", function(d, i) {
             return data.xs.indexOf(d.x) * style.cellWidth;
+          }).attr("class", function(d) {
+            return "gd3HeatmapCell label" + data.xs.indexOf(d.x);
           });
           if (annotationXLabelsG) {
-            annotationXLabelsG.selectAll("text").transition().attr("y", function(d, i) {
+            annotationXLabelsG.selectAll("text").transition().attr("class", function(d) {
+              return "gd3HeatmapXLabel label" + data.xs.indexOf(d);
+            }).attr("y", function(d, i) {
               return -data.xs.indexOf(d) * style.cellWidth;
             });
           }
@@ -1963,7 +1967,7 @@
         renderMutationMatrix();
         rerenderMutationMatrix();
         if (drawCoverage) {
-          selection.append("p").style("float", "right").html("<b>Coverage:</b> " + data.coverage());
+          selection.append("p").attr("id", "coverage-string").style("float", "right").html("<b>Coverage:</b> " + data.coverage());
         }
         gd3.dispatch.on("filterCategory.mutmtx", function(d) {
           if (!d || !d.categories) return;
@@ -2215,13 +2219,18 @@
           columns.filter(function(d) {
             return wholeVisX(data.ids.columns.indexOf(d)) < style.labelWidth;
           }).style("opacity", .2);
-          columns.selectAll("rect").attr("width", colWidth);
+          columns.selectAll("rect").attr("class", function(d) {
+            if (!d || !d.colId) return ""; else return "mutmtx-sampleMutationCells label" + data.ids.columns.indexOf(d.colId);
+          }).attr("width", colWidth);
           columns.selectAll(".gd3mutmtx-cellClyph").attr("transform", function(d) {
             var str = d3.select(this).attr("transform"), then = str.replace("translate", "").replace(")", "").split(","), x = colWidth / 2, y = +then[1], now = "translate(" + x + "," + y + ")";
             return now;
           }).attr("d", function(d) {
             var cellType = d.cell.type, glyph = data.maps.cellTypeToGlyph[cellType], gWidth = d3.min([ colWidth, style.rowHeight - style.rowHeight / 2 ]);
             return d3.svg.symbol().type(glyph).size(gWidth * gWidth)();
+          });
+          columns.attr("class", function(d) {
+            return "mutmtxColumn label" + data.ids.columns.indexOf(d);
           });
           cells.style("opacity", function(d) {
             var visibleType = typesToFilter.indexOf(d.cell.type) === -1, visibleCategory = categoriesToFilter.indexOf(d.cell.dataset) === -1;
@@ -3041,7 +3050,7 @@
         var x = d3.scale.linear().domain([ start, stop ]).range([ 0, width ]);
         var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(style.numXTicks).tickSize(0).tickPadding(style.xTickPadding);
         var tG = svg.append("g").attr("transform", "translate(" + (style.margin.left + scrollbarWidth) + ",0)");
-        var transcriptAxis = tG.append("g").attr("class", "xaxis").attr("transform", "translate(0," + (style.height / 2 + style.transcriptBarHeight + 6) + ")").style("font-family", style.fontFamily).style("font-size", "12px").style("fill", "#000").call(xAxis);
+        var transcriptAxis = tG.append("g").attr("class", "xaxis gd3TranscriptGenome").attr("transform", "translate(0," + (style.height / 2 + style.transcriptBarHeight + 6) + ")").style("font-family", style.fontFamily).style("font-size", "12px").style("fill", "#000").call(xAxis);
         var transcriptBar = tG.append("rect").attr("height", style.transcriptBarHeight).attr("width", x(stop) - x(start)).attr("x", x(start)).attr("y", height / 2).style("fill", "#ccc");
         var zoom = d3.behavior.zoom().x(x).scaleExtent([ 1, 100 ]).on("zoom", function() {
           updateTranscript();
@@ -3053,7 +3062,7 @@
         }), activatingData = data.get("mutations").filter(function(d) {
           return !data.isMutationInactivating(d.ty);
         });
-        var inactivatingMutations = inactivatingG.selectAll(".symbols").data(inactivatingData).enter().append("path").attr("class", "symbols").attr("d", d3.svg.symbol().type(function(d, i) {
+        var inactivatingMutations = inactivatingG.selectAll(".symbols").data(inactivatingData).enter().append("path").attr("class", "symbols gd3MutationSymbol").attr("d", d3.svg.symbol().type(function(d, i) {
           return d3.svg.symbolTypes[data.get("mutationTypesToSymbols")[d.ty]];
         }).size(style.symbolWidth)).style("fill", function(d, i) {
           if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d.dataset);

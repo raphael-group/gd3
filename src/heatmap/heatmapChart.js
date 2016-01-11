@@ -121,7 +121,7 @@ function heatmapChart(style) {
         })
       })
 
-      var legendG = svgGroup.append('g');
+      var legendG = svgGroup.append('g').attr('class', 'gd3HeatmapLegend');
 
       yLabelsG = svgGroup.append('g').attr('class', 'gd3heatmapYLabels');
 
@@ -407,11 +407,12 @@ function heatmapChart(style) {
         data.sortColumns(d.columnLabels);
         heatmapCells.transition().attr('x', function(d, i) {
           return data.xs.indexOf(d.x) * style.cellWidth;
-        });
+        }).attr('class', function(d){ return 'gd3HeatmapCell label' + data.xs.indexOf(d.x); });
 
         // update x labels if they exist
         if(annotationXLabelsG) {
           annotationXLabelsG.selectAll('text').transition()
+              .attr('class', function(d){ return 'gd3HeatmapXLabel label' + data.xs.indexOf(d); })
               .attr('y', function(d, i) {
                 return -data.xs.indexOf(d) * style.cellWidth;
               });

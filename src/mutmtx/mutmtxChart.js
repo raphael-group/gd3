@@ -260,6 +260,7 @@ function mutmtxChart(style) {
       // Add the coverage (if necessary)
       if (drawCoverage){
         selection.append("p")
+          .attr('id', 'coverage-string')
           .style("float", "right")
           .html("<b>Coverage:</b> " + data.coverage());
       }
@@ -716,7 +717,13 @@ function mutmtxChart(style) {
         }).style("opacity", 0.2);
 
         // Redraw each cell and any glyphs the cell might have
-        columns.selectAll('rect').attr('width', colWidth);
+        columns.selectAll('rect')
+          .attr('class', function(d){
+            if (!d || !d.colId) return '';
+            else return 'mutmtx-sampleMutationCells label' + data.ids.columns.indexOf(d.colId);
+          })
+          .attr('width', colWidth);
+
         columns.selectAll('.gd3mutmtx-cellClyph')
           .attr('transform', function (d) {
             var str = d3.select(this).attr('transform'),
@@ -732,6 +739,11 @@ function mutmtxChart(style) {
                 gWidth = d3.min([colWidth, style.rowHeight - style.rowHeight/2]);
             return d3.svg.symbol().type(glyph).size(gWidth*gWidth)();
           });
+
+        columns.attr('class', function(d){
+          return 'mutmtxColumn label' + data.ids.columns.indexOf(d);
+        });
+
 
         // Hide cells that are of a filtered type and/or category
         cells.style("opacity", function(d){

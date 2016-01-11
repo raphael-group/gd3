@@ -88,6 +88,7 @@ function graphChart(style) {
           .enter()
           .append('g')
               .style('cursor', 'move')
+              .attr('class', 'gd3Node')
               .call(force.drag);
 
       node.append('circle')
@@ -181,7 +182,8 @@ function graphChart(style) {
                 .text(data.minNodeValue);
         var colorScaleRect = scaleG.append('rect')
             .attr('height', style.height/2)
-            .attr('width', style.legendScaleWidth);
+            .attr('width', style.legendScaleWidth)
+            .attr('class', 'gd3GraphGradientLegend');
 
         // Create a unique ID for the color map gradient in case multiple graphs are made
         var now = Date.now(),
@@ -208,7 +210,7 @@ function graphChart(style) {
 
         // Add the edge keys to the graph
         var scaleHeight = scaleG.node().getBBox().height + 4,
-            edgeKeys = legend.append('g').selectAll('g')
+            edgeKeys = legend.append('g').attr('class', 'gd3GraphNetworkLegend').selectAll('g')
                 .data(data.edgeCategories)
                 .enter()
                 .append('g')
