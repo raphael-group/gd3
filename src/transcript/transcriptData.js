@@ -23,6 +23,7 @@ function transcriptData(data) {
 
     var d = {
       geneName: cdata.gene,
+      sequence: cdata.protein_sequence || null,
       inactivatingMutations: cdata.inactivatingMutations || defaultInactivatingMutations,
       length: cdata.length,
       mutationCategories: cdata.mutationCategories || [],
@@ -75,6 +76,7 @@ function transcriptData(data) {
       else if (str == 'mutations') return d.mutations;
       else if (str == 'mutationTypesToSymbols') return d.mutationTypesToSymbols;
       else if (str == 'proteinDomains') return d.proteinDomains;
+      else if (str == 'sequence') return d.sequence;
       else return null;
     }
     d.isMutationInactivating = function(mut) {

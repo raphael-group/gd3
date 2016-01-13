@@ -159,6 +159,17 @@ function transcriptChart(style) {
         domainGroups.select('#domain-label-' + i).style('fill-opacity', 0);
       });
 
+      // Add protein sequence information, if it's present
+      if (data.sequence){
+        var seq = tG.append('g')
+          .attr('class', 'gd3ProteinSequence')
+          .attr('transform', 'translate(0,' + (style.height/2 + style.transcriptBarHeight/2 + 6) + ')')
+          .selectAll('.seq')
+          .data(data.sequence).enter()
+          .append('text')
+          .attr('text-anchor', 'middle')
+          .text(function(d){ return d; })
+      }
 
       updateTranscript();
 
@@ -180,7 +191,6 @@ function transcriptChart(style) {
         var curMin = d3.min(x.domain()),
             curMax = d3.max(x.domain()),
             curRes = Math.round( (curMax - curMin)/mutationResolution );
-
         curRes = curRes ? curRes : 1;
 
         // Stack mutations if there exist more than one per location
@@ -304,6 +314,14 @@ function transcriptChart(style) {
             return w/2;
           } else { return d3.select(this).attr('x'); }
         });
+
+        // Update protein sequence position and visibility
+        if (data.sequence){
+          // Add one to the index since the indices start at zero
+          seq.attr('x', function(d, i){ return x(i+1); })
+             .style('opacity', curRes < 3 ? 1 : 0 );
+        }
+
       } // end updateTranscript()
 
 
@@ -611,7 +629,6 @@ function transcriptChart(style) {
         }).on("mouseout.dispatch-sample", function(d){
           gd3.dispatch.sample({ sample: d.sample, over: false});
         }).on("click.dispatch-mutation", function(d){
-          console.log(d)
           var domain = null;
           gd3.dispatch.mutation({
             dataset: d.dataset,

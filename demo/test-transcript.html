@@ -15,8 +15,8 @@
     <script src="../gd3.js"></script>
     <script>
 
-    d3.json('testData/example2-transcript.json', function(data) {
-
+    d3.json('testData/example3-transcript.json', function(data) {
+      console.log(data.STAG1)
       var styling = {
         height: 180,
         width: 345
@@ -38,8 +38,11 @@
           var transcript = transcriptList[tKey],
               domains = data[gene][transcript].domains,
               length = data[gene][transcript].length,
-              mutations = data[gene][transcript].mutations;
-
+              mutations = data[gene][transcript].mutations,
+              sequence = data[gene][transcript].protein_sequence;
+          if (gKey == 0){
+            mutations.push({aao: 'M', aan: 'V', locus: 1, gene: 'STAG1', dataset: 'HNSC', ty: 'Missense_Mutation', sample: 'TCGA-CN-5360'});
+          }
           var mKeys = Object.keys(mutations);
           for(mKey in mKeys) {
             var m = mKeys[mKey],
@@ -47,7 +50,7 @@
             sampleTypes[cancer] = 0;
           }
 
-          vizData.push({gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations, mutationCategories: categories, proteinDomainDB: 'PFAM'});
+          vizData.push({gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations, mutationCategories: categories, protein_sequence: sequence, proteinDomainDB: 'PFAM'});
         }
       }
       sampleTypes = Object.keys(sampleTypes);

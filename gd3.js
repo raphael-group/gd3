@@ -3000,6 +3000,7 @@
       var proteinDomainDB = cdata.proteinDomainDB || Object.keys(cdata.domains)[0] || "";
       var d = {
         geneName: cdata.gene,
+        sequence: cdata.protein_sequence || null,
         inactivatingMutations: cdata.inactivatingMutations || defaultInactivatingMutations,
         length: cdata.length,
         mutationCategories: cdata.mutationCategories || [],
@@ -3013,7 +3014,7 @@
         return m.dataset;
       })).values();
       d.get = function(str) {
-        if (str == "length") return d.length; else if (str == "datasets") return d.datasets; else if (str == "mutations") return d.mutations; else if (str == "mutationTypesToSymbols") return d.mutationTypesToSymbols; else if (str == "proteinDomains") return d.proteinDomains; else return null;
+        if (str == "length") return d.length; else if (str == "datasets") return d.datasets; else if (str == "mutations") return d.mutations; else if (str == "mutationTypesToSymbols") return d.mutationTypesToSymbols; else if (str == "proteinDomains") return d.proteinDomains; else if (str == "sequence") return d.sequence; else return null;
       };
       d.isMutationInactivating = function(mut) {
         return d.inactivatingMutations[mut];
@@ -3099,6 +3100,11 @@
           d3.select(this).selectAll("rect").style("fill", "#aaa");
           domainGroups.select("#domain-label-" + i).style("fill-opacity", 0);
         });
+        if (data.sequence) {
+          var seq = tG.append("g").attr("class", "gd3ProteinSequence").attr("transform", "translate(0," + (style.height / 2 + style.transcriptBarHeight / 2 + 6) + ")").selectAll(".seq").data(data.sequence).enter().append("text").attr("text-anchor", "middle").text(function(d) {
+            return d;
+          });
+        }
         updateTranscript();
         if (showScrollers) {
           renderScrollers();
@@ -3193,6 +3199,11 @@
               return d3.select(this).attr("x");
             }
           });
+          if (data.sequence) {
+            seq.attr("x", function(d, i) {
+              return x(i + 1);
+            }).style("opacity", curRes < 3 ? 1 : 0);
+          }
         }
         function renderScrollers() {
           var sG = svg.append("g");
@@ -3343,7 +3354,6 @@
             over: false
           });
         }).on("click.dispatch-mutation", function(d) {
-          console.log(d);
           var domain = null;
           gd3.dispatch.mutation({
             dataset: d.dataset,
