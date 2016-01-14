@@ -24,6 +24,7 @@ function transcriptData(data) {
     var d = {
       geneName: cdata.gene,
       sequence: cdata.protein_sequence || null,
+      sequence_annotations: cdata.sequence_annotations || [],
       inactivatingMutations: cdata.inactivatingMutations || defaultInactivatingMutations,
       length: cdata.length,
       mutationCategories: cdata.mutationCategories || [],
@@ -34,6 +35,13 @@ function transcriptData(data) {
     };
     d.types = Object.keys(d.mutationTypesToSymbols);
     d.datasets = d3.set(cdata.mutations.map(function(m) { return m.dataset; })).values();
+    d.locusToAnnotations = {};
+    var seq_annotation_types = d3.set();
+    d.sequence_annotations.forEach(function(anno){
+      d.locusToAnnotations[anno.locus] = anno.annotation;
+      seq_annotation_types.add(anno.annotation);
+    });
+    d.seq_annotation_types = seq_annotation_types.values().sort();
 
     // for (var mutation in d.mutations) {
     //   var m = d.mutations[mutation];

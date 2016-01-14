@@ -159,6 +159,21 @@ function transcriptChart(style) {
         domainGroups.select('#domain-label-' + i).style('fill-opacity', 0);
       });
 
+      // Set up a color scale for the sequence annotations, using any given color mapping
+      // and filling in default colors for the other annotation types
+      var seqAnnotationColorRange = [],
+          defaultColors = d3.scale.category10().range(),
+          defaultColorIndex = 0;
+      data.seq_annotation_types.forEach(function(anno_ty){
+        if (anno_ty in style.seqAnnotationColors){
+          seqAnnotationColorRange.push(style.seqAnnotationColors[anno_ty])
+        } else{
+          seqAnnotationColorRange.push(defaultColors[defaultColorIndex]);
+          defaultColorIndex += 1;
+        }
+      })
+      var seqAnnotationColor = d3.scale.ordinal().domain(data.seq_annotation_types).range(seqAnnotationColorRange);
+
       // Add protein sequence information, if it's present
       if (data.sequence){
         var seq = tG.append('g')
@@ -168,6 +183,10 @@ function transcriptChart(style) {
           .data(data.sequence).enter()
           .append('text')
           .attr('text-anchor', 'middle')
+          .style('fill', function(d, i){
+            var anno = data.locusToAnnotations[i+1];
+            return anno ? seqAnnotationColor(anno) : '#000000';
+          })
           .text(function(d){ return d; })
       }
 

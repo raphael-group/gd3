@@ -3001,6 +3001,7 @@
       var d = {
         geneName: cdata.gene,
         sequence: cdata.protein_sequence || null,
+        sequence_annotations: cdata.sequence_annotations || [],
         inactivatingMutations: cdata.inactivatingMutations || defaultInactivatingMutations,
         length: cdata.length,
         mutationCategories: cdata.mutationCategories || [],
@@ -3013,6 +3014,13 @@
       d.datasets = d3.set(cdata.mutations.map(function(m) {
         return m.dataset;
       })).values();
+      d.locusToAnnotations = {};
+      var seq_annotation_types = d3.set();
+      d.sequence_annotations.forEach(function(anno) {
+        d.locusToAnnotations[anno.locus] = anno.annotation;
+        seq_annotation_types.add(anno.annotation);
+      });
+      d.seq_annotation_types = seq_annotation_types.values().sort();
       d.get = function(str) {
         if (str == "length") return d.length; else if (str == "datasets") return d.datasets; else if (str == "mutations") return d.mutations; else if (str == "mutationTypesToSymbols") return d.mutationTypesToSymbols; else if (str == "proteinDomains") return d.proteinDomains; else if (str == "sequence") return d.sequence; else return null;
       };
@@ -3100,8 +3108,21 @@
           d3.select(this).selectAll("rect").style("fill", "#aaa");
           domainGroups.select("#domain-label-" + i).style("fill-opacity", 0);
         });
+        var seqAnnotationColorRange = [], defaultColors = d3.scale.category10().range(), defaultColorIndex = 0;
+        data.seq_annotation_types.forEach(function(anno_ty) {
+          if (anno_ty in style.seqAnnotationColors) {
+            seqAnnotationColorRange.push(style.seqAnnotationColors[anno_ty]);
+          } else {
+            seqAnnotationColorRange.push(defaultColors[defaultColorIndex]);
+            defaultColorIndex += 1;
+          }
+        });
+        var seqAnnotationColor = d3.scale.ordinal().domain(data.seq_annotation_types).range(seqAnnotationColorRange);
         if (data.sequence) {
-          var seq = tG.append("g").attr("class", "gd3ProteinSequence").attr("transform", "translate(0," + (style.height / 2 + style.transcriptBarHeight / 2 + 6) + ")").selectAll(".seq").data(data.sequence).enter().append("text").attr("text-anchor", "middle").text(function(d) {
+          var seq = tG.append("g").attr("class", "gd3ProteinSequence").attr("transform", "translate(0," + (style.height / 2 + style.transcriptBarHeight / 2 + 6) + ")").selectAll(".seq").data(data.sequence).enter().append("text").attr("text-anchor", "middle").style("fill", function(d, i) {
+            var anno = data.locusToAnnotations[i + 1];
+            return anno ? seqAnnotationColor(anno) : "#000000";
+          }).text(function(d) {
             return d;
           });
         }
@@ -3427,6 +3448,11 @@
         right: 15,
         top: 5,
         bottom: 0
+      },
+      seqAnnotationColors: {
+        Phosphorylation: "#ff0000",
+        Acetylation: "#00ff00",
+        Ubiquitination: "#0000ff"
       }
     };
   }
