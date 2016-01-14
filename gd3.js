@@ -3133,9 +3133,6 @@
             return d;
           });
         }
-        if (showScrollers) {
-          renderScrollers();
-        }
         updateTranscript = function() {
           var t = zoom.translate(), tx = t[0], ty = t[1], scale = zoom.scale();
           tx = Math.min(tx, 0);
@@ -3235,6 +3232,9 @@
           }
         };
         updateTranscript();
+        if (showScrollers) {
+          renderScrollers();
+        }
         function renderScrollers() {
           var sG = svg.append("g");
           var activatingYs = [], inactivatingYs = [];

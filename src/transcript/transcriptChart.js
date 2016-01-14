@@ -195,10 +195,6 @@ function transcriptChart(style) {
           .text(function(d){ return d; })
       }
 
-      if (showScrollers) {
-        renderScrollers();
-      } // end slider behavior code
-
       updateTranscript = function() {
         var t = zoom.translate(),
             tx = t[0],
@@ -345,7 +341,12 @@ function transcriptChart(style) {
         }
 
       } // end updateTranscript()
+
       updateTranscript();
+      if (showScrollers) {
+        renderScrollers();
+      } // end slider behavior code
+
 
 
       function renderScrollers () {
