@@ -3126,7 +3126,7 @@
         });
         var seqAnnotationColor = d3.scale.ordinal().domain(data.seq_annotation_types).range(seqAnnotationColorRange);
         if (data.sequence) {
-          var seq = tG.append("g").attr("class", "gd3ProteinSequence").attr("transform", "translate(0," + (style.height / 2 + style.transcriptBarHeight / 2 + 6) + ")").selectAll(".seq").data(data.sequence).enter().append("text").attr("text-anchor", "middle").style("fill", function(d, i) {
+          var seq = tG.append("g").attr("class", "gd3ProteinSequence").attr("transform", "translate(0," + (style.height / 2 + style.transcriptBarHeight / 2 + 6) + ")").selectAll(".seq").data(data.sequence).enter().append("text").attr("text-anchor", "middle").style("font-family", style.fontFamily).style("fill", function(d, i) {
             var anno = data.locusToAnnotations[i + 1];
             return anno ? seqAnnotationColor(anno) : "#000000";
           }).text(function(d) {
@@ -3371,7 +3371,15 @@
           });
           if (data.sequence && data.seq_annotation_types.length > 0) {
             var seqAnnotationLegend = legendWrapper.append("div").attr("class", "gd3TranscriptSeqAnnotationLegend").style("font-size", "10px");
-            seqAnnotationLegend.append("ul").attr("class", "list-inline").selectAll(".li").data(data.seq_annotation_types).enter().append("li").style("color", function(d) {
+            seqAnnotationLegend.append("ul").style({
+              "padding-left": "0",
+              "margin-left": "-5px",
+              "list-style": "none"
+            }).selectAll(".li").data(data.seq_annotation_types).enter().append("li").style({
+              display: "inline-block",
+              "padding-left": "5px",
+              "padding-right": "5px"
+            }).style("color", function(d) {
               return seqAnnotationColor(d);
             }).text(function(d) {
               return d;
@@ -3474,7 +3482,10 @@
       seqAnnotationColors: {
         Phosphorylation: "#ff0000",
         Acetylation: "#00ff00",
-        Ubiquitination: "#0000ff"
+        Ubiquitination: "#0000ff",
+        Regulatory: "rgb(44, 160, 44)",
+        Methylation: "rgb(255, 127, 14)",
+        "Disease-associated": "rgb(31, 119, 180)"
       }
     };
   }

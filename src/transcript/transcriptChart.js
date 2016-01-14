@@ -168,10 +168,10 @@ function transcriptChart(style) {
           defaultColors = d3.scale.category10().range(),
           defaultColorIndex = 0;
 
-      data.seq_annotation_types.forEach(function(anno_ty){
-        if (anno_ty in style.seqAnnotationColors){
+      data.seq_annotation_types.forEach(function(anno_ty) {
+        if (anno_ty in style.seqAnnotationColors) {
           seqAnnotationColorRange.push(style.seqAnnotationColors[anno_ty])
-        } else{
+        } else {
           seqAnnotationColorRange.push(defaultColors[defaultColorIndex]);
           defaultColorIndex += 1;
         }
@@ -179,7 +179,7 @@ function transcriptChart(style) {
       var seqAnnotationColor = d3.scale.ordinal().domain(data.seq_annotation_types).range(seqAnnotationColorRange);
 
       // Add protein sequence information, if it's present
-      if (data.sequence){
+      if (data.sequence) {
         var seq = tG.append('g')
           .attr('class', 'gd3ProteinSequence')
           .attr('transform', 'translate(0,' + (style.height/2 + style.transcriptBarHeight/2 + 6) + ')')
@@ -187,7 +187,8 @@ function transcriptChart(style) {
           .data(data.sequence).enter()
           .append('text')
           .attr('text-anchor', 'middle')
-          .style('fill', function(d, i){
+          .style('font-family', style.fontFamily)
+          .style('fill', function(d, i) {
             var anno = data.locusToAnnotations[i+1];
             return anno ? seqAnnotationColor(anno) : '#000000';
           })
@@ -337,7 +338,7 @@ function transcriptChart(style) {
         });
 
         // Update protein sequence position and visibility
-        if (data.sequence){
+        if (data.sequence) {
           // Add one to the index since the indices start at zero
           seq.attr('x', function(d, i){ return x(i+1); })
              .style('opacity', curRes < 3 ? 1 : 0 );
@@ -637,10 +638,11 @@ function transcriptChart(style) {
             .attr('class', 'gd3TranscriptSeqAnnotationLegend')
             .style('font-size', '10px');
           seqAnnotationLegend.append('ul')
-            .attr('class', 'list-inline')
+            .style({"padding-left":"0", "margin-left":"-5px", "list-style":"none"})
             .selectAll('.li')
             .data(data.seq_annotation_types).enter()
             .append('li')
+            .style({"display":"inline-block", "padding-left":"5px", "padding-right":"5px"})
             .style('color', function(d){ return seqAnnotationColor(d); })
             .text(function(d){ return d; });
         }
