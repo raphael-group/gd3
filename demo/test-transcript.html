@@ -6,6 +6,14 @@
     <title>GD3 Example Transcript Annotation</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    ul.list-inline{
+      padding-left:0;margin-left:-5px;list-style:none;
+    }
+    ul.list-inline li{
+      display:inline-block; padding-left:5px; padding-right:5px;
+    }
+    </style>
   </head>
   <body>
     <div id="test1"></div>
@@ -16,7 +24,6 @@
     <script>
 
     d3.json('testData/example3-transcript.json', function(data) {
-      console.log(data.STAG1)
       var styling = {
         height: 180,
         width: 345
@@ -39,10 +46,8 @@
               domains = data[gene][transcript].domains,
               length = data[gene][transcript].length,
               mutations = data[gene][transcript].mutations,
-              sequence = data[gene][transcript].protein_sequence;
-          if (gKey == 0){
-            mutations.push({aao: 'M', aan: 'V', locus: 1, gene: 'STAG1', dataset: 'HNSC', ty: 'Missense_Mutation', sample: 'TCGA-CN-5360'});
-          }
+              sequence = data[gene][transcript].protein_sequence,
+              sequence_annotations = data[gene][transcript].sequence_annotations;
           var mKeys = Object.keys(mutations);
           for(mKey in mKeys) {
             var m = mKeys[mKey],
@@ -50,7 +55,7 @@
             sampleTypes[cancer] = 0;
           }
 
-          vizData.push({gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations, mutationCategories: categories, protein_sequence: sequence, proteinDomainDB: 'PFAM'});
+          vizData.push({gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations, mutationCategories: categories, protein_sequence: sequence, sequence_annotations: sequence_annotations, proteinDomainDB: 'PFAM'});
         }
       }
       sampleTypes = Object.keys(sampleTypes);
