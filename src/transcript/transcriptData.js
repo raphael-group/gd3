@@ -19,7 +19,17 @@ function transcriptData(data) {
           "In_Frame_Ins": 4
         };
 
+    // Select the initial protein domain db, going with the first one
+    // if it's not provided. Then add the protein domain dbs to each of the domains
+    // so we can easily toggle through the different databases 
     var proteinDomainDB = cdata.proteinDomainDB || Object.keys(cdata.domains)[0] || '';
+    var domains = [];
+    Object.keys(cdata.domains).forEach(function(db){
+      cdata.domains[db].forEach(function(d){
+        d.db = db;
+        domains.push(d);
+      });
+    });
 
     var d = {
       geneName: cdata.gene,
@@ -31,7 +41,7 @@ function transcriptData(data) {
       mutations: cdata.mutations,
       mutationTypesToSymbols: cdata.mutationTypesToSymbols || defaultMutationTypesToSymbols,
       proteinDomainDB: proteinDomainDB,
-      proteinDomains: cdata.domains[proteinDomainDB] || []
+      proteinDomains: domains || []
     };
     d.types = Object.keys(d.mutationTypesToSymbols);
     d.datasets = d3.set(cdata.mutations.map(function(m) { return m.dataset; })).values();

@@ -2998,6 +2998,13 @@
         In_Frame_Ins: 4
       };
       var proteinDomainDB = cdata.proteinDomainDB || Object.keys(cdata.domains)[0] || "";
+      var domains = [];
+      Object.keys(cdata.domains).forEach(function(db) {
+        cdata.domains[db].forEach(function(d) {
+          d.db = db;
+          domains.push(d);
+        });
+      });
       var d = {
         geneName: cdata.gene,
         sequence: cdata.protein_sequence || null,
@@ -3008,7 +3015,7 @@
         mutations: cdata.mutations,
         mutationTypesToSymbols: cdata.mutationTypesToSymbols || defaultMutationTypesToSymbols,
         proteinDomainDB: proteinDomainDB,
-        proteinDomains: cdata.domains[proteinDomainDB] || []
+        proteinDomains: domains || []
       };
       d.types = Object.keys(d.mutationTypesToSymbols);
       d.datasets = d3.set(cdata.mutations.map(function(m) {
@@ -3042,11 +3049,13 @@
     return tData;
   }
   function transcriptChart(style) {
-    var showScrollers = true, showLegend = true;
+    var showScrollers = true, showLegend = true, domainDB, updateTranscript;
     function chart(selection) {
       selection.each(function(data) {
         data = transcriptData(data);
+        console.log(data);
         var filteredTypes = [], filteredCategories = [], instanceIDConst = "gd3-transcript-" + Date.now();
+        domainDB = data.proteinDomainDB;
         var d3color = d3.scale.category20(), sampleTypeToColor = {};
         for (var i = 0; i < data.get("datasets").length; i++) {
           sampleTypeToColor[data.get("datasets")[i]] = d3color(i);
@@ -3089,8 +3098,7 @@
           if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d.dataset);
           return sampleTypeToColor[d.dataset];
         }).style("stroke-width", 2);
-        var domainGroupsData = data.get("proteinDomains");
-        var domainGroups = tG.selectAll(".domains").data(domainGroupsData ? data.get("proteinDomains").slice() : []).enter().append("g").attr("class", "domains");
+        var domainGroups = tG.selectAll(".domains").data(data.proteinDomains).enter().append("g").attr("class", "domains");
         var domains = domainGroups.append("rect").attr("id", function(d, i) {
           return "domain-" + i;
         }).attr("width", function(d, i) {
@@ -3126,11 +3134,10 @@
             return d;
           });
         }
-        updateTranscript();
         if (showScrollers) {
           renderScrollers();
         }
-        function updateTranscript() {
+        updateTranscript = function() {
           var t = zoom.translate(), tx = t[0], ty = t[1], scale = zoom.scale();
           tx = Math.min(tx, 0);
           zoom.translate([ tx, ty ]);
@@ -3211,6 +3218,8 @@
           });
           domains.attr("width", function(d, i) {
             return x(d.end) - x(d.start);
+          }).style("opacity", function(d) {
+            return d.db == domainDB ? 1 : 0;
           });
           domainLabels.attr("x", function(d, i) {
             if (this.parentNode) {
@@ -3225,7 +3234,8 @@
               return x(i + 1);
             }).style("opacity", curRes < 3 ? 1 : 0);
           }
-        }
+        };
+        updateTranscript();
         function renderScrollers() {
           var sG = svg.append("g");
           var activatingYs = [], inactivatingYs = [];
@@ -3428,6 +3438,10 @@
     };
     chart.showLegend = function showLegend(state) {
       showLegend = state;
+    };
+    chart.setDomainDB = function setDomainDB(state) {
+      domainDB = state;
+      updateTranscript();
     };
     return chart;
   }
