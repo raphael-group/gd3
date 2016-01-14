@@ -9,7 +9,6 @@ function transcriptChart(style) {
   function chart(selection) {
     selection.each(function(data) {
       data = transcriptData(data);
-      console.log(data)
       var filteredTypes = [], // store list of mutation types to exclude
           filteredCategories = [], // store list of datasets types to exclude
           instanceIDConst = 'gd3-transcript-'+Date.now();
@@ -576,8 +575,8 @@ function transcriptChart(style) {
             numRows = Math.ceil(numTypes/2);
 
         // Select the svg element, if it exists.
-        var svg = selection.append('div')
-            .selectAll('.gd3-transcript-legend-svg')
+        var legendWrapper = selection.append('div');
+        var svg = legendWrapper.selectAll('.gd3-transcript-legend-svg')
             .data([data])
             .enter()
               .append('svg')
@@ -632,6 +631,19 @@ function transcriptChart(style) {
           .attr('dy', 3)
           .style('font-family', style.fontFamily)
           .text(function(d) { return d.replace(/_/g, ' ')});
+
+        if (data.sequence && data.seq_annotation_types.length > 0){
+          var seqAnnotationLegend = legendWrapper.append('div')
+            .attr('class', 'gd3TranscriptSeqAnnotationLegend')
+            .style('font-size', '10px');
+          seqAnnotationLegend.append('ul')
+            .attr('class', 'list-inline')
+            .selectAll('.li')
+            .data(data.seq_annotation_types).enter()
+            .append('li')
+            .style('color', function(d){ return seqAnnotationColor(d); })
+            .text(function(d){ return d; });
+        }
 
         svg.attr('height', legendGroup.node().getBBox().height);
       }

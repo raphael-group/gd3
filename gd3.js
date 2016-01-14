@@ -3347,7 +3347,8 @@
         }
         function renderLegend() {
           var mutationTypes = data.types, numTypes = mutationTypes.length, numRows = Math.ceil(numTypes / 2);
-          var svg = selection.append("div").selectAll(".gd3-transcript-legend-svg").data([ data ]).enter().append("svg").attr("class", "gd3-transcript-legend-svg").attr("font-size", 10).attr("width", width), legendGroup = svg.append("g");
+          var legendWrapper = selection.append("div");
+          var svg = legendWrapper.selectAll(".gd3-transcript-legend-svg").data([ data ]).enter().append("svg").attr("class", "gd3-transcript-legend-svg").attr("font-size", 10).attr("width", width), legendGroup = svg.append("g");
           var legend = legendGroup.selectAll(".symbolGroup").data(mutationTypes).enter().append("g").attr("transform", function(d, i) {
             var x = i % numRows * width / numRows + style.margin.left + style.margin.right, y = Math.round(i / numTypes) * style.legendSymbolHeight + (Math.round(i / numTypes) + 2) + style.margin.top;
             return "translate(" + x + ", " + y + ")";
@@ -3369,6 +3370,14 @@
           legend.append("text").attr("dx", 7).attr("dy", 3).style("font-family", style.fontFamily).text(function(d) {
             return d.replace(/_/g, " ");
           });
+          if (data.sequence && data.seq_annotation_types.length > 0) {
+            var seqAnnotationLegend = legendWrapper.append("div").attr("class", "gd3TranscriptSeqAnnotationLegend").style("font-size", "10px");
+            seqAnnotationLegend.append("ul").attr("class", "list-inline").selectAll(".li").data(data.seq_annotation_types).enter().append("li").style("color", function(d) {
+              return seqAnnotationColor(d);
+            }).text(function(d) {
+              return d;
+            });
+          }
           svg.attr("height", legendGroup.node().getBBox().height);
         }
         if (showLegend) {
