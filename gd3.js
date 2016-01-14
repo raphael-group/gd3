@@ -3053,7 +3053,6 @@
     function chart(selection) {
       selection.each(function(data) {
         data = transcriptData(data);
-        console.log(data);
         var filteredTypes = [], filteredCategories = [], instanceIDConst = "gd3-transcript-" + Date.now();
         domainDB = data.proteinDomainDB;
         var d3color = d3.scale.category20(), sampleTypeToColor = {};

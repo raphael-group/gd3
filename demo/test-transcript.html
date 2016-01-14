@@ -16,13 +16,20 @@
     </style>
   </head>
   <body>
-    <div id="test1"></div>
+    <div id="test1">
+      <b>Select protein domain database for first transcript plot</b><br/>
+      <input type="radio" name="domain" value="CD"> CD
+      <br/>
+      <input type="radio" name="domain" value="PFAM" checked="checked"> PFAM
+      <br/>
+      <input type="radio" name="domain" value="SMART"> SMART
+    </div>
     <div id="test2"></div>
     <div id="test3"></div>
     <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../gd3.js"></script>
     <script>
-
     d3.json('testData/example3-transcript.json', function(data) {
       var styling = {
         height: 180,
@@ -62,12 +69,19 @@
       params.sampleTypes = sampleTypes;
 
       // Draw STAG1 where no scrollbar should appear
+      var transcriptFn = gd3.transcript(params);
       d3.select('#test1')
         .append('h3')
         .html(vizData[0].gene + " <small>" + vizData[0].transcript + "</small>");
       d3.select('#test1')
           .datum(vizData[0])
-          .call(gd3.transcript(params));
+          .call(transcriptFn);
+
+      $('#test1 input').click(function(){
+        if ($(this).is(':checked')){
+          transcriptFn.setDomainDB($(this).val());
+        }
+      });
 
       // Draw BRAF where an activating (top) scrollbar should appear
       d3.select('#test2')
