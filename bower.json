@@ -1,9 +1,10 @@
 {
-  "name": "gd3prime",
+  "name": "gd3",
   "version": "1.0.0",
-  "homepage": "https://github.com/connorgr/gd3prime",
+  "homepage": "https://github.com/raphael-group/gd3",
   "authors": [
-    "connor <connor@cs.brown.edu>"
+    "connor <connor@cs.brown.edu>",
+    "max <mdml@cs.brown.edu>"
   ],
   "main": "gd3.js",
   "license": "MIT",
@@ -17,7 +18,7 @@
   ],
   "dependencies": {
     "d3-tip": "~0.6.4",
-    "d3": "~3.4.11",
+    "d3": "latest",
     "jquery": "~2.1.1"
   }
 }
