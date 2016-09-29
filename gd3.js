@@ -1749,14 +1749,20 @@
         data.numSamples = inputData.samples.length;
       }
       var rowAndCount = [];
-      Object.keys(inputData.M).forEach(function(k, i) {
-        var numSamples = Object.keys(inputData.M[k]).length;
-        rowAndCount.push([ k, numSamples ]);
-      });
+      if (inputData.ordered_row_labels) {
+        inputData.ordered_row_labels.forEach(function(k) {
+          rowAndCount.push([ k, Object.keys(inputData.M[k]).length ]);
+        });
+      } else {
+        Object.keys(inputData.M).forEach(function(k, i) {
+          var numSamples = Object.keys(inputData.M[k]).length;
+          rowAndCount.push([ k, numSamples ]);
+        });
+        rowAndCount.sort(function(a, b) {
+          return a[1] < b[1] ? 1 : -1;
+        });
+      }
       var sortedRowIds = [];
-      rowAndCount.sort(function(a, b) {
-        return a[1] < b[1] ? 1 : -1;
-      });
       rowAndCount.forEach(function(d, i) {
         var name = d[0], numSamples = d[1];
         data.maps.rowIdToLabel[i.toString()] = name;
