@@ -149,7 +149,7 @@ function cnaChart(style) {
       var segs = segments.append('rect')
           .attr('fill', function(d){
             if (gd3.color.categoryPalette) return gd3.color.categoryPalette(samplesToTypes[d.sample]);
-            return segmentTypeToColor[samplesToTypes[d.sample]]
+            return segmentTypeToColor[samplesToTypes[d.sample]];
           })
           .attr('width', function(d) {
             return x(d.end, minSegmentX, maxSegmentX) - x(d.start, minSegmentX, maxSegmentX);
@@ -332,14 +332,12 @@ function cnaChart(style) {
       // Add dispatch for recolor message, which updates dataset segment colors
       gd3.dispatch.on("recolor.cna", function() {
         segs.each(function(d) {
-          var cell = d3.select(this);
-          cell.select('rect').style('fill', function () {
-            if(!d.cell || !d.cell.dataset) {
+          var dataset = samplesToTypes[d.sample];
+          d3.select(this).style('fill', function () {
+            if(!d.sample || !dataset) {
               return 'none';
-            } else if (gd3.color.categoryPalette) {
-              return d3.rgb(gd3.color.categoryPalette(d.cell.dataset));
             } else {
-              return colCategoryToColor[d.cell.dataset];
+              return d3.rgb(gd3.color.categoryPalette(dataset));
             }
           });
         })

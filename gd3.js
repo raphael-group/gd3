@@ -466,6 +466,18 @@
           });
           updateAllComponents();
         });
+        gd3.dispatch.on("recolor.cna", function() {
+          segs.each(function(d) {
+            var dataset = samplesToTypes[d.sample];
+            d3.select(this).style("fill", function() {
+              if (!d.sample || !dataset) {
+                return "none";
+              } else {
+                return d3.rgb(gd3.color.categoryPalette(dataset));
+              }
+            });
+          });
+        });
         function renderScrollers() {
           svgActual.attr("height", style.height + "px");
           verticalBars.attr("height", style.height - style.margin.bottom - style.margin.top - 3);
@@ -3415,10 +3427,14 @@
           });
           updateTranscript();
         });
-        gd3.dispatch.on("recolor.transcript", function() {
-          allMutations.style("fill", function() {
-            console.log(d3.select(this).attr("data-dataset"));
-          });
+      });
+      gd3.dispatch.on("recolor.transcript", function() {
+        d3.selectAll(".gd3TranscriptMutations").selectAll("path").style("fill", function() {
+          var dataset = d3.select(this).attr("data-dataset");
+          return gd3.color.categoryPalette(dataset);
+        }).style("stroke", function() {
+          var dataset = d3.select(this).attr("data-dataset");
+          return gd3.color.categoryPalette(dataset);
         });
       });
     }
