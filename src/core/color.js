@@ -157,10 +157,7 @@ gd3.color.categories = function() {
 // If updating color palette after initialization, modify the color scale and
 // then send a dispatch message to percolate the change.
 gd3.color.updateCategoricalPalette = function(newColorPaletteArray) {
-  console.log("fired");
-  console.log(newColorPaletteArray);
   gd3.color.categoryPalette = gd3.color.categoryPalette.range(newColorPaletteArray);
-  console.log(gd3.color.categoryPalette.range());
   gd3.dispatch.recolor();
 }
 

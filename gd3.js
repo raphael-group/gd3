@@ -108,10 +108,7 @@
       gd3.color.categoryPalette = d3.scale.ordinal().domain(categories).range(colors);
     }
     gd3.color.updateCategoricalPalette = function(newColorPaletteArray) {
-      console.log("fired");
-      console.log(newColorPaletteArray);
       gd3.color.categoryPalette = gd3.color.categoryPalette.range(newColorPaletteArray);
-      console.log(gd3.color.categoryPalette.range());
       gd3.dispatch.recolor();
     };
     return gd3.color.categoryPalette;
