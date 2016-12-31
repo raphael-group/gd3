@@ -2,7 +2,7 @@
   var gd3 = {
     version: "0.2.1"
   };
-  gd3.dispatch = d3.dispatch("sample", "interaction", "sort", "filterCategory", "filterType", "mutation", "filterMutationType");
+  gd3.dispatch = d3.dispatch("sample", "interaction", "sort", "filterCategory", "filterType", "mutation", "filterMutationType", "recolor");
   function gd3_class(ctor, properties) {
     try {
       for (var key in properties) {
@@ -107,6 +107,13 @@
       isArrayTest(categories, colors);
       gd3.color.categoryPalette = d3.scale.ordinal().domain(categories).range(colors);
     }
+    gd3.color.updateCategoricalPalette = function(newColorPaletteArray) {
+      console.log("fired");
+      console.log(newColorPaletteArray);
+      gd3.color.categoryPalette = gd3.color.categoryPalette.range(newColorPaletteArray);
+      console.log(gd3.color.categoryPalette.range());
+      gd3.dispatch.recolor();
+    };
     return gd3.color.categoryPalette;
   };
   var gd3_util = {
@@ -2270,6 +2277,20 @@
               thisCell.append("path").attr("class", "gd3mutmtx-cellClyph").attr("d", d3.svg.symbol().type(glyph).size(colWidth * colWidth)).attr("transform", "translate(" + colWidth / 2 + "," + (y + style.rowHeight / 2) + ")").style("fill", style.glyphColor).style("stroke", style.glyphStrokeColor).style("stroke-width", .5);
             }
           });
+          gd3.dispatch.on("recolor.mutmtx", function() {
+            cells.each(function(d) {
+              var cell = d3.select(this);
+              cell.select("rect").style("fill", function() {
+                if (!d.cell || !d.cell.dataset) {
+                  return "none";
+                } else if (gd3.color.categoryPalette) {
+                  return d3.rgb(gd3.color.categoryPalette(d.cell.dataset));
+                } else {
+                  return colCategoryToColor[d.cell.dataset];
+                }
+              });
+            });
+          });
           var columnNames = columns.selectAll("text");
           var rects = columns.select("g.mutmtx-sampleMutationCells").selectAll("g").selectAll("rect").attr({
             "stroke-width": 1,
@@ -3062,7 +3083,9 @@
         }), activatingData = data.get("mutations").filter(function(d) {
           return !data.isMutationInactivating(d.ty);
         });
-        var inactivatingMutations = inactivatingG.selectAll(".symbols").data(inactivatingData).enter().append("path").attr("class", "symbols gd3MutationSymbol").attr("d", d3.svg.symbol().type(function(d, i) {
+        var inactivatingMutations = inactivatingG.selectAll(".symbols").data(inactivatingData).enter().append("path").attr("class", "symbols gd3MutationSymbol").attr("data-dataset", function(d) {
+          return d.dataset;
+        }).attr("d", d3.svg.symbol().type(function(d, i) {
           return d3.svg.symbolTypes[data.get("mutationTypesToSymbols")[d.ty]];
         }).size(style.symbolWidth)).style("fill", function(d, i) {
           if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d.dataset);
@@ -3073,7 +3096,9 @@
         }).style("stroke-width", 2);
         var activatingMutations = activatingG.selectAll(".symbols").data(activatingData).enter().append("path").attr("class", "symbols").attr("d", d3.svg.symbol().type(function(d, i) {
           return d3.svg.symbolTypes[data.get("mutationTypesToSymbols")[d.ty]];
-        }).size(style.symbolWidth)).style("fill", function(d, i) {
+        }).size(style.symbolWidth)).attr("data-dataset", function(d) {
+          return d.dataset;
+        }).style("fill", function(d, i) {
           if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d.dataset);
           return sampleTypeToColor[d.dataset];
         }).style("stroke", function(d, i) {
@@ -3389,6 +3414,11 @@
             return data.datasets.indexOf(s) > -1;
           });
           updateTranscript();
+        });
+        gd3.dispatch.on("recolor.transcript", function() {
+          allMutations.style("fill", function() {
+            console.log(d3.select(this).attr("data-dataset"));
+          });
         });
       });
     }

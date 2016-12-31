@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GD3 Example Color Formatting</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+</style>
+  </head>
+  <body>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../gd3.js"></script>
+    <script>
+      var body = d3.select('body');
+
+      body.append('h2').text('For mutation matrix examples, try sorting by category');
+      body.append('p').text('Mutation matrix with default coloring, no categories specified');
+      var m1 = body.append('div');
+      body.append('br').append('br');
+      body.append('hr');
+      var t1 = body.append('div');
+      body.append('hr');
+      var cna1 = body.append('div');
+      body.append('br');
+      body.append('hr');
+      var hmap1 = body.append('div');
+
+      function render(annotationData, categories, cnaData, heatmapData, mutmtxData, transcriptData, transcriptParams) {
+        console.log("length of categories: " + categories.length);
+        // gd3.color.updateCategoricalPalette(categories.map(function(d) { return 'black'; }));
+        // Render mutation matrix
+        var mutmtxStyle = { width: 800 };
+        m1.datum(mutmtxData)
+          .call(gd3.mutationMatrix({style:mutmtxStyle}));
+
+        gd3.color.categories(categories);
+
+        // Render transcript chart
+        t1.datum(transcriptData[0])
+            .call(gd3.transcript(transcriptParams));
+
+        // Render CNA browser
+        cna1.datum(cnaData.PDGFRA)
+          .call(gd3.cna());
+
+        var hStyle = {width: 800};
+        hmap1.datum(heatmapData)
+            .call(gd3.heatmap({style:hStyle}));
+
+        var altColors = ["rgb(12,192,170)", "rgb(17,93,82)", "rgb(104,195,239)", "rgb(87,43,158)", "rgb(248,154,222)", "rgb(152,103,246)", "rgb(58,80,138)", "rgb(143,138,197)", "rgb(120,40,87)", "rgb(244,38,151)", "rgb(233,203,231)", "rgb(208,3,214)"];
+        gd3.color.updateCategoricalPalette(altColors);
+        // gd3.color.updateCategoricalPalette(categories.map(function(d) { return 'black'; }));
+      }
+
+      d3.json('testData/example2-mutation-matrix.json', function(mdata) {
+        d3.json('testData/exampleAnnotations.json', function(annData) {
+          d3.json('testData/example2-transcript.json', function(tdata) {
+            d3.json('testData/example-cna.json', function(cdata) {
+              d3.json('testData/example-heatmap.json', function(hdata) {
+                var mutmtxCategories = ['BLCA', 'BRCA', 'COADREAD', 'GBM','HNSC','KIRC','LAML','LUAD','LUSC','OV','UCEC'],
+                    transcriptCategories = ['BLCA', 'BRCA', 'COADREAD', 'GBM', 'HNSC', 'LUAD', 'LUSC', 'OV', 'SCNAH'],
+                    categories = {};
+
+                mutmtxCategories.forEach(function(d) { categories[d] = true; });
+                transcriptCategories.forEach(function(d) { categories[d] = true; });
+                categories = Object.keys(categories);
+
+                mdata.annotations = annData;
+                hdata.annotations = annData;
+
+                // build transcript chart data
+                var transcriptSampleTypes = {},
+                    transcriptParams = {},
+                    transcriptData = [];
+                for (gKey in Object.keys(tdata)) {
+                  var gene = Object.keys(tdata)[gKey], transcriptList = Object.keys(tdata[gene]);
+
+                  for (tKey in transcriptList) {
+                    var transcript = transcriptList[tKey],
+                        domains = tdata[gene][transcript].domains,
+                        length = tdata[gene][transcript].length,
+                        mutations = tdata[gene][transcript].mutations;
+
+                    var mKeys = Object.keys(mutations);
+                    for(mKey in mKeys) {
+                      var m = mKeys[mKey], cancer = mutations[m].cancer;
+                      transcriptSampleTypes[cancer] = 0;
+                    }
+
+                    transcriptData.push({gene: gene, transcript: transcript, domains: domains, length: length, mutations: mutations, mutationCategories: categories, proteinDomainDB: 'PFAM'});
+                  }
+                }
+                transcriptSampleTypes = Object.keys(transcriptSampleTypes);
+                transcriptParams.sampleTypes = transcriptSampleTypes;
+
+                render(annData, categories, cdata, hdata, mdata, transcriptData, transcriptParams);
+              }); // hdata
+            }); // cdata
+          }); // tdata
+        }); // annData
+      }); // mdata
+    </script>
+  </body>
+</html>

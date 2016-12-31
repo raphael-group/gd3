@@ -816,6 +816,23 @@ function mutmtxChart(style) {
         });
 
         ///////////////////////////////////////////////////////////////////////
+        // Add dispatch for recolor message, which updates dataset cell colors
+        gd3.dispatch.on("recolor.mutmtx", function() {
+          cells.each(function(d) {
+            var cell = d3.select(this);
+            cell.select('rect').style('fill', function () {
+              if(!d.cell || !d.cell.dataset) {
+                return 'none';
+              } else if (gd3.color.categoryPalette) {
+                return d3.rgb(gd3.color.categoryPalette(d.cell.dataset));
+              } else {
+                return colCategoryToColor[d.cell.dataset];
+              }
+            });
+          })
+        });
+
+        ///////////////////////////////////////////////////////////////////////
         // Add dispatch to outline mutations in the same sample
         // onmouseover
 

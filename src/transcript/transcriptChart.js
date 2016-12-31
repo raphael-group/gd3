@@ -90,6 +90,9 @@ function transcriptChart(style) {
           .enter()
           .append('path')
             .attr('class', 'symbols gd3MutationSymbol')
+            .attr('data-dataset', function(d) {
+              return d.dataset;
+            })
             .attr('d', d3.svg.symbol()
               .type(function(d, i) {
                 return d3.svg.symbolTypes[data.get('mutationTypesToSymbols')[d.ty]];
@@ -115,6 +118,9 @@ function transcriptChart(style) {
                 return d3.svg.symbolTypes[data.get('mutationTypesToSymbols')[d.ty]];
               })
               .size(style.symbolWidth))
+            .attr('data-dataset', function(d) {
+              return d.dataset;
+            })
             .style('fill', function(d, i) {
               if (gd3.color.categoryPalette) return gd3.color.categoryPalette(d.dataset);
               return sampleTypeToColor[d.dataset];
@@ -675,6 +681,14 @@ function transcriptChart(style) {
         });
 
         updateTranscript();
+      });
+
+      // Add support for dataset category recoloring
+      gd3.dispatch.on("recolor.transcript", function() {
+        allMutations.style('fill', function() {
+          var dataset = d3.select(this).attr('data-dataset');
+          return gd3.color.categoryPalette(dataset);
+        });
       });
     }); // End selection
   }
