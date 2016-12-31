@@ -682,15 +682,21 @@ function transcriptChart(style) {
 
         updateTranscript();
       });
+    }); // End selection
 
-      // Add support for dataset category recoloring
-      gd3.dispatch.on("recolor.transcript", function() {
-        allMutations.style('fill', function() {
+    // Add support for dataset category recoloring for mutation symbols
+    // TODO debug why this doesn't percolate on-update automatically
+    //      (typically you need to inspect elements to get a refresh)
+    gd3.dispatch.on("recolor.transcript", function() {
+      d3.selectAll('.gd3TranscriptMutations').selectAll("path")
+        .style('fill', function() {
+          var dataset = d3.select(this).attr('data-dataset');
+          return gd3.color.categoryPalette(dataset);
+        }).style('stroke', function() {
           var dataset = d3.select(this).attr('data-dataset');
           return gd3.color.categoryPalette(dataset);
         });
-      });
-    }); // End selection
+    });
   }
 
   chart.showScrollers = function showScrollers(state) {
