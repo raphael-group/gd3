@@ -2,7 +2,9 @@ import "transcriptData";
 
 function transcriptChart(style) {
   var showScrollers = true,
-      showLegend = true;
+      showLegend = true,
+      domainDB,
+      updateTranscript;
 
   function chart(selection) {
     selection.each(function(data) {
@@ -10,6 +12,7 @@ function transcriptChart(style) {
       var filteredTypes = [], // store list of mutation types to exclude
           filteredCategories = [], // store list of datasets types to exclude
           instanceIDConst = 'gd3-transcript-'+Date.now();
+      domainDB = data.proteinDomainDB;
 
       // Determine coloration
       var d3color = d3.scale.category20(),
@@ -131,11 +134,10 @@ function transcriptChart(style) {
             })
             .style('stroke-width', 2);
 
-      // Draw domain data with labels with mouse over
-      var domainGroupsData = data.get('proteinDomains');
+      // Add the domain groups
+
       var domainGroups = tG.selectAll('.domains')
-          .data(domainGroupsData ? data.get('proteinDomains').slice() : [])
-          .enter()
+          .data(data.proteinDomains).enter()
           .append('g')
             .attr('class', 'domains');
 
@@ -156,6 +158,7 @@ function transcriptChart(style) {
           .style('font-family', style.fontFamily)
           .text(function(d, i) { return d.name; });
 
+      // Render domain labels onmouseover
       domainGroups.on('mouseover', function(d, i) {
         d3.select(this).selectAll('rect').style('fill', '#f00');
         domainGroups.select('#domain-label-' + i).style('fill-opacity', 1);
@@ -165,14 +168,40 @@ function transcriptChart(style) {
         domainGroups.select('#domain-label-' + i).style('fill-opacity', 0);
       });
 
+      // Set up a color scale for the sequence annotations, using any given color mapping
+      // and filling in default colors for the other annotation types
+      var seqAnnotationColorRange = [],
+          defaultColors = d3.scale.category10().range(),
+          defaultColorIndex = 0;
 
-      updateTranscript();
+      data.seq_annotation_types.forEach(function(anno_ty) {
+        if (anno_ty in style.seqAnnotationColors) {
+          seqAnnotationColorRange.push(style.seqAnnotationColors[anno_ty])
+        } else {
+          seqAnnotationColorRange.push(defaultColors[defaultColorIndex]);
+          defaultColorIndex += 1;
+        }
+      })
+      var seqAnnotationColor = d3.scale.ordinal().domain(data.seq_annotation_types).range(seqAnnotationColorRange);
 
-      if (showScrollers) {
-        renderScrollers();
-      } // end slider behavior code
+      // Add protein sequence information, if it's present
+      if (data.sequence) {
+        var seq = tG.append('g')
+          .attr('class', 'gd3ProteinSequence')
+          .attr('transform', 'translate(0,' + (style.height/2 + style.transcriptBarHeight/2 + 6) + ')')
+          .selectAll('.seq')
+          .data(data.sequence).enter()
+          .append('text')
+          .attr('text-anchor', 'middle')
+          .style('font-family', style.fontFamily)
+          .style('fill', function(d, i) {
+            var anno = data.locusToAnnotations[i+1];
+            return anno ? seqAnnotationColor(anno) : '#000000';
+          })
+          .text(function(d){ return d; })
+      }
 
-      function updateTranscript() {
+      updateTranscript = function() {
         var t = zoom.translate(),
             tx = t[0],
             ty = t[1],
@@ -186,7 +215,6 @@ function transcriptChart(style) {
         var curMin = d3.min(x.domain()),
             curMax = d3.max(x.domain()),
             curRes = Math.round( (curMax - curMin)/mutationResolution );
-
         curRes = curRes ? curRes : 1;
 
         // Stack mutations if there exist more than one per location
@@ -295,13 +323,13 @@ function transcriptChart(style) {
         // update the transcript
         transcriptBar.attr('x', x(start)).attr('width', x(stop) - x(start));
 
-        // Update protein domains
-        // Update the domains
+        // Update protein domains, fading those that are no longer in the selected database
         domainGroups.attr('transform', function(d, i) {
           return 'translate(' + x(d.start) + ',' + (height/2 - 5) + ')';
         });
 
-        domains.attr('width', function(d, i) { return x(d.end) - x(d.start); });
+        domains.attr('width', function(d, i) { return x(d.end) - x(d.start); })
+              .style('opacity', function(d){ return d.db == domainDB ? 1 : 0; });
 
         domainLabels.attr('x', function(d, i) {
           // TO-DO: WHY??????????? Shouldn't this.parentNode always be defined?
@@ -310,7 +338,21 @@ function transcriptChart(style) {
             return w/2;
           } else { return d3.select(this).attr('x'); }
         });
+
+        // Update protein sequence position and visibility
+        if (data.sequence) {
+          // Add one to the index since the indices start at zero
+          seq.attr('x', function(d, i){ return x(i+1); })
+             .style('opacity', curRes < 3 ? 1 : 0 );
+        }
+
       } // end updateTranscript()
+
+      updateTranscript();
+      if (showScrollers) {
+        renderScrollers();
+      } // end slider behavior code
+
 
 
       function renderScrollers () {
@@ -541,8 +583,8 @@ function transcriptChart(style) {
             numRows = Math.ceil(numTypes/2);
 
         // Select the svg element, if it exists.
-        var svg = selection.append('div')
-            .selectAll('.gd3-transcript-legend-svg')
+        var legendWrapper = selection.append('div');
+        var svg = legendWrapper.selectAll('.gd3-transcript-legend-svg')
             .data([data])
             .enter()
               .append('svg')
@@ -598,6 +640,20 @@ function transcriptChart(style) {
           .style('font-family', style.fontFamily)
           .text(function(d) { return d.replace(/_/g, ' ')});
 
+        if (data.sequence && data.seq_annotation_types.length > 0){
+          var seqAnnotationLegend = legendWrapper.append('div')
+            .attr('class', 'gd3TranscriptSeqAnnotationLegend')
+            .style('font-size', '10px');
+          seqAnnotationLegend.append('ul')
+            .style({"padding-left":"0", "margin-left":"-5px", "list-style":"none"})
+            .selectAll('.li')
+            .data(data.seq_annotation_types).enter()
+            .append('li')
+            .style({"display":"inline-block", "padding-left":"5px", "padding-right":"5px"})
+            .style('color', function(d){ return seqAnnotationColor(d); })
+            .text(function(d){ return d; });
+        }
+
         svg.attr('height', legendGroup.node().getBBox().height);
       }
 
@@ -617,7 +673,6 @@ function transcriptChart(style) {
         }).on("mouseout.dispatch-sample", function(d){
           gd3.dispatch.sample({ sample: d.sample, over: false});
         }).on("click.dispatch-mutation", function(d){
-          console.log(d)
           var domain = null;
           gd3.dispatch.mutation({
             dataset: d.dataset,
@@ -705,6 +760,11 @@ function transcriptChart(style) {
 
   chart.showLegend = function showLegend(state) {
     showLegend = state;
+  }
+
+  chart.setDomainDB = function setDomainDB(state){
+    domainDB = state;
+    updateTranscript();
   }
 
   return chart;

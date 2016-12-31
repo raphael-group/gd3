@@ -19,20 +19,39 @@ function transcriptData(data) {
           "In_Frame_Ins": 4
         };
 
+    // Select the initial protein domain db, going with the first one
+    // if it's not provided. Then add the protein domain dbs to each of the domains
+    // so we can easily toggle through the different databases 
     var proteinDomainDB = cdata.proteinDomainDB || Object.keys(cdata.domains)[0] || '';
+    var domains = [];
+    Object.keys(cdata.domains).forEach(function(db){
+      cdata.domains[db].forEach(function(d){
+        d.db = db;
+        domains.push(d);
+      });
+    });
 
     var d = {
       geneName: cdata.gene,
+      sequence: cdata.protein_sequence || null,
+      sequence_annotations: cdata.sequence_annotations || [],
       inactivatingMutations: cdata.inactivatingMutations || defaultInactivatingMutations,
       length: cdata.length,
       mutationCategories: cdata.mutationCategories || [],
       mutations: cdata.mutations,
       mutationTypesToSymbols: cdata.mutationTypesToSymbols || defaultMutationTypesToSymbols,
       proteinDomainDB: proteinDomainDB,
-      proteinDomains: cdata.domains[proteinDomainDB] || []
+      proteinDomains: domains || []
     };
     d.types = Object.keys(d.mutationTypesToSymbols);
     d.datasets = d3.set(cdata.mutations.map(function(m) { return m.dataset; })).values();
+    d.locusToAnnotations = {};
+    var seq_annotation_types = d3.set();
+    d.sequence_annotations.forEach(function(anno){
+      d.locusToAnnotations[anno.locus] = anno.annotation;
+      seq_annotation_types.add(anno.annotation);
+    });
+    d.seq_annotation_types = seq_annotation_types.values().sort();
 
     // for (var mutation in d.mutations) {
     //   var m = d.mutations[mutation];
@@ -75,6 +94,7 @@ function transcriptData(data) {
       else if (str == 'mutations') return d.mutations;
       else if (str == 'mutationTypesToSymbols') return d.mutationTypesToSymbols;
       else if (str == 'proteinDomains') return d.proteinDomains;
+      else if (str == 'sequence') return d.sequence;
       else return null;
     }
     d.isMutationInactivating = function(mut) {

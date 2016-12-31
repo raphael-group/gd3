@@ -76,7 +76,9 @@ function mutmtxData(inputData) {
     function sortByFirstActiveRow(c1, c2) {
       var c1First = data.matrix.columnIdToActiveRows[c1][0],
           c2First = data.matrix.columnIdToActiveRows[c2][0];
-      return d3.ascending(c1First,c2First);
+      if (typeof(c1First) == 'undefined') c1First = Number.MAX_VALUE;
+      if (typeof(c2First) == 'undefined') c2First = Number.MAX_VALUE;
+      return d3.ascending(c1First, c2First);
     }
     // Sort by the name of the column
     function sortByName(c1,c2) {
@@ -145,16 +147,22 @@ function mutmtxData(inputData) {
       data.numSamples = inputData.samples.length;
     }
 
-    var rowAndCount = [];
-    Object.keys(inputData.M).forEach(function(k, i) {
-      // data.maps.rowIdToLabel[i.toString()] = k;
-      var numSamples = Object.keys(inputData.M[k]).length;
-      // data.labels.rows.push(k + ' ('+numSamples+')');
-      rowAndCount.push([k,numSamples]);
-    });
+	var rowAndCount = [];
+	if (inputData.ordered_row_labels){
+		inputData.ordered_row_labels.forEach(function(k){
+			rowAndCount.push([k,Object.keys(inputData.M[k]).length]);
+		})
+	} else {
+	    Object.keys(inputData.M).forEach(function(k, i) {
+	      // data.maps.rowIdToLabel[i.toString()] = k;
+	      var numSamples = Object.keys(inputData.M[k]).length;
+	      // data.labels.rows.push(k + ' ('+numSamples+')');
+	      rowAndCount.push([k,numSamples]);
+	    });
 
-    var sortedRowIds = [];
-    rowAndCount.sort(function(a,b) { return a[1] < b[1] ? 1 : -1; });
+	    rowAndCount.sort(function(a,b) { return a[1] < b[1] ? 1 : -1; });
+	}
+	var sortedRowIds = [];
     rowAndCount.forEach(function(d, i) {
       var name = d[0],
           numSamples = d[1];
@@ -176,7 +184,12 @@ function mutmtxData(inputData) {
     data.datasets = Object.keys(setOfDatasets);
 
     // Build matrix data and maps
-    var cellTypes = []
+    var cellTypes = [];
+    inputData.samples.forEach(function(d){
+      data.matrix.columnIdToActiveRows[d._id] = [];
+      data.maps.columnIdToTypes[d._id] = [];
+    });
+
     sortedRowIds.forEach(function(rowLabel, rowId) {
       var columns = Object.keys(inputData.M[rowLabel]);
       rowId = rowId.toString();
@@ -184,10 +197,6 @@ function mutmtxData(inputData) {
       data.matrix.rowIdToActiveColumns[rowId] = columns;
       // Add columnId -> row mapping
       columns.forEach(function(colId) {
-        // If the entry doesn't exist, build it
-        if(!data.matrix.columnIdToActiveRows[colId]) {
-          data.matrix.columnIdToActiveRows[colId] = [];
-        }
         // Add the row to the column
         data.matrix.columnIdToActiveRows[colId].push(rowId);
 
@@ -200,7 +209,6 @@ function mutmtxData(inputData) {
         cellTypes.push(type);
 
         // Track the types of cells in the data
-        if(!data.maps.columnIdToTypes[colId]) data.maps.columnIdToTypes[colId] = [];
         data.maps.columnIdToTypes[colId].push(type);
       });
     }); // end matrix mapping
