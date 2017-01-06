@@ -744,6 +744,7 @@ function transcriptChart(style) {
     //      (typically you need to inspect elements to get a refresh)
     gd3.dispatch.on("recolor.transcript", function() {
       d3.selectAll('.gd3TranscriptMutations').selectAll("path")
+        .transition().duration(1000)
         .style('fill', function() {
           var dataset = d3.select(this).attr('data-dataset');
           return gd3.color.categoryPalette(dataset);

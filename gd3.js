@@ -466,7 +466,7 @@
         gd3.dispatch.on("recolor.cna", function() {
           segs.each(function(d) {
             var dataset = samplesToTypes[d.sample];
-            d3.select(this).style("fill", function() {
+            d3.select(this).transition().duration(1e3).style("fill", function() {
               if (!d.sample || !dataset) {
                 return "none";
               } else {
@@ -2297,7 +2297,7 @@
           gd3.dispatch.on("recolor.mutmtx", function() {
             cells.each(function(d) {
               var cell = d3.select(this);
-              cell.select("rect").style("fill", function() {
+              cell.select("rect").transition().duration(1e3).style("fill", function() {
                 if (!d.cell || !d.cell.dataset) {
                   return "none";
                 } else if (gd3.color.categoryPalette) {
@@ -3491,7 +3491,7 @@
         });
       });
       gd3.dispatch.on("recolor.transcript", function() {
-        d3.selectAll(".gd3TranscriptMutations").selectAll("path").style("fill", function() {
+        d3.selectAll(".gd3TranscriptMutations").selectAll("path").transition().duration(1e3).style("fill", function() {
           var dataset = d3.select(this).attr("data-dataset");
           return gd3.color.categoryPalette(dataset);
         }).style("stroke", function() {

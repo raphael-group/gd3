@@ -54,7 +54,9 @@
 
         var altColors = ["rgb(12,192,170)", "rgb(17,93,82)", "rgb(104,195,239)", "rgb(87,43,158)", "rgb(248,154,222)", "rgb(152,103,246)", "rgb(58,80,138)", "rgb(143,138,197)", "rgb(120,40,87)", "rgb(244,38,151)", "rgb(233,203,231)", "rgb(208,3,214)"];
         gd3.color.updateCategoricalPalette(altColors);
-        // gd3.color.updateCategoricalPalette(categories.map(function(d) { return 'black'; }));
+        setTimeout(function(){
+          gd3.color.updateCategoricalPalette(categories.map(function(d) { return 'black'; }));
+        }, 2000);
       }
 
       d3.json('testData/example2-mutation-matrix.json', function(mdata) {

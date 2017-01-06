@@ -333,7 +333,7 @@ function cnaChart(style) {
       gd3.dispatch.on("recolor.cna", function() {
         segs.each(function(d) {
           var dataset = samplesToTypes[d.sample];
-          d3.select(this).style('fill', function () {
+          d3.select(this).transition().duration(1000).style('fill', function () {
             if(!d.sample || !dataset) {
               return 'none';
             } else {

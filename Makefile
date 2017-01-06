@@ -1,8 +1,12 @@
-gd3.js: $(shell node_modules/.bin/smash --list src/gd3.js)
-				node_modules/.bin/smash src/gd3.js | node_modules/.bin/uglifyjs - -b indent-level=2 -o $@
+SMASH=node_modules/smash/smash
+UGLIFY=node_modules/uglify-js/bin/uglifyjs
+GD3=src/gd3.js
 
-global: $(shell smash --list src/gd3.js)
-				smash src/gd3.js | uglifyjs - -b indent-level=2 -o $@
+gd3.js: $(shell $(SMASH) --list $(GD3))
+				$(SMASH) $(GD3) | $(UGLIFY) - -b indent-level=2 -o $@
 
-test:	$(shell node_modules/.bin/smash --list src/gd3.js)
-				node_modules/.bin/smash src/gd3.js > gd3.test.js
+global: $(shell $(SMASH) --list $(GD3))
+				$(SMASH) $(GD3) | $(UGLIFY) - -b indent-level=2 -o $@
+
+test:	$(shell $(SMASH) --list $(GD3))
+				$(SMASH) $(GD3) > gd3.test.js

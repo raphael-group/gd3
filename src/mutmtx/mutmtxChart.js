@@ -820,7 +820,7 @@ function mutmtxChart(style) {
         gd3.dispatch.on("recolor.mutmtx", function() {
           cells.each(function(d) {
             var cell = d3.select(this);
-            cell.select('rect').style('fill', function () {
+            cell.select('rect').transition().duration(1000).style('fill', function () {
               if(!d.cell || !d.cell.dataset) {
                 return 'none';
               } else if (gd3.color.categoryPalette) {
